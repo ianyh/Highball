@@ -14,9 +14,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                             
     var window: UIWindow?
 
-
     func application(application: UIApplication!, didFinishLaunchingWithOptions launchOptions: NSDictionary!) -> Bool {
-        // Override point for customization after application launch.
+        TMAPIClient.sharedInstance().OAuthConsumerKey = "YhlYiD2dAUE6UH01ugPKQafm2XESBWsaOYPz7xV0q53SDn3ChU"
+        TMAPIClient.sharedInstance().OAuthConsumerSecret = "ONVNS5UCfZMMhrekfjBknUXgjQ5I2J1a0aVDCfso2mfRcC4nEF"
+
+        if let oAuthToken = NSUserDefaults.standardUserDefaults().stringForKey("HighballOAuthToken") {
+            TMAPIClient.sharedInstance().OAuthToken = oAuthToken
+            TMAPIClient.sharedInstance().OAuthTokenSecret = NSUserDefaults.standardUserDefaults().stringForKey("HighballOAuthTokenSecret")
+        }
+
         return true
     }
 
@@ -42,6 +48,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
         self.saveContext()
+    }
+    
+    func application(application: UIApplication, handleOpenURL url: NSURL) -> Bool {
+        return TMAPIClient.sharedInstance().handleOpenURL(url)
     }
 
     // MARK: - Core Data stack
