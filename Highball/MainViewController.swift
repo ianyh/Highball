@@ -19,7 +19,7 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
     var webViewHeightCache: Dictionary<Int, CGFloat>!
     var posts: Array<Post>! {
         didSet {
-            self.tableView.reloadData()
+            self.reloadTable()
         }
     }
 
@@ -136,7 +136,7 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
 
                     self.posts.extend(posts)
                     self.currentOffset! += 20
-                    self.tableView?.reloadData()
+                    self.reloadTable()
 
                     self.loadingBottom = false
                 }
@@ -266,7 +266,7 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
         if let postId = self.postsWebViewCache.keyForObject(webView, isEqual: ==) {
             self.webViewHeightCache[postId] = webView.documentHeight()
             self.postsWebViewCache[postId] = nil
-            self.tableView?.reloadData()
+            self.reloadTable()
         }
     }
 }
