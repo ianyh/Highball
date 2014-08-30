@@ -9,14 +9,15 @@
 import UIKit
 import Cartography
 
-class MainViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate {
+class MainViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate, UIWebViewDelegate {
 
     let postHeaderViewIdentifier = "postHeaderViewIdentifier"
     let photosetRowTableViewCellIdentifier = "photosetRowTableViewCellIdentifier"
     let contentTableViewCellIdentifier = "contentTableViewCellIdentifier"
 
-    var postsWebViewCache: Dictionary<Int, UIWebView>?
-    var posts: Array<Post>? {
+    var postsWebViewCache: Dictionary<UIWebView, Int>!
+    var webViewHeightCache: Dictionary<Int, CGFloat>!
+    var posts: Array<Post>! {
         didSet {
             self.tableView.reloadData()
         }
@@ -25,7 +26,8 @@ class MainViewController: UITableViewController, UITableViewDataSource, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.postsWebViewCache = Dictionary<Int, UIWebView>()
+        self.postsWebViewCache = Dictionary<UIWebView, Int>()
+        self.webViewHeightCache = Dictionary<Int, CGFloat>()
 
         self.tableView.registerClass(PhotosetRowTableViewCell.classForCoder(), forCellReuseIdentifier: photosetRowTableViewCellIdentifier)
         self.tableView.registerClass(ContentTableViewCell.classForCoder(), forCellReuseIdentifier: contentTableViewCellIdentifier)
@@ -51,12 +53,15 @@ class MainViewController: UITableViewController, UITableViewDataSource, UITableV
                 for post in posts {
                     if let content = post.body() as NSString? {
                         let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 1))
-                        webView.loadHTMLString(content.htmlStringWithTumblrStyle(self.view.frame.width), baseURL: NSURL(string: ""))
+                        let htmlString = content.htmlStringWithTumblrStyle(self.view.frame.width)
+
+                        webView.delegate = self
+                        webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
         
-                        self.postsWebViewCache![post.id] = webView
+                        self.postsWebViewCache[webView] = post.id
                     }
                     
-                    println(post)
+                    println(post.json)
                 }
 
                 self.posts = posts
@@ -71,15 +76,30 @@ class MainViewController: UITableViewController, UITableViewDataSource, UITableV
         }
     }
 
+    // MARK: UITableViewDataSource
+
     override func numberOfSectionsInTableView(tableView: UITableView!) -> Int {
         if let posts = self.posts {
+            var webViewsFinishedLoading = true
+            for post in posts {
+                if let content = post.body() {
+                    if let height = self.webViewHeightCache[post.id] {
+                        
+                    } else {
+                        webViewsFinishedLoading = false
+                    }
+                }
+            }
+            if !webViewsFinishedLoading {
+                return 0
+            }
             return posts.count
         }
         return 0
     }
 
     override func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
-        let post = self.posts![section]
+        let post = self.posts[section]
         let postPhotos = post.photos()
         if postPhotos.count == 1 {
             return 2
@@ -89,7 +109,7 @@ class MainViewController: UITableViewController, UITableViewDataSource, UITableV
     }
     
     override func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
-        let post = posts![indexPath.section]
+        let post = posts[indexPath.section]
         if indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 1 {
             let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
             cell.contentWidth = tableView.frame.size.width
@@ -114,8 +134,10 @@ class MainViewController: UITableViewController, UITableViewDataSource, UITableV
         return cell
     }
 
+    // MARK: UITableViewDelegate
+
     override func tableView(tableView: UITableView!, viewForHeaderInSection section: Int) -> UIView! {
-        let post = posts![section]
+        let post = posts[section]
         let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(postHeaderViewIdentifier) as PostHeaderView
 
         view.post = post
@@ -124,10 +146,12 @@ class MainViewController: UITableViewController, UITableViewDataSource, UITableV
     }
 
     override func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
-        let post = posts![indexPath.section]
+        let post = posts[indexPath.section]
         if indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 1 {
-            let webView = self.postsWebViewCache![post.id]!
-            return webView.documentHeight()
+            if let height = self.webViewHeightCache[post.id] {
+                return height
+            }
+            return 0
         }
 
         let postPhotos = post.photos()
@@ -154,6 +178,16 @@ class MainViewController: UITableViewController, UITableViewDataSource, UITableV
         }.reduce(CGFloat.max, combine: { min($0, $1) })
 
         return minHeight
+    }
+
+    // MARK: UIWebViewDelegate
+
+    func webViewDidFinishLoad(webView: UIWebView!) {
+        if let postId = self.postsWebViewCache[webView] {
+            self.webViewHeightCache[postId] = webView.documentHeight()
+            self.postsWebViewCache[webView] = nil
+            self.tableView?.reloadData()
+        }
     }
 }
 
