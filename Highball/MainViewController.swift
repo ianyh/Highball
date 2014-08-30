@@ -9,11 +9,17 @@
 import UIKit
 import Cartography
 
+enum AnswerRow: Int {
+    case Question
+    case Answer
+}
+
 class MainViewController: UITableViewController, UIWebViewDelegate {
 
     let postHeaderViewIdentifier = "postHeaderViewIdentifier"
     let photosetRowTableViewCellIdentifier = "photosetRowTableViewCellIdentifier"
     let contentTableViewCellIdentifier = "contentTableViewCellIdentifier"
+    let postQuestionTableViewCellIdentifier = "postQuestionTableViewCellIdentifier"
 
     var postsWebViewCache: Dictionary<Int, UIWebView>!
     var webViewHeightCache: Dictionary<Int, CGFloat>!
@@ -42,6 +48,7 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
 
         self.tableView.registerClass(PhotosetRowTableViewCell.classForCoder(), forCellReuseIdentifier: photosetRowTableViewCellIdentifier)
         self.tableView.registerClass(ContentTableViewCell.classForCoder(), forCellReuseIdentifier: contentTableViewCellIdentifier)
+        self.tableView.registerClass(PostQuestionTableViewCell.classForCoder(), forCellReuseIdentifier: postQuestionTableViewCellIdentifier)
         self.tableView.registerClass(PostHeaderView.classForCoder(), forHeaderFooterViewReuseIdentifier: postHeaderViewIdentifier)
     }
     
@@ -75,8 +82,6 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
             let json = JSONValue(response)
             let posts = json["posts"].array!.map { (post) -> (Post) in
                 return Post(json: post)
-            }.filter { (post) -> (Bool) in
-                return post.type == "photo" || post.type == "text"
             }
 
             for post in posts {
@@ -170,38 +175,69 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
 
     override func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
         let post = self.posts[section]
-        let postPhotos = post.photos()
-        if postPhotos.count == 1 {
-            return 2
-        }
+        switch post.type {
+        case "photo":
+            let postPhotos = post.photos()
+            if postPhotos.count == 1 {
+                return 2
+            }
 
-        return post.layoutRows().count + 1
+            return post.layoutRows().count + 1
+        case "text":
+            return 1
+        case "answer":
+            return 2
+        default:
+            return 0
+        }
     }
     
     override func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
         let post = posts[indexPath.section]
-        if indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 1 {
+        switch post.type {
+        case "photo":
+            if indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 1 {
+                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
+                cell.contentWidth = tableView.frame.size.width
+                cell.content = post.body()
+                return cell
+            }
+
+            let cell = tableView.dequeueReusableCellWithIdentifier(photosetRowTableViewCellIdentifier) as PhotosetRowTableViewCell!
+            let postPhotos = post.photos()
+            if postPhotos.count == 1 {
+                cell.images = postPhotos
+            } else {
+                let photosetLayoutRows = post.layoutRows()
+                var photosIndexStart = 0
+                for photosetLayoutRow in photosetLayoutRows[0..<indexPath.row] {
+                    photosIndexStart += photosetLayoutRow
+                }
+                let photosetLayoutRow = photosetLayoutRows[indexPath.row]
+
+                cell.images = Array(postPhotos[(photosIndexStart)..<(photosIndexStart + photosetLayoutRow)])
+            }
+            return cell
+        case "text":
             let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
             cell.contentWidth = tableView.frame.size.width
             cell.content = post.body()
             return cell
-        }
-
-        let cell = tableView.dequeueReusableCellWithIdentifier(photosetRowTableViewCellIdentifier) as PhotosetRowTableViewCell!
-        let postPhotos = post.photos()
-        if postPhotos.count == 1 {
-            cell.images = postPhotos
-        } else {
-            let photosetLayoutRows = post.layoutRows()
-            var photosIndexStart = 0
-            for photosetLayoutRow in photosetLayoutRows[0..<indexPath.row] {
-                photosIndexStart += photosetLayoutRow
+        case "answer":
+            switch AnswerRow.fromRaw(indexPath.row)! {
+            case .Question:
+                let cell = tableView.dequeueReusableCellWithIdentifier(postQuestionTableViewCellIdentifier) as PostQuestionTableViewCell!
+                cell.post = post
+                return cell
+            case .Answer:
+                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
+                cell.contentWidth = tableView.frame.size.width
+                cell.content = post.body()
+                return cell
             }
-            let photosetLayoutRow = photosetLayoutRows[indexPath.row]
-
-            cell.images = Array(postPhotos[(photosIndexStart)..<(photosIndexStart + photosetLayoutRow)])
+        default:
+            return nil
         }
-        return cell
     }
 
     // MARK: UITableViewDelegate
@@ -217,37 +253,57 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
 
     override func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
         let post = posts[indexPath.section]
-        if indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 1 {
+        switch post.type {
+        case "photo":
+            if indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 1 {
+                if let height = self.webViewHeightCache[post.id] {
+                    return height
+                }
+                return 0
+            }
+
+            let postPhotos = post.photos()
+            var images: Array<PostPhoto>!
+
+            if postPhotos.count == 1 {
+                images = postPhotos
+            } else {
+                let photosetLayoutRows = post.layoutRows()
+                var photosIndexStart = 0
+                for photosetLayoutRow in photosetLayoutRows[0..<indexPath.row] {
+                    photosIndexStart += photosetLayoutRow
+                }
+                let photosetLayoutRow = photosetLayoutRows[indexPath.row]
+            
+                images = Array(postPhotos[(photosIndexStart)..<(photosIndexStart + photosetLayoutRow)])
+            }
+
+            let imageCount = images.count
+            let imageWidth = tableView.frame.size.width / CGFloat(images.count)
+            let minHeight = images.map { (image: PostPhoto) -> CGFloat in
+                let scale = image.height() / image.width()
+                return imageWidth * scale
+            }.reduce(CGFloat.max, combine: { min($0, $1) })
+
+            return minHeight
+        case "text":
             if let height = self.webViewHeightCache[post.id] {
                 return height
             }
             return 0
-        }
-
-        let postPhotos = post.photos()
-        var images: Array<PostPhoto>!
-
-        if postPhotos.count == 1 {
-            images = postPhotos
-        } else {
-            let photosetLayoutRows = post.layoutRows()
-            var photosIndexStart = 0
-            for photosetLayoutRow in photosetLayoutRows[0..<indexPath.row] {
-                photosIndexStart += photosetLayoutRow
+        case "answer":
+            switch AnswerRow.fromRaw(indexPath.row)! {
+            case .Question:
+                return PostQuestionTableViewCell.heightForPost(post, width: tableView.frame.size.width)
+            case .Answer:
+                if let height = self.webViewHeightCache[post.id] {
+                    return height
+                }
+                return 0
             }
-            let photosetLayoutRow = photosetLayoutRows[indexPath.row]
-            
-            images = Array(postPhotos[(photosIndexStart)..<(photosIndexStart + photosetLayoutRow)])
+        default:
+            return 0
         }
-
-        let imageCount = images.count
-        let imageWidth = tableView.frame.size.width / CGFloat(images.count)
-        let minHeight = images.map { (image: PostPhoto) -> CGFloat in
-            let scale = image.height() / image.width()
-            return imageWidth * scale
-        }.reduce(CGFloat.max, combine: { min($0, $1) })
-
-        return minHeight
     }
 
     // MARK: UIScrollViewDelegate

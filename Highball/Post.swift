@@ -61,4 +61,13 @@ class Post {
 
         return nil
     }
+
+    func asker() -> (String?) {
+        return self.json["asking_name"].string
+    }
+
+    func question() -> (String?) {
+        return self.json["question"].string
+    }
+
 }

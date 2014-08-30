@@ -22,6 +22,7 @@
 		40778B9E19B160DD00F8EE13 /* PostPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40778B9D19B160DD00F8EE13 /* PostPhoto.swift */; };
 		40778BA619B20BF000F8EE13 /* Cartography.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40778BA519B20BF000F8EE13 /* Cartography.framework */; };
 		40778BA719B20BF000F8EE13 /* Cartography.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40778BA519B20BF000F8EE13 /* Cartography.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		40778BAA19B24BA500F8EE13 /* PostQuestionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40778BA919B24BA500F8EE13 /* PostQuestionTableViewCell.swift */; };
 		67BE6D53DE604411B4949677 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12E96C2CD61D40E1AB63F9B7 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -70,6 +71,7 @@
 		40778B9B19B15F9C00F8EE13 /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		40778B9D19B160DD00F8EE13 /* PostPhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostPhoto.swift; sourceTree = "<group>"; };
 		40778BA519B20BF000F8EE13 /* Cartography.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = Cartography.framework; path = "/Users/ianyh/Library/Developer/Xcode/DerivedData/Highball-guawcsogumubtccebjzcnecuotxo/Build/Products/Debug-iphoneos/Cartography.framework"; sourceTree = "<absolute>"; };
+		40778BA919B24BA500F8EE13 /* PostQuestionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostQuestionTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 				403F53DA19AECFEF00FF8F3B /* PhotosetRowTableViewCell.swift */,
 				403F53DC19AFB5DF00FF8F3B /* ContentTableViewCell.swift */,
 				40778B9819B118D100F8EE13 /* PostHeaderView.swift */,
+				40778BA919B24BA500F8EE13 /* PostQuestionTableViewCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -337,6 +340,7 @@
 				401ED97F19AEA62100457377 /* SwiftyJSON.swift in Sources */,
 				40778B9E19B160DD00F8EE13 /* PostPhoto.swift in Sources */,
 				403F53DD19AFB5DF00FF8F3B /* ContentTableViewCell.swift in Sources */,
+				40778BAA19B24BA500F8EE13 /* PostQuestionTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
