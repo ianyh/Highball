@@ -43,6 +43,8 @@ class Post {
     func body() -> (String?) {
         if let caption = self.json["caption"].string {
             return caption
+        } else if let body = self.json["body"].string {
+            return body
         }
         return nil
     }

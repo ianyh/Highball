@@ -45,7 +45,7 @@ class MainViewController: UITableViewController, UITableViewDataSource, UITableV
                 let posts = json["posts"].array!.map { (post) -> (Post) in
                     return Post(json: post)
                 }.filter { (post) -> (Bool) in
-                    return post.type == "photo"
+                    return post.type == "photo" || post.type == "text"
                 }
 
                 for post in posts {
