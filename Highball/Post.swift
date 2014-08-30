@@ -42,14 +42,19 @@ class Post {
 
     func body() -> (String?) {
         var bodyString: String?
-        if let caption = self.json["caption"].string {
-            bodyString = caption
-        } else if let body = self.json["body"].string {
-            bodyString = body
+        switch self.type {
+        case "photo":
+            bodyString = self.json["caption"].string
+        case "text":
+            bodyString = self.json["body"].string
+        case "answer":
+            bodyString = self.json["answer"].string
+        default:
+            bodyString = nil
         }
 
-        if let string = bodyString as NSString? {
-            if string.length > 0 {
+        if let string = bodyString {
+            if countElements(string) > 0 {
                 return string
             }
         }

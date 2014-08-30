@@ -9,13 +9,13 @@
 import UIKit
 import Cartography
 
-class MainViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate, UIWebViewDelegate {
+class MainViewController: UITableViewController, UIWebViewDelegate {
 
     let postHeaderViewIdentifier = "postHeaderViewIdentifier"
     let photosetRowTableViewCellIdentifier = "photosetRowTableViewCellIdentifier"
     let contentTableViewCellIdentifier = "contentTableViewCellIdentifier"
 
-    var postsWebViewCache: Dictionary<UIWebView, Int>!
+    var postsWebViewCache: Dictionary<Int, UIWebView>!
     var webViewHeightCache: Dictionary<Int, CGFloat>!
     var posts: Array<Post>! {
         didSet {
@@ -23,10 +23,21 @@ class MainViewController: UITableViewController, UITableViewDataSource, UITableV
         }
     }
 
+    var currentOffset: Int?
+    var loadingTop: Bool?
+    var loadingBottom: Bool?
+
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.postsWebViewCache = Dictionary<UIWebView, Int>()
+        self.loadingTop = false
+        self.loadingBottom = false
+
+        self.postsWebViewCache = Dictionary<Int, UIWebView>()
         self.webViewHeightCache = Dictionary<Int, CGFloat>()
 
         self.tableView.registerClass(PhotosetRowTableViewCell.classForCoder(), forCellReuseIdentifier: photosetRowTableViewCellIdentifier)
@@ -38,34 +49,7 @@ class MainViewController: UITableViewController, UITableViewDataSource, UITableV
         super.viewDidAppear(animated)
 
         if let oauthToken = TMAPIClient.sharedInstance().OAuthToken {
-            TMAPIClient.sharedInstance().dashboard([:]) { (response: AnyObject!, error: NSError!) -> Void in
-                if let e = error {
-                    println(e)
-                    return
-                }
-                let json = JSONValue(response)
-                let posts = json["posts"].array!.map { (post) -> (Post) in
-                    return Post(json: post)
-                }.filter { (post) -> (Bool) in
-                    return post.type == "photo" || post.type == "text"
-                }
-
-                for post in posts {
-                    if let content = post.body() as NSString? {
-                        let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 1))
-                        let htmlString = content.htmlStringWithTumblrStyle(self.view.frame.width)
-
-                        webView.delegate = self
-                        webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
-        
-                        self.postsWebViewCache[webView] = post.id
-                    }
-                    
-                    println(post.json)
-                }
-
-                self.posts = posts
-            }
+            self.loadTop()
         } else {
             TMAPIClient.sharedInstance().authenticate("highballtumblr") { (error: NSError!) -> Void in
                 if error == nil {
@@ -76,23 +60,109 @@ class MainViewController: UITableViewController, UITableViewDataSource, UITableV
         }
     }
 
-    // MARK: UITableViewDataSource
+    func loadTop() {
+        if self.loadingTop! {
+            return
+        }
 
-    override func numberOfSectionsInTableView(tableView: UITableView!) -> Int {
+        self.loadingTop = true
+
+        TMAPIClient.sharedInstance().dashboard([:]) { (response: AnyObject!, error: NSError!) -> Void in
+            if let e = error {
+                println(e)
+                return
+            }
+            let json = JSONValue(response)
+            let posts = json["posts"].array!.map { (post) -> (Post) in
+                return Post(json: post)
+            }.filter { (post) -> (Bool) in
+                return post.type == "photo" || post.type == "text"
+            }
+
+            for post in posts {
+                if let content = post.body() as NSString? {
+                    let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 1))
+                    let htmlString = content.htmlStringWithTumblrStyle(self.view.frame.width)
+
+                    webView.delegate = self
+                    webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+        
+                    self.postsWebViewCache[post.id] = webView
+                }
+                    
+                println(post.json)
+            }
+
+            self.posts = posts
+            self.currentOffset = 0
+
+            self.loadingTop = false
+        }
+    }
+
+    func loadMore() {
+        if self.loadingTop! || self.loadingBottom! {
+            return
+        }
+
+        if let posts = self.posts {
+            if let lastPost = posts.last {
+                self.loadingBottom = true
+                TMAPIClient.sharedInstance().dashboard(["offset" : self.currentOffset! + 20]) { (response: AnyObject!, error: NSError!) -> Void in
+                    if let e = error {
+                        println(e)
+                        return
+                    }
+                    let json = JSONValue(response)
+                    let posts = json["posts"].array!.map { (post) -> (Post) in
+                        return Post(json: post)
+                    }.filter { (post) -> (Bool) in
+                        return post.type == "photo" || post.type == "text"
+                    }
+                    
+                    for post in posts {
+                        if let content = post.body() as NSString? {
+                            let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 1))
+                            let htmlString = content.htmlStringWithTumblrStyle(self.view.frame.width)
+                            
+                            webView.delegate = self
+                            webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+                            
+                            self.postsWebViewCache[post.id] = webView
+                        }
+                        
+                        println(post.json)
+                    }
+
+                    self.posts.extend(posts)
+                    self.currentOffset! += 20
+                    self.tableView?.reloadData()
+
+                    self.loadingBottom = false
+                }
+            }
+        }
+    }
+
+    func reloadTable() {
         if let posts = self.posts {
             var webViewsFinishedLoading = true
             for post in posts {
                 if let content = post.body() {
-                    if let height = self.webViewHeightCache[post.id] {
-                        
-                    } else {
-                        webViewsFinishedLoading = false
+                    if let height = self.webViewHeightCache[post.id] {} else {
+                        return
                     }
                 }
             }
-            if !webViewsFinishedLoading {
-                return 0
-            }
+        }
+
+        self.tableView?.reloadData()
+    }
+
+    // MARK: UITableViewDataSource
+
+    override func numberOfSectionsInTableView(tableView: UITableView!) -> Int {
+        if let posts = self.posts {
             return posts.count
         }
         return 0
@@ -180,12 +250,22 @@ class MainViewController: UITableViewController, UITableViewDataSource, UITableV
         return minHeight
     }
 
+    // MARK: UIScrollViewDelegate
+
+    override func scrollViewDidScroll(scrollView: UIScrollView!) {
+        let distanceFromBottom = scrollView.contentSize.height - scrollView.frame.size.height - scrollView.contentOffset.y
+
+        if distanceFromBottom < 2000 {
+            self.loadMore()
+        }
+    }
+
     // MARK: UIWebViewDelegate
 
     func webViewDidFinishLoad(webView: UIWebView!) {
-        if let postId = self.postsWebViewCache[webView] {
+        if let postId = self.postsWebViewCache.keyForObject(webView, isEqual: ==) {
             self.webViewHeightCache[postId] = webView.documentHeight()
-            self.postsWebViewCache[webView] = nil
+            self.postsWebViewCache[postId] = nil
             self.tableView?.reloadData()
         }
     }
@@ -194,5 +274,16 @@ class MainViewController: UITableViewController, UITableViewDataSource, UITableV
 public extension UIWebView {
     func documentHeight() -> (CGFloat) {
         return CGFloat(self.stringByEvaluatingJavaScriptFromString("var body = document.body, html = document.documentElement;Math.max( body.scrollHeight, body.offsetHeight,html.clientHeight, html.scrollHeight, html.offsetHeight );").toInt()!)
+    }
+}
+
+public extension Dictionary {
+    func keyForObject(object: Value!, isEqual: (Value!, Value!) -> (Bool)) -> (Key?) {
+        for key in self.keys {
+            if isEqual(object, self[key] as Value!) {
+                return key
+            }
+        }
+        return nil
     }
 }
