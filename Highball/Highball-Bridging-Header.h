@@ -12,6 +12,8 @@
 @import Foundation;
 #import <AFNetworking/AFNetworking.h>
 #import <AFNetworking/UIKit+AFNetworking.h>
+#import <FLAnimatedImage/FLAnimatedImage.h>
+#import <FLAnimatedImage/FLAnimatedImageView.h>
 #import <TMTumblrSDK/TMAPIClient.h>
 
 #endif

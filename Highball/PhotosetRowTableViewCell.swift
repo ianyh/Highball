@@ -11,7 +11,7 @@ import Cartography
 
 class PhotosetRowTableViewCell: UITableViewCell {
 
-    var imageViews: Array<UIImageView>?
+    var imageViews: Array<FLAnimatedImageView>?
     var images: Array<PostPhoto>? {
         didSet {
             if let images = self.images {
@@ -24,10 +24,10 @@ class PhotosetRowTableViewCell: UITableViewCell {
                 }
 
                 let widthRatio: Float = 1.0 / Float(images.count)
-                var imageViews = Array<UIImageView>()
-                var lastImageView: UIImageView?
+                var imageViews = Array<FLAnimatedImageView>()
+                var lastImageView: FLAnimatedImageView?
                 for image in images {
-                    let imageView = UIImageView()
+                    let imageView = FLAnimatedImageView()
                     let imageURL = image.url()
 
                     self.contentView.addSubview(imageView)
@@ -49,7 +49,29 @@ class PhotosetRowTableViewCell: UITableViewCell {
                     }
 
                     imageView.cancelImageRequestOperation()
-                    imageView.setImageWithURL(imageURL, placeholderImage: UIImage(named: "Placeholder"))
+
+                    let request = NSMutableURLRequest(URL: imageURL)
+                    request.addValue("image/*", forHTTPHeaderField:"Accept")
+                    
+                    if imageURL.absoluteString!.hasSuffix(".gif") {
+                        let manager = AFHTTPRequestOperationManager()
+
+                        imageView.image = UIImage(named: "Placeholder")
+                
+                        manager.requestSerializer.setValue("image/gif", forHTTPHeaderField: "Accept")
+                        manager.responseSerializer.acceptableContentTypes = NSSet(object: "image/gif")
+                        manager.GET(imageURL.absoluteString!,
+                            parameters: nil,
+                            success: { (operation, data) -> Void in
+                                imageView.animatedImage = FLAnimatedImage(animatedGIFData: data as NSData)
+                            },
+                            failure: { (operation, error) -> Void in
+                                println(error)
+                            }
+                        )
+                    } else {
+                        imageView.setImageWithURL(imageURL, placeholderImage: UIImage(named: "Placeholder"))
+                    }
 
                     lastImageView = imageView
                 }
