@@ -41,11 +41,19 @@ class Post {
     }
 
     func body() -> (String?) {
+        var bodyString: String?
         if let caption = self.json["caption"].string {
-            return caption
+            bodyString = caption
         } else if let body = self.json["body"].string {
-            return body
+            bodyString = body
         }
+
+        if let string = bodyString as NSString? {
+            if string.length > 0 {
+                return string
+            }
+        }
+
         return nil
     }
 }
