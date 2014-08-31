@@ -19,12 +19,18 @@ enum QuoteRow: Int {
     case Source
 }
 
+enum LinkRow: Int {
+    case Link
+    case Description
+}
+
 class MainViewController: UITableViewController, UIWebViewDelegate {
 
     let postHeaderViewIdentifier = "postHeaderViewIdentifier"
     let photosetRowTableViewCellIdentifier = "photosetRowTableViewCellIdentifier"
     let contentTableViewCellIdentifier = "contentTableViewCellIdentifier"
     let postQuestionTableViewCellIdentifier = "postQuestionTableViewCellIdentifier"
+    let postLinkTableViewCellIdentifier = "postLinkTableViewCellIdentifier"
 
     var bodyWebViewCache: Dictionary<Int, UIWebView>!
     var bodyHeightCache: Dictionary<Int, CGFloat>!
@@ -58,6 +64,7 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
         self.tableView.registerClass(PhotosetRowTableViewCell.classForCoder(), forCellReuseIdentifier: photosetRowTableViewCellIdentifier)
         self.tableView.registerClass(ContentTableViewCell.classForCoder(), forCellReuseIdentifier: contentTableViewCellIdentifier)
         self.tableView.registerClass(PostQuestionTableViewCell.classForCoder(), forCellReuseIdentifier: postQuestionTableViewCellIdentifier)
+        self.tableView.registerClass(PostLinkTableViewCell.classForCoder(), forCellReuseIdentifier: postLinkTableViewCellIdentifier)
         self.tableView.registerClass(PostHeaderView.classForCoder(), forHeaderFooterViewReuseIdentifier: postHeaderViewIdentifier)
     }
     
@@ -83,7 +90,7 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
 
         self.loadingTop = true
 
-        TMAPIClient.sharedInstance().dashboard([ "type" : "quote" ]) { (response: AnyObject!, error: NSError!) -> Void in
+        TMAPIClient.sharedInstance().dashboard([ "type" : "link" ]) { (response: AnyObject!, error: NSError!) -> Void in
             if let e = error {
                 println(e)
                 return
@@ -212,6 +219,8 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
             return 2
         case "quote":
             return 2
+        case "link":
+            return 2
         default:
             return 0
         }
@@ -266,6 +275,17 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
             case .Source:
                 let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
                 cell.content = post.htmlSecondaryBodyWithWidth(tableView.frame.size.width)
+                return cell
+            }
+        case "link":
+            switch LinkRow.fromRaw(indexPath.row)! {
+            case .Link:
+                let cell = tableView.dequeueReusableCellWithIdentifier(postLinkTableViewCellIdentifier) as PostLinkTableViewCell!
+                cell.post = post
+                return cell
+            case .Description:
+                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
+                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
                 return cell
             }
         default:
@@ -343,6 +363,16 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
                 return 0
             case .Source:
                 if let height = self.secondaryBodyHeightCache[post.id] {
+                    return height
+                }
+                return 0
+            }
+        case "link":
+            switch LinkRow.fromRaw(indexPath.row)! {
+            case .Link:
+                return PostLinkTableViewCell.heightForPost(post, width: tableView.frame.size.width)
+            case .Description:
+                if let height = self.bodyHeightCache[post.id] {
                     return height
                 }
                 return 0

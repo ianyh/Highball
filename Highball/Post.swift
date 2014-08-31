@@ -51,6 +51,8 @@ class Post {
             bodyString = self.json["answer"].string
         case "quote":
             bodyString = self.json["text"].string
+        case "link":
+            bodyString = self.json["description"].string
         default:
             bodyString = nil
         }
@@ -106,6 +108,14 @@ class Post {
 
     func question() -> (String?) {
         return self.json["question"].string
+    }
+
+    func title() -> (String?) {
+        return self.json["title"].string
+    }
+
+    func urlString() -> (String?) {
+        return self.json["url"].string
     }
 
 }
