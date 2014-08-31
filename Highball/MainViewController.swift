@@ -14,6 +14,11 @@ enum AnswerRow: Int {
     case Answer
 }
 
+enum QuoteRow: Int {
+    case Quote
+    case Source
+}
+
 class MainViewController: UITableViewController, UIWebViewDelegate {
 
     let postHeaderViewIdentifier = "postHeaderViewIdentifier"
@@ -21,8 +26,10 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
     let contentTableViewCellIdentifier = "contentTableViewCellIdentifier"
     let postQuestionTableViewCellIdentifier = "postQuestionTableViewCellIdentifier"
 
-    var postsWebViewCache: Dictionary<Int, UIWebView>!
-    var webViewHeightCache: Dictionary<Int, CGFloat>!
+    var bodyWebViewCache: Dictionary<Int, UIWebView>!
+    var bodyHeightCache: Dictionary<Int, CGFloat>!
+    var secondaryBodyWebViewCache: Dictionary<Int, UIWebView>!
+    var secondaryBodyHeightCache: Dictionary<Int, CGFloat>!
     var posts: Array<Post>! {
         didSet {
             self.reloadTable()
@@ -43,8 +50,10 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
         self.loadingTop = false
         self.loadingBottom = false
 
-        self.postsWebViewCache = Dictionary<Int, UIWebView>()
-        self.webViewHeightCache = Dictionary<Int, CGFloat>()
+        self.bodyWebViewCache = Dictionary<Int, UIWebView>()
+        self.bodyHeightCache = Dictionary<Int, CGFloat>()
+        self.secondaryBodyWebViewCache = Dictionary<Int, UIWebView>()
+        self.secondaryBodyHeightCache = Dictionary<Int, CGFloat>()
 
         self.tableView.registerClass(PhotosetRowTableViewCell.classForCoder(), forCellReuseIdentifier: photosetRowTableViewCellIdentifier)
         self.tableView.registerClass(ContentTableViewCell.classForCoder(), forCellReuseIdentifier: contentTableViewCellIdentifier)
@@ -74,7 +83,7 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
 
         self.loadingTop = true
 
-        TMAPIClient.sharedInstance().dashboard([:]) { (response: AnyObject!, error: NSError!) -> Void in
+        TMAPIClient.sharedInstance().dashboard([ "type" : "quote" ]) { (response: AnyObject!, error: NSError!) -> Void in
             if let e = error {
                 println(e)
                 return
@@ -85,14 +94,24 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
             }
 
             for post in posts {
-                if let content = post.body() as NSString? {
+                if let content = post.htmlBodyWithWidth(self.view.frame.size.width) {
                     let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 1))
-                    let htmlString = content.htmlStringWithTumblrStyle(self.view.frame.width)
+                    let htmlString = content
 
                     webView.delegate = self
                     webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
         
-                    self.postsWebViewCache[post.id] = webView
+                    self.bodyWebViewCache[post.id] = webView
+                }
+
+                if let content = post.htmlSecondaryBodyWithWidth(self.view.frame.size.width) {
+                    let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 1))
+                    let htmlString = content
+
+                    webView.delegate = self
+                    webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+        
+                    self.secondaryBodyWebViewCache[post.id] = webView
                 }
                     
                 println(post.json)
@@ -126,14 +145,14 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
                     }
                     
                     for post in posts {
-                        if let content = post.body() as NSString? {
+                        if let content = post.htmlBodyWithWidth(self.view.frame.size.width) {
                             let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 1))
-                            let htmlString = content.htmlStringWithTumblrStyle(self.view.frame.width)
+                            let htmlString = content
                             
                             webView.delegate = self
                             webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
                             
-                            self.postsWebViewCache[post.id] = webView
+                            self.bodyWebViewCache[post.id] = webView
                         }
                         
                         println(post.json)
@@ -154,7 +173,11 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
             var webViewsFinishedLoading = true
             for post in posts {
                 if let content = post.body() {
-                    if let height = self.webViewHeightCache[post.id] {} else {
+                    if let height = self.bodyHeightCache[post.id] {} else {
+                        return
+                    }
+                } else if let content = post.secondaryBody() {
+                    if let height = self.secondaryBodyHeightCache[post.id] {} else {
                         return
                     }
                 }
@@ -187,6 +210,8 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
             return 1
         case "answer":
             return 2
+        case "quote":
+            return 2
         default:
             return 0
         }
@@ -198,8 +223,7 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
         case "photo":
             if indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 1 {
                 let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
-                cell.contentWidth = tableView.frame.size.width
-                cell.content = post.body()
+                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
                 return cell
             }
 
@@ -220,8 +244,7 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
             return cell
         case "text":
             let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
-            cell.contentWidth = tableView.frame.size.width
-            cell.content = post.body()
+            cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
             return cell
         case "answer":
             switch AnswerRow.fromRaw(indexPath.row)! {
@@ -231,8 +254,18 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
                 return cell
             case .Answer:
                 let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
-                cell.contentWidth = tableView.frame.size.width
-                cell.content = post.body()
+                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
+                return cell
+            }
+        case "quote":
+            switch QuoteRow.fromRaw(indexPath.row)! {
+            case .Quote:
+                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
+                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
+                return cell
+            case .Source:
+                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
+                cell.content = post.htmlSecondaryBodyWithWidth(tableView.frame.size.width)
                 return cell
             }
         default:
@@ -256,7 +289,7 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
         switch post.type {
         case "photo":
             if indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 1 {
-                if let height = self.webViewHeightCache[post.id] {
+                if let height = self.bodyHeightCache[post.id] {
                     return height
                 }
                 return 0
@@ -287,7 +320,7 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
 
             return minHeight
         case "text":
-            if let height = self.webViewHeightCache[post.id] {
+            if let height = self.bodyHeightCache[post.id] {
                 return height
             }
             return 0
@@ -296,7 +329,20 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
             case .Question:
                 return PostQuestionTableViewCell.heightForPost(post, width: tableView.frame.size.width)
             case .Answer:
-                if let height = self.webViewHeightCache[post.id] {
+                if let height = self.bodyHeightCache[post.id] {
+                    return height
+                }
+                return 0
+            }
+        case "quote":
+            switch QuoteRow.fromRaw(indexPath.row)! {
+            case .Quote:
+                if let height = self.bodyHeightCache[post.id] {
+                    return height
+                }
+                return 0
+            case .Source:
+                if let height = self.secondaryBodyHeightCache[post.id] {
                     return height
                 }
                 return 0
@@ -319,9 +365,13 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
     // MARK: UIWebViewDelegate
 
     func webViewDidFinishLoad(webView: UIWebView!) {
-        if let postId = self.postsWebViewCache.keyForObject(webView, isEqual: ==) {
-            self.webViewHeightCache[postId] = webView.documentHeight()
-            self.postsWebViewCache[postId] = nil
+        if let postId = self.bodyWebViewCache.keyForObject(webView, isEqual: ==) {
+            self.bodyHeightCache[postId] = webView.documentHeight()
+            self.bodyWebViewCache[postId] = nil
+            self.reloadTable()
+        } else if let postId = self.secondaryBodyWebViewCache.keyForObject(webView, isEqual: ==) {
+            self.secondaryBodyHeightCache[postId] = webView.documentHeight()
+            self.secondaryBodyWebViewCache[postId] = nil
             self.reloadTable()
         }
     }

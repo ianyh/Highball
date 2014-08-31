@@ -12,19 +12,10 @@ import Cartography
 class ContentTableViewCell: UITableViewCell {
 
     var contentWebView: UIWebView!
-    var contentWidth: CGFloat? {
-        didSet {
-            if let content = self.content {
-                self.content = content
-            }
-        }
-    }
     var content: String? {
         didSet {
-            if let content = content as NSString? {
-                if let contentWidth = self.contentWidth {
-                    self.contentWebView.loadHTMLString(content.htmlStringWithTumblrStyle(contentWidth), baseURL: NSURL(string: ""))
-                }
+            if let content = content {
+                self.contentWebView.loadHTMLString(content, baseURL: NSURL(string: ""))
             }
         }
     }

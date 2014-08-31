@@ -49,6 +49,8 @@ class Post {
             bodyString = self.json["body"].string
         case "answer":
             bodyString = self.json["answer"].string
+        case "quote":
+            bodyString = self.json["text"].string
         default:
             bodyString = nil
         }
@@ -60,6 +62,42 @@ class Post {
         }
 
         return nil
+    }
+
+    func htmlBodyWithWidth(width: CGFloat) -> (String?) {
+        return self.body()?.htmlStringWithTumblrStyle(width)
+    }
+
+    func secondaryBody() -> (String?) {
+        var bodyString: String?
+        switch self.type {
+        case "quote":
+            bodyString = self.json["source"].string
+        default:
+            bodyString = nil
+        }
+
+        if let string = bodyString {
+            if countElements(string) > 0 {
+                return string
+            }
+        }
+
+        return nil
+    }
+
+    func htmlSecondaryBodyWithWidth(width: CGFloat) -> (String?) {
+        var stringToStyle: String?
+        if let secondaryBody = self.secondaryBody() {
+            switch self.type {
+            case "quote":
+                stringToStyle = "<table><tr><td>-&nbsp;</td><td>\(secondaryBody)</td></tr></table>"
+            default:
+                stringToStyle = secondaryBody
+            }
+        }
+
+        return stringToStyle?.htmlStringWithTumblrStyle(width)
     }
 
     func asker() -> (String?) {
