@@ -17,7 +17,8 @@ class PhotosetRowTableViewCell: UITableViewCell {
             if let images = self.images {
                 if let imageViews = self.imageViews {
                     for imageView in imageViews {
-                        imageView.cancelImageRequestOperation()
+                        imageView.sd_cancelCurrentImageLoad()
+                        imageView.sd_cancelCurrentAnimationImagesLoad()
                         imageView.image = nil
                         imageView.removeFromSuperview()
                     }
@@ -48,30 +49,9 @@ class PhotosetRowTableViewCell: UITableViewCell {
                         }
                     }
 
-                    imageView.cancelImageRequestOperation()
-
-                    let request = NSMutableURLRequest(URL: imageURL)
-                    request.addValue("image/*", forHTTPHeaderField:"Accept")
-                    
-                    if imageURL.absoluteString!.hasSuffix(".gif") {
-                        let manager = AFHTTPRequestOperationManager()
-
-                        imageView.image = UIImage(named: "Placeholder")
-                
-                        manager.requestSerializer.setValue("image/gif", forHTTPHeaderField: "Accept")
-                        manager.responseSerializer.acceptableContentTypes = NSSet(object: "image/gif")
-                        manager.GET(imageURL.absoluteString!,
-                            parameters: nil,
-                            success: { (operation, data) -> Void in
-                                imageView.animatedImage = FLAnimatedImage(animatedGIFData: data as NSData)
-                            },
-                            failure: { (operation, error) -> Void in
-                                println(error)
-                            }
-                        )
-                    } else {
-                        imageView.setImageWithURL(imageURL, placeholderImage: UIImage(named: "Placeholder"))
-                    }
+                    imageView.sd_cancelCurrentImageLoad()
+                    imageView.sd_cancelCurrentAnimationImagesLoad()
+                    imageView.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "Placeholder"))
 
                     lastImageView = imageView
                 }
@@ -86,7 +66,8 @@ class PhotosetRowTableViewCell: UITableViewCell {
 
         if let imageViews = self.imageViews {
             for imageView in imageViews {
-                imageView.cancelImageRequestOperation()
+                imageView.sd_cancelCurrentImageLoad()
+                imageView.sd_cancelCurrentAnimationImagesLoad()
                 imageView.image = nil
                 imageView.removeFromSuperview()
             }
