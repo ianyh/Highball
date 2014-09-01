@@ -11,7 +11,7 @@ import Cartography
 
 class PhotosetRowTableViewCell: UITableViewCell {
 
-    var imageViews: Array<FLAnimatedImageView>?
+    var imageViews: Array<UIImageView>?
     
     var contentWidth: CGFloat? {
         didSet {
@@ -50,10 +50,10 @@ class PhotosetRowTableViewCell: UITableViewCell {
                 }
                 
                 let widthRatio: Float = 1.0 / Float(images.count)
-                var imageViews = Array<FLAnimatedImageView>()
-                var lastImageView: FLAnimatedImageView?
+                var imageViews = Array<UIImageView>()
+                var lastImageView: UIImageView?
                 for image in images {
-                    let imageView = FLAnimatedImageView()
+                    let imageView = UIImageView()
                     let imageURL = image.urlWithWidth(contentWidth)
                     
                     self.contentView.addSubview(imageView)

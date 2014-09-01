@@ -12,8 +12,6 @@
 @import Foundation;
 #import <AFNetworking/AFNetworking.h>
 #import <Crashlytics/Crashlytics.h>
-#import <FLAnimatedImage/FLAnimatedImage.h>
-#import <FLAnimatedImage/FLAnimatedImageView.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <TMTumblrSDK/TMAPIClient.h>
 
