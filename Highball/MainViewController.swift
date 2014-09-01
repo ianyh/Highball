@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Cartography
 
 enum AnswerRow: Int {
     case Question
@@ -501,15 +500,19 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
             self.reloadTable()
         }
     }
+
 }
 
 public extension UIWebView {
+
     func documentHeight() -> (CGFloat) {
         return CGFloat(self.stringByEvaluatingJavaScriptFromString("var body = document.body, html = document.documentElement;Math.max( body.scrollHeight, body.offsetHeight,html.clientHeight, html.scrollHeight, html.offsetHeight );").toInt()!)
     }
+
 }
 
 public extension Dictionary {
+
     func keyForObject(object: Value!, isEqual: (Value!, Value!) -> (Bool)) -> (Key?) {
         for key in self.keys {
             if isEqual(object, self[key] as Value!) {

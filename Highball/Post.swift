@@ -9,6 +9,7 @@
 import Foundation
 
 class Post {
+
     var json: JSONValue!
     var id: Int!
     var type: String!

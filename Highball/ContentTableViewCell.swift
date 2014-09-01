@@ -43,4 +43,5 @@ class ContentTableViewCell: UITableViewCell {
             webView.left == view.left
         }
     }
+
 }

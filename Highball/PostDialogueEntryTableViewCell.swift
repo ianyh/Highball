@@ -42,7 +42,6 @@ class PostDialogueEntryTableViewCell: UITableViewCell {
             label.left == view.left + 20
             label.right == view.right - 20
             label.top == view.top + 3
-//            label.bottom == view.bottom - 3
         }
     }
 

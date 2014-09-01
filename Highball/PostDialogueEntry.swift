@@ -9,6 +9,7 @@
 import Foundation
 
 class PostDialogueEntry {
+
     var json: JSONValue!
 
     required init(json: JSONValue!) {
@@ -27,4 +28,5 @@ class PostDialogueEntry {
 
         return attributedString
     }
+
 }
