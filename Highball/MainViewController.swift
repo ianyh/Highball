@@ -56,9 +56,41 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
     var currentOffset: Int?
     var loadingTop: Bool?
     var loadingBottom: Bool?
+    var loggingIn = false
 
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+    }
+
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+
+    func login() {
+        if self.loggingIn {
+            return
+        }
+
+        self.loggingIn = true
+
+        if let oauthToken = TMAPIClient.sharedInstance().OAuthToken {
+            self.loadTop()
+        } else {
+            TMAPIClient.sharedInstance().authenticate("highballtumblr") { (error: NSError!) -> Void in
+                self.loggingIn = false
+
+                if error == nil {
+                    NSUserDefaults.standardUserDefaults().setObject(TMAPIClient.sharedInstance().OAuthToken, forKey: "HighballOAuthToken")
+                    NSUserDefaults.standardUserDefaults().setObject(TMAPIClient.sharedInstance().OAuthTokenSecret, forKey: "HighballOAuthTokenSecret")
+
+                    self.login()
+                }
+            }
+        }
+    }
+
+    func applicationDidBecomeActive(notification: NSNotification!) {
+        self.login()
     }
 
     override func viewDidLoad() {
@@ -78,21 +110,14 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
         self.tableView.registerClass(PostLinkTableViewCell.classForCoder(), forCellReuseIdentifier: postLinkTableViewCellIdentifier)
         self.tableView.registerClass(PostDialogueEntryTableViewCell.classForCoder(), forCellReuseIdentifier: postDialogueEntryTableViewCellIdentifier)
         self.tableView.registerClass(PostHeaderView.classForCoder(), forHeaderFooterViewReuseIdentifier: postHeaderViewIdentifier)
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("applicationDidBecomeActive:"), name: UIApplicationDidBecomeActiveNotification, object: nil)
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        if let oauthToken = TMAPIClient.sharedInstance().OAuthToken {
-            self.loadTop()
-        } else {
-            TMAPIClient.sharedInstance().authenticate("highballtumblr") { (error: NSError!) -> Void in
-                if error == nil {
-                    NSUserDefaults.standardUserDefaults().setObject(TMAPIClient.sharedInstance().OAuthToken, forKey: "HighballOAuthToken")
-                    NSUserDefaults.standardUserDefaults().setObject(TMAPIClient.sharedInstance().OAuthTokenSecret, forKey: "HighballOAuthTokenSecret")
-                }
-            }
-        }
+        self.login()
     }
 
     func loadTop() {
