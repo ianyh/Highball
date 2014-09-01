@@ -31,6 +31,7 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
     let contentTableViewCellIdentifier = "contentTableViewCellIdentifier"
     let postQuestionTableViewCellIdentifier = "postQuestionTableViewCellIdentifier"
     let postLinkTableViewCellIdentifier = "postLinkTableViewCellIdentifier"
+    let postDialogueEntryTableViewCellIdentifier = "postDialogueEntryTableViewCellIdentifier"
 
     var bodyWebViewCache: Dictionary<Int, UIWebView>!
     var bodyHeightCache: Dictionary<Int, CGFloat>!
@@ -65,6 +66,7 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
         self.tableView.registerClass(ContentTableViewCell.classForCoder(), forCellReuseIdentifier: contentTableViewCellIdentifier)
         self.tableView.registerClass(PostQuestionTableViewCell.classForCoder(), forCellReuseIdentifier: postQuestionTableViewCellIdentifier)
         self.tableView.registerClass(PostLinkTableViewCell.classForCoder(), forCellReuseIdentifier: postLinkTableViewCellIdentifier)
+        self.tableView.registerClass(PostDialogueEntryTableViewCell.classForCoder(), forCellReuseIdentifier: postDialogueEntryTableViewCellIdentifier)
         self.tableView.registerClass(PostHeaderView.classForCoder(), forHeaderFooterViewReuseIdentifier: postHeaderViewIdentifier)
     }
     
@@ -90,7 +92,7 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
 
         self.loadingTop = true
 
-        TMAPIClient.sharedInstance().dashboard([ "type" : "link" ]) { (response: AnyObject!, error: NSError!) -> Void in
+        TMAPIClient.sharedInstance().dashboard([ "type" : "chat" ]) { (response: AnyObject!, error: NSError!) -> Void in
             if let e = error {
                 println(e)
                 return
@@ -221,6 +223,8 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
             return 2
         case "link":
             return 2
+        case "chat":
+            return post.dialogueEntries().count
         default:
             return 0
         }
@@ -288,6 +292,11 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
                 cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
                 return cell
             }
+        case "chat":
+            let dialogueEntry = post.dialogueEntries()[indexPath.row]
+            let cell = tableView.dequeueReusableCellWithIdentifier(postDialogueEntryTableViewCellIdentifier) as PostDialogueEntryTableViewCell!
+            cell.dialogueEntry = dialogueEntry
+            return cell
         default:
             return nil
         }
@@ -377,6 +386,9 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
                 }
                 return 0
             }
+        case "chat":
+            let dialogueEntry = post.dialogueEntries()[indexPath.row]
+            return PostDialogueEntryTableViewCell.heightForPostDialogueEntry(dialogueEntry, width: tableView.frame.size.width)
         default:
             return 0
         }

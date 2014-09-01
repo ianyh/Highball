@@ -24,6 +24,8 @@
 		40778BA719B20BF000F8EE13 /* Cartography.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40778BA519B20BF000F8EE13 /* Cartography.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		40778BAA19B24BA500F8EE13 /* PostQuestionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40778BA919B24BA500F8EE13 /* PostQuestionTableViewCell.swift */; };
 		408C7D1F19B36F7400EFC410 /* PostLinkTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408C7D1E19B36F7400EFC410 /* PostLinkTableViewCell.swift */; };
+		408C7D2119B384C800EFC410 /* PostDialogueEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408C7D2019B384C800EFC410 /* PostDialogueEntry.swift */; };
+		408C7D2319B387A500EFC410 /* PostDialogueEntryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408C7D2219B387A500EFC410 /* PostDialogueEntryTableViewCell.swift */; };
 		67BE6D53DE604411B4949677 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12E96C2CD61D40E1AB63F9B7 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -74,6 +76,8 @@
 		40778BA519B20BF000F8EE13 /* Cartography.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = Cartography.framework; path = "/Users/ianyh/Library/Developer/Xcode/DerivedData/Highball-guawcsogumubtccebjzcnecuotxo/Build/Products/Debug-iphoneos/Cartography.framework"; sourceTree = "<absolute>"; };
 		40778BA919B24BA500F8EE13 /* PostQuestionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostQuestionTableViewCell.swift; sourceTree = "<group>"; };
 		408C7D1E19B36F7400EFC410 /* PostLinkTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostLinkTableViewCell.swift; sourceTree = "<group>"; };
+		408C7D2019B384C800EFC410 /* PostDialogueEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostDialogueEntry.swift; sourceTree = "<group>"; };
+		408C7D2219B387A500EFC410 /* PostDialogueEntryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostDialogueEntryTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +116,7 @@
 				40778B9819B118D100F8EE13 /* PostHeaderView.swift */,
 				40778BA919B24BA500F8EE13 /* PostQuestionTableViewCell.swift */,
 				408C7D1E19B36F7400EFC410 /* PostLinkTableViewCell.swift */,
+				408C7D2219B387A500EFC410 /* PostDialogueEntryTableViewCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -185,6 +190,7 @@
 			children = (
 				40778B9B19B15F9C00F8EE13 /* Post.swift */,
 				40778B9D19B160DD00F8EE13 /* PostPhoto.swift */,
+				408C7D2019B384C800EFC410 /* PostDialogueEntry.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -333,9 +339,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				408C7D2319B387A500EFC410 /* PostDialogueEntryTableViewCell.swift in Sources */,
 				4050698619AA76BD0066ECE3 /* MainViewController.swift in Sources */,
 				40778B9919B118D100F8EE13 /* PostHeaderView.swift in Sources */,
 				403F53DB19AECFEF00FF8F3B /* PhotosetRowTableViewCell.swift in Sources */,
+				408C7D2119B384C800EFC410 /* PostDialogueEntry.swift in Sources */,
 				4050698419AA76BD0066ECE3 /* Highball.xcdatamodeld in Sources */,
 				4050698119AA76BD0066ECE3 /* AppDelegate.swift in Sources */,
 				408C7D1F19B36F7400EFC410 /* PostLinkTableViewCell.swift in Sources */,

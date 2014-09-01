@@ -76,7 +76,6 @@ class PostLinkTableViewCell: UITableViewCell {
             label.left == view.left + 20
             label.right == view.right - 20
             label.top == view.top + 14
-//            label.bottom == urlLabel.top - 14
         }
     }
     
@@ -89,12 +88,12 @@ class PostLinkTableViewCell: UITableViewCell {
         if let title = post.title() as NSString? {
             let titleRect = title.boundingRectWithSize(constrainedSize, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: titleAttributes, context: nil)
 
-            return extraHeight + titleRect.size.height
+            return extraHeight + ceil(titleRect.size.height)
         } else {
             let title = "" as NSString
             let titleRect = title.boundingRectWithSize(constrainedSize, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: titleAttributes, context: nil)
 
-            return extraHeight + titleRect.size.height
+            return extraHeight + ceil(titleRect.size.height)
         }
     }
 

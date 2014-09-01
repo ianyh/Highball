@@ -40,6 +40,16 @@ class Post {
         return photosetLayoutRows
     }
 
+    func dialogueEntries() -> (Array<PostDialogueEntry>) {
+        var dialogueEntries = Array<PostDialogueEntry>()
+        if let entries = self.json["dialogue"].array {
+            return entries.map { (entryJSON: JSONValue!) -> (PostDialogueEntry) in
+                return PostDialogueEntry(json: entryJSON)
+            }
+        }
+        return dialogueEntries
+    }
+
     func body() -> (String?) {
         var bodyString: String?
         switch self.type {

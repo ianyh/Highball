@@ -88,7 +88,7 @@ class PostQuestionTableViewCell: UITableViewCell {
         let constrainedSize = CGSize(width: modifiedWidth, height: CGFloat.max)
         let questionRect = question.boundingRectWithSize(constrainedSize, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: questionAttributes, context: nil)
 
-        return extraHeight + questionRect.size.height
+        return extraHeight + ceil(questionRect.size.height)
     }
 
 }
