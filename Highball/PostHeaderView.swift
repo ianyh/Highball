@@ -18,6 +18,9 @@ class PostHeaderView: UITableViewHeaderFooterView {
         didSet {
             if let post = self.post {
                 let blogName = post.blogName
+
+                self.avatarImageView.image = UIImage(named: "Placeholder")
+
                 TMAPIClient.sharedInstance().avatar(blogName, size: 30) { (response: AnyObject!, error: NSError!) -> Void in
                     if let e = error {
                         println(e)
@@ -48,6 +51,8 @@ class PostHeaderView: UITableViewHeaderFooterView {
     }
 
     func setUpCell() {
+        self.contentView.backgroundColor = UIColor.blackColor()
+
         self.avatarImageView = UIImageView()
         self.usernameLabel = UILabel()
 
@@ -55,6 +60,7 @@ class PostHeaderView: UITableViewHeaderFooterView {
         self.avatarImageView.clipsToBounds = true
 
         self.usernameLabel.font = UIFont.systemFontOfSize(14)
+        self.usernameLabel.textColor = UIColor.whiteColor()
 
         self.contentView.addSubview(self.avatarImageView)
         self.contentView.addSubview(self.usernameLabel)
@@ -70,4 +76,5 @@ class PostHeaderView: UITableViewHeaderFooterView {
             label.height == 30
         }
     }
+
 }

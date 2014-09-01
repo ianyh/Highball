@@ -102,7 +102,7 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
 
         self.loadingTop = true
 
-        TMAPIClient.sharedInstance().dashboard([ "type" : "audio" ]) { (response: AnyObject!, error: NSError!) -> Void in
+        TMAPIClient.sharedInstance().dashboard([:]) { (response: AnyObject!, error: NSError!) -> Void in
             if let e = error {
                 println(e)
                 return

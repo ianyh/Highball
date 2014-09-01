@@ -111,9 +111,9 @@
 		4048DF7819AAB597000524F7 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				40778B9819B118D100F8EE13 /* PostHeaderView.swift */,
 				403F53DA19AECFEF00FF8F3B /* PhotosetRowTableViewCell.swift */,
 				403F53DC19AFB5DF00FF8F3B /* ContentTableViewCell.swift */,
-				40778B9819B118D100F8EE13 /* PostHeaderView.swift */,
 				40778BA919B24BA500F8EE13 /* PostQuestionTableViewCell.swift */,
 				408C7D1E19B36F7400EFC410 /* PostLinkTableViewCell.swift */,
 				408C7D2219B387A500EFC410 /* PostDialogueEntryTableViewCell.swift */,
