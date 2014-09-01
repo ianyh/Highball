@@ -65,6 +65,8 @@ class Post {
             bodyString = self.json["description"].string
         case "video":
             bodyString = self.json["caption"].string
+        case "audio":
+            bodyString = self.json["caption"].string
         default:
             bodyString = nil
         }
@@ -100,6 +102,8 @@ class Post {
                 }
                 bodyString = finalPlayer
             }
+        case "audio":
+            bodyString = self.json["player"].string
         default:
             bodyString = nil
         }
