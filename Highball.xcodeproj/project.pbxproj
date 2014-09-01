@@ -26,6 +26,7 @@
 		408C7D1F19B36F7400EFC410 /* PostLinkTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408C7D1E19B36F7400EFC410 /* PostLinkTableViewCell.swift */; };
 		408C7D2119B384C800EFC410 /* PostDialogueEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408C7D2019B384C800EFC410 /* PostDialogueEntry.swift */; };
 		408C7D2319B387A500EFC410 /* PostDialogueEntryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408C7D2219B387A500EFC410 /* PostDialogueEntryTableViewCell.swift */; };
+		40A11E6019B4CBCB00B91843 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A11E5F19B4CBCB00B91843 /* Crashlytics.framework */; };
 		67BE6D53DE604411B4949677 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12E96C2CD61D40E1AB63F9B7 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -78,6 +79,7 @@
 		408C7D1E19B36F7400EFC410 /* PostLinkTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostLinkTableViewCell.swift; sourceTree = "<group>"; };
 		408C7D2019B384C800EFC410 /* PostDialogueEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostDialogueEntry.swift; sourceTree = "<group>"; };
 		408C7D2219B387A500EFC410 /* PostDialogueEntryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostDialogueEntryTableViewCell.swift; sourceTree = "<group>"; };
+		40A11E5F19B4CBCB00B91843 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +88,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				67BE6D53DE604411B4949677 /* libPods.a in Frameworks */,
+				40A11E6019B4CBCB00B91843 /* Crashlytics.framework in Frameworks */,
 				40778BA619B20BF000F8EE13 /* Cartography.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -198,6 +201,7 @@
 		A3D296309A504A00AFFABE53 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				40A11E5F19B4CBCB00B91843 /* Crashlytics.framework */,
 				12E96C2CD61D40E1AB63F9B7 /* libPods.a */,
 			);
 			name = Frameworks;
@@ -210,12 +214,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4050699A19AA76BD0066ECE3 /* Build configuration list for PBXNativeTarget "Highball" */;
 			buildPhases = (
+				40A11E5E19B4CBA500B91843 /* ShellScript */,
 				73E8195EFC37404C93E412AA /* Check Pods Manifest.lock */,
 				4050697719AA76BD0066ECE3 /* Sources */,
 				4050697819AA76BD0066ECE3 /* Frameworks */,
 				4050697919AA76BD0066ECE3 /* Resources */,
 				1215D24837CC4FAF837E8A44 /* Copy Pods Resources */,
 				40778B9F19B20AC700F8EE13 /* CopyFiles */,
+				40A11E6519B4D97800B91843 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -316,6 +322,32 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		40A11E5E19B4CBA500B91843 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "source ./bin/CrashlyticsKeys.sh\nif [ -n \"$CRASHLYTICS_API_KEY\" -a -n \"$CRASHLYTICS_APP_KEY\" ]; then\n    /usr/libexec/PlistBuddy -c \"Add :HBCrashlyticsAPIKey string '$CRASHLYTICS_API_KEY'\" Highball/Info.plist\n    /usr/libexec/PlistBuddy -c \"Add :HBCrashlyticsAppKey string '$CRASHLYTICS_APP_KEY'\" Highball/Info.plist\nfi";
+		};
+		40A11E6519B4D97800B91843 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "source ./bin/CrashlyticsKeys.sh\nif [ -n \"$CRASHLYTICS_API_KEY\" -a -n \"$CRASHLYTICS_APP_KEY\" ]; then\n    ./Crashlytics.framework/run $CRASHLYTICS_API_KEY $CRASHLYTICS_APP_KEY\n    /usr/libexec/PlistBuddy -c \"Delete :HBCrashlyticsAPIKey\" Highball/Info.plist\n    /usr/libexec/PlistBuddy -c \"Delete :HBCrashlyticsAppKey\" Highball/Info.plist\nfi\n";
 		};
 		73E8195EFC37404C93E412AA /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -476,6 +508,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Cartography/build/Debug-iphoneos",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Highball-guawcsogumubtccebjzcnecuotxo/Build/Products/Debug-iphoneos",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = Highball/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
@@ -496,6 +529,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Cartography/build/Debug-iphoneos",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Highball-guawcsogumubtccebjzcnecuotxo/Build/Products/Debug-iphoneos",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = Highball/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;

@@ -11,16 +11,21 @@ import CoreData
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-                            
+
     var window: UIWindow?
 
     func application(application: UIApplication!, didFinishLaunchingWithOptions launchOptions: NSDictionary!) -> Bool {
+        
         TMAPIClient.sharedInstance().OAuthConsumerKey = "YhlYiD2dAUE6UH01ugPKQafm2XESBWsaOYPz7xV0q53SDn3ChU"
         TMAPIClient.sharedInstance().OAuthConsumerSecret = "ONVNS5UCfZMMhrekfjBknUXgjQ5I2J1a0aVDCfso2mfRcC4nEF"
 
         if let oAuthToken = NSUserDefaults.standardUserDefaults().stringForKey("HighballOAuthToken") {
             TMAPIClient.sharedInstance().OAuthToken = oAuthToken
             TMAPIClient.sharedInstance().OAuthTokenSecret = NSUserDefaults.standardUserDefaults().stringForKey("HighballOAuthTokenSecret")
+        }
+
+        if let key = NSBundle.mainBundle().infoDictionary["HBCrashlyticsAPIKey"] as? NSString {
+            Crashlytics.startWithAPIKey(key)
         }
 
         return true
