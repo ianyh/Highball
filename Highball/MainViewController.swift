@@ -293,6 +293,7 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
 
                 cell.images = Array(postPhotos[(photosIndexStart)..<(photosIndexStart + photosetLayoutRow)])
             }
+            cell.contentWidth = tableView.frame.size.width
             return cell
         case "text":
             let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!

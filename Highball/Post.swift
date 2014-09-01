@@ -33,9 +33,11 @@ class Post {
     func layoutRows() -> (Array<Int>) {
         var photosetLayoutRows = Array<Int>()
         if let layoutString = self.json["photoset_layout"].string {
-            for character in self.json["photoset_layout"].string! {
+            for character in layoutString {
                 photosetLayoutRows.insert("\(character)".toInt()!, atIndex: 0)
             }
+        } else {
+            photosetLayoutRows = [1]
         }
         return photosetLayoutRows
     }

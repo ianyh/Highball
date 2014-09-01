@@ -15,12 +15,20 @@ class PostPhoto {
         self.json = json
     }
 
-    func url() -> (NSURL!) {
-        if let url = self.json["original_size"]["url"].string {
-            return NSURL(string: url)
+    func urlWithWidth(width: CGFloat) -> (NSURL!) {
+        let originalSize = self.json["original_size"]
+        let alternateSizes = self.json["alt_sizes"].array!.sorted({ $0["width"].integer! > $1["width"].integer! })
+
+        var smallestFittedSize = self.json["original_size"]
+        for size in alternateSizes {
+            if CGFloat(size["width"].integer!) < width {
+                break
+            }
+
+            smallestFittedSize = size
         }
-        NSException(name: "PostPhoto without url", reason: nil, userInfo: nil).raise()
-        return nil
+
+        return NSURL(string: smallestFittedSize["url"].string!)
     }
 
     func width() -> (CGFloat) {
