@@ -63,6 +63,8 @@ class Post {
             bodyString = self.json["text"].string
         case "link":
             bodyString = self.json["description"].string
+        case "video":
+            bodyString = self.json["caption"].string
         default:
             bodyString = nil
         }
@@ -85,6 +87,19 @@ class Post {
         switch self.type {
         case "quote":
             bodyString = self.json["source"].string
+        case "video":
+            if let players = self.json["player"].array {
+                let sortedPlayers = players.sorted({ $0["width"].integer! > $1["width"].integer! })
+                let screenWidth = UIScreen.mainScreen().bounds.size.width
+                var finalPlayer: String? = nil
+                for player in sortedPlayers {
+                    finalPlayer = player["embed_code"].string!
+                    if player["width"].integer! > Int(screenWidth) {
+                        break
+                    }
+                }
+                bodyString = finalPlayer
+            }
         default:
             bodyString = nil
         }

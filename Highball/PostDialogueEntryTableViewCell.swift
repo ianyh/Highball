@@ -16,7 +16,6 @@ class PostDialogueEntryTableViewCell: UITableViewCell {
     var dialogueEntry: PostDialogueEntry? {
         didSet {
             if let dialogueEntry = self.dialogueEntry {
-                println(dialogueEntry.formattedString())
                 self.contentLabel.attributedText = dialogueEntry.formattedString()
             }
         }
@@ -54,7 +53,6 @@ class PostDialogueEntryTableViewCell: UITableViewCell {
         let content = post.formattedString()
         let contentRect = content.boundingRectWithSize(constrainedSize, options: NSStringDrawingOptions.UsesLineFragmentOrigin, context: nil)
 
-        println(contentRect)
         return extraHeight + ceil(contentRect.size.height)
     }
 

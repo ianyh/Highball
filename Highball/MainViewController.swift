@@ -24,6 +24,11 @@ enum LinkRow: Int {
     case Description
 }
 
+enum VideoRow: Int {
+    case Player
+    case Caption
+}
+
 class MainViewController: UITableViewController, UIWebViewDelegate {
 
     let postHeaderViewIdentifier = "postHeaderViewIdentifier"
@@ -92,7 +97,7 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
 
         self.loadingTop = true
 
-        TMAPIClient.sharedInstance().dashboard([ "type" : "chat" ]) { (response: AnyObject!, error: NSError!) -> Void in
+        TMAPIClient.sharedInstance().dashboard([ "type" : "video" ]) { (response: AnyObject!, error: NSError!) -> Void in
             if let e = error {
                 println(e)
                 return
@@ -225,6 +230,8 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
             return 2
         case "chat":
             return post.dialogueEntries().count
+        case "video":
+            return 2
         default:
             return 0
         }
@@ -296,6 +303,15 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
             let dialogueEntry = post.dialogueEntries()[indexPath.row]
             let cell = tableView.dequeueReusableCellWithIdentifier(postDialogueEntryTableViewCellIdentifier) as PostDialogueEntryTableViewCell!
             cell.dialogueEntry = dialogueEntry
+            return cell
+        case "video":
+            let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
+            switch VideoRow.fromRaw(indexPath.row)! {
+            case .Player:
+                cell.content = post.htmlSecondaryBodyWithWidth(tableView.frame.size.width)
+            case .Caption:
+                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
+            }
             return cell
         default:
             return nil
@@ -389,6 +405,19 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
         case "chat":
             let dialogueEntry = post.dialogueEntries()[indexPath.row]
             return PostDialogueEntryTableViewCell.heightForPostDialogueEntry(dialogueEntry, width: tableView.frame.size.width)
+        case "video":
+            switch VideoRow.fromRaw(indexPath.row)! {
+            case .Player:
+                if let height = self.secondaryBodyHeightCache[post.id] {
+                    return height
+                }
+                return 0
+            case .Caption:
+                if let height = self.bodyHeightCache[post.id] {
+                    return height
+                }
+                return 0
+            }
         default:
             return 0
         }
