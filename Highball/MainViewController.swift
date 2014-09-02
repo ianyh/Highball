@@ -119,6 +119,14 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
         self.login()
     }
 
+    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
+        if let imagesViewController = segue.destinationViewController as? ImagesViewController {
+            if let post = sender as? Post {
+                imagesViewController.post = post
+            }
+        }
+    }
+
     func loadTop() {
         if self.loadingTop! {
             return
@@ -293,6 +301,7 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
                 cell.images = Array(postPhotos[(photosIndexStart)..<(photosIndexStart + photosetLayoutRow)])
             }
             cell.contentWidth = tableView.frame.size.width
+
             return cell
         case "text":
             let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
@@ -474,6 +483,14 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
             }
         default:
             return 0
+        }
+    }
+
+    override func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+        if let cell = tableView.cellForRowAtIndexPath(indexPath) {
+            if let photosetRowCell = cell as? PhotosetRowTableViewCell {
+                self.performSegueWithIdentifier("imagesSegue", sender: self.posts[indexPath.section])
+            }
         }
     }
 

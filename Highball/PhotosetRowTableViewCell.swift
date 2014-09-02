@@ -73,7 +73,7 @@ class PhotosetRowTableViewCell: UITableViewCell {
                             view.width == (contentView.width * widthRatio)
                         }
                     }
-                    
+
                     imageView.sd_cancelCurrentImageLoad()
                     imageView.sd_cancelCurrentAnimationImagesLoad()
                     imageView.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "Placeholder"))

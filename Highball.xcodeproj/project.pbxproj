@@ -27,6 +27,8 @@
 		408C7D2119B384C800EFC410 /* PostDialogueEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408C7D2019B384C800EFC410 /* PostDialogueEntry.swift */; };
 		408C7D2319B387A500EFC410 /* PostDialogueEntryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408C7D2219B387A500EFC410 /* PostDialogueEntryTableViewCell.swift */; };
 		40A11E6019B4CBCB00B91843 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A11E5F19B4CBCB00B91843 /* Crashlytics.framework */; };
+		40A11E6819B518DD00B91843 /* ImagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A11E6719B518DD00B91843 /* ImagesViewController.swift */; };
+		40A11E6B19B51FF700B91843 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A11E6A19B51FF700B91843 /* ImageCollectionViewCell.swift */; };
 		67BE6D53DE604411B4949677 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12E96C2CD61D40E1AB63F9B7 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -80,6 +82,8 @@
 		408C7D2019B384C800EFC410 /* PostDialogueEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostDialogueEntry.swift; sourceTree = "<group>"; };
 		408C7D2219B387A500EFC410 /* PostDialogueEntryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostDialogueEntryTableViewCell.swift; sourceTree = "<group>"; };
 		40A11E5F19B4CBCB00B91843 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		40A11E6719B518DD00B91843 /* ImagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagesViewController.swift; sourceTree = "<group>"; };
+		40A11E6A19B51FF700B91843 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,7 +115,7 @@
 			name = SwiftyJSON;
 			sourceTree = "<group>";
 		};
-		4048DF7819AAB597000524F7 /* Cells */ = {
+		4048DF7819AAB597000524F7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				40778B9819B118D100F8EE13 /* PostHeaderView.swift */,
@@ -120,8 +124,9 @@
 				40778BA919B24BA500F8EE13 /* PostQuestionTableViewCell.swift */,
 				408C7D1E19B36F7400EFC410 /* PostLinkTableViewCell.swift */,
 				408C7D2219B387A500EFC410 /* PostDialogueEntryTableViewCell.swift */,
+				40A11E6A19B51FF700B91843 /* ImageCollectionViewCell.swift */,
 			);
-			name = Cells;
+			name = Views;
 			sourceTree = "<group>";
 		};
 		4050697219AA76BD0066ECE3 = {
@@ -149,10 +154,10 @@
 		4050697D19AA76BD0066ECE3 /* Highball */ = {
 			isa = PBXGroup;
 			children = (
+				40A11E6619B518B500B91843 /* Controllers */,
 				40778B9A19B15F7D00F8EE13 /* Models */,
-				4048DF7819AAB597000524F7 /* Cells */,
+				4048DF7819AAB597000524F7 /* Views */,
 				4050698019AA76BD0066ECE3 /* AppDelegate.swift */,
-				4050698519AA76BD0066ECE3 /* MainViewController.swift */,
 				403F53DE19AFCEB800FF8F3B /* String+HTML.swift */,
 				4050698719AA76BD0066ECE3 /* Main.storyboard */,
 				4050698A19AA76BD0066ECE3 /* Images.xcassets */,
@@ -196,6 +201,15 @@
 				408C7D2019B384C800EFC410 /* PostDialogueEntry.swift */,
 			);
 			name = Models;
+			sourceTree = "<group>";
+		};
+		40A11E6619B518B500B91843 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				4050698519AA76BD0066ECE3 /* MainViewController.swift */,
+				40A11E6719B518DD00B91843 /* ImagesViewController.swift */,
+			);
+			name = Controllers;
 			sourceTree = "<group>";
 		};
 		A3D296309A504A00AFFABE53 /* Frameworks */ = {
@@ -371,7 +385,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40A11E6819B518DD00B91843 /* ImagesViewController.swift in Sources */,
 				408C7D2319B387A500EFC410 /* PostDialogueEntryTableViewCell.swift in Sources */,
+				40A11E6B19B51FF700B91843 /* ImageCollectionViewCell.swift in Sources */,
 				4050698619AA76BD0066ECE3 /* MainViewController.swift in Sources */,
 				40778B9919B118D100F8EE13 /* PostHeaderView.swift in Sources */,
 				403F53DB19AECFEF00FF8F3B /* PhotosetRowTableViewCell.swift in Sources */,
