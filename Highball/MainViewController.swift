@@ -42,6 +42,8 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
     let postLinkTableViewCellIdentifier = "postLinkTableViewCellIdentifier"
     let postDialogueEntryTableViewCellIdentifier = "postDialogueEntryTableViewCellIdentifier"
 
+    let requiredRefreshDistance: CGFloat = 60
+
     var bodyWebViewCache: Dictionary<Int, UIWebView>!
     var bodyHeightCache: Dictionary<Int, CGFloat>!
     var secondaryBodyWebViewCache: Dictionary<Int, UIWebView>!
@@ -53,7 +55,18 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
     }
 
     var currentOffset: Int?
-    var loadingTop: Bool?
+    var loadingTop: Bool? {
+        didSet {
+            self.navigationController.setIndeterminate(true)
+            if let loadingTop = self.loadingTop {
+                if loadingTop {
+                    self.navigationController.showProgress()
+                } else {
+                    self.navigationController.cancelProgress()
+                }
+            }
+        }
+    }
     var loadingBottom: Bool?
     var loggingIn = false
 
@@ -501,6 +514,25 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
 
         if distanceFromBottom < 2000 {
             self.loadMore()
+        }
+
+        if !self.loadingTop! {
+            self.navigationController.setIndeterminate(false)
+            if scrollView.contentOffset.y < 0 {
+                let distanceFromTop = scrollView.contentOffset.y + scrollView.contentInset.top + requiredRefreshDistance
+                let progress = 1 - max(min(distanceFromTop / requiredRefreshDistance, 1), 0)
+                self.navigationController.showProgress()
+                self.navigationController.setProgress(progress, animated: false)
+            } else {
+                self.navigationController.cancelProgress()
+            }
+        }
+    }
+
+    override func scrollViewDidEndDragging(scrollView: UIScrollView!, willDecelerate decelerate: Bool) {
+        let distanceFromTop = scrollView.contentOffset.y + scrollView.contentInset.top
+        if abs(distanceFromTop) > self.requiredRefreshDistance {
+            self.loadTop()
         }
     }
 

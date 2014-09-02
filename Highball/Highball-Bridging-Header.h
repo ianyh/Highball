@@ -12,6 +12,7 @@
 @import Foundation;
 #import <AFNetworking/AFNetworking.h>
 #import <Crashlytics/Crashlytics.h>
+#import <M13ProgressSuite/UINavigationController+M13ProgressViewBar.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <TMTumblrSDK/TMAPIClient.h>
 
