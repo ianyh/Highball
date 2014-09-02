@@ -37,11 +37,14 @@ class ImagesViewController: UICollectionViewController, UICollectionViewDelegate
 
         cell.contentWidth = collectionView.frame.size.width
         cell.photo = postPhoto
+        cell.onTapHandler = { self.dismissViewControllerAnimated(true, completion: nil) }
 
         return cell
     }
 
-    
+    override func collectionView(collectionView: UICollectionView!, didSelectItemAtIndexPath indexPath: NSIndexPath!) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
 
     func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, sizeForItemAtIndexPath indexPath: NSIndexPath!) -> CGSize {
         return collectionView.frame.size

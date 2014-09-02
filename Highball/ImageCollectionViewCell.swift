@@ -13,6 +13,7 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
 
     var scrollView: UIScrollView!
     var imageView: UIImageView!
+    var onTapHandler: (() -> ())?
 
     var contentWidth: CGFloat? {
         didSet {
@@ -58,6 +59,10 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
             scrollView.edges == contentView.edges
             println()
         }
+
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: Selector("onTap:"))
+
+        self.addGestureRecognizer(tapGestureRecognizer)
     }
 
     override func layoutSubviews() {
@@ -103,6 +108,12 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
         }
 
         self.imageView.frame = contentsFrame
+    }
+
+    func onTap(recognizer: UITapGestureRecognizer) {
+        if let handler = self.onTapHandler {
+            handler()
+        }
     }
 
 }
