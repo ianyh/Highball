@@ -58,21 +58,21 @@ class PostLinkTableViewCell: UITableViewCell {
         self.contentView.addSubview(self.titleLabel)
         self.contentView.addSubview(self.urlLabel)
         
-        layout(self.bubbleView, self.contentView) { view, contentView in
+        layout2(self.bubbleView, self.contentView) { view, contentView in
             view.left == contentView.left + 8
             view.right == contentView.right - 8
             view.top == contentView.top + 6
             view.bottom == contentView.bottom - 6
         }
 
-        layout(self.urlLabel, self.bubbleView) { label, bubbleView in
+        layout2(self.urlLabel, self.bubbleView) { label, bubbleView in
             label.left == bubbleView.left + 20
             label.right == bubbleView.right - 20
             label.bottom == bubbleView.bottom - 14
             label.height == 16
         }
 
-        layout(self.titleLabel, self.urlLabel, self.bubbleView) { label, urlLabel, view in
+        layout3(self.titleLabel, self.urlLabel, self.bubbleView) { label, urlLabel, view in
             label.left == view.left + 20
             label.right == view.right - 20
             label.top == view.top + 14

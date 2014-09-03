@@ -14,20 +14,6 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "54C96A10195063CD000CDD27"
-               BuildableName = "Cartography.framework"
-               BlueprintName = "Cartography-iOS"
-               ReferencedContainer = "container:Cartography/Cartography.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "4050697A19AA76BD0066ECE3"
                BuildableName = "Highball.app"
                BlueprintName = "Highball"

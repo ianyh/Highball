@@ -58,21 +58,21 @@ class PostQuestionTableViewCell: UITableViewCell {
         self.contentView.addSubview(self.askerLabel)
         self.contentView.addSubview(self.contentLabel)
 
-        layout(self.bubbleView, self.contentView) { view, contentView in
+        layout2(self.bubbleView, self.contentView) { view, contentView in
             view.left == contentView.left + 8
             view.right == contentView.right - 8
             view.top == contentView.top + 6
             view.bottom == contentView.bottom - 6
         }
 
-        layout(self.askerLabel, self.bubbleView) { label, view in
+        layout2(self.askerLabel, self.bubbleView) { label, view in
             label.left == view.left + 14
             label.right == view.right - 14
             label.top == view.top + 10
             label.height == 20
         }
 
-        layout(self.contentLabel, self.askerLabel, self.bubbleView) { label, view, bubbleView in
+        layout3(self.contentLabel, self.askerLabel, self.bubbleView) { label, view, bubbleView in
             label.top == view.top + 14
             label.left == bubbleView.left + 14
             label.right == bubbleView.right - 14

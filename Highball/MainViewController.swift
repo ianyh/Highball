@@ -36,6 +36,7 @@ enum AudioRow: Int {
 class MainViewController: UITableViewController, UIWebViewDelegate {
 
     let postHeaderViewIdentifier = "postHeaderViewIdentifier"
+    let postFooterViewIdentifier = "postFooterViewIdentifier"
     let photosetRowTableViewCellIdentifier = "photosetRowTableViewCellIdentifier"
     let contentTableViewCellIdentifier = "contentTableViewCellIdentifier"
     let postQuestionTableViewCellIdentifier = "postQuestionTableViewCellIdentifier"
@@ -57,12 +58,12 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
     var currentOffset: Int?
     var loadingTop: Bool? {
         didSet {
-            self.navigationController.setIndeterminate(true)
+            self.navigationController!.setIndeterminate(true)
             if let loadingTop = self.loadingTop {
                 if loadingTop {
-                    self.navigationController.showProgress()
+                    self.navigationController!.showProgress()
                 } else {
-                    self.navigationController.cancelProgress()
+                    self.navigationController!.cancelProgress()
                 }
             }
         }
@@ -122,6 +123,7 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
         self.tableView.registerClass(PostLinkTableViewCell.classForCoder(), forCellReuseIdentifier: postLinkTableViewCellIdentifier)
         self.tableView.registerClass(PostDialogueEntryTableViewCell.classForCoder(), forCellReuseIdentifier: postDialogueEntryTableViewCellIdentifier)
         self.tableView.registerClass(PostHeaderView.classForCoder(), forHeaderFooterViewReuseIdentifier: postHeaderViewIdentifier)
+        self.tableView.registerClass(PostFooterView.classForCoder(), forHeaderFooterViewReuseIdentifier: postFooterViewIdentifier)
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("applicationDidBecomeActive:"), name: UIApplicationDidBecomeActiveNotification, object: nil)
     }
@@ -132,7 +134,7 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
         self.login()
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if let imagesViewController = segue.destinationViewController as? ImagesViewController {
             if let post = sender as? Post {
                 imagesViewController.post = post
@@ -253,14 +255,14 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
 
     // MARK: UITableViewDataSource
 
-    override func numberOfSectionsInTableView(tableView: UITableView!) -> Int {
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         if let posts = self.posts {
             return posts.count
         }
         return 0
     }
 
-    override func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let post = self.posts[section]
         switch post.type {
         case "photo":
@@ -289,7 +291,7 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
         }
     }
     
-    override func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let post = posts[indexPath.section]
         switch post.type {
         case "photo":
@@ -377,13 +379,13 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
             }
             return cell
         default:
-            return nil
+            return tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as UITableViewCell!
         }
     }
 
     // MARK: UITableViewDelegate
 
-    override func tableView(tableView: UITableView!, viewForHeaderInSection section: Int) -> UIView! {
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let post = posts[section]
         let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(postHeaderViewIdentifier) as PostHeaderView
 
@@ -392,7 +394,16 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
         return view
     }
 
-    override func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+    override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let post = posts[section]
+        let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(postFooterViewIdentifier) as PostFooterView
+
+//        view.post = post
+
+        return view
+    }
+
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         let post = posts[indexPath.section]
         switch post.type {
         case "photo":
@@ -499,7 +510,7 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
         }
     }
 
-    override func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if let cell = tableView.cellForRowAtIndexPath(indexPath) {
             if let photosetRowCell = cell as? PhotosetRowTableViewCell {
                 self.performSegueWithIdentifier("imagesSegue", sender: self.posts[indexPath.section])
@@ -509,7 +520,7 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
 
     // MARK: UIScrollViewDelegate
 
-    override func scrollViewDidScroll(scrollView: UIScrollView!) {
+    override func scrollViewDidScroll(scrollView: UIScrollView) {
         let distanceFromBottom = scrollView.contentSize.height - scrollView.frame.size.height - scrollView.contentOffset.y
 
         if distanceFromBottom < 2000 {
@@ -517,21 +528,21 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
         }
 
         if !self.loadingTop! {
-            self.navigationController.setIndeterminate(false)
+            self.navigationController!.setIndeterminate(false)
             if scrollView.contentOffset.y < 0 {
                 let distanceFromTop = scrollView.contentOffset.y + scrollView.contentInset.top + requiredRefreshDistance
                 let progress = 1 - max(min(distanceFromTop / requiredRefreshDistance, 1), 0)
-                self.navigationController.showProgress()
-                self.navigationController.setProgress(progress, animated: false)
+                self.navigationController!.showProgress()
+                self.navigationController!.setProgress(progress, animated: false)
             } else {
-                self.navigationController.cancelProgress()
+                self.navigationController!.cancelProgress()
             }
         }
     }
 
-    override func scrollViewDidEndDragging(scrollView: UIScrollView!, willDecelerate decelerate: Bool) {
+    override func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         let distanceFromTop = scrollView.contentOffset.y + scrollView.contentInset.top
-        if abs(distanceFromTop) > self.requiredRefreshDistance {
+        if -distanceFromTop > self.requiredRefreshDistance {
             self.loadTop()
         }
     }
@@ -555,7 +566,7 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
 public extension UIWebView {
 
     func documentHeight() -> (CGFloat) {
-        return CGFloat(self.stringByEvaluatingJavaScriptFromString("var body = document.body, html = document.documentElement;Math.max( body.scrollHeight, body.offsetHeight,html.clientHeight, html.scrollHeight, html.offsetHeight );").toInt()!)
+        return CGFloat(self.stringByEvaluatingJavaScriptFromString("var body = document.body, html = document.documentElement;Math.max( body.scrollHeight, body.offsetHeight,html.clientHeight, html.scrollHeight, html.offsetHeight );")!.toInt()!)
     }
 
 }

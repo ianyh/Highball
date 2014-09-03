@@ -7,6 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		400FE01319B6A33200F72C3C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 400FE01219B6A33200F72C3C /* libPods.a */; };
+		400FE03919B6A3D500F72C3C /* Coefficients.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400FE02D19B6A3D500F72C3C /* Coefficients.swift */; };
+		400FE03A19B6A3D500F72C3C /* Compound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400FE02E19B6A3D500F72C3C /* Compound.swift */; };
+		400FE03B19B6A3D500F72C3C /* Dimension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400FE02F19B6A3D500F72C3C /* Dimension.swift */; };
+		400FE03C19B6A3D500F72C3C /* Edge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400FE03019B6A3D500F72C3C /* Edge.swift */; };
+		400FE03D19B6A3D500F72C3C /* Edges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400FE03119B6A3D500F72C3C /* Edges.swift */; };
+		400FE03E19B6A3D500F72C3C /* Expression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400FE03219B6A3D500F72C3C /* Expression.swift */; };
+		400FE03F19B6A3D500F72C3C /* LayoutProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400FE03319B6A3D500F72C3C /* LayoutProxy.swift */; };
+		400FE04019B6A3D500F72C3C /* Point.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400FE03419B6A3D500F72C3C /* Point.swift */; };
+		400FE04119B6A3D500F72C3C /* Priority.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400FE03519B6A3D500F72C3C /* Priority.swift */; };
+		400FE04219B6A3D500F72C3C /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400FE03619B6A3D500F72C3C /* Property.swift */; };
+		400FE04319B6A3D500F72C3C /* Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400FE03719B6A3D500F72C3C /* Size.swift */; };
+		400FE04419B6A3D500F72C3C /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400FE03819B6A3D500F72C3C /* View.swift */; };
 		401ED97F19AEA62100457377 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401ED97E19AEA62100457377 /* SwiftyJSON.swift */; };
 		403F53DB19AECFEF00FF8F3B /* PhotosetRowTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403F53DA19AECFEF00FF8F3B /* PhotosetRowTableViewCell.swift */; };
 		403F53DD19AFB5DF00FF8F3B /* ContentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403F53DC19AFB5DF00FF8F3B /* ContentTableViewCell.swift */; };
@@ -20,16 +33,14 @@
 		40778B9919B118D100F8EE13 /* PostHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40778B9819B118D100F8EE13 /* PostHeaderView.swift */; };
 		40778B9C19B15F9C00F8EE13 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40778B9B19B15F9C00F8EE13 /* Post.swift */; };
 		40778B9E19B160DD00F8EE13 /* PostPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40778B9D19B160DD00F8EE13 /* PostPhoto.swift */; };
-		40778BA619B20BF000F8EE13 /* Cartography.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40778BA519B20BF000F8EE13 /* Cartography.framework */; };
-		40778BA719B20BF000F8EE13 /* Cartography.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40778BA519B20BF000F8EE13 /* Cartography.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		40778BAA19B24BA500F8EE13 /* PostQuestionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40778BA919B24BA500F8EE13 /* PostQuestionTableViewCell.swift */; };
 		408C7D1F19B36F7400EFC410 /* PostLinkTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408C7D1E19B36F7400EFC410 /* PostLinkTableViewCell.swift */; };
 		408C7D2119B384C800EFC410 /* PostDialogueEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408C7D2019B384C800EFC410 /* PostDialogueEntry.swift */; };
 		408C7D2319B387A500EFC410 /* PostDialogueEntryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408C7D2219B387A500EFC410 /* PostDialogueEntryTableViewCell.swift */; };
+		4090927E19B686DA007EBF2E /* PostFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4090927D19B686DA007EBF2E /* PostFooterView.swift */; };
 		40A11E6019B4CBCB00B91843 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A11E5F19B4CBCB00B91843 /* Crashlytics.framework */; };
 		40A11E6819B518DD00B91843 /* ImagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A11E6719B518DD00B91843 /* ImagesViewController.swift */; };
 		40A11E6B19B51FF700B91843 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A11E6A19B51FF700B91843 /* ImageCollectionViewCell.swift */; };
-		67BE6D53DE604411B4949677 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12E96C2CD61D40E1AB63F9B7 /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,15 +60,26 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				40778BA719B20BF000F8EE13 /* Cartography.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		12E96C2CD61D40E1AB63F9B7 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		316AEFAD08FE4201A3837E78 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		400FE01219B6A33200F72C3C /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Debug-iphoneos/libPods.a"; sourceTree = "<group>"; };
+		400FE02D19B6A3D500F72C3C /* Coefficients.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Coefficients.swift; path = Cartography/Cartography/Coefficients.swift; sourceTree = "<group>"; };
+		400FE02E19B6A3D500F72C3C /* Compound.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Compound.swift; path = Cartography/Cartography/Compound.swift; sourceTree = "<group>"; };
+		400FE02F19B6A3D500F72C3C /* Dimension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Dimension.swift; path = Cartography/Cartography/Dimension.swift; sourceTree = "<group>"; };
+		400FE03019B6A3D500F72C3C /* Edge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Edge.swift; path = Cartography/Cartography/Edge.swift; sourceTree = "<group>"; };
+		400FE03119B6A3D500F72C3C /* Edges.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Edges.swift; path = Cartography/Cartography/Edges.swift; sourceTree = "<group>"; };
+		400FE03219B6A3D500F72C3C /* Expression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Expression.swift; path = Cartography/Cartography/Expression.swift; sourceTree = "<group>"; };
+		400FE03319B6A3D500F72C3C /* LayoutProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LayoutProxy.swift; path = Cartography/Cartography/LayoutProxy.swift; sourceTree = "<group>"; };
+		400FE03419B6A3D500F72C3C /* Point.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Point.swift; path = Cartography/Cartography/Point.swift; sourceTree = "<group>"; };
+		400FE03519B6A3D500F72C3C /* Priority.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Priority.swift; path = Cartography/Cartography/Priority.swift; sourceTree = "<group>"; };
+		400FE03619B6A3D500F72C3C /* Property.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Property.swift; path = Cartography/Cartography/Property.swift; sourceTree = "<group>"; };
+		400FE03719B6A3D500F72C3C /* Size.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Size.swift; path = Cartography/Cartography/Size.swift; sourceTree = "<group>"; };
+		400FE03819B6A3D500F72C3C /* View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = View.swift; path = Cartography/Cartography/View.swift; sourceTree = "<group>"; };
 		401ED97E19AEA62100457377 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftyJSON.swift; path = SwiftyJSON/SwiftyJSON/SwiftyJSON.swift; sourceTree = "<group>"; };
 		403F53DA19AECFEF00FF8F3B /* PhotosetRowTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosetRowTableViewCell.swift; sourceTree = "<group>"; };
 		403F53DC19AFB5DF00FF8F3B /* ContentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentTableViewCell.swift; sourceTree = "<group>"; };
@@ -76,11 +98,11 @@
 		40778B9819B118D100F8EE13 /* PostHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostHeaderView.swift; sourceTree = "<group>"; };
 		40778B9B19B15F9C00F8EE13 /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		40778B9D19B160DD00F8EE13 /* PostPhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostPhoto.swift; sourceTree = "<group>"; };
-		40778BA519B20BF000F8EE13 /* Cartography.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = Cartography.framework; path = "/Users/ianyh/Library/Developer/Xcode/DerivedData/Highball-guawcsogumubtccebjzcnecuotxo/Build/Products/Debug-iphoneos/Cartography.framework"; sourceTree = "<absolute>"; };
 		40778BA919B24BA500F8EE13 /* PostQuestionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostQuestionTableViewCell.swift; sourceTree = "<group>"; };
 		408C7D1E19B36F7400EFC410 /* PostLinkTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostLinkTableViewCell.swift; sourceTree = "<group>"; };
 		408C7D2019B384C800EFC410 /* PostDialogueEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostDialogueEntry.swift; sourceTree = "<group>"; };
 		408C7D2219B387A500EFC410 /* PostDialogueEntryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostDialogueEntryTableViewCell.swift; sourceTree = "<group>"; };
+		4090927D19B686DA007EBF2E /* PostFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostFooterView.swift; sourceTree = "<group>"; };
 		40A11E5F19B4CBCB00B91843 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		40A11E6719B518DD00B91843 /* ImagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagesViewController.swift; sourceTree = "<group>"; };
 		40A11E6A19B51FF700B91843 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -91,9 +113,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				67BE6D53DE604411B4949677 /* libPods.a in Frameworks */,
+				400FE01319B6A33200F72C3C /* libPods.a in Frameworks */,
 				40A11E6019B4CBCB00B91843 /* Crashlytics.framework in Frameworks */,
-				40778BA619B20BF000F8EE13 /* Cartography.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -107,6 +128,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		400FE01419B6A38D00F72C3C /* Cartography */ = {
+			isa = PBXGroup;
+			children = (
+				400FE02D19B6A3D500F72C3C /* Coefficients.swift */,
+				400FE02E19B6A3D500F72C3C /* Compound.swift */,
+				400FE02F19B6A3D500F72C3C /* Dimension.swift */,
+				400FE03019B6A3D500F72C3C /* Edge.swift */,
+				400FE03119B6A3D500F72C3C /* Edges.swift */,
+				400FE03219B6A3D500F72C3C /* Expression.swift */,
+				400FE03319B6A3D500F72C3C /* LayoutProxy.swift */,
+				400FE03419B6A3D500F72C3C /* Point.swift */,
+				400FE03519B6A3D500F72C3C /* Priority.swift */,
+				400FE03619B6A3D500F72C3C /* Property.swift */,
+				400FE03719B6A3D500F72C3C /* Size.swift */,
+				400FE03819B6A3D500F72C3C /* View.swift */,
+			);
+			name = Cartography;
+			sourceTree = "<group>";
+		};
 		401ED97D19AEA61000457377 /* SwiftyJSON */ = {
 			isa = PBXGroup;
 			children = (
@@ -125,6 +165,7 @@
 				408C7D1E19B36F7400EFC410 /* PostLinkTableViewCell.swift */,
 				408C7D2219B387A500EFC410 /* PostDialogueEntryTableViewCell.swift */,
 				40A11E6A19B51FF700B91843 /* ImageCollectionViewCell.swift */,
+				4090927D19B686DA007EBF2E /* PostFooterView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -132,7 +173,7 @@
 		4050697219AA76BD0066ECE3 = {
 			isa = PBXGroup;
 			children = (
-				40778BA519B20BF000F8EE13 /* Cartography.framework */,
+				400FE01419B6A38D00F72C3C /* Cartography */,
 				401ED97D19AEA61000457377 /* SwiftyJSON */,
 				4050697D19AA76BD0066ECE3 /* Highball */,
 				4050699319AA76BD0066ECE3 /* HighballTests */,
@@ -215,8 +256,8 @@
 		A3D296309A504A00AFFABE53 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				400FE01219B6A33200F72C3C /* libPods.a */,
 				40A11E5F19B4CBCB00B91843 /* Crashlytics.framework */,
-				12E96C2CD61D40E1AB63F9B7 /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -385,20 +426,33 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				400FE04219B6A3D500F72C3C /* Property.swift in Sources */,
 				40A11E6819B518DD00B91843 /* ImagesViewController.swift in Sources */,
 				408C7D2319B387A500EFC410 /* PostDialogueEntryTableViewCell.swift in Sources */,
+				400FE03C19B6A3D500F72C3C /* Edge.swift in Sources */,
+				4090927E19B686DA007EBF2E /* PostFooterView.swift in Sources */,
 				40A11E6B19B51FF700B91843 /* ImageCollectionViewCell.swift in Sources */,
 				4050698619AA76BD0066ECE3 /* MainViewController.swift in Sources */,
 				40778B9919B118D100F8EE13 /* PostHeaderView.swift in Sources */,
+				400FE04319B6A3D500F72C3C /* Size.swift in Sources */,
 				403F53DB19AECFEF00FF8F3B /* PhotosetRowTableViewCell.swift in Sources */,
 				408C7D2119B384C800EFC410 /* PostDialogueEntry.swift in Sources */,
+				400FE03E19B6A3D500F72C3C /* Expression.swift in Sources */,
+				400FE03B19B6A3D500F72C3C /* Dimension.swift in Sources */,
+				400FE03A19B6A3D500F72C3C /* Compound.swift in Sources */,
 				4050698419AA76BD0066ECE3 /* Highball.xcdatamodeld in Sources */,
 				4050698119AA76BD0066ECE3 /* AppDelegate.swift in Sources */,
 				408C7D1F19B36F7400EFC410 /* PostLinkTableViewCell.swift in Sources */,
+				400FE03D19B6A3D500F72C3C /* Edges.swift in Sources */,
+				400FE03919B6A3D500F72C3C /* Coefficients.swift in Sources */,
 				403F53DF19AFCEB800FF8F3B /* String+HTML.swift in Sources */,
 				40778B9C19B15F9C00F8EE13 /* Post.swift in Sources */,
 				401ED97F19AEA62100457377 /* SwiftyJSON.swift in Sources */,
+				400FE03F19B6A3D500F72C3C /* LayoutProxy.swift in Sources */,
+				400FE04419B6A3D500F72C3C /* View.swift in Sources */,
+				400FE04019B6A3D500F72C3C /* Point.swift in Sources */,
 				40778B9E19B160DD00F8EE13 /* PostPhoto.swift in Sources */,
+				400FE04119B6A3D500F72C3C /* Priority.swift in Sources */,
 				403F53DD19AFB5DF00FF8F3B /* ContentTableViewCell.swift in Sources */,
 				40778BAA19B24BA500F8EE13 /* PostQuestionTableViewCell.swift in Sources */,
 			);
@@ -529,6 +583,10 @@
 				INFOPLIST_FILE = Highball/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Highball/Highball-Bridging-Header.h";
 			};
@@ -550,6 +608,10 @@
 				INFOPLIST_FILE = Highball/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Highball/Highball-Bridging-Header.h";
 			};

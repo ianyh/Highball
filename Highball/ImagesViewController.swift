@@ -8,7 +8,9 @@
 
 import UIKit
 
-class ImagesViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class ImagesViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+
+    @IBOutlet var imagesCollectionView: UICollectionView?
     
     let imageCollectionViewCellIdentifier = "imageCollectionViewCellIdentifier"
 
@@ -17,22 +19,22 @@ class ImagesViewController: UICollectionViewController, UICollectionViewDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.collectionView.registerClass(ImageCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: imageCollectionViewCellIdentifier)
+        self.imagesCollectionView!.registerClass(ImageCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: imageCollectionViewCellIdentifier)
     }
 
     override func viewDidAppear(animated: Bool) {
-        self.collectionView.reloadData()
+        self.imagesCollectionView!.reloadData()
     }
 
-    override func collectionView(collectionView: UICollectionView!, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if let post = self.post {
             return post.photos().count
         }
         return 0
     }
 
-    override func collectionView(collectionView: UICollectionView!, cellForItemAtIndexPath indexPath: NSIndexPath!) -> UICollectionViewCell! {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(imageCollectionViewCellIdentifier, forIndexPath: indexPath) as ImageCollectionViewCell!
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(imageCollectionViewCellIdentifier, forIndexPath: indexPath) as ImageCollectionViewCell
         let postPhoto = self.post!.photos()[indexPath.row]
 
         cell.contentWidth = collectionView.frame.size.width
@@ -42,7 +44,7 @@ class ImagesViewController: UICollectionViewController, UICollectionViewDelegate
         return cell
     }
 
-    override func collectionView(collectionView: UICollectionView!, didSelectItemAtIndexPath indexPath: NSIndexPath!) {
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
 

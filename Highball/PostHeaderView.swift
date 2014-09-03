@@ -65,7 +65,7 @@ class PostHeaderView: UITableViewHeaderFooterView {
         self.contentView.addSubview(self.avatarImageView)
         self.contentView.addSubview(self.usernameLabel)
 
-        layout(self.avatarImageView, self.usernameLabel, self.contentView) { (imageView, label, view) -> () in
+        layout3(self.avatarImageView, self.usernameLabel, self.contentView) { imageView, label, view in
             imageView.centerY == view.centerY
             imageView.left == view.left + 4
             imageView.width == 30

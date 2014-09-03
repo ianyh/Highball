@@ -36,7 +36,7 @@ class ContentTableViewCell: UITableViewCell {
 
         self.contentView.addSubview(self.contentWebView)
 
-        layout(self.contentWebView, self.contentView) { webView, view in
+        layout2(self.contentWebView, self.contentView) { webView, view in
             webView.top == view.top
             webView.right == view.right
             webView.bottom == view.bottom

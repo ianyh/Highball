@@ -38,7 +38,7 @@ class PostDialogueEntryTableViewCell: UITableViewCell {
 
         self.contentView.addSubview(self.contentLabel)
         
-        layout(self.contentLabel, self.contentView) { label, view in
+        layout2(self.contentLabel, self.contentView) { label, view in
             label.left == view.left + 20
             label.right == view.right - 20
             label.top == view.top + 3
