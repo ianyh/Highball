@@ -214,17 +214,29 @@ class ReblogButton: UIView {
         if self.showingOptions {
             self.showingOptions = false
         }
+
+        if let handler = self.reblogHandler {
+            handler(ReblogType.Reblog)
+        }
     }
 
     func queue(sender: UIButton) {
         if self.showingOptions {
             self.showingOptions = false
         }
+
+        if let handler = self.reblogHandler {
+            handler(ReblogType.Reblog)
+        }
     }
 
     func schedule(sender: UIButton) {
         if self.showingOptions {
             self.showingOptions = false
+        }
+
+        if let handler = self.reblogHandler {
+            handler(ReblogType.Reblog)
         }
     }
 
