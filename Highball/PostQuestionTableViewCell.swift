@@ -7,10 +7,8 @@
 //
 
 import UIKit
-import Cartography
 
 class PostQuestionTableViewCell: UITableViewCell {
-
     var bubbleView: UIView!
     var askerLabel: UILabel!
     var contentLabel: UILabel!
@@ -90,5 +88,4 @@ class PostQuestionTableViewCell: UITableViewCell {
 
         return extraHeight + ceil(questionRect.size.height)
     }
-
 }

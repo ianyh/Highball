@@ -7,10 +7,8 @@
 //
 
 import UIKit
-import Cartography
 
 class PostHeaderView: UITableViewHeaderFooterView {
-
     var reblogHandler: ((Post?, ReblogType) -> ())?
 
     private var avatarImageView: UIImageView!
@@ -125,5 +123,4 @@ class PostHeaderView: UITableViewHeaderFooterView {
 
         return superPointInside
     }
-
 }
