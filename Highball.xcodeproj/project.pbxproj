@@ -37,10 +37,10 @@
 		408C7D1F19B36F7400EFC410 /* PostLinkTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408C7D1E19B36F7400EFC410 /* PostLinkTableViewCell.swift */; };
 		408C7D2119B384C800EFC410 /* PostDialogueEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408C7D2019B384C800EFC410 /* PostDialogueEntry.swift */; };
 		408C7D2319B387A500EFC410 /* PostDialogueEntryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408C7D2219B387A500EFC410 /* PostDialogueEntryTableViewCell.swift */; };
-		4090927E19B686DA007EBF2E /* PostFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4090927D19B686DA007EBF2E /* PostFooterView.swift */; };
 		40A11E6019B4CBCB00B91843 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A11E5F19B4CBCB00B91843 /* Crashlytics.framework */; };
 		40A11E6819B518DD00B91843 /* ImagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A11E6719B518DD00B91843 /* ImagesViewController.swift */; };
 		40A11E6B19B51FF700B91843 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A11E6A19B51FF700B91843 /* ImageCollectionViewCell.swift */; };
+		40FF6D3F19B8863C008119A3 /* ReblogButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FF6D3E19B8863C008119A3 /* ReblogButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,10 +102,10 @@
 		408C7D1E19B36F7400EFC410 /* PostLinkTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostLinkTableViewCell.swift; sourceTree = "<group>"; };
 		408C7D2019B384C800EFC410 /* PostDialogueEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostDialogueEntry.swift; sourceTree = "<group>"; };
 		408C7D2219B387A500EFC410 /* PostDialogueEntryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostDialogueEntryTableViewCell.swift; sourceTree = "<group>"; };
-		4090927D19B686DA007EBF2E /* PostFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostFooterView.swift; sourceTree = "<group>"; };
 		40A11E5F19B4CBCB00B91843 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		40A11E6719B518DD00B91843 /* ImagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagesViewController.swift; sourceTree = "<group>"; };
 		40A11E6A19B51FF700B91843 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		40FF6D3E19B8863C008119A3 /* ReblogButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReblogButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,7 +165,7 @@
 				408C7D1E19B36F7400EFC410 /* PostLinkTableViewCell.swift */,
 				408C7D2219B387A500EFC410 /* PostDialogueEntryTableViewCell.swift */,
 				40A11E6A19B51FF700B91843 /* ImageCollectionViewCell.swift */,
-				4090927D19B686DA007EBF2E /* PostFooterView.swift */,
+				40FF6D3E19B8863C008119A3 /* ReblogButton.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -430,7 +430,6 @@
 				40A11E6819B518DD00B91843 /* ImagesViewController.swift in Sources */,
 				408C7D2319B387A500EFC410 /* PostDialogueEntryTableViewCell.swift in Sources */,
 				400FE03C19B6A3D500F72C3C /* Edge.swift in Sources */,
-				4090927E19B686DA007EBF2E /* PostFooterView.swift in Sources */,
 				40A11E6B19B51FF700B91843 /* ImageCollectionViewCell.swift in Sources */,
 				4050698619AA76BD0066ECE3 /* MainViewController.swift in Sources */,
 				40778B9919B118D100F8EE13 /* PostHeaderView.swift in Sources */,
@@ -440,6 +439,7 @@
 				400FE03E19B6A3D500F72C3C /* Expression.swift in Sources */,
 				400FE03B19B6A3D500F72C3C /* Dimension.swift in Sources */,
 				400FE03A19B6A3D500F72C3C /* Compound.swift in Sources */,
+				40FF6D3F19B8863C008119A3 /* ReblogButton.swift in Sources */,
 				4050698419AA76BD0066ECE3 /* Highball.xcdatamodeld in Sources */,
 				4050698119AA76BD0066ECE3 /* AppDelegate.swift in Sources */,
 				408C7D1F19B36F7400EFC410 /* PostLinkTableViewCell.swift in Sources */,

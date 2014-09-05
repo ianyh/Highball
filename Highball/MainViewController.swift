@@ -36,7 +36,6 @@ enum AudioRow: Int {
 class MainViewController: UITableViewController, UIWebViewDelegate {
 
     let postHeaderViewIdentifier = "postHeaderViewIdentifier"
-    let postFooterViewIdentifier = "postFooterViewIdentifier"
     let photosetRowTableViewCellIdentifier = "photosetRowTableViewCellIdentifier"
     let contentTableViewCellIdentifier = "contentTableViewCellIdentifier"
     let postQuestionTableViewCellIdentifier = "postQuestionTableViewCellIdentifier"
@@ -102,6 +101,10 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
         }
     }
 
+    func reblogPost(post: Post) {
+
+    }
+
     func applicationDidBecomeActive(notification: NSNotification!) {
         self.login()
     }
@@ -123,7 +126,6 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
         self.tableView.registerClass(PostLinkTableViewCell.classForCoder(), forCellReuseIdentifier: postLinkTableViewCellIdentifier)
         self.tableView.registerClass(PostDialogueEntryTableViewCell.classForCoder(), forCellReuseIdentifier: postDialogueEntryTableViewCellIdentifier)
         self.tableView.registerClass(PostHeaderView.classForCoder(), forHeaderFooterViewReuseIdentifier: postHeaderViewIdentifier)
-        self.tableView.registerClass(PostFooterView.classForCoder(), forHeaderFooterViewReuseIdentifier: postFooterViewIdentifier)
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("applicationDidBecomeActive:"), name: UIApplicationDidBecomeActiveNotification, object: nil)
     }
@@ -391,14 +393,11 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
 
         view.post = post
 
-        return view
-    }
-
-    override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let post = posts[section]
-        let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(postFooterViewIdentifier) as PostFooterView
-
-//        view.post = post
+        weak var weakSelf = self
+        view.reblogHandler = { post, type in
+            if let strongSelf = weakSelf {
+            }
+        }
 
         return view
     }
@@ -536,6 +535,20 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
                 self.navigationController!.setProgress(progress, animated: false)
             } else {
                 self.navigationController!.cancelProgress()
+            }
+        }
+
+        var sections = NSMutableIndexSet()
+        if let visibleIndexPaths = self.tableView.indexPathsForVisibleRows() as? Array<NSIndexPath> {
+            for indexPath in visibleIndexPaths {
+                if !sections.containsIndex(indexPath.section) {
+                    if let headerView = self.tableView.headerViewForSection(indexPath.section) as? PostHeaderView {
+                        sections.addIndex(indexPath.section)
+                        if headerView.reblogButton.showingOptions! {
+                            headerView.reblogButton.showingOptions = false
+                        }
+                    }
+                }
             }
         }
     }

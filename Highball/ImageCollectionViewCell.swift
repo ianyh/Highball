@@ -74,6 +74,12 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
         self.imageView.frame = imageFrame
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.scrollView.zoomScale = 1
+        self.centerScrollViewContents()
+    }
+
     func loadPhoto() {
         if let photo = self.photo {
             if let contentWidth = self.contentWidth {
