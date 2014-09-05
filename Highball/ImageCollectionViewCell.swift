@@ -54,8 +54,8 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
         self.contentView.addSubview(self.scrollView)
         self.scrollView.addSubview(self.imageView)
 
-        layout2(self.scrollView, self.contentView) { scrollView, contentView in
-            scrollView.edges == contentView.edges
+        self.scrollView.snp_makeConstraints { make in
+            make.edges.equalTo(self.contentView)
             println()
         }
 

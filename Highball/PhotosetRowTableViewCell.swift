@@ -58,18 +58,18 @@ class PhotosetRowTableViewCell: UITableViewCell {
                     self.contentView.addSubview(imageView)
                     
                     if let leftImageView = lastImageView {
-                        layout2(imageView, leftImageView) { view, leftView in
-                            view.left == leftView.right
-                            view.height == leftView.height
-                            view.centerY == leftView.centerY
-                            view.width == leftView.width
+                        imageView.snp_makeConstraints { (maker) -> () in
+                            maker.left.equalTo(leftImageView.snp_right)
+                            maker.height.equalTo(leftImageView.snp_height)
+                            maker.centerY.equalTo(leftImageView.snp_centerY)
+                            maker.width.equalTo(leftImageView.snp_width)
                         }
                     } else {
-                        layout2(imageView, self.contentView) { view, contentView in
-                            view.left == contentView.left
-                            view.top == contentView.top
-                            view.bottom == contentView.bottom
-                            view.width == (contentView.width * widthRatio)
+                        imageView.snp_makeConstraints { (maker) -> () in
+                            maker.left.equalTo(self.contentView.snp_left)
+                            maker.top.equalTo(self.contentView.snp_top)
+                            maker.bottom.equalTo(self.contentView.snp_bottom)
+                            maker.width.equalTo(self.contentView.snp_width).multipliedBy(widthRatio)
                         }
                     }
 

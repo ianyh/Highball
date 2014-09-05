@@ -36,11 +36,11 @@ class PostDialogueEntryTableViewCell: UITableViewCell {
         self.contentLabel.numberOfLines = 0
 
         self.contentView.addSubview(self.contentLabel)
-        
-        layout2(self.contentLabel, self.contentView) { label, view in
-            label.left == view.left + 20
-            label.right == view.right - 20
-            label.top == view.top + 3
+
+        self.contentLabel.snp_makeConstraints { (make) -> () in
+            make.left.equalTo(self.contentView.snp_left).offset(20)
+            make.right.equalTo(self.contentView.snp_right).offset(-20)
+            make.top.equalTo(self.contentView.snp_top).offset(3)
         }
     }
 

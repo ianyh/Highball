@@ -9,7 +9,6 @@
 import UIKit
 
 class ContentTableViewCell: UITableViewCell {
-
     var contentWebView: UIWebView!
     var content: String? {
         didSet {
@@ -35,12 +34,11 @@ class ContentTableViewCell: UITableViewCell {
 
         self.contentView.addSubview(self.contentWebView)
 
-        layout2(self.contentWebView, self.contentView) { webView, view in
-            webView.top == view.top
-            webView.right == view.right
-            webView.bottom == view.bottom
-            webView.left == view.left
+        self.contentWebView.snp_makeConstraints { (maker) -> Void in
+            maker.top.equalTo(self.contentView.snp_top)
+            maker.right.equalTo(self.contentView.snp_right)
+            maker.bottom.equalTo(self.contentView.snp_bottom)
+            maker.left.equalTo(self.contentView.snp_left)
         }
     }
-
 }

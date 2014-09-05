@@ -56,25 +56,25 @@ class PostQuestionTableViewCell: UITableViewCell {
         self.contentView.addSubview(self.askerLabel)
         self.contentView.addSubview(self.contentLabel)
 
-        layout2(self.bubbleView, self.contentView) { view, contentView in
-            view.left == contentView.left + 8
-            view.right == contentView.right - 8
-            view.top == contentView.top + 6
-            view.bottom == contentView.bottom - 6
+        self.bubbleView.snp_makeConstraints { (maker) -> Void in
+            maker.left.equalTo(self.contentView.snp_left).offset(8)
+            maker.right.equalTo(self.contentView.snp_right).offset(-8)
+            maker.top.equalTo(self.contentView.snp_top).offset(6)
+            maker.bottom.equalTo(self.contentView.snp_bottom).offset(-6)
         }
 
-        layout2(self.askerLabel, self.bubbleView) { label, view in
-            label.left == view.left + 14
-            label.right == view.right - 14
-            label.top == view.top + 10
-            label.height == 20
+        self.askerLabel.snp_makeConstraints { (maker) -> Void in
+            maker.left.equalTo(self.bubbleView.snp_left)
+            maker.right.equalTo(self.bubbleView.snp_right)
+            maker.top.equalTo(self.bubbleView.snp_top)
+            maker.height.equalTo(20)
         }
 
-        layout3(self.contentLabel, self.askerLabel, self.bubbleView) { label, view, bubbleView in
-            label.top == view.top + 14
-            label.left == bubbleView.left + 14
-            label.right == bubbleView.right - 14
-            label.bottom == bubbleView.bottom - 8
+        self.contentLabel.snp_makeConstraints { (maker) -> Void in
+            maker.top.equalTo(self.askerLabel.snp_top).offset(14)
+            maker.left.equalTo(self.bubbleView.snp_left).offset(14)
+            maker.right.equalTo(self.bubbleView.snp_right).offset(14)
+            maker.bottom.equalTo(self.bubbleView.snp_bottom).offset(-8)
         }
     }
 

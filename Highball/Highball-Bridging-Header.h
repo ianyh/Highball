@@ -16,5 +16,7 @@
 #import <pop/POP.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <TMTumblrSDK/TMAPIClient.h>
+#import "SNPConstraint.h"
+#import "SNPConstraintMaker.h"
 
 #endif

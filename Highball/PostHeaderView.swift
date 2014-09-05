@@ -9,12 +9,14 @@
 import UIKit
 
 class PostHeaderView: UITableViewHeaderFooterView {
-    var reblogHandler: ((Post?, ReblogType) -> ())?
+//    var reblogHandler: ((Post?, ReblogType) -> ())?
+    var startHandler: ((CGPoint) -> ())?
 
     private var avatarImageView: UIImageView!
     private var usernameLabel: UILabel!
 
-    var reblogButton: ReblogButton!
+//    var reblogButton: ReblogButton!
+    var reblogButton: UIButton!
 
     var post: Post? {
         didSet {
@@ -64,44 +66,46 @@ class PostHeaderView: UITableViewHeaderFooterView {
         self.usernameLabel.font = UIFont.systemFontOfSize(14)
         self.usernameLabel.textColor = UIColor.whiteColor()
 
-        self.reblogButton = ReblogButton(frame: CGRectZero)
+//        self.reblogButton = ReblogButton(frame: CGRectZero)
+        self.reblogButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        self.reblogButton.setImage(UIImage(named: "Start"), forState: UIControlState.Normal)
 
-        weak var weakSelf = self
-        self.reblogButton.reblogHandler = { type in
-            if let strongSelf = weakSelf {
-                if let reblogHandler = strongSelf.reblogHandler {
-                    reblogHandler(self.post, type)
-                }
-            }
-        }
+//        weak var weakSelf = self
+//        self.reblogButton.reblogHandler = { type in
+//            if let strongSelf = weakSelf {
+//                if let reblogHandler = strongSelf.reblogHandler {
+//                    reblogHandler(self.post, type)
+//                }
+//            }
+//        }
 
         self.contentView.addSubview(self.avatarImageView)
         self.contentView.addSubview(self.usernameLabel)
         self.contentView.addSubview(self.reblogButton)
 
-        layout2(self.avatarImageView, self.contentView) { imageView, view in
-            imageView.centerY == view.centerY
-            imageView.left == view.left + 4
-            imageView.width == 40
-            imageView.height == 40
+        self.avatarImageView.snp_makeConstraints { (maker) -> () in
+            maker.centerY.equalTo(self.contentView.snp_centerY)
+            maker.left.equalTo(self.contentView.snp_left).offset(4)
+            maker.width.equalTo(40)
+            maker.height.equalTo(40)
         }
 
-        layout3(self.avatarImageView, self.usernameLabel, self.contentView) { imageView, label, view in
-            label.top == view.top + 6
-            label.left == imageView.right + 4
-            label.height == 30
+        self.usernameLabel.snp_makeConstraints { (maker) -> () in
+            maker.top.equalTo(self.contentView.snp_top).offset(6)
+            maker.left.equalTo(self.avatarImageView.snp_right).offset(4)
+            maker.height.equalTo(30)
         }
 
-        layout2(self.reblogButton, self.contentView) { button, view in
-            button.right == view.right - 4
-            button.centerY == view.centerY
+        self.reblogButton.snp_makeConstraints { (maker) -> () in
+            maker.right.equalTo(self.contentView.snp_right).offset(-4)
+            maker.centerY.equalTo(self.contentView.snp_centerY)
         }
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
 
-        self.reblogButton.showingOptions = false
+//        self.reblogButton.showingOptions = false
     }
 
     override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {

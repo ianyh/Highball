@@ -12,6 +12,8 @@
 	<dict>
 		<key>364D2E5F611143E7C4D0A99C691B1988FBD5381F</key>
 		<string>https://github.com/robb/Cartography.git</string>
+		<key>3AF18F9C6F5D633BAA0B3F935459E0C777C82047</key>
+		<string>https://github.com/Masonry/Snappy.git</string>
 		<key>C861FC00CEE0F6A6BE81FCFF6785FAA78C58EBB3</key>
 		<string>https://github.com/lingoer/SwiftyJSON.git</string>
 		<key>F5E8547D5B1D06496079592E5F6C57D1A9787AD0</key>
@@ -23,6 +25,8 @@
 	<dict>
 		<key>364D2E5F611143E7C4D0A99C691B1988FBD5381F</key>
 		<string>..Cartography</string>
+		<key>3AF18F9C6F5D633BAA0B3F935459E0C777C82047</key>
+		<string>../Snappy/</string>
 		<key>C861FC00CEE0F6A6BE81FCFF6785FAA78C58EBB3</key>
 		<string>..SwiftyJSON</string>
 		<key>F5E8547D5B1D06496079592E5F6C57D1A9787AD0</key>
@@ -59,6 +63,14 @@
 			<string>C861FC00CEE0F6A6BE81FCFF6785FAA78C58EBB3</string>
 			<key>IDESourceControlWCCName</key>
 			<string>HighballSwiftyJSON</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>3AF18F9C6F5D633BAA0B3F935459E0C777C82047</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Snappy</string>
 		</dict>
 	</array>
 </dict>

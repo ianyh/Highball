@@ -120,26 +120,26 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
         }
     }
 
-    func reblogPost(post: Post, type: ReblogType) {
-        var parameters = [ "id" : post.id.description, "reblog_key" : post.reblogKey ]
-
-        switch type {
-        case .Reblog:
-            parameters["state"] = "published"
-        case .Queue:
-            parameters["state"] = "queue"
-        case .Schedule:
-            return
-        }
-
-        TMAPIClient.sharedInstance().reblogPost(self.primaryBlog.name, parameters: parameters) { response, error in
-            if let e = error {
-                println(e)
-            } else {
-                println("reblog success")
-            }
-        }
-    }
+//    func reblogPost(post: Post, type: ReblogType) {
+//        var parameters = [ "id" : post.id.description, "reblog_key" : post.reblogKey ]
+//
+//        switch type {
+//        case .Reblog:
+//            parameters["state"] = "published"
+//        case .Queue:
+//            parameters["state"] = "queue"
+//        case .Schedule:
+//            return
+//        }
+//
+//        TMAPIClient.sharedInstance().reblogPost(self.primaryBlog.name, parameters: parameters) { response, error in
+//            if let e = error {
+//                println(e)
+//            } else {
+//                println("reblog success")
+//            }
+//        }
+//    }
 
     func applicationDidBecomeActive(notification: NSNotification!) {
         self.login()
@@ -429,14 +429,14 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
 
         view.post = post
 
-        weak var weakSelf = self
-        view.reblogHandler = { post, type in
-            if let strongPost = post {
-                if let strongSelf = weakSelf {
-                    strongSelf.reblogPost(strongPost, type: type)
-                }
-            }
-        }
+//        weak var weakSelf = self
+//        view.reblogHandler = { post, type in
+//            if let strongPost = post {
+//                if let strongSelf = weakSelf {
+//                    strongSelf.reblogPost(strongPost, type: type)
+//                }
+//            }
+//        }
 
         return view
     }
@@ -577,19 +577,19 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
             }
         }
 
-        var sections = NSMutableIndexSet()
-        if let visibleIndexPaths = self.tableView.indexPathsForVisibleRows() as? Array<NSIndexPath> {
-            for indexPath in visibleIndexPaths {
-                if !sections.containsIndex(indexPath.section) {
-                    if let headerView = self.tableView.headerViewForSection(indexPath.section) as? PostHeaderView {
-                        sections.addIndex(indexPath.section)
-                        if headerView.reblogButton.showingOptions {
-                            headerView.reblogButton.showingOptions = false
-                        }
-                    }
-                }
-            }
-        }
+//        var sections = NSMutableIndexSet()
+//        if let visibleIndexPaths = self.tableView.indexPathsForVisibleRows() as? Array<NSIndexPath> {
+//            for indexPath in visibleIndexPaths {
+//                if !sections.containsIndex(indexPath.section) {
+//                    if let headerView = self.tableView.headerViewForSection(indexPath.section) as? PostHeaderView {
+//                        sections.addIndex(indexPath.section)
+//                        if headerView.reblogButton.showingOptions {
+//                            headerView.reblogButton.showingOptions = false
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
 
     override func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {

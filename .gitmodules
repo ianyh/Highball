@@ -1,6 +1,6 @@
 [submodule "SwiftyJSON"]
 	path = SwiftyJSON
 	url = https://github.com/lingoer/SwiftyJSON.git
-[submodule "Cartography"]
-	path = Cartography
-	url = https://github.com/robb/Cartography.git
+[submodule "Snappy"]
+	path = Snappy
+	url = https://github.com/Masonry/Snappy.git

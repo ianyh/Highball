@@ -56,25 +56,25 @@ class PostLinkTableViewCell: UITableViewCell {
         self.contentView.addSubview(self.bubbleView)
         self.contentView.addSubview(self.titleLabel)
         self.contentView.addSubview(self.urlLabel)
-        
-        layout2(self.bubbleView, self.contentView) { view, contentView in
-            view.left == contentView.left + 8
-            view.right == contentView.right - 8
-            view.top == contentView.top + 6
-            view.bottom == contentView.bottom - 6
+
+        self.bubbleView.snp_makeConstraints { (maker) -> Void in
+            maker.left.equalTo(self.contentView.snp_left).offset(8)
+            maker.right.equalTo(self.contentView.snp_right).offset(-8)
+            maker.top.equalTo(self.contentView.snp_top).offset(6)
+            maker.bottom.equalTo(self.contentView.snp_bottom).offset(-6)
         }
 
-        layout2(self.urlLabel, self.bubbleView) { label, bubbleView in
-            label.left == bubbleView.left + 20
-            label.right == bubbleView.right - 20
-            label.bottom == bubbleView.bottom - 14
-            label.height == 16
+        self.urlLabel.snp_makeConstraints { (maker) -> Void in
+            maker.left.equalTo(self.bubbleView.snp_left).offset(20)
+            maker.right.equalTo(self.bubbleView.snp_right).offset(-20)
+            maker.bottom.equalTo(self.bubbleView.snp_bottom).offset(-14)
+            maker.height.equalTo(16)
         }
 
-        layout3(self.titleLabel, self.urlLabel, self.bubbleView) { label, urlLabel, view in
-            label.left == view.left + 20
-            label.right == view.right - 20
-            label.top == view.top + 14
+        self.titleLabel.snp_makeConstraints { (maker) -> Void in
+            maker.left.equalTo(self.bubbleView.snp_left).offset(20)
+            maker.right.equalTo(self.bubbleView.snp_right).offset(-20)
+            maker.top.equalTo(self.bubbleView.snp_top).offset(14)
         }
     }
     
