@@ -25,7 +25,7 @@ class PostHeaderView: UITableViewHeaderFooterView {
 
                 self.avatarImageView.image = UIImage(named: "Placeholder")
 
-                TMAPIClient.sharedInstance().avatar(blogName, size: 30) { (response: AnyObject!, error: NSError!) -> Void in
+                TMAPIClient.sharedInstance().avatar(blogName, size: 40) { (response: AnyObject!, error: NSError!) in
                     if let e = error {
                         println(e)
                     } else {
@@ -60,7 +60,7 @@ class PostHeaderView: UITableViewHeaderFooterView {
         self.avatarImageView = UIImageView()
         self.usernameLabel = UILabel()
 
-        self.avatarImageView.layer.cornerRadius = 15
+        self.avatarImageView.layer.cornerRadius = 20
         self.avatarImageView.clipsToBounds = true
 
         self.usernameLabel.font = UIFont.systemFontOfSize(14)
