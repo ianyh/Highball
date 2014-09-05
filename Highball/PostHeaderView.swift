@@ -106,6 +106,16 @@ class PostHeaderView: UITableViewHeaderFooterView {
         self.reblogButton.showingOptions = false
     }
 
+    override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
+        let superHitTest = super.hitTest(point, withEvent: event)
+        if let view = superHitTest {
+            let convertedPoint = self.convertPoint(point, toView: self.reblogButton)
+            return self.reblogButton.hitTest(convertedPoint, withEvent: event)
+        }
+
+        return superHitTest
+    }
+
     override func pointInside(point: CGPoint, withEvent event: UIEvent?) -> Bool {
         let superPointInside = super.pointInside(point, withEvent: event)
         if !superPointInside {

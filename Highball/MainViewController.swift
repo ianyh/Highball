@@ -544,7 +544,7 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
                 if !sections.containsIndex(indexPath.section) {
                     if let headerView = self.tableView.headerViewForSection(indexPath.section) as? PostHeaderView {
                         sections.addIndex(indexPath.section)
-                        if headerView.reblogButton.showingOptions! {
+                        if headerView.reblogButton.showingOptions {
                             headerView.reblogButton.showingOptions = false
                         }
                     }
