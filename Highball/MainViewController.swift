@@ -49,7 +49,11 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
     var secondaryBodyHeightCache: Dictionary<Int, CGFloat>!
 
     var blogs: Array<Blog>!
-    var primaryBlog: Blog!
+    var primaryBlog: Blog! {
+        didSet {
+            self.navigationItem.title = self.primaryBlog.name
+        }
+    }
     var posts: Array<Post>! {
         didSet {
             self.reloadTable()
