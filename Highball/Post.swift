@@ -9,17 +9,19 @@
 import Foundation
 
 class Post {
+    let id: Int!
+    let type: String!
+    let blogName: String!
+    let reblogKey: String!
 
-    var json: JSONValue!
-    var id: Int!
-    var type: String!
-    var blogName: String!
+    private let json: JSONValue!
 
     required init(json: JSONValue!) {
         self.json = json
         self.id = json["id"].integer!
         self.type = json["type"].string!
         self.blogName = json["blog_name"].string!
+        self.reblogKey = json["reblog_key"].string!
     }
 
     func photos() -> (Array<PostPhoto>) {
@@ -149,5 +151,4 @@ class Post {
     func urlString() -> (String?) {
         return self.json["url"].string
     }
-
 }

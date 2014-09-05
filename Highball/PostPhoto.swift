@@ -9,8 +9,7 @@
 import Foundation
 
 class PostPhoto {
-
-    let json: JSONValue!
+    private let json: JSONValue!
 
     required init(json: JSONValue!) {
         self.json = json
@@ -45,5 +44,4 @@ class PostPhoto {
         }
         return 0
     }
-
 }

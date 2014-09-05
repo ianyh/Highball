@@ -34,20 +34,22 @@ enum AudioRow: Int {
 }
 
 class MainViewController: UITableViewController, UIWebViewDelegate {
+    private let postHeaderViewIdentifier = "postHeaderViewIdentifier"
+    private let photosetRowTableViewCellIdentifier = "photosetRowTableViewCellIdentifier"
+    private let contentTableViewCellIdentifier = "contentTableViewCellIdentifier"
+    private let postQuestionTableViewCellIdentifier = "postQuestionTableViewCellIdentifier"
+    private let postLinkTableViewCellIdentifier = "postLinkTableViewCellIdentifier"
+    private let postDialogueEntryTableViewCellIdentifier = "postDialogueEntryTableViewCellIdentifier"
 
-    let postHeaderViewIdentifier = "postHeaderViewIdentifier"
-    let photosetRowTableViewCellIdentifier = "photosetRowTableViewCellIdentifier"
-    let contentTableViewCellIdentifier = "contentTableViewCellIdentifier"
-    let postQuestionTableViewCellIdentifier = "postQuestionTableViewCellIdentifier"
-    let postLinkTableViewCellIdentifier = "postLinkTableViewCellIdentifier"
-    let postDialogueEntryTableViewCellIdentifier = "postDialogueEntryTableViewCellIdentifier"
-
-    let requiredRefreshDistance: CGFloat = 60
+    private let requiredRefreshDistance: CGFloat = 60
 
     var bodyWebViewCache: Dictionary<Int, UIWebView>!
     var bodyHeightCache: Dictionary<Int, CGFloat>!
     var secondaryBodyWebViewCache: Dictionary<Int, UIWebView>!
     var secondaryBodyHeightCache: Dictionary<Int, CGFloat>!
+
+    var blogs: Array<Blog>!
+    var primaryBlog: Blog!
     var posts: Array<Post>! {
         didSet {
             self.reloadTable()
@@ -86,7 +88,20 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
         self.loggingIn = true
 
         if let oauthToken = TMAPIClient.sharedInstance().OAuthToken {
-            self.loadTop()
+            TMAPIClient.sharedInstance().userInfo { response, error in
+                if let e = error {
+                    println(e)
+                    return
+                }
+
+                let json = JSONValue(response)
+                println(json)
+
+                self.blogs = json["user"]["blogs"].array!.map({ Blog(json: $0) })
+                self.primaryBlog = self.blogs.filter({ $0.primary }).first
+
+                self.loadTop()
+            }
         } else {
             TMAPIClient.sharedInstance().authenticate("highballtumblr") { (error: NSError!) -> Void in
                 self.loggingIn = false
@@ -101,8 +116,25 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
         }
     }
 
-    func reblogPost(post: Post) {
+    func reblogPost(post: Post, type: ReblogType) {
+        var parameters = [ "id" : post.id.description, "reblog_key" : post.reblogKey ]
 
+        switch type {
+        case .Reblog:
+            parameters["state"] = "published"
+        case .Queue:
+            parameters["state"] = "queue"
+        case .Schedule:
+            return
+        }
+
+        TMAPIClient.sharedInstance().reblogPost(self.primaryBlog.name, parameters: parameters) { response, error in
+            if let e = error {
+                println(e)
+            } else {
+                println("reblog success")
+            }
+        }
     }
 
     func applicationDidBecomeActive(notification: NSNotification!) {
@@ -182,7 +214,7 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
                     self.secondaryBodyWebViewCache[post.id] = webView
                 }
                     
-                println(post.json)
+//                println(post.json)
             }
 
             self.posts = posts
@@ -223,7 +255,7 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
                             self.bodyWebViewCache[post.id] = webView
                         }
                         
-                        println(post.json)
+//                        println(post.json)
                     }
 
                     self.posts.extend(posts)
@@ -395,7 +427,10 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
 
         weak var weakSelf = self
         view.reblogHandler = { post, type in
-            if let strongSelf = weakSelf {
+            if let strongPost = post {
+                if let strongSelf = weakSelf {
+                    strongSelf.reblogPost(strongPost, type: type)
+                }
             }
         }
 
@@ -573,19 +608,15 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
             self.reloadTable()
         }
     }
-
 }
 
 public extension UIWebView {
-
     func documentHeight() -> (CGFloat) {
         return CGFloat(self.stringByEvaluatingJavaScriptFromString("var body = document.body, html = document.documentElement;Math.max( body.scrollHeight, body.offsetHeight,html.clientHeight, html.scrollHeight, html.offsetHeight );")!.toInt()!)
     }
-
 }
 
 public extension Dictionary {
-
     func keyForObject(object: Value!, isEqual: (Value!, Value!) -> (Bool)) -> (Key?) {
         for key in self.keys {
             if isEqual(object, self[key] as Value!) {

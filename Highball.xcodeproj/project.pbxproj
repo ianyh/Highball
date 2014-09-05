@@ -41,6 +41,7 @@
 		40A11E6819B518DD00B91843 /* ImagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A11E6719B518DD00B91843 /* ImagesViewController.swift */; };
 		40A11E6B19B51FF700B91843 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A11E6A19B51FF700B91843 /* ImageCollectionViewCell.swift */; };
 		40FF6D3F19B8863C008119A3 /* ReblogButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FF6D3E19B8863C008119A3 /* ReblogButton.swift */; };
+		40FF6D4319B940C6008119A3 /* Blog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FF6D4219B940C6008119A3 /* Blog.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,6 +107,7 @@
 		40A11E6719B518DD00B91843 /* ImagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagesViewController.swift; sourceTree = "<group>"; };
 		40A11E6A19B51FF700B91843 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		40FF6D3E19B8863C008119A3 /* ReblogButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReblogButton.swift; sourceTree = "<group>"; };
+		40FF6D4219B940C6008119A3 /* Blog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Blog.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -240,6 +242,7 @@
 				40778B9B19B15F9C00F8EE13 /* Post.swift */,
 				40778B9D19B160DD00F8EE13 /* PostPhoto.swift */,
 				408C7D2019B384C800EFC410 /* PostDialogueEntry.swift */,
+				40FF6D4219B940C6008119A3 /* Blog.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -453,6 +456,7 @@
 				400FE04019B6A3D500F72C3C /* Point.swift in Sources */,
 				40778B9E19B160DD00F8EE13 /* PostPhoto.swift in Sources */,
 				400FE04119B6A3D500F72C3C /* Priority.swift in Sources */,
+				40FF6D4319B940C6008119A3 /* Blog.swift in Sources */,
 				403F53DD19AFB5DF00FF8F3B /* ContentTableViewCell.swift in Sources */,
 				40778BAA19B24BA500F8EE13 /* PostQuestionTableViewCell.swift in Sources */,
 			);
