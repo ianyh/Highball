@@ -33,7 +33,7 @@ enum AudioRow: Int {
     case Caption
 }
 
-class MainViewController: UITableViewController, UIWebViewDelegate {
+class MainViewController: UITableViewController, UIViewControllerTransitioningDelegate, UIWebViewDelegate {
     private let postHeaderViewIdentifier = "postHeaderViewIdentifier"
     private let photosetRowTableViewCellIdentifier = "photosetRowTableViewCellIdentifier"
     private let contentTableViewCellIdentifier = "contentTableViewCellIdentifier"
@@ -75,6 +75,11 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
     }
     var loadingBottom: Bool?
     var loggingIn = false
+    var lastPoint: CGPoint?
+
+    required override init() {
+        super.init(nibName: nil, bundle: nil)
+    }
 
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -156,6 +161,12 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
         self.secondaryBodyWebViewCache = Dictionary<Int, UIWebView>()
         self.secondaryBodyHeightCache = Dictionary<Int, CGFloat>()
 
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        self.tableView.sectionHeaderHeight = 50
+        self.tableView.sectionFooterHeight = 50
+        self.tableView.showsVerticalScrollIndicator = false
+        self.tableView.showsHorizontalScrollIndicator = false
+
         self.tableView.registerClass(PhotosetRowTableViewCell.classForCoder(), forCellReuseIdentifier: photosetRowTableViewCellIdentifier)
         self.tableView.registerClass(ContentTableViewCell.classForCoder(), forCellReuseIdentifier: contentTableViewCellIdentifier)
         self.tableView.registerClass(PostQuestionTableViewCell.classForCoder(), forCellReuseIdentifier: postQuestionTableViewCellIdentifier)
@@ -170,14 +181,6 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
         super.viewDidAppear(animated)
 
         self.login()
-    }
-
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
-        if let imagesViewController = segue.destinationViewController as? ImagesViewController {
-            if let post = sender as? Post {
-                imagesViewController.post = post
-            }
-        }
     }
 
     func loadTop() {
@@ -429,14 +432,20 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
 
         view.post = post
 
-//        weak var weakSelf = self
-//        view.reblogHandler = { post, type in
-//            if let strongPost = post {
-//                if let strongSelf = weakSelf {
-//                    strongSelf.reblogPost(strongPost, type: type)
-//                }
-//            }
-//        }
+        weak var weakSelf = self
+
+        view.quickReblogHandler = { sender in
+            if let strongSelf = weakSelf {
+                let startingPoint = sender.superview!.convertPoint(sender.center, toView: strongSelf.navigationController!.view)
+                let viewController = QuickReblogViewController()
+
+                viewController.startingPoint = startingPoint
+                viewController.transitioningDelegate = self
+                viewController.modalPresentationStyle = UIModalPresentationStyle.Custom
+
+                strongSelf.presentViewController(viewController, animated: true, completion: nil)
+            }
+        }
 
         return view
     }
@@ -551,7 +560,12 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if let cell = tableView.cellForRowAtIndexPath(indexPath) {
             if let photosetRowCell = cell as? PhotosetRowTableViewCell {
-                self.performSegueWithIdentifier("imagesSegue", sender: self.posts[indexPath.section])
+                let post = self.posts[indexPath.section]
+                let viewController = ImagesViewController()
+
+                viewController.post = post
+
+                self.presentViewController(viewController, animated: true, completion: nil)
             }
         }
     }
@@ -611,6 +625,20 @@ class MainViewController: UITableViewController, UIWebViewDelegate {
             self.secondaryBodyWebViewCache[postId] = nil
             self.reloadTable()
         }
+    }
+
+    // MARK: UIViewControllerTransitioningDelegate
+
+    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return ReblogTransitionAnimator()
+    }
+
+    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        let animator = ReblogTransitionAnimator()
+
+        animator.presenting = false
+
+        return animator
     }
 }
 

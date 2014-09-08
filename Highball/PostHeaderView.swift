@@ -9,14 +9,13 @@
 import UIKit
 
 class PostHeaderView: UITableViewHeaderFooterView {
-//    var reblogHandler: ((Post?, ReblogType) -> ())?
-    var startHandler: ((CGPoint) -> ())?
+    var quickReblogHandler: ((sender: UIView) -> ())?
+    var reblogHandler: ((sender: UIView) -> ())?
 
     private var avatarImageView: UIImageView!
     private var usernameLabel: UILabel!
 
-//    var reblogButton: ReblogButton!
-    var reblogButton: UIButton!
+    private var reblogButton: UIButton!
 
     var post: Post? {
         didSet {
@@ -58,26 +57,18 @@ class PostHeaderView: UITableViewHeaderFooterView {
         self.contentView.backgroundColor = UIColor.blackColor()
 
         self.avatarImageView = UIImageView()
-        self.usernameLabel = UILabel()
-
         self.avatarImageView.layer.cornerRadius = 20
         self.avatarImageView.clipsToBounds = true
 
+        self.usernameLabel = UILabel()
         self.usernameLabel.font = UIFont.systemFontOfSize(14)
         self.usernameLabel.textColor = UIColor.whiteColor()
 
-//        self.reblogButton = ReblogButton(frame: CGRectZero)
         self.reblogButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        self.reblogButton.setImage(UIImage(named: "Start"), forState: UIControlState.Normal)
-
-//        weak var weakSelf = self
-//        self.reblogButton.reblogHandler = { type in
-//            if let strongSelf = weakSelf {
-//                if let reblogHandler = strongSelf.reblogHandler {
-//                    reblogHandler(self.post, type)
-//                }
-//            }
-//        }
+        self.reblogButton.tintColor = UIColor.whiteColor()
+        self.reblogButton.setImage(UIImage(named: "Reblog"), forState: UIControlState.Normal)
+//        self.reblogButton.userInteractionEnabled = false
+        self.reblogButton.sizeToFit()
 
         self.contentView.addSubview(self.avatarImageView)
         self.contentView.addSubview(self.usernameLabel)
@@ -100,31 +91,23 @@ class PostHeaderView: UITableViewHeaderFooterView {
             maker.right.equalTo(self.contentView.snp_right).offset(-4)
             maker.centerY.equalTo(self.contentView.snp_centerY)
         }
+
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: Selector("didTap:"))
+        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: Selector("didLongPress:"))
+
+        self.reblogButton.addGestureRecognizer(tapGestureRecognizer)
+        self.reblogButton.addGestureRecognizer(longPressGestureRecognizer)
     }
 
-    override func prepareForReuse() {
-        super.prepareForReuse()
-
-//        self.reblogButton.showingOptions = false
-    }
-
-    override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
-        let superHitTest = super.hitTest(point, withEvent: event)
-        if let view = superHitTest {
-            let convertedPoint = self.convertPoint(point, toView: self.reblogButton)
-            return self.reblogButton.hitTest(convertedPoint, withEvent: event)
+    func didTap(sender: UITapGestureRecognizer) {
+        if let handler = self.reblogHandler {
+            handler(sender: self.reblogButton)
         }
-
-        return superHitTest
     }
 
-    override func pointInside(point: CGPoint, withEvent event: UIEvent?) -> Bool {
-        let superPointInside = super.pointInside(point, withEvent: event)
-        if !superPointInside {
-            let convertedPoint = self.convertPoint(point, toView: self.reblogButton)
-            return self.reblogButton.pointInside(convertedPoint, withEvent: event)
+    func didLongPress(sender: UILongPressGestureRecognizer) {
+        if let handler = self.quickReblogHandler {
+            handler(sender: self.reblogButton)
         }
-
-        return superPointInside
     }
 }

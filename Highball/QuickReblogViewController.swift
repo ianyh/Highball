@@ -1,5 +1,5 @@
 //
-//  ReblogViewController.swift
+//  QuickReblogViewController.swift
 //  Highball
 //
 //  Created by Ian Ynda-Hummel on 9/5/14.
@@ -8,9 +8,12 @@
 
 import UIKit
 
-class ReblogViewController: UIViewController {
-    private let startingPoint: CGPoint!
+class QuickReblogViewController: UIViewController {
+    var startingPoint: CGPoint!
+
     private let radius: CGFloat = 45
+
+    private var backgroundButton: UIButton!
 
     private var backgroundView: UIView!
     private var startButton: UIButton!
@@ -50,7 +53,7 @@ class ReblogViewController: UIViewController {
                 }
                 
                 let center = self.view.convertPoint(self.startButton.center, toView: nil)
-                let distanceFromTop = center.y - 60
+                let distanceFromTop = center.y
                 let distanceFromBottom = UIScreen.mainScreen().bounds.size.height - center.y
                 var angleFromTop: CGFloat = CGFloat(-M_PI_2) / 3
                 var angleFromBottom: CGFloat = CGFloat(-M_PI_2) / 3
@@ -116,20 +119,14 @@ class ReblogViewController: UIViewController {
         }
     }
 
-    required init(startingPoint: CGPoint) {
-        super.init()
-
-        self.startingPoint = startingPoint
-    }
-
-    required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-
-        self.startingPoint = CGPointZero
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        self.view.opaque = false
+        self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.3)
+
+        self.backgroundButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        self.backgroundButton.addTarget(self, action: Selector("exit:"), forControlEvents: UIControlEvents.TouchUpInside)
 
         self.backgroundView = UIView()
         self.backgroundView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.7)
@@ -137,9 +134,9 @@ class ReblogViewController: UIViewController {
         self.backgroundView.clipsToBounds = true
         
         self.startButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        self.startButton.setImage(UIImage(named: "Start"), forState: UIControlState.Normal)
-        self.startButton.tintColor = UIColor.whiteColor()
-        self.startButton.addTarget(self, action: Selector("toggleOptions:"), forControlEvents: UIControlEvents.TouchUpInside)
+        self.startButton.setImage(UIImage(named: "Reblog"), forState: UIControlState.Normal)
+        self.startButton.tintColor = UIColor.grayColor()
+        self.startButton.addTarget(self, action: Selector("exit:"), forControlEvents: UIControlEvents.TouchUpInside)
         self.startButton.sizeToFit()
 
         self.reblogButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
@@ -162,18 +159,24 @@ class ReblogViewController: UIViewController {
         self.scheduleButton.layer.opacity = 0
         self.scheduleButton.addTarget(self, action: Selector("schedule:"), forControlEvents: UIControlEvents.TouchUpInside)
         self.scheduleButton.sizeToFit()
-        
+
+        self.view.addSubview(self.backgroundButton)
         self.view.addSubview(self.backgroundView)
         self.view.addSubview(self.startButton)
         self.view.addSubview(self.reblogButton)
         self.view.addSubview(self.queueButton)
         self.view.addSubview(self.scheduleButton)
 
+        self.backgroundButton.snp_makeConstraints { maker in
+            let insets = UIEdgeInsetsZero
+            maker.edges.equalTo(self.view).insets(insets)
+        }
+
         self.startButton.snp_makeConstraints { (maker) -> () in
             maker.height.equalTo(40)
             maker.width.equalTo(40)
-            maker.centerX.equalTo(Float(self.startingPoint.x))
-            maker.centerY.equalTo(Float(self.startingPoint.y))
+            maker.centerX.equalTo(self.view.snp_left).offset(Float(self.startingPoint.x))
+            maker.centerY.equalTo(self.view.snp_top).offset(Float(self.startingPoint.y))
         }
 
         self.backgroundView.snp_makeConstraints { (maker) -> () in
@@ -199,11 +202,21 @@ class ReblogViewController: UIViewController {
             maker.height.equalTo(40)
             maker.width.equalTo(40)
         }
+
+        var startButtonFrame = self.startButton.frame
+        startButtonFrame.origin = self.startingPoint
+        self.startButton.frame = startButtonFrame
     }
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
         self.showingOptions = true
+    }
+
+    func exit(sender: UIButton) {
+        self.showingOptions = false
+
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
 }

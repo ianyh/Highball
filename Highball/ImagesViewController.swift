@@ -9,8 +9,7 @@
 import UIKit
 
 class ImagesViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-
-    @IBOutlet var imagesCollectionView: UICollectionView?
+    var imagesCollectionView: UICollectionView!
     
     let imageCollectionViewCellIdentifier = "imageCollectionViewCellIdentifier"
 
@@ -19,11 +18,25 @@ class ImagesViewController: UIViewController, UICollectionViewDataSource, UIColl
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.imagesCollectionView!.registerClass(ImageCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: imageCollectionViewCellIdentifier)
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = UICollectionViewScrollDirection.Horizontal
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+
+        self.imagesCollectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
+        self.imagesCollectionView.delegate = self
+        self.imagesCollectionView.dataSource = self
+        self.imagesCollectionView.pagingEnabled = true
+        self.imagesCollectionView.showsHorizontalScrollIndicator = false
+        self.imagesCollectionView.showsVerticalScrollIndicator = false
+
+        self.imagesCollectionView.registerClass(ImageCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: imageCollectionViewCellIdentifier)
+
+        self.view.addSubview(self.imagesCollectionView)
     }
 
     override func viewDidAppear(animated: Bool) {
-        self.imagesCollectionView!.reloadData()
+        self.imagesCollectionView.reloadData()
     }
 
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -51,5 +64,4 @@ class ImagesViewController: UIViewController, UICollectionViewDataSource, UIColl
     func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, sizeForItemAtIndexPath indexPath: NSIndexPath!) -> CGSize {
         return collectionView.frame.size
     }
-
 }

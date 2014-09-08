@@ -8,6 +8,12 @@
 
 import Foundation
 
+enum ReblogType {
+    case Reblog
+    case Queue
+    case Schedule
+}
+
 class Post {
     let id: Int!
     let type: String!

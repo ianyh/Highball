@@ -13,9 +13,9 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var navigationController: UINavigationController?
 
     func application(application: UIApplication!, didFinishLaunchingWithOptions launchOptions: NSDictionary!) -> Bool {
-        
         TMAPIClient.sharedInstance().OAuthConsumerKey = "YhlYiD2dAUE6UH01ugPKQafm2XESBWsaOYPz7xV0q53SDn3ChU"
         TMAPIClient.sharedInstance().OAuthConsumerSecret = "ONVNS5UCfZMMhrekfjBknUXgjQ5I2J1a0aVDCfso2mfRcC4nEF"
 
@@ -24,9 +24,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             TMAPIClient.sharedInstance().OAuthTokenSecret = NSUserDefaults.standardUserDefaults().stringForKey("HighballOAuthTokenSecret")
         }
 
+        self.navigationController = UINavigationController(rootViewController: MainViewController())
+        self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        self.window?.rootViewController = self.navigationController
+
         if let key = NSBundle.mainBundle().infoDictionary["HBCrashlyticsAPIKey"] as? NSString {
             Crashlytics.startWithAPIKey(key)
         }
+
+        self.window?.makeKeyAndVisible()
 
         return true
     }
@@ -122,5 +128,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+    
 }
 

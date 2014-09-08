@@ -15,7 +15,6 @@
 		4050698119AA76BD0066ECE3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4050698019AA76BD0066ECE3 /* AppDelegate.swift */; };
 		4050698419AA76BD0066ECE3 /* Highball.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4050698219AA76BD0066ECE3 /* Highball.xcdatamodeld */; };
 		4050698619AA76BD0066ECE3 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4050698519AA76BD0066ECE3 /* MainViewController.swift */; };
-		4050698919AA76BD0066ECE3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4050698719AA76BD0066ECE3 /* Main.storyboard */; };
 		4050698B19AA76BD0066ECE3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4050698A19AA76BD0066ECE3 /* Images.xcassets */; };
 		4050699719AA76BD0066ECE3 /* HighballTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4050699619AA76BD0066ECE3 /* HighballTests.swift */; };
 		40778B9919B118D100F8EE13 /* PostHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40778B9819B118D100F8EE13 /* PostHeaderView.swift */; };
@@ -28,8 +27,9 @@
 		40A11E6019B4CBCB00B91843 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A11E5F19B4CBCB00B91843 /* Crashlytics.framework */; };
 		40A11E6819B518DD00B91843 /* ImagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A11E6719B518DD00B91843 /* ImagesViewController.swift */; };
 		40A11E6B19B51FF700B91843 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A11E6A19B51FF700B91843 /* ImageCollectionViewCell.swift */; };
+		40C78D1519BD29330002EB78 /* ReblogTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C78D1419BD29330002EB78 /* ReblogTransitionAnimator.swift */; };
 		40FF6D4319B940C6008119A3 /* Blog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FF6D4219B940C6008119A3 /* Blog.swift */; };
-		40FF6D4519B9F656008119A3 /* ReblogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FF6D4419B9F656008119A3 /* ReblogViewController.swift */; };
+		40FF6D4519B9F656008119A3 /* QuickReblogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FF6D4419B9F656008119A3 /* QuickReblogViewController.swift */; };
 		40FF6D5719BA098F008119A3 /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FF6D5119BA098F008119A3 /* Constraint.swift */; };
 		40FF6D5819BA098F008119A3 /* Constraint+SNPCompatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FF6D5219BA098F008119A3 /* Constraint+SNPCompatibility.swift */; };
 		40FF6D5919BA098F008119A3 /* ConstraintMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FF6D5319BA098F008119A3 /* ConstraintMaker.swift */; };
@@ -76,7 +76,6 @@
 		4050698019AA76BD0066ECE3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4050698319AA76BD0066ECE3 /* Highball.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Highball.xcdatamodel; sourceTree = "<group>"; };
 		4050698519AA76BD0066ECE3 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
-		4050698819AA76BD0066ECE3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4050698A19AA76BD0066ECE3 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		4050699019AA76BD0066ECE3 /* HighballTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HighballTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4050699519AA76BD0066ECE3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -92,8 +91,9 @@
 		40A11E5F19B4CBCB00B91843 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		40A11E6719B518DD00B91843 /* ImagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagesViewController.swift; sourceTree = "<group>"; };
 		40A11E6A19B51FF700B91843 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		40C78D1419BD29330002EB78 /* ReblogTransitionAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReblogTransitionAnimator.swift; sourceTree = "<group>"; };
 		40FF6D4219B940C6008119A3 /* Blog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Blog.swift; sourceTree = "<group>"; };
-		40FF6D4419B9F656008119A3 /* ReblogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReblogViewController.swift; sourceTree = "<group>"; };
+		40FF6D4419B9F656008119A3 /* QuickReblogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickReblogViewController.swift; sourceTree = "<group>"; };
 		40FF6D5119BA098F008119A3 /* Constraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Constraint.swift; path = Snappy/Snappy/Constraint.swift; sourceTree = "<group>"; };
 		40FF6D5219BA098F008119A3 /* Constraint+SNPCompatibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Constraint+SNPCompatibility.swift"; path = "Snappy/Snappy/Constraint+SNPCompatibility.swift"; sourceTree = "<group>"; };
 		40FF6D5319BA098F008119A3 /* ConstraintMaker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConstraintMaker.swift; path = Snappy/Snappy/ConstraintMaker.swift; sourceTree = "<group>"; };
@@ -150,6 +150,7 @@
 				408C7D1E19B36F7400EFC410 /* PostLinkTableViewCell.swift */,
 				408C7D2219B387A500EFC410 /* PostDialogueEntryTableViewCell.swift */,
 				40A11E6A19B51FF700B91843 /* ImageCollectionViewCell.swift */,
+				40C78D1419BD29330002EB78 /* ReblogTransitionAnimator.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -184,7 +185,6 @@
 				4048DF7819AAB597000524F7 /* Views */,
 				4050698019AA76BD0066ECE3 /* AppDelegate.swift */,
 				403F53DE19AFCEB800FF8F3B /* String+HTML.swift */,
-				4050698719AA76BD0066ECE3 /* Main.storyboard */,
 				4050698A19AA76BD0066ECE3 /* Images.xcassets */,
 				4050698219AA76BD0066ECE3 /* Highball.xcdatamodeld */,
 				4050697E19AA76BD0066ECE3 /* Supporting Files */,
@@ -234,7 +234,7 @@
 			children = (
 				4050698519AA76BD0066ECE3 /* MainViewController.swift */,
 				40A11E6719B518DD00B91843 /* ImagesViewController.swift */,
-				40FF6D4419B9F656008119A3 /* ReblogViewController.swift */,
+				40FF6D4419B9F656008119A3 /* QuickReblogViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -357,7 +357,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4050698919AA76BD0066ECE3 /* Main.storyboard in Resources */,
 				4050698B19AA76BD0066ECE3 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -441,7 +440,7 @@
 				40A11E6B19B51FF700B91843 /* ImageCollectionViewCell.swift in Sources */,
 				4050698619AA76BD0066ECE3 /* MainViewController.swift in Sources */,
 				40778B9919B118D100F8EE13 /* PostHeaderView.swift in Sources */,
-				40FF6D4519B9F656008119A3 /* ReblogViewController.swift in Sources */,
+				40FF6D4519B9F656008119A3 /* QuickReblogViewController.swift in Sources */,
 				403F53DB19AECFEF00FF8F3B /* PhotosetRowTableViewCell.swift in Sources */,
 				40FF6D5C19BA098F008119A3 /* View.swift in Sources */,
 				408C7D2119B384C800EFC410 /* PostDialogueEntry.swift in Sources */,
@@ -462,6 +461,7 @@
 				40FF6D6719BA09A5008119A3 /* SNPConstraint.m in Sources */,
 				40FF6D5719BA098F008119A3 /* Constraint.swift in Sources */,
 				40778BAA19B24BA500F8EE13 /* PostQuestionTableViewCell.swift in Sources */,
+				40C78D1519BD29330002EB78 /* ReblogTransitionAnimator.swift in Sources */,
 				40FF6D6919BA09A5008119A3 /* SNPConstraintMaker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -483,17 +483,6 @@
 			targetProxy = 4050699119AA76BD0066ECE3 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		4050698719AA76BD0066ECE3 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				4050698819AA76BD0066ECE3 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		4050699819AA76BD0066ECE3 /* Debug */ = {
