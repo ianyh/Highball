@@ -440,9 +440,20 @@ class MainViewController: UITableViewController, UIViewControllerTransitioningDe
                 let viewController = QuickReblogViewController()
 
                 viewController.startingPoint = startingPoint
-                viewController.transitioningDelegate = self
+                viewController.transitioningDelegate = strongSelf
                 viewController.modalPresentationStyle = UIModalPresentationStyle.Custom
 
+                strongSelf.presentViewController(viewController, animated: true, completion: nil)
+            }
+        }
+
+        view.reblogHandler = { sender in
+            if let strongSelf = weakSelf {
+                let viewController = ReblogViewController()
+
+                viewController.transitioningDelegate = strongSelf
+                viewController.modalPresentationStyle = UIModalPresentationStyle.Custom
+                
                 strongSelf.presentViewController(viewController, animated: true, completion: nil)
             }
         }
@@ -590,20 +601,6 @@ class MainViewController: UITableViewController, UIViewControllerTransitioningDe
                 self.navigationController!.cancelProgress()
             }
         }
-
-//        var sections = NSMutableIndexSet()
-//        if let visibleIndexPaths = self.tableView.indexPathsForVisibleRows() as? Array<NSIndexPath> {
-//            for indexPath in visibleIndexPaths {
-//                if !sections.containsIndex(indexPath.section) {
-//                    if let headerView = self.tableView.headerViewForSection(indexPath.section) as? PostHeaderView {
-//                        sections.addIndex(indexPath.section)
-//                        if headerView.reblogButton.showingOptions {
-//                            headerView.reblogButton.showingOptions = false
-//                        }
-//                    }
-//                }
-//            }
-//        }
     }
 
     override func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
