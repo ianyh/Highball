@@ -219,4 +219,22 @@ class QuickReblogViewController: UIViewController {
 
         self.dismissViewControllerAnimated(true, completion: nil)
     }
+
+    func reblog(sender: UIButton) {
+        self.showingOptions = false
+
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func queue(sender: UIButton) {
+        self.showingOptions = false
+
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func schedule(sender: UIButton) {
+        self.showingOptions = false
+
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
 }
