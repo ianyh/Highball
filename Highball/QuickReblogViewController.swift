@@ -8,19 +8,35 @@
 
 import UIKit
 
+enum QuickReblogAction {
+    case Reblog(ReblogType)
+    case Share
+}
+
 class QuickReblogViewController: UIViewController {
     var startingPoint: CGPoint!
 
-    private let radius: CGFloat = 45
+    private let radius: CGFloat = 55
 
     private var backgroundButton: UIButton!
 
-    private var backgroundView: UIView!
     private var startButton: UIButton!
 
     private var reblogButton: UIButton!
     private var queueButton: UIButton!
     private var scheduleButton: UIButton!
+
+    private var selectedButton: UIButton? {
+        didSet {
+            for button in [ self.reblogButton, self.queueButton, self.scheduleButton ] {
+                button.tintColor = UIColor.whiteColor()
+            }
+
+            if let button = self.selectedButton {
+                button.tintColor = UIColor.pastelGreenColor()
+            }
+        }
+    }
     
     var showingOptions: Bool = false {
         didSet {
@@ -30,20 +46,6 @@ class QuickReblogViewController: UIViewController {
             self.scheduleButton.layer.pop_removeAllAnimations()
             
             if self.showingOptions {
-                var outerGlowAnimation = POPSpringAnimation(propertyNamed: kPOPLayerSize)
-                outerGlowAnimation.toValue = NSValue(CGSize: CGSize(width: 130, height: 130))
-                outerGlowAnimation.springBounciness = 10
-                outerGlowAnimation.name = "showOuterGlow"
-                
-                self.backgroundView.layer.pop_addAnimation(outerGlowAnimation, forKey: outerGlowAnimation.name)
-                
-                var outerGlowPositionAnimation = POPSpringAnimation(propertyNamed: kPOPLayerCornerRadius)
-                outerGlowPositionAnimation.toValue = 65
-                outerGlowPositionAnimation.springBounciness = 10
-                outerGlowPositionAnimation.name = "outerGlowPositionAnimation"
-                
-                self.backgroundView.layer.pop_addAnimation(outerGlowPositionAnimation, forKey: outerGlowPositionAnimation.name)
-                
                 for button in [ self.reblogButton, self.queueButton, self.scheduleButton ] {
                     var opacityAnimation = POPSpringAnimation(propertyNamed: kPOPLayerOpacity)
                     opacityAnimation.toValue = 1
@@ -51,10 +53,11 @@ class QuickReblogViewController: UIViewController {
                     
                     button.layer.pop_addAnimation(opacityAnimation, forKey: opacityAnimation.name)
                 }
-                
+
+                let onLeft = self.startButton.center.x < CGRectGetMidX(self.view.bounds)
                 let center = self.view.convertPoint(self.startButton.center, toView: nil)
-                let distanceFromTop = center.y
-                let distanceFromBottom = UIScreen.mainScreen().bounds.size.height - center.y
+                let distanceFromTop = center.y + 50
+                let distanceFromBottom = UIScreen.mainScreen().bounds.size.height - center.y - 50
                 var angleFromTop: CGFloat = CGFloat(-M_PI_2) / 3
                 var angleFromBottom: CGFloat = CGFloat(-M_PI_2) / 3
                 
@@ -75,8 +78,13 @@ class QuickReblogViewController: UIViewController {
                     let center = self.startButton.center
                     let angleOffset = angleInterval * CGFloat(index)
                     let angle = initialAngle + angleOffset
-                    let x = center.x + self.radius * cos(angle)
                     let y = center.y - self.radius * sin(angle)
+                    var x: CGFloat!
+                    if onLeft {
+                        x = center.x - self.radius * cos(angle)
+                    } else {
+                        x = center.x + self.radius * cos(angle)
+                    }
                     let positionAnimation = POPSpringAnimation(propertyNamed: kPOPLayerPosition)
                     
                     positionAnimation.toValue = NSValue(CGPoint: CGPoint(x: x, y: y))
@@ -88,20 +96,6 @@ class QuickReblogViewController: UIViewController {
                     button.layer.pop_addAnimation(positionAnimation, forKey: positionAnimation.name)
                 }
             } else {
-                var outerGlowAnimation = POPSpringAnimation(propertyNamed: kPOPLayerSize)
-                outerGlowAnimation.toValue = NSValue(CGSize: CGSizeZero)
-                outerGlowAnimation.springBounciness = 10
-                outerGlowAnimation.name = "showOuterGlow"
-                
-                self.backgroundView.layer.pop_addAnimation(outerGlowAnimation, forKey: outerGlowAnimation.name)
-                
-                var outerGlowPositionAnimation = POPSpringAnimation(propertyNamed: kPOPLayerCornerRadius)
-                outerGlowPositionAnimation.toValue = 0
-                outerGlowPositionAnimation.springBounciness = 10
-                outerGlowPositionAnimation.name = "outerGlowPositionAnimation"
-                
-                self.backgroundView.layer.pop_addAnimation(outerGlowPositionAnimation, forKey: outerGlowPositionAnimation.name)
-                
                 for button in [ self.reblogButton, self.queueButton, self.scheduleButton ] {
                     var opacityAnimation = POPSpringAnimation(propertyNamed: kPOPLayerOpacity)
                     opacityAnimation.toValue = 0
@@ -127,11 +121,6 @@ class QuickReblogViewController: UIViewController {
 
         self.backgroundButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
         self.backgroundButton.addTarget(self, action: Selector("exit:"), forControlEvents: UIControlEvents.TouchUpInside)
-
-        self.backgroundView = UIView()
-        self.backgroundView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.7)
-        self.backgroundView.layer.cornerRadius = 0
-        self.backgroundView.clipsToBounds = true
         
         self.startButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
         self.startButton.setImage(UIImage(named: "Reblog"), forState: UIControlState.Normal)
@@ -161,7 +150,6 @@ class QuickReblogViewController: UIViewController {
         self.scheduleButton.sizeToFit()
 
         self.view.addSubview(self.backgroundButton)
-        self.view.addSubview(self.backgroundView)
         self.view.addSubview(self.startButton)
         self.view.addSubview(self.reblogButton)
         self.view.addSubview(self.queueButton)
@@ -177,12 +165,6 @@ class QuickReblogViewController: UIViewController {
             maker.width.equalTo(40)
             maker.centerX.equalTo(self.view.snp_left).offset(Float(self.startingPoint.x))
             maker.centerY.equalTo(self.view.snp_top).offset(Float(self.startingPoint.y))
-        }
-
-        self.backgroundView.snp_makeConstraints { (maker) -> () in
-            maker.center.equalTo(self.startButton.snp_center)
-            maker.width.equalTo(0)
-            maker.height.equalTo(0)
         }
 
         self.reblogButton.snp_makeConstraints { (maker) -> () in
@@ -214,27 +196,27 @@ class QuickReblogViewController: UIViewController {
         self.showingOptions = true
     }
 
-    func exit(sender: UIButton) {
-        self.showingOptions = false
-
-        self.dismissViewControllerAnimated(true, completion: nil)
+    func updateWithPoint(point: CGPoint) {
+        if let view = self.view.hitTest(point, withEvent: nil) {
+            if let button = view as? UIButton {
+                if button != self.startButton {
+                    self.selectedButton = button
+                }
+            }
+        }
     }
 
-    func reblog(sender: UIButton) {
-        self.showingOptions = false
+    func reblogAction() -> QuickReblogAction? {
+        if let selectedButton = self.selectedButton {
+            if selectedButton == self.reblogButton {
+                return QuickReblogAction.Reblog(ReblogType.Reblog)
+            } else if selectedButton == self.queueButton {
+                return QuickReblogAction.Reblog(ReblogType.Queue)
+            } else if selectedButton == self.scheduleButton {
+                return QuickReblogAction.Share
+            }
+        }
 
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    func queue(sender: UIButton) {
-        self.showingOptions = false
-
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    func schedule(sender: UIButton) {
-        self.showingOptions = false
-
-        self.dismissViewControllerAnimated(true, completion: nil)
+        return nil
     }
 }

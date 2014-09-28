@@ -30,6 +30,7 @@ class ContentTableViewCell: UITableViewCell {
 
     func setUpCell() {
         self.contentWebView = UIWebView()
+        self.contentWebView.userInteractionEnabled = false
         self.contentWebView.scrollView.scrollEnabled = false
 
         self.contentView.addSubview(self.contentWebView)

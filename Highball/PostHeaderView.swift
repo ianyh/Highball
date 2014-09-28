@@ -9,13 +9,8 @@
 import UIKit
 
 class PostHeaderView: UITableViewHeaderFooterView {
-    var quickReblogHandler: ((sender: UIView) -> ())?
-    var reblogHandler: ((sender: UIView) -> ())?
-
     private var avatarImageView: UIImageView!
     private var usernameLabel: UILabel!
-
-    private var reblogButton: UIButton!
 
     var post: Post? {
         didSet {
@@ -64,15 +59,8 @@ class PostHeaderView: UITableViewHeaderFooterView {
         self.usernameLabel.font = UIFont.systemFontOfSize(14)
         self.usernameLabel.textColor = UIColor.whiteColor()
 
-        self.reblogButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        self.reblogButton.tintColor = UIColor.whiteColor()
-        self.reblogButton.setImage(UIImage(named: "Reblog"), forState: UIControlState.Normal)
-//        self.reblogButton.userInteractionEnabled = false
-        self.reblogButton.sizeToFit()
-
         self.contentView.addSubview(self.avatarImageView)
         self.contentView.addSubview(self.usernameLabel)
-        self.contentView.addSubview(self.reblogButton)
 
         self.avatarImageView.snp_makeConstraints { (maker) -> () in
             maker.centerY.equalTo(self.contentView.snp_centerY)
@@ -85,29 +73,6 @@ class PostHeaderView: UITableViewHeaderFooterView {
             maker.top.equalTo(self.contentView.snp_top).offset(6)
             maker.left.equalTo(self.avatarImageView.snp_right).offset(4)
             maker.height.equalTo(30)
-        }
-
-        self.reblogButton.snp_makeConstraints { (maker) -> () in
-            maker.right.equalTo(self.contentView.snp_right).offset(-4)
-            maker.centerY.equalTo(self.contentView.snp_centerY)
-        }
-
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: Selector("didTap:"))
-        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: Selector("didLongPress:"))
-
-        self.reblogButton.addGestureRecognizer(tapGestureRecognizer)
-        self.reblogButton.addGestureRecognizer(longPressGestureRecognizer)
-    }
-
-    func didTap(sender: UITapGestureRecognizer) {
-        if let handler = self.reblogHandler {
-            handler(sender: self.reblogButton)
-        }
-    }
-
-    func didLongPress(sender: UILongPressGestureRecognizer) {
-        if let handler = self.quickReblogHandler {
-            handler(sender: self.reblogButton)
         }
     }
 }

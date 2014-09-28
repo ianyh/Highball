@@ -9,8 +9,12 @@
 import UIKit
 
 class ReblogViewController: UIViewController {
+    var reblogType: ReblogType!
+    var post: Post!
+    var blog: Blog!
+
     private let radius: CGFloat = 30
-    private let insets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 50)
+    private let insets = UIEdgeInsets(top: 40, left: 20, bottom: 20, right: 20)
 
     private var keyboardFrame: CGRect! {
         didSet {
@@ -22,9 +26,6 @@ class ReblogViewController: UIViewController {
                 startingFrame.origin.y += 100
 
                 self.reblogView.pop_removeAllAnimations()
-                self.reblogButton.layer.pop_removeAllAnimations()
-                self.queueButton.layer.pop_removeAllAnimations()
-                self.scheduleButton.layer.pop_removeAllAnimations()
 
                 let frameAnimation = POPSpringAnimation(propertyNamed: kPOPViewFrame)
                 frameAnimation.fromValue = NSValue(CGRect: startingFrame)
@@ -38,52 +39,6 @@ class ReblogViewController: UIViewController {
                 alphaAnimation.toValue = 1
                 alphaAnimation.name = "alpha"
                 self.reblogView.pop_addAnimation(alphaAnimation, forKey: alphaAnimation.name)
-                
-//                for button in [ self.reblogButton, self.queueButton, self.scheduleButton ] {
-//                    var opacityAnimation = POPBasicAnimation(propertyNamed: kPOPLayerOpacity)
-//                    opacityAnimation.fromValue = 0
-//                    opacityAnimation.toValue = 1
-//                    opacityAnimation.name = "opacity"
-//                    opacityAnimation.beginTime = CACurrentMediaTime() + 0.4
-//                    
-//                    button.layer.pop_addAnimation(opacityAnimation, forKey: opacityAnimation.name)
-//                }
-//
-//                let center = CGPoint(x: CGRectGetMaxX(finalFrame) - 10, y: self.insets.top + self.radius + 15)
-//                let distanceFromTop = center.y
-//                let distanceFromBottom = UIScreen.mainScreen().bounds.size.height - center.y
-//                var angleFromTop: CGFloat = CGFloat(-M_PI_2) / 3
-//                var angleFromBottom: CGFloat = CGFloat(-M_PI_2) / 3
-//                
-//                if distanceFromTop < self.radius {
-//                    angleFromTop = acos(distanceFromTop / self.radius)
-//                }
-//                
-//                if distanceFromBottom < self.radius {
-//                    angleFromBottom = acos(distanceFromBottom / self.radius)
-//                }
-//                
-//                let startAngle = CGFloat(M_PI_2) + angleFromTop
-//                let endAngle = CGFloat(M_PI + M_PI_2) - angleFromBottom
-//                let initialAngle = startAngle + (endAngle - startAngle) / 6
-//                let angleInterval = (endAngle - startAngle) / 3
-//                
-//                for (index, button) in enumerate([ self.reblogButton, self.queueButton, self.scheduleButton ]) {
-//                    let angleOffset = angleInterval * CGFloat(index)
-//                    let angle = initialAngle + angleOffset
-//                    let x = center.x + self.radius * cos(angle)
-//                    let y = center.y - self.radius * sin(angle)
-//                    let positionAnimation = POPSpringAnimation(propertyNamed: kPOPLayerPosition)
-//
-//                    positionAnimation.fromValue = NSValue(CGPoint: center)
-//                    positionAnimation.toValue = NSValue(CGPoint: CGPoint(x: x, y: y))
-//                    positionAnimation.springBounciness = 20
-//                    positionAnimation.name = "move"
-//                    positionAnimation.beginTime = CACurrentMediaTime() + 0.1
-//
-//                    button.layer.position = center
-//                    button.layer.pop_addAnimation(positionAnimation, forKey: positionAnimation.name)
-//                }
             }
         }
     }
@@ -92,9 +47,8 @@ class ReblogViewController: UIViewController {
     private var backgroundView: UIView!
     private var textView: UITextView!
     private var cancelButton: VBFPopFlatButton!
-    private var reblogButton: UIButton!
-    private var queueButton: UIButton!
-    private var scheduleButton: UIButton!
+    private var finishButton: VBFPopFlatButton!
+    private var finishLabel: UILabel!
 
     override init() {
         super.init()
@@ -135,37 +89,42 @@ class ReblogViewController: UIViewController {
         self.cancelButton = VBFPopFlatButton(
             frame: CGRect(origin: CGPointZero, size: CGSize(width: 20, height: 20)),
             buttonType: FlatButtonType.buttonCloseType,
-            buttonStyle: FlatButtonStyle.buttonPlainStyle
+            buttonStyle: FlatButtonStyle.buttonRoundedStyle
         )
         self.cancelButton.lineThickness = 2
         self.cancelButton.tintColor = UIColor.whiteColor()
+        self.cancelButton.roundBackgroundColor = UIColor.blackColor()
         self.cancelButton.addTarget(self, action: Selector("exit:"), forControlEvents: UIControlEvents.TouchUpInside)
         self.cancelButton.sizeToFit()
 
-        self.reblogButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        self.reblogButton.setImage(UIImage(named: "Reblog"), forState: UIControlState.Normal)
-        self.reblogButton.tintColor = UIColor.whiteColor()
-        self.reblogButton.addTarget(self, action: Selector("reblog:"), forControlEvents: UIControlEvents.TouchUpInside)
-        self.reblogButton.sizeToFit()
-        
-        self.queueButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        self.queueButton.setImage(UIImage(named: "Queue"), forState: UIControlState.Normal)
-        self.queueButton.tintColor = UIColor.whiteColor()
-        self.queueButton.addTarget(self, action: Selector("queue:"), forControlEvents: UIControlEvents.TouchUpInside)
-        self.queueButton.sizeToFit()
-        
-        self.scheduleButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        self.scheduleButton.setImage(UIImage(named: "Schedule"), forState: UIControlState.Normal)
-        self.scheduleButton.tintColor = UIColor.whiteColor()
-        self.scheduleButton.addTarget(self, action: Selector("schedule:"), forControlEvents: UIControlEvents.TouchUpInside)
-        self.scheduleButton.sizeToFit()
+        self.finishButton = VBFPopFlatButton(
+            frame: CGRect(origin: CGPointZero, size: CGSize(width: 20, height: 20)),
+            buttonType: FlatButtonType.buttonAddType,
+            buttonStyle: FlatButtonStyle.buttonRoundedStyle
+        )
+        self.finishButton.lineThickness = 2
+        self.finishButton.tintColor = UIColor.whiteColor()
+        self.finishButton.roundBackgroundColor = UIColor.blackColor()
+        self.finishButton.addTarget(self, action: Selector("finish:"), forControlEvents: UIControlEvents.TouchUpInside)
+        self.finishButton.sizeToFit()
+
+        self.finishLabel = UILabel()
+        self.finishLabel.textColor = UIColor.whiteColor()
+        self.finishLabel.font = UIFont.systemFontOfSize(14)
+        if let reblogType = self.reblogType {
+            switch reblogType {
+            case .Reblog:
+                self.finishLabel.text = "reblog"
+            case .Queue:
+                self.finishLabel.text = "queue"
+            }
+        }
 
         self.reblogView.addSubview(self.backgroundView)
         self.reblogView.addSubview(self.textView)
         self.reblogView.addSubview(self.cancelButton)
-        self.reblogView.addSubview(self.reblogButton)
-        self.reblogView.addSubview(self.queueButton)
-        self.reblogView.addSubview(self.scheduleButton)
+        self.reblogView.addSubview(self.finishButton)
+        self.reblogView.addSubview(self.finishLabel)
 
         self.view.addSubview(self.reblogView)
 
@@ -175,7 +134,7 @@ class ReblogViewController: UIViewController {
         }
 
         self.textView.snp_makeConstraints { maker in
-            let insets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+            let insets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
             maker.edges.equalTo(self.backgroundView).insets(insets)
         }
 
@@ -185,25 +144,15 @@ class ReblogViewController: UIViewController {
             make.size.equalTo(CGSize(width: 20, height: 20))
         }
 
-        self.reblogButton.snp_makeConstraints { (maker) -> () in
-            maker.left.equalTo(self.backgroundView.snp_right)
-            maker.top.equalTo(self.backgroundView.snp_top)
-            maker.height.equalTo(40)
-            maker.width.equalTo(40)
+        self.finishButton.snp_makeConstraints { make in
+            make.centerX.equalTo(self.backgroundView.snp_right)
+            make.centerY.equalTo(self.backgroundView.snp_top)
+            make.size.equalTo(CGSize(width: 20, height: 20))
         }
-        
-        self.queueButton.snp_makeConstraints { (maker) -> () in
-            maker.left.equalTo(self.backgroundView.snp_right)
-            maker.top.equalTo(self.reblogButton.snp_bottom)
-            maker.height.equalTo(40)
-            maker.width.equalTo(40)
-        }
-        
-        self.scheduleButton.snp_makeConstraints { (maker) -> () in
-            maker.left.equalTo(self.backgroundView.snp_right)
-            maker.top.equalTo(self.queueButton.snp_bottom)
-            maker.height.equalTo(40)
-            maker.width.equalTo(40)
+
+        self.finishLabel.snp_makeConstraints { make in
+            make.right.equalTo(self.finishButton.snp_left).with.offset(-10)
+            make.bottom.equalTo(self.backgroundView.snp_top)
         }
     }
 
@@ -223,15 +172,23 @@ class ReblogViewController: UIViewController {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
 
-    func reblog(sender: UIButton) {
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
+    func finish(sender: UIButton) {
+        var parameters = [ "id" : "\(self.post.id)", "reblog_key" : self.post.reblogKey ]
 
-    func queue(sender: UIButton) {
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
+        switch self.reblogType as ReblogType {
+        case .Reblog:
+            parameters["state"] = "published"
+        case .Queue:
+            parameters["state"] = "queue"
+        }
 
-    func schedule(sender: UIButton) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        TMAPIClient.sharedInstance().reblogPost(self.blog.name, parameters: parameters) { response, error in
+            if let e = error {
+                println(e)
+            } else {
+                println("reblog success")
+            }
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
     }
 }

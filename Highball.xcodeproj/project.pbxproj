@@ -25,6 +25,8 @@
 		408C7D1F19B36F7400EFC410 /* PostLinkTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408C7D1E19B36F7400EFC410 /* PostLinkTableViewCell.swift */; };
 		408C7D2119B384C800EFC410 /* PostDialogueEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408C7D2019B384C800EFC410 /* PostDialogueEntry.swift */; };
 		408C7D2319B387A500EFC410 /* PostDialogueEntryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408C7D2219B387A500EFC410 /* PostDialogueEntryTableViewCell.swift */; };
+		408D393F19C12E550001981F /* ImageItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408D393E19C12E550001981F /* ImageItemProvider.swift */; };
+		408D394119C12EF00001981F /* PostItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408D394019C12EF00001981F /* PostItemProvider.swift */; };
 		40A11E6019B4CBCB00B91843 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A11E5F19B4CBCB00B91843 /* Crashlytics.framework */; };
 		40A11E6819B518DD00B91843 /* ImagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A11E6719B518DD00B91843 /* ImagesViewController.swift */; };
 		40A11E6B19B51FF700B91843 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A11E6A19B51FF700B91843 /* ImageCollectionViewCell.swift */; };
@@ -90,6 +92,8 @@
 		408C7D1E19B36F7400EFC410 /* PostLinkTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostLinkTableViewCell.swift; sourceTree = "<group>"; };
 		408C7D2019B384C800EFC410 /* PostDialogueEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostDialogueEntry.swift; sourceTree = "<group>"; };
 		408C7D2219B387A500EFC410 /* PostDialogueEntryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostDialogueEntryTableViewCell.swift; sourceTree = "<group>"; };
+		408D393E19C12E550001981F /* ImageItemProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageItemProvider.swift; sourceTree = "<group>"; };
+		408D394019C12EF00001981F /* PostItemProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostItemProvider.swift; sourceTree = "<group>"; };
 		40A11E5F19B4CBCB00B91843 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		40A11E6719B518DD00B91843 /* ImagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagesViewController.swift; sourceTree = "<group>"; };
 		40A11E6A19B51FF700B91843 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -238,6 +242,8 @@
 				40A11E6719B518DD00B91843 /* ImagesViewController.swift */,
 				40FF6D4419B9F656008119A3 /* QuickReblogViewController.swift */,
 				406121CB19BF2AC900107972 /* ReblogViewController.swift */,
+				408D393E19C12E550001981F /* ImageItemProvider.swift */,
+				408D394019C12EF00001981F /* PostItemProvider.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -451,8 +457,10 @@
 				406121CC19BF2AC900107972 /* ReblogViewController.swift in Sources */,
 				4050698119AA76BD0066ECE3 /* AppDelegate.swift in Sources */,
 				408C7D1F19B36F7400EFC410 /* PostLinkTableViewCell.swift in Sources */,
+				408D393F19C12E550001981F /* ImageItemProvider.swift in Sources */,
 				403F53DF19AFCEB800FF8F3B /* String+HTML.swift in Sources */,
 				40FF6D6819BA09A5008119A3 /* SNPConstraint+SNPCompatibility.m in Sources */,
+				408D394119C12EF00001981F /* PostItemProvider.swift in Sources */,
 				40778B9C19B15F9C00F8EE13 /* Post.swift in Sources */,
 				40FF6D5819BA098F008119A3 /* Constraint+SNPCompatibility.swift in Sources */,
 				40FF6D5B19BA098F008119A3 /* LayoutConstraint.swift in Sources */,
@@ -582,7 +590,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = Highball/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -607,7 +615,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = Highball/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

@@ -11,6 +11,7 @@ import UIKit
 class PhotosetRowTableViewCell: UITableViewCell {
 
     var imageViews: Array<UIImageView>?
+    var shareHandler: ((UIImage) -> ())?
     
     var contentWidth: CGFloat? {
         didSet {
@@ -76,6 +77,7 @@ class PhotosetRowTableViewCell: UITableViewCell {
                     imageView.sd_cancelCurrentImageLoad()
                     imageView.sd_cancelCurrentAnimationImagesLoad()
                     imageView.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "Placeholder"))
+                    imageView.userInteractionEnabled = true
                     
                     lastImageView = imageView
                 }
@@ -85,4 +87,10 @@ class PhotosetRowTableViewCell: UITableViewCell {
         }
     }
 
+    func imageAtPoint(point: CGPoint) -> UIImage? {
+        if let imageView = self.hitTest(point, withEvent: nil) as? UIImageView {
+            return imageView.image
+        }
+        return nil
+    }
 }

@@ -33,7 +33,9 @@ enum AudioRow: Int {
     case Caption
 }
 
-class MainViewController: UITableViewController, UIViewControllerTransitioningDelegate, UIWebViewDelegate {
+class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate, UIWebViewDelegate {
+    private var tableView: UITableView!
+
     private let postHeaderViewIdentifier = "postHeaderViewIdentifier"
     private let photosetRowTableViewCellIdentifier = "photosetRowTableViewCellIdentifier"
     private let contentTableViewCellIdentifier = "contentTableViewCellIdentifier"
@@ -42,6 +44,10 @@ class MainViewController: UITableViewController, UIViewControllerTransitioningDe
     private let postDialogueEntryTableViewCellIdentifier = "postDialogueEntryTableViewCellIdentifier"
 
     private let requiredRefreshDistance: CGFloat = 60
+
+    private var longPressGestureRecognizer: UILongPressGestureRecognizer!
+    private var panGestureRecognizer: UIPanGestureRecognizer!
+    private var reblogViewController: QuickReblogViewController?
 
     var bodyWebViewCache: Dictionary<Int, UIWebView>!
     var bodyHeightCache: Dictionary<Int, CGFloat>!
@@ -125,27 +131,6 @@ class MainViewController: UITableViewController, UIViewControllerTransitioningDe
         }
     }
 
-//    func reblogPost(post: Post, type: ReblogType) {
-//        var parameters = [ "id" : post.id.description, "reblog_key" : post.reblogKey ]
-//
-//        switch type {
-//        case .Reblog:
-//            parameters["state"] = "published"
-//        case .Queue:
-//            parameters["state"] = "queue"
-//        case .Schedule:
-//            return
-//        }
-//
-//        TMAPIClient.sharedInstance().reblogPost(self.primaryBlog.name, parameters: parameters) { response, error in
-//            if let e = error {
-//                println(e)
-//            } else {
-//                println("reblog success")
-//            }
-//        }
-//    }
-
     func applicationDidBecomeActive(notification: NSNotification!) {
         self.login()
     }
@@ -161,6 +146,10 @@ class MainViewController: UITableViewController, UIViewControllerTransitioningDe
         self.secondaryBodyWebViewCache = Dictionary<Int, UIWebView>()
         self.secondaryBodyHeightCache = Dictionary<Int, CGFloat>()
 
+        self.tableView = UITableView()
+        self.tableView.dataSource = self
+        self.tableView.delegate = self
+        self.tableView.allowsSelection = false
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         self.tableView.sectionHeaderHeight = 50
         self.tableView.sectionFooterHeight = 50
@@ -174,9 +163,30 @@ class MainViewController: UITableViewController, UIViewControllerTransitioningDe
         self.tableView.registerClass(PostDialogueEntryTableViewCell.classForCoder(), forCellReuseIdentifier: postDialogueEntryTableViewCellIdentifier)
         self.tableView.registerClass(PostHeaderView.classForCoder(), forHeaderFooterViewReuseIdentifier: postHeaderViewIdentifier)
 
+        self.view.addSubview(self.tableView)
+
+        self.tableView.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(self.view.snp_left)
+            make.right.equalTo(self.view.snp_right)
+            make.top.equalTo(self.view.snp_top)
+            make.bottom.equalTo(self.view.snp_bottom)
+        }
+
+        self.longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: Selector("didLongPress:"))
+        self.longPressGestureRecognizer.delegate = self
+        self.view.addGestureRecognizer(self.longPressGestureRecognizer)
+
+        self.panGestureRecognizer = UIPanGestureRecognizer(target: self, action: Selector("didPan:"))
+        self.panGestureRecognizer.delegate = self
+        self.view.addGestureRecognizer(self.panGestureRecognizer)
+
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("applicationDidBecomeActive:"), name: UIApplicationDidBecomeActiveNotification, object: nil)
     }
-    
+
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
@@ -201,8 +211,8 @@ class MainViewController: UITableViewController, UIViewControllerTransitioningDe
             }
 
             for post in posts {
-                if let content = post.htmlBodyWithWidth(self.view.frame.size.width) {
-                    let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 1))
+                if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
+                    let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1))
                     let htmlString = content
 
                     webView.delegate = self
@@ -211,8 +221,8 @@ class MainViewController: UITableViewController, UIViewControllerTransitioningDe
                     self.bodyWebViewCache[post.id] = webView
                 }
 
-                if let content = post.htmlSecondaryBodyWithWidth(self.view.frame.size.width) {
-                    let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 1))
+                if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.size.width) {
+                    let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1))
                     let htmlString = content
 
                     webView.delegate = self
@@ -252,8 +262,8 @@ class MainViewController: UITableViewController, UIViewControllerTransitioningDe
                     }
                     
                     for post in posts {
-                        if let content = post.htmlBodyWithWidth(self.view.frame.size.width) {
-                            let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 1))
+                        if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
+                            let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1))
                             let htmlString = content
                             
                             webView.delegate = self
@@ -291,19 +301,100 @@ class MainViewController: UITableViewController, UIViewControllerTransitioningDe
             }
         }
 
-        self.tableView?.reloadData()
+        self.tableView.reloadData()
+    }
+
+    func didLongPress(sender: UILongPressGestureRecognizer) {
+        if sender.state == UIGestureRecognizerState.Began {
+            self.tableView.scrollEnabled = false
+            let point = sender.locationInView(self.navigationController!.view)
+            let tableViewPoint = sender.locationInView(self.tableView)
+            if let indexPath = self.tableView.indexPathForRowAtPoint(tableViewPoint) {
+                if let cell = self.tableView.cellForRowAtIndexPath(indexPath) {
+                    let viewController = QuickReblogViewController()
+                    
+                    viewController.startingPoint = point
+                    viewController.transitioningDelegate = self
+                    viewController.modalPresentationStyle = UIModalPresentationStyle.Custom
+                    
+                    viewController.view.bounds = self.navigationController!.view.bounds
+                    
+                    self.navigationController!.view.addSubview(viewController.view)
+                    
+                    viewController.view.layoutIfNeeded()
+                    viewController.viewDidAppear(false)
+                    
+                    self.reblogViewController = viewController
+                }
+            }
+        } else if sender.state == UIGestureRecognizerState.Ended {
+            self.tableView.scrollEnabled = true
+
+            if let viewController = self.reblogViewController {
+                let point = sender.locationInView(self.navigationController!.view)
+                let tableViewPoint = sender.locationInView(self.tableView)
+                if let indexPath = self.tableView.indexPathForRowAtPoint(tableViewPoint) {
+                    if let cell = self.tableView.cellForRowAtIndexPath(indexPath) {
+                        let post = self.posts[indexPath.section]
+
+                        if let quickReblogAction = viewController.reblogAction() {
+                            switch quickReblogAction {
+                            case .Reblog(let reblogType):
+                                let reblogViewController = ReblogViewController()
+
+                                reblogViewController.reblogType = reblogType
+                                reblogViewController.post = post
+                                reblogViewController.blog = self.primaryBlog
+                                reblogViewController.transitioningDelegate = self
+                                reblogViewController.modalPresentationStyle = UIModalPresentationStyle.Custom
+
+                                self.presentViewController(reblogViewController, animated: true, completion: nil)
+                            case .Share:
+                                let postItemProvider = PostItemProvider(placeholderItem: "")
+
+                                postItemProvider.post = post
+
+                                var activityItems: Array<UIActivityItemProvider> = [ postItemProvider ]
+                                if let photosetCell = cell as? PhotosetRowTableViewCell {
+                                    if let image = photosetCell.imageAtPoint(self.view.convertPoint(point, toView: photosetCell)) {
+                                        let imageItemProvider = ImageItemProvider(placeholderItem: image)
+                                        
+                                        imageItemProvider.image = image
+                                        
+                                        activityItems.append(imageItemProvider)
+                                    }
+                                }
+
+                                let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+                                self.presentViewController(activityViewController, animated: true, completion: nil)
+                            }
+                        }
+                    }
+                }
+
+                viewController.view.removeFromSuperview()
+            }
+
+            self.reblogViewController = nil
+        }
+    }
+
+    func didPan(sender: UIPanGestureRecognizer) {
+        if let viewController = self.reblogViewController {
+            viewController.updateWithPoint(sender.locationInView(viewController.view))
+        }
     }
 
     // MARK: UITableViewDataSource
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         if let posts = self.posts {
             return posts.count
         }
         return 0
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let post = self.posts[section]
         switch post.type {
         case "photo":
@@ -332,7 +423,7 @@ class MainViewController: UITableViewController, UIViewControllerTransitioningDe
         }
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let post = posts[indexPath.section]
         switch post.type {
         case "photo":
@@ -426,42 +517,16 @@ class MainViewController: UITableViewController, UIViewControllerTransitioningDe
 
     // MARK: UITableViewDelegate
 
-    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let post = posts[section]
         let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(postHeaderViewIdentifier) as PostHeaderView
 
         view.post = post
 
-        weak var weakSelf = self
-
-        view.quickReblogHandler = { sender in
-            if let strongSelf = weakSelf {
-                let startingPoint = sender.superview!.convertPoint(sender.center, toView: strongSelf.navigationController!.view)
-                let viewController = QuickReblogViewController()
-
-                viewController.startingPoint = startingPoint
-                viewController.transitioningDelegate = strongSelf
-                viewController.modalPresentationStyle = UIModalPresentationStyle.Custom
-
-                strongSelf.presentViewController(viewController, animated: true, completion: nil)
-            }
-        }
-
-        view.reblogHandler = { sender in
-            if let strongSelf = weakSelf {
-                let viewController = ReblogViewController()
-
-                viewController.transitioningDelegate = strongSelf
-                viewController.modalPresentationStyle = UIModalPresentationStyle.Custom
-                
-                strongSelf.presentViewController(viewController, animated: true, completion: nil)
-            }
-        }
-
         return view
     }
 
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         let post = posts[indexPath.section]
         switch post.type {
         case "photo":
@@ -568,7 +633,7 @@ class MainViewController: UITableViewController, UIViewControllerTransitioningDe
         }
     }
 
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if let cell = tableView.cellForRowAtIndexPath(indexPath) {
             if let photosetRowCell = cell as? PhotosetRowTableViewCell {
                 let post = self.posts[indexPath.section]
@@ -583,7 +648,7 @@ class MainViewController: UITableViewController, UIViewControllerTransitioningDe
 
     // MARK: UIScrollViewDelegate
 
-    override func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(scrollView: UIScrollView) {
         let distanceFromBottom = scrollView.contentSize.height - scrollView.frame.size.height - scrollView.contentOffset.y
 
         if distanceFromBottom < 2000 {
@@ -603,7 +668,7 @@ class MainViewController: UITableViewController, UIViewControllerTransitioningDe
         }
     }
 
-    override func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         let distanceFromTop = scrollView.contentOffset.y + scrollView.contentInset.top
         if -distanceFromTop > self.requiredRefreshDistance {
             self.loadTop()
