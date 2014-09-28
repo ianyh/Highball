@@ -17,6 +17,7 @@
 #import <pop/POP.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <TMTumblrSDK/TMAPIClient.h>
+#import <WCFastCell/WCFastCell.h>
 #import <VBFPopFlatButton/VBFPopFlatButton.h>
 #import "SNPConstraint.h"
 #import "SNPConstraintMaker.h"

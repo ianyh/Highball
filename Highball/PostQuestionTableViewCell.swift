@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PostQuestionTableViewCell: UITableViewCell {
+class PostQuestionTableViewCell: WCFastCell {
     var bubbleView: UIView!
     var askerLabel: UILabel!
     var contentLabel: UILabel!

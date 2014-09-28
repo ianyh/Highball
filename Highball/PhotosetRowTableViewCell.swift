@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PhotosetRowTableViewCell: UITableViewCell {
+class PhotosetRowTableViewCell: WCFastCell {
 
     var imageViews: Array<UIImageView>?
     var shareHandler: ((UIImage) -> ())?

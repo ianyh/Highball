@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PostLinkTableViewCell: UITableViewCell {
+class PostLinkTableViewCell: WCFastCell {
 
     var bubbleView: UIView!
     var titleLabel: UILabel!

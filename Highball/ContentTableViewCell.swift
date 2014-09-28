@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ContentTableViewCell: UITableViewCell {
+class ContentTableViewCell: WCFastCell {
     var contentWebView: UIWebView!
     var content: String? {
         didSet {

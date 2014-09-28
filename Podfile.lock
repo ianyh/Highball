@@ -44,6 +44,7 @@ PODS:
   - TMTumblrSDK/Core (1.0.8)
   - VBFPopFlatButton (0.0.3):
     - pop
+  - WCFastCell (1.1)
 
 DEPENDENCIES:
   - AFNetworking
@@ -53,6 +54,7 @@ DEPENDENCIES:
   - SDWebImage
   - TMTumblrSDK
   - VBFPopFlatButton
+  - WCFastCell
 
 SPEC CHECKSUMS:
   AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
@@ -63,5 +65,6 @@ SPEC CHECKSUMS:
   SDWebImage: 116e88633b5b416ea0ca4b334a4ac59cf72dd38d
   TMTumblrSDK: b9fada23e88b42ade2b492a6db95bfb1dff6304b
   VBFPopFlatButton: baae193549b343bad2e7c8936c32cee0f9b17f4b
+  WCFastCell: 8a9c6507a2a9d3eae9959dd3458a11ba5560503e
 
 COCOAPODS: 0.34.1

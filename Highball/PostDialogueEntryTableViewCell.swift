@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PostDialogueEntryTableViewCell: UITableViewCell {
+class PostDialogueEntryTableViewCell: WCFastCell {
 
     var contentLabel: UILabel!
 
