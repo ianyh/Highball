@@ -18,6 +18,7 @@ class Post {
     let type: String!
     let blogName: String!
     let reblogKey: String!
+    let shortURLString: String!
 
     private let json: JSONValue!
 
@@ -27,6 +28,7 @@ class Post {
         self.type = json["type"].string!
         self.blogName = json["blog_name"].string!
         self.reblogKey = json["reblog_key"].string!
+        self.shortURLString = json["short_url"].string!
     }
 
     func photos() -> (Array<PostPhoto>) {
