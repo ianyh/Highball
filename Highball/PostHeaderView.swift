@@ -56,7 +56,7 @@ class PostHeaderView: UITableViewHeaderFooterView {
         self.avatarImageView.clipsToBounds = true
 
         self.usernameLabel = UILabel()
-        self.usernameLabel.font = UIFont.systemFontOfSize(14)
+        self.usernameLabel.font = UIFont.boldSystemFontOfSize(16)
         self.usernameLabel.textColor = UIColor.whiteColor()
 
         self.contentView.addSubview(self.avatarImageView)
@@ -70,7 +70,7 @@ class PostHeaderView: UITableViewHeaderFooterView {
         }
 
         self.usernameLabel.snp_makeConstraints { (maker) -> () in
-            maker.top.equalTo(self.contentView.snp_top).offset(6)
+            maker.centerY.equalTo(self.contentView.snp_centerY)
             maker.left.equalTo(self.avatarImageView.snp_right).offset(4)
             maker.height.equalTo(30)
         }
