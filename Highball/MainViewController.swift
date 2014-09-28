@@ -8,32 +8,32 @@
 
 import UIKit
 
-enum AnswerRow: Int {
-    case Question
-    case Answer
-}
-
-enum QuoteRow: Int {
-    case Quote
-    case Source
-}
-
-enum LinkRow: Int {
-    case Link
-    case Description
-}
-
-enum VideoRow: Int {
-    case Player
-    case Caption
-}
-
-enum AudioRow: Int {
-    case Player
-    case Caption
-}
-
 class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate, UIWebViewDelegate {
+    enum AnswerRow: Int {
+        case Question
+        case Answer
+    }
+    
+    enum QuoteRow: Int {
+        case Quote
+        case Source
+    }
+    
+    enum LinkRow: Int {
+        case Link
+        case Description
+    }
+    
+    enum VideoRow: Int {
+        case Player
+        case Caption
+    }
+    
+    enum AudioRow: Int {
+        case Player
+        case Caption
+    }
+
     private var tableView: UITableView!
 
     private let postHeaderViewIdentifier = "postHeaderViewIdentifier"
@@ -174,6 +174,7 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITable
 
         self.longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: Selector("didLongPress:"))
         self.longPressGestureRecognizer.delegate = self
+        self.longPressGestureRecognizer.minimumPressDuration = 0.3
         self.view.addGestureRecognizer(self.longPressGestureRecognizer)
 
         self.panGestureRecognizer = UIPanGestureRecognizer(target: self, action: Selector("didPan:"))

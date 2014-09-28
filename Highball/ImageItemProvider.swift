@@ -12,9 +12,6 @@ class ImageItemProvider: UIActivityItemProvider {
     var image: UIImage?
 
     override func activityViewController(activityViewController: UIActivityViewController, itemForActivityType activityType: String) -> AnyObject? {
-        if activityType == UIActivityTypeSaveToCameraRoll {
-            return self.image
-        }
-        return nil
+        return self.image
     }
 }

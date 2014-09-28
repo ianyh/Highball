@@ -10,4 +10,8 @@ import UIKit
 
 class PostItemProvider: UIActivityItemProvider {
     var post: Post!
+
+    override func activityViewController(activityViewController: UIActivityViewController, itemForActivityType activityType: String) -> AnyObject? {
+        return post.urlString()
+    }
 }
