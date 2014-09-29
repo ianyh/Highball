@@ -13,10 +13,13 @@
 #import <AFNetworking/AFNetworking.h>
 #import <Colours/Colours.h>
 #import <Crashlytics/Crashlytics.h>
+#import <FLAnimatedImage/FLAnimatedImage.h>
+#import <FLAnimatedImage/FLAnimatedImageView.h>
 #import <M13ProgressSuite/UINavigationController+M13ProgressViewBar.h>
 #import <pop/POP.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <TMTumblrSDK/TMAPIClient.h>
+#import <TMCache/TMCache.h>
 #import <WCFastCell/WCFastCell.h>
 #import <VBFPopFlatButton/VBFPopFlatButton.h>
 #import "SNPConstraint.h"

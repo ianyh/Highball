@@ -10,7 +10,7 @@ import UIKit
 
 class PhotosetRowTableViewCell: WCFastCell {
 
-    var imageViews: Array<UIImageView>?
+    var imageViews: Array<FLAnimatedImageView>?
     var shareHandler: ((UIImage) -> ())?
     
     var contentWidth: CGFloat? {
@@ -29,9 +29,6 @@ class PhotosetRowTableViewCell: WCFastCell {
 
         if let imageViews = self.imageViews {
             for imageView in imageViews {
-                imageView.sd_cancelCurrentImageLoad()
-                imageView.sd_cancelCurrentAnimationImagesLoad()
-                imageView.image = nil
                 imageView.removeFromSuperview()
             }
         }
@@ -42,19 +39,19 @@ class PhotosetRowTableViewCell: WCFastCell {
             if let contentWidth = self.contentWidth {
                 if let imageViews = self.imageViews {
                     for imageView in imageViews {
-                        imageView.sd_cancelCurrentImageLoad()
-                        imageView.sd_cancelCurrentAnimationImagesLoad()
-                        imageView.image = nil
                         imageView.removeFromSuperview()
                     }
                 }
-                
+
+                let imageManager = SDWebImageManager.sharedManager()
+                let imageDownloader = SDWebImageDownloader.sharedDownloader()
                 let widthRatio: Float = 1.0 / Float(images.count)
-                var imageViews = Array<UIImageView>()
+                var imageViews = Array<FLAnimatedImageView>()
                 var lastImageView: UIImageView?
                 for image in images {
-                    let imageView = UIImageView()
+                    let imageView = FLAnimatedImageView()
                     let imageURL = image.urlWithWidth(contentWidth)
+                    let cacheKey = imageManager.cacheKeyForURL(imageURL)
                     
                     self.contentView.addSubview(imageView)
                     
@@ -74,10 +71,24 @@ class PhotosetRowTableViewCell: WCFastCell {
                         }
                     }
 
-                    imageView.sd_cancelCurrentImageLoad()
-                    imageView.sd_cancelCurrentAnimationImagesLoad()
                     imageView.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "Placeholder"))
+                    imageView.image = UIImage(named: "Placeholder")
                     imageView.userInteractionEnabled = true
+
+                    if imageURL.pathExtension == "gif" {
+                        if let data = TMCache.sharedCache().objectForKey(imageURL.absoluteString) as? NSData {
+                            imageView.animatedImage = FLAnimatedImage(animatedGIFData: data)
+                        } else {
+                            imageDownloader.downloadImageWithURL(imageURL, options: SDWebImageDownloaderOptions.UseNSURLCache, progress: nil, completed: { (image, data, error, finished) -> Void in
+                                if finished && error == nil {
+                                    imageView.animatedImage = FLAnimatedImage(animatedGIFData: data)
+                                    TMCache.sharedCache().setObject(data, forKey: imageURL.absoluteString)
+                                }
+                            })
+                        }
+                    } else {
+                        imageView.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "Placeholder"))
+                    }
                     
                     lastImageView = imageView
                 }
