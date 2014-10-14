@@ -29,9 +29,13 @@ class PhotosetRowTableViewCell: WCFastCell {
 
         if let imageViews = self.imageViews {
             for imageView in imageViews {
+                imageView.image = nil
+                imageView.animatedImage = nil
                 imageView.removeFromSuperview()
             }
         }
+
+        self.imageViews = nil
     }
 
     func updateImages() {
@@ -39,6 +43,8 @@ class PhotosetRowTableViewCell: WCFastCell {
             if let contentWidth = self.contentWidth {
                 if let imageViews = self.imageViews {
                     for imageView in imageViews {
+                        imageView.image = nil
+                        imageView.animatedImage = nil
                         imageView.removeFromSuperview()
                     }
                 }
@@ -71,7 +77,6 @@ class PhotosetRowTableViewCell: WCFastCell {
                         }
                     }
 
-                    imageView.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "Placeholder"))
                     imageView.image = UIImage(named: "Placeholder")
                     imageView.userInteractionEnabled = true
 
@@ -91,6 +96,8 @@ class PhotosetRowTableViewCell: WCFastCell {
                     }
                     
                     lastImageView = imageView
+
+                    imageViews.append(imageView)
                 }
                 
                 self.imageViews = imageViews
