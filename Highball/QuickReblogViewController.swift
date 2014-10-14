@@ -16,7 +16,7 @@ enum QuickReblogAction {
 class QuickReblogViewController: UIViewController {
     var startingPoint: CGPoint!
 
-    private let radius: CGFloat = 55
+    private let radius: CGFloat = 70
 
     private var backgroundButton: UIButton!
 
@@ -29,11 +29,23 @@ class QuickReblogViewController: UIViewController {
     private var selectedButton: UIButton? {
         didSet {
             for button in [ self.reblogButton, self.queueButton, self.scheduleButton ] {
-                button.tintColor = UIColor.whiteColor()
-            }
-
-            if let button = self.selectedButton {
-                button.tintColor = UIColor.pastelGreenColor()
+                if button == self.selectedButton {
+                    let scaleAnimation = POPBasicAnimation(propertyNamed: kPOPViewScaleXY)
+                    scaleAnimation.toValue = NSValue(CGSize: CGSize(width: 1.2, height: 1.2))
+                    scaleAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionDefault)
+                    button.pop_removeAnimationForKey("selectedScale")
+                    button.pop_addAnimation(scaleAnimation, forKey: "selectedScale")
+                    button.tintColor = UIColor.pastelGreenColor()
+                    button.backgroundColor = UIColor.black75PercentColor()
+                } else {
+                    let scaleAnimation = POPBasicAnimation(propertyNamed: kPOPViewScaleXY)
+                    scaleAnimation.toValue = NSValue(CGSize: CGSize(width: 1, height: 1))
+                    scaleAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionDefault)
+                    button.pop_removeAnimationForKey("selectedScale")
+                    button.pop_addAnimation(scaleAnimation, forKey: "selectedScale")
+                    button.tintColor = UIColor.whiteColor()
+                    button.backgroundColor = UIColor.blackColor()
+                }
             }
         }
     }
@@ -129,22 +141,34 @@ class QuickReblogViewController: UIViewController {
         self.startButton.sizeToFit()
 
         self.reblogButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        self.reblogButton.setImage(UIImage(named: "Reblog"), forState: UIControlState.Normal)
+        self.reblogButton.setTitle("Reblog", forState: UIControlState.Normal)
+        self.reblogButton.titleEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        self.reblogButton.titleLabel?.font = UIFont.boldSystemFontOfSize(20)
         self.reblogButton.tintColor = UIColor.whiteColor()
+        self.reblogButton.backgroundColor = UIColor.blackColor()
+        self.reblogButton.layer.cornerRadius = 5
         self.reblogButton.layer.opacity = 0
         self.reblogButton.addTarget(self, action: Selector("reblog:"), forControlEvents: UIControlEvents.TouchUpInside)
         self.reblogButton.sizeToFit()
 
         self.queueButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        self.queueButton.setImage(UIImage(named: "Queue"), forState: UIControlState.Normal)
+        self.queueButton.setTitle("Queue", forState: UIControlState.Normal)
+        self.queueButton.titleEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        self.queueButton.titleLabel?.font = UIFont.boldSystemFontOfSize(20)
         self.queueButton.tintColor = UIColor.whiteColor()
+        self.queueButton.backgroundColor = UIColor.blackColor()
+        self.queueButton.layer.cornerRadius = 5
         self.queueButton.layer.opacity = 0
         self.queueButton.addTarget(self, action: Selector("queue:"), forControlEvents: UIControlEvents.TouchUpInside)
         self.queueButton.sizeToFit()
 
         self.scheduleButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        self.scheduleButton.setImage(UIImage(named: "Schedule"), forState: UIControlState.Normal)
+        self.scheduleButton.setTitle("Share", forState: UIControlState.Normal)
+        self.scheduleButton.titleEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        self.scheduleButton.titleLabel?.font = UIFont.boldSystemFontOfSize(20)
         self.scheduleButton.tintColor = UIColor.whiteColor()
+        self.scheduleButton.backgroundColor = UIColor.blackColor()
+        self.scheduleButton.layer.cornerRadius = 5
         self.scheduleButton.layer.opacity = 0
         self.scheduleButton.addTarget(self, action: Selector("schedule:"), forControlEvents: UIControlEvents.TouchUpInside)
         self.scheduleButton.sizeToFit()
@@ -169,20 +193,20 @@ class QuickReblogViewController: UIViewController {
 
         self.reblogButton.snp_makeConstraints { (maker) -> () in
             maker.center.equalTo(self.startButton.snp_center)
-            maker.height.equalTo(40)
-            maker.width.equalTo(40)
+            maker.height.equalTo(60)
+            maker.width.equalTo(120)
         }
 
         self.queueButton.snp_makeConstraints { (maker) -> () in
             maker.center.equalTo(self.startButton.snp_center)
-            maker.height.equalTo(40)
-            maker.width.equalTo(40)
+            maker.height.equalTo(60)
+            maker.width.equalTo(120)
         }
 
         self.scheduleButton.snp_makeConstraints { (maker) -> () in
             maker.center.equalTo(self.startButton.snp_center)
-            maker.height.equalTo(40)
-            maker.width.equalTo(40)
+            maker.height.equalTo(60)
+            maker.width.equalTo(120)
         }
 
         var startButtonFrame = self.startButton.frame
@@ -199,7 +223,7 @@ class QuickReblogViewController: UIViewController {
     func updateWithPoint(point: CGPoint) {
         if let view = self.view.hitTest(point, withEvent: nil) {
             if let button = view as? UIButton {
-                if button != self.startButton {
+                if button != self.selectedButton {
                     self.selectedButton = button
                 }
             }
