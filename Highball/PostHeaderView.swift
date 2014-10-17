@@ -19,12 +19,17 @@ class PostHeaderView: UITableViewHeaderFooterView {
 
                 self.avatarImageView.image = UIImage(named: "Placeholder")
 
-                TMAPIClient.sharedInstance().avatar(blogName, size: 40) { (response: AnyObject!, error: NSError!) in
-                    if let e = error {
-                        println(e)
-                    } else {
-                        let data = response as NSData!
-                        self.avatarImageView.image = UIImage(data: data)
+                if let data = TMCache.sharedCache().objectForKey("avatar:\(blogName)") as? NSData {
+                    self.avatarImageView.image = UIImage(data: data)
+                } else {
+                    TMAPIClient.sharedInstance().avatar(blogName, size: 40) { (response: AnyObject!, error: NSError!) in
+                        if let e = error {
+                            println(e)
+                        } else {
+                            let data = response as NSData!
+                            TMCache.sharedCache().setObject(data, forKey: "avatar:\(blogName)")
+                            self.avatarImageView.image = UIImage(data: data)
+                        }
                     }
                 }
                 
