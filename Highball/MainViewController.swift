@@ -8,40 +8,40 @@
 
 import UIKit
 
+enum AnswerRow: Int {
+    case Question
+    case Answer
+}
+
+enum QuoteRow: Int {
+    case Quote
+    case Source
+}
+
+enum LinkRow: Int {
+    case Link
+    case Description
+}
+
+enum VideoRow: Int {
+    case Player
+    case Caption
+}
+
+enum AudioRow: Int {
+    case Player
+    case Caption
+}
+
+let postHeaderViewIdentifier = "postHeaderViewIdentifier"
+let photosetRowTableViewCellIdentifier = "photosetRowTableViewCellIdentifier"
+let contentTableViewCellIdentifier = "contentTableViewCellIdentifier"
+let postQuestionTableViewCellIdentifier = "postQuestionTableViewCellIdentifier"
+let postLinkTableViewCellIdentifier = "postLinkTableViewCellIdentifier"
+let postDialogueEntryTableViewCellIdentifier = "postDialogueEntryTableViewCellIdentifier"
+
 class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate, UIWebViewDelegate {
-    enum AnswerRow: Int {
-        case Question
-        case Answer
-    }
-    
-    enum QuoteRow: Int {
-        case Quote
-        case Source
-    }
-    
-    enum LinkRow: Int {
-        case Link
-        case Description
-    }
-    
-    enum VideoRow: Int {
-        case Player
-        case Caption
-    }
-    
-    enum AudioRow: Int {
-        case Player
-        case Caption
-    }
-
     private var tableView: UITableView!
-
-    private let postHeaderViewIdentifier = "postHeaderViewIdentifier"
-    private let photosetRowTableViewCellIdentifier = "photosetRowTableViewCellIdentifier"
-    private let contentTableViewCellIdentifier = "contentTableViewCellIdentifier"
-    private let postQuestionTableViewCellIdentifier = "postQuestionTableViewCellIdentifier"
-    private let postLinkTableViewCellIdentifier = "postLinkTableViewCellIdentifier"
-    private let postDialogueEntryTableViewCellIdentifier = "postDialogueEntryTableViewCellIdentifier"
 
     private let requiredRefreshDistance: CGFloat = 60
 
@@ -231,8 +231,6 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITable
         
                     self.secondaryBodyWebViewCache[post.id] = webView
                 }
-                    
-//                println(post.json)
             }
 
             self.posts = posts
@@ -272,8 +270,6 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITable
                             
                             self.bodyWebViewCache[post.id] = webView
                         }
-                        
-//                        println(post.json)
                     }
 
                     self.posts.extend(posts)
@@ -341,13 +337,13 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITable
                         if let quickReblogAction = viewController.reblogAction() {
                             switch quickReblogAction {
                             case .Reblog(let reblogType):
-                                let reblogViewController = ReblogViewController()
+                                let reblogViewController = TextReblogViewController()
 
                                 reblogViewController.reblogType = reblogType
                                 reblogViewController.post = post
-                                reblogViewController.blog = self.primaryBlog
-                                reblogViewController.transitioningDelegate = self
-                                reblogViewController.modalPresentationStyle = UIModalPresentationStyle.Custom
+                                reblogViewController.blogName = self.primaryBlog.name
+                                reblogViewController.bodyHeightCache = self.bodyHeightCache
+                                reblogViewController.secondaryBodyHeightCache = self.secondaryBodyHeightCache
 
                                 self.presentViewController(reblogViewController, animated: true, completion: nil)
                             case .Share:

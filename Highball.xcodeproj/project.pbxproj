@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		400FE01319B6A33200F72C3C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 400FE01219B6A33200F72C3C /* libPods.a */; };
 		401ED97F19AEA62100457377 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401ED97E19AEA62100457377 /* SwiftyJSON.swift */; };
+		402D979919F1E442003DCD55 /* TextReblogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402D979819F1E442003DCD55 /* TextReblogViewController.swift */; };
 		403F53DB19AECFEF00FF8F3B /* PhotosetRowTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403F53DA19AECFEF00FF8F3B /* PhotosetRowTableViewCell.swift */; };
 		403F53DD19AFB5DF00FF8F3B /* ContentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403F53DC19AFB5DF00FF8F3B /* ContentTableViewCell.swift */; };
 		403F53DF19AFCEB800FF8F3B /* String+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403F53DE19AFCEB800FF8F3B /* String+HTML.swift */; };
@@ -71,6 +72,7 @@
 		13500F55524D7A285BCE2BD6 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		400FE01219B6A33200F72C3C /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Debug-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		401ED97E19AEA62100457377 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftyJSON.swift; path = SwiftyJSON/SwiftyJSON/SwiftyJSON.swift; sourceTree = "<group>"; };
+		402D979819F1E442003DCD55 /* TextReblogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextReblogViewController.swift; sourceTree = "<group>"; };
 		403F53DA19AECFEF00FF8F3B /* PhotosetRowTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosetRowTableViewCell.swift; sourceTree = "<group>"; };
 		403F53DC19AFB5DF00FF8F3B /* ContentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentTableViewCell.swift; sourceTree = "<group>"; };
 		403F53DE19AFCEB800FF8F3B /* String+HTML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+HTML.swift"; sourceTree = "<group>"; };
@@ -245,6 +247,7 @@
 				406121CB19BF2AC900107972 /* ReblogViewController.swift */,
 				408D393E19C12E550001981F /* ImageItemProvider.swift */,
 				408D394019C12EF00001981F /* PostItemProvider.swift */,
+				402D979819F1E442003DCD55 /* TextReblogViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -472,6 +475,7 @@
 				40FF6D6819BA09A5008119A3 /* SNPConstraint+SNPCompatibility.m in Sources */,
 				408D394119C12EF00001981F /* PostItemProvider.swift in Sources */,
 				40778B9C19B15F9C00F8EE13 /* Post.swift in Sources */,
+				402D979919F1E442003DCD55 /* TextReblogViewController.swift in Sources */,
 				40FF6D5819BA098F008119A3 /* Constraint+SNPCompatibility.swift in Sources */,
 				40FF6D5B19BA098F008119A3 /* LayoutConstraint.swift in Sources */,
 				401ED97F19AEA62100457377 /* SwiftyJSON.swift in Sources */,

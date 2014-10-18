@@ -18,6 +18,7 @@
 #import <M13ProgressSuite/UINavigationController+M13ProgressViewBar.h>
 #import <pop/POP.h>
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "SLKTextViewController.h"
 #import <TMTumblrSDK/TMAPIClient.h>
 #import <TMCache/TMCache.h>
 #import <WCFastCell/WCFastCell.h>
