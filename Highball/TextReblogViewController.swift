@@ -76,6 +76,11 @@ class TextReblogViewController: SLKTextViewController {
             parameters["state"] = "queue"
         }
 
+        let text = self.textView.text
+        if countElements(text) > 0 {
+            parameters["comment"] = text
+        }
+
         self.reblogging = true
 
         TMAPIClient.sharedInstance().reblogPost(self.blogName, parameters: parameters) { response, error in
