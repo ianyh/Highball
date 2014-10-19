@@ -143,48 +143,20 @@ class QuickReblogViewController: UIViewController {
         self.startButton.sizeToFit()
 
         self.reblogButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        self.reblogButton.setTitle("Reblog", forState: UIControlState.Normal)
-        self.reblogButton.titleEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        self.reblogButton.titleLabel?.font = UIFont.boldSystemFontOfSize(20)
-        self.reblogButton.tintColor = UIColor.whiteColor()
-        self.reblogButton.backgroundColor = backgroundColorForButton(self.reblogButton)
-        self.reblogButton.layer.cornerRadius = 5
-        self.reblogButton.layer.opacity = 0
+        self.reblogButton.setTitle("R", forState: UIControlState.Normal)
         self.reblogButton.addTarget(self, action: Selector("reblog:"), forControlEvents: UIControlEvents.TouchUpInside)
-        self.reblogButton.sizeToFit()
 
         self.queueButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        self.queueButton.setTitle("Queue", forState: UIControlState.Normal)
-        self.queueButton.titleEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        self.queueButton.titleLabel?.font = UIFont.boldSystemFontOfSize(20)
-        self.queueButton.tintColor = UIColor.whiteColor()
-        self.queueButton.backgroundColor = backgroundColorForButton(self.queueButton)
-        self.queueButton.layer.cornerRadius = 5
-        self.queueButton.layer.opacity = 0
+        self.queueButton.setTitle("Q", forState: UIControlState.Normal)
         self.queueButton.addTarget(self, action: Selector("queue:"), forControlEvents: UIControlEvents.TouchUpInside)
-        self.queueButton.sizeToFit()
 
         self.shareButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        self.shareButton.setTitle("Share", forState: UIControlState.Normal)
-        self.shareButton.titleEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        self.shareButton.titleLabel?.font = UIFont.boldSystemFontOfSize(20)
-        self.shareButton.tintColor = UIColor.whiteColor()
-        self.shareButton.backgroundColor = backgroundColorForButton(self.shareButton)
-        self.shareButton.layer.cornerRadius = 5
-        self.shareButton.layer.opacity = 0
+        self.shareButton.setTitle("S", forState: UIControlState.Normal)
         self.shareButton.addTarget(self, action: Selector("schedule:"), forControlEvents: UIControlEvents.TouchUpInside)
-        self.shareButton.sizeToFit()
 
         self.likeButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        self.likeButton.setTitle("Like", forState: UIControlState.Normal)
-        self.likeButton.titleEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        self.likeButton.titleLabel?.font = UIFont.boldSystemFontOfSize(20)
-        self.likeButton.tintColor = UIColor.whiteColor()
-        self.likeButton.backgroundColor = backgroundColorForButton(self.likeButton)
-        self.likeButton.layer.cornerRadius = 5
-        self.likeButton.layer.opacity = 0
+        self.likeButton.setTitle("L", forState: UIControlState.Normal)
         self.likeButton.addTarget(self, action: Selector("like:"), forControlEvents: UIControlEvents.TouchUpInside)
-        self.likeButton.sizeToFit()
 
         self.view.addSubview(self.backgroundButton)
         self.view.addSubview(self.startButton)
@@ -205,28 +177,19 @@ class QuickReblogViewController: UIViewController {
             maker.centerY.equalTo(self.view.snp_top).offset(Float(self.startingPoint.y))
         }
 
-        self.reblogButton.snp_makeConstraints { (maker) -> () in
-            maker.center.equalTo(self.startButton.snp_center)
-            maker.height.equalTo(60)
-            maker.width.equalTo(120)
-        }
-
-        self.queueButton.snp_makeConstraints { (maker) -> () in
-            maker.center.equalTo(self.startButton.snp_center)
-            maker.height.equalTo(60)
-            maker.width.equalTo(120)
-        }
-
-        self.shareButton.snp_makeConstraints { (maker) -> () in
-            maker.center.equalTo(self.startButton.snp_center)
-            maker.height.equalTo(60)
-            maker.width.equalTo(120)
-        }
-
-        self.likeButton.snp_makeConstraints { (maker) -> () in
-            maker.center.equalTo(self.startButton.snp_center)
-            maker.height.equalTo(60)
-            maker.width.equalTo(120)
+        for button in [ self.reblogButton, self.queueButton, self.shareButton, self.likeButton ] {
+            button.titleEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+            button.titleLabel?.font = UIFont.boldSystemFontOfSize(20)
+            button.tintColor = UIColor.whiteColor()
+            button.backgroundColor = backgroundColorForButton(self.likeButton)
+            button.layer.cornerRadius = 30
+            button.layer.opacity = 0
+            button.sizeToFit()
+            button.snp_makeConstraints { (maker) -> () in
+                maker.center.equalTo(self.startButton.snp_center)
+                maker.height.equalTo(60)
+                maker.width.equalTo(60)
+            }
         }
 
         var startButtonFrame = self.startButton.frame
