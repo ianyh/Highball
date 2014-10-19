@@ -24,6 +24,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             TMAPIClient.sharedInstance().OAuthTokenSecret = NSUserDefaults.standardUserDefaults().stringForKey("HighballOAuthTokenSecret")
         }
 
+        // Only keep cache for 24 hours
+        TMCache.sharedCache().diskCache.ageLimit = 86400
+
         self.navigationController = UINavigationController(rootViewController: MainViewController())
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         self.window?.rootViewController = self.navigationController
