@@ -364,6 +364,12 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITable
 
                                 let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
                                 self.presentViewController(activityViewController, animated: true, completion: nil)
+                            case .Like:
+                                TMAPIClient.sharedInstance().like("\(post.id)", reblogKey: post.reblogKey, callback: { (response, error) -> Void in
+                                    if let e = error {
+                                        println(e)
+                                    }
+                                })
                             }
                         }
                     }

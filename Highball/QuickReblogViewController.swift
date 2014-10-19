@@ -11,6 +11,7 @@ import UIKit
 enum QuickReblogAction {
     case Reblog(ReblogType)
     case Share
+    case Like
 }
 
 class QuickReblogViewController: UIViewController {
@@ -25,10 +26,11 @@ class QuickReblogViewController: UIViewController {
     private var reblogButton: UIButton!
     private var queueButton: UIButton!
     private var shareButton: UIButton!
+    private var likeButton: UIButton!
 
     private var selectedButton: UIButton? {
         didSet {
-            for button in [ self.reblogButton, self.queueButton, self.shareButton ] {
+            for button in [ self.reblogButton, self.queueButton, self.shareButton, self.likeButton ] {
                 if button == self.selectedButton {
                     let scaleAnimation = POPBasicAnimation(propertyNamed: kPOPViewScaleXY)
                     scaleAnimation.toValue = NSValue(CGSize: CGSize(width: 1.2, height: 1.2))
@@ -56,9 +58,10 @@ class QuickReblogViewController: UIViewController {
             self.reblogButton.layer.pop_removeAllAnimations()
             self.queueButton.layer.pop_removeAllAnimations()
             self.shareButton.layer.pop_removeAllAnimations()
+            self.likeButton.layer.pop_removeAllAnimations()
             
             if self.showingOptions {
-                for button in [ self.reblogButton, self.queueButton, self.shareButton ] {
+                for button in [ self.reblogButton, self.queueButton, self.shareButton, self.likeButton ] {
                     var opacityAnimation = POPSpringAnimation(propertyNamed: kPOPLayerOpacity)
                     opacityAnimation.toValue = 1
                     opacityAnimation.name = "opacity"
@@ -83,10 +86,10 @@ class QuickReblogViewController: UIViewController {
                 
                 let startAngle = CGFloat(M_PI_2) + angleFromTop
                 let endAngle = CGFloat(M_PI + M_PI_2) - angleFromBottom
-                let initialAngle = startAngle + (endAngle - startAngle) / 6
-                let angleInterval = (endAngle - startAngle) / 3
+                let initialAngle = startAngle + (endAngle - startAngle) / 8
+                let angleInterval = (endAngle - startAngle) / 4
                 
-                for (index, button) in enumerate([ self.reblogButton, self.queueButton, self.shareButton ]) {
+                for (index, button) in enumerate([ self.reblogButton, self.queueButton, self.shareButton, self.likeButton ]) {
                     let center = self.startButton.center
                     let angleOffset = angleInterval * CGFloat(index)
                     let angle = initialAngle + angleOffset
@@ -108,7 +111,7 @@ class QuickReblogViewController: UIViewController {
                     button.layer.pop_addAnimation(positionAnimation, forKey: positionAnimation.name)
                 }
             } else {
-                for button in [ self.reblogButton, self.queueButton, self.shareButton ] {
+                for button in [ self.reblogButton, self.queueButton, self.shareButton, self.likeButton ] {
                     var opacityAnimation = POPSpringAnimation(propertyNamed: kPOPLayerOpacity)
                     opacityAnimation.toValue = 0
                     opacityAnimation.name = "opacity"
@@ -173,11 +176,23 @@ class QuickReblogViewController: UIViewController {
         self.shareButton.addTarget(self, action: Selector("schedule:"), forControlEvents: UIControlEvents.TouchUpInside)
         self.shareButton.sizeToFit()
 
+        self.likeButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        self.likeButton.setTitle("Like", forState: UIControlState.Normal)
+        self.likeButton.titleEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        self.likeButton.titleLabel?.font = UIFont.boldSystemFontOfSize(20)
+        self.likeButton.tintColor = UIColor.whiteColor()
+        self.likeButton.backgroundColor = UIColor.blackColor()
+        self.likeButton.layer.cornerRadius = 5
+        self.likeButton.layer.opacity = 0
+        self.likeButton.addTarget(self, action: Selector("like:"), forControlEvents: UIControlEvents.TouchUpInside)
+        self.likeButton.sizeToFit()
+
         self.view.addSubview(self.backgroundButton)
         self.view.addSubview(self.startButton)
         self.view.addSubview(self.reblogButton)
         self.view.addSubview(self.queueButton)
         self.view.addSubview(self.shareButton)
+        self.view.addSubview(self.likeButton)
 
         self.backgroundButton.snp_makeConstraints { maker in
             let insets = UIEdgeInsetsZero
@@ -209,6 +224,12 @@ class QuickReblogViewController: UIViewController {
             maker.width.equalTo(120)
         }
 
+        self.likeButton.snp_makeConstraints { (maker) -> () in
+            maker.center.equalTo(self.startButton.snp_center)
+            maker.height.equalTo(60)
+            maker.width.equalTo(120)
+        }
+
         var startButtonFrame = self.startButton.frame
         startButtonFrame.origin = self.startingPoint
         self.startButton.frame = startButtonFrame
@@ -232,15 +253,19 @@ class QuickReblogViewController: UIViewController {
 
     func reblogAction() -> QuickReblogAction? {
         if let selectedButton = self.selectedButton {
-            if selectedButton == self.reblogButton {
+            switch selectedButton {
+            case self.reblogButton:
                 return QuickReblogAction.Reblog(ReblogType.Reblog)
-            } else if selectedButton == self.queueButton {
+            case self.queueButton:
                 return QuickReblogAction.Reblog(ReblogType.Queue)
-            } else if selectedButton == self.shareButton {
+            case self.shareButton:
                 return QuickReblogAction.Share
+            case self.likeButton:
+                return QuickReblogAction.Like
+            default:
+                return nil
             }
         }
-
         return nil
     }
 }
