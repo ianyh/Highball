@@ -24,11 +24,11 @@ class QuickReblogViewController: UIViewController {
 
     private var reblogButton: UIButton!
     private var queueButton: UIButton!
-    private var scheduleButton: UIButton!
+    private var shareButton: UIButton!
 
     private var selectedButton: UIButton? {
         didSet {
-            for button in [ self.reblogButton, self.queueButton, self.scheduleButton ] {
+            for button in [ self.reblogButton, self.queueButton, self.shareButton ] {
                 if button == self.selectedButton {
                     let scaleAnimation = POPBasicAnimation(propertyNamed: kPOPViewScaleXY)
                     scaleAnimation.toValue = NSValue(CGSize: CGSize(width: 1.2, height: 1.2))
@@ -55,10 +55,10 @@ class QuickReblogViewController: UIViewController {
             self.startButton.layer.pop_removeAllAnimations()
             self.reblogButton.layer.pop_removeAllAnimations()
             self.queueButton.layer.pop_removeAllAnimations()
-            self.scheduleButton.layer.pop_removeAllAnimations()
+            self.shareButton.layer.pop_removeAllAnimations()
             
             if self.showingOptions {
-                for button in [ self.reblogButton, self.queueButton, self.scheduleButton ] {
+                for button in [ self.reblogButton, self.queueButton, self.shareButton ] {
                     var opacityAnimation = POPSpringAnimation(propertyNamed: kPOPLayerOpacity)
                     opacityAnimation.toValue = 1
                     opacityAnimation.name = "opacity"
@@ -86,7 +86,7 @@ class QuickReblogViewController: UIViewController {
                 let initialAngle = startAngle + (endAngle - startAngle) / 6
                 let angleInterval = (endAngle - startAngle) / 3
                 
-                for (index, button) in enumerate([ self.reblogButton, self.queueButton, self.scheduleButton ]) {
+                for (index, button) in enumerate([ self.reblogButton, self.queueButton, self.shareButton ]) {
                     let center = self.startButton.center
                     let angleOffset = angleInterval * CGFloat(index)
                     let angle = initialAngle + angleOffset
@@ -108,7 +108,7 @@ class QuickReblogViewController: UIViewController {
                     button.layer.pop_addAnimation(positionAnimation, forKey: positionAnimation.name)
                 }
             } else {
-                for button in [ self.reblogButton, self.queueButton, self.scheduleButton ] {
+                for button in [ self.reblogButton, self.queueButton, self.shareButton ] {
                     var opacityAnimation = POPSpringAnimation(propertyNamed: kPOPLayerOpacity)
                     opacityAnimation.toValue = 0
                     opacityAnimation.name = "opacity"
@@ -162,22 +162,22 @@ class QuickReblogViewController: UIViewController {
         self.queueButton.addTarget(self, action: Selector("queue:"), forControlEvents: UIControlEvents.TouchUpInside)
         self.queueButton.sizeToFit()
 
-        self.scheduleButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        self.scheduleButton.setTitle("Share", forState: UIControlState.Normal)
-        self.scheduleButton.titleEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        self.scheduleButton.titleLabel?.font = UIFont.boldSystemFontOfSize(20)
-        self.scheduleButton.tintColor = UIColor.whiteColor()
-        self.scheduleButton.backgroundColor = UIColor.blackColor()
-        self.scheduleButton.layer.cornerRadius = 5
-        self.scheduleButton.layer.opacity = 0
-        self.scheduleButton.addTarget(self, action: Selector("schedule:"), forControlEvents: UIControlEvents.TouchUpInside)
-        self.scheduleButton.sizeToFit()
+        self.shareButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        self.shareButton.setTitle("Share", forState: UIControlState.Normal)
+        self.shareButton.titleEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        self.shareButton.titleLabel?.font = UIFont.boldSystemFontOfSize(20)
+        self.shareButton.tintColor = UIColor.whiteColor()
+        self.shareButton.backgroundColor = UIColor.blackColor()
+        self.shareButton.layer.cornerRadius = 5
+        self.shareButton.layer.opacity = 0
+        self.shareButton.addTarget(self, action: Selector("schedule:"), forControlEvents: UIControlEvents.TouchUpInside)
+        self.shareButton.sizeToFit()
 
         self.view.addSubview(self.backgroundButton)
         self.view.addSubview(self.startButton)
         self.view.addSubview(self.reblogButton)
         self.view.addSubview(self.queueButton)
-        self.view.addSubview(self.scheduleButton)
+        self.view.addSubview(self.shareButton)
 
         self.backgroundButton.snp_makeConstraints { maker in
             let insets = UIEdgeInsetsZero
@@ -203,7 +203,7 @@ class QuickReblogViewController: UIViewController {
             maker.width.equalTo(120)
         }
 
-        self.scheduleButton.snp_makeConstraints { (maker) -> () in
+        self.shareButton.snp_makeConstraints { (maker) -> () in
             maker.center.equalTo(self.startButton.snp_center)
             maker.height.equalTo(60)
             maker.width.equalTo(120)
@@ -236,7 +236,7 @@ class QuickReblogViewController: UIViewController {
                 return QuickReblogAction.Reblog(ReblogType.Reblog)
             } else if selectedButton == self.queueButton {
                 return QuickReblogAction.Reblog(ReblogType.Queue)
-            } else if selectedButton == self.scheduleButton {
+            } else if selectedButton == self.shareButton {
                 return QuickReblogAction.Share
             }
         }
