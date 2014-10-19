@@ -54,7 +54,9 @@ class PostHeaderView: UITableViewHeaderFooterView {
     }
 
     func setUpCell() {
-        self.contentView.backgroundColor = UIColor.blackColor()
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Dark)
+        let blurView = UIVisualEffectView(effect: blurEffect)
+        self.backgroundView = blurView
 
         self.avatarImageView = UIImageView()
         self.avatarImageView.layer.cornerRadius = 20
