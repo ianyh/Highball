@@ -11,7 +11,8 @@
 
 @import Foundation;
 #import <AFNetworking/AFNetworking.h>
-#import <Colours/Colours.h>
+#import <ChameleonFramework/Chameleon.h>
+//#import <Colours/Colours.h>
 #import <Crashlytics/Crashlytics.h>
 #import <FLAnimatedImage/FLAnimatedImage.h>
 #import <FLAnimatedImage/FLAnimatedImageView.h>

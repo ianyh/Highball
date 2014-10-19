@@ -19,6 +19,7 @@ class Post {
     let blogName: String!
     let reblogKey: String!
     let shortURLString: String!
+    var liked: Bool!
 
     private let json: JSONValue!
 
@@ -29,6 +30,7 @@ class Post {
         self.blogName = json["blog_name"].string!
         self.reblogKey = json["reblog_key"].string!
         self.shortURLString = json["short_url"].string!
+        self.liked = json["liked"].bool!
     }
 
     func photos() -> (Array<PostPhoto>) {

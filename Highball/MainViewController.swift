@@ -308,9 +308,11 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITable
             let tableViewPoint = sender.locationInView(self.tableView)
             if let indexPath = self.tableView.indexPathForRowAtPoint(tableViewPoint) {
                 if let cell = self.tableView.cellForRowAtIndexPath(indexPath) {
+                    let post = self.posts[indexPath.section]
                     let viewController = QuickReblogViewController()
                     
                     viewController.startingPoint = point
+                    viewController.post = post
                     viewController.transitioningDelegate = self
                     viewController.modalPresentationStyle = UIModalPresentationStyle.Custom
                     
@@ -365,11 +367,23 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITable
                                 let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
                                 self.presentViewController(activityViewController, animated: true, completion: nil)
                             case .Like:
-                                TMAPIClient.sharedInstance().like("\(post.id)", reblogKey: post.reblogKey, callback: { (response, error) -> Void in
-                                    if let e = error {
-                                        println(e)
-                                    }
-                                })
+                                if post.liked.boolValue {
+                                    TMAPIClient.sharedInstance().unlike("\(post.id)", reblogKey: post.reblogKey, callback: { (response, error) -> Void in
+                                        if let e = error {
+                                            println(e)
+                                        } else {
+                                            post.liked = false
+                                        }
+                                    })
+                                } else {
+                                    TMAPIClient.sharedInstance().like("\(post.id)", reblogKey: post.reblogKey, callback: { (response, error) -> Void in
+                                        if let e = error {
+                                            println(e)
+                                        } else {
+                                            post.liked = true
+                                        }
+                                    })
+                                }
                             }
                         }
                     }

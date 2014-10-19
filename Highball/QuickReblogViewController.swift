@@ -16,6 +16,7 @@ enum QuickReblogAction {
 
 class QuickReblogViewController: UIViewController {
     var startingPoint: CGPoint!
+    var post: Post!
 
     private let radius: CGFloat = 70
 
@@ -37,8 +38,8 @@ class QuickReblogViewController: UIViewController {
                     scaleAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionDefault)
                     button.pop_removeAnimationForKey("selectedScale")
                     button.pop_addAnimation(scaleAnimation, forKey: "selectedScale")
-                    button.tintColor = UIColor.pastelGreenColor()
-                    button.backgroundColor = UIColor.black75PercentColor()
+                    button.tintColor = UIColor.flatGreenColor()
+                    button.backgroundColor = self.backgroundColorForButton(button)
                 } else {
                     let scaleAnimation = POPBasicAnimation(propertyNamed: kPOPViewScaleXY)
                     scaleAnimation.toValue = NSValue(CGSize: CGSize(width: 1, height: 1))
@@ -46,7 +47,7 @@ class QuickReblogViewController: UIViewController {
                     button.pop_removeAnimationForKey("selectedScale")
                     button.pop_addAnimation(scaleAnimation, forKey: "selectedScale")
                     button.tintColor = UIColor.whiteColor()
-                    button.backgroundColor = UIColor.blackColor()
+                    button.backgroundColor = backgroundColorForButton(button)
                 }
             }
         }
@@ -148,7 +149,7 @@ class QuickReblogViewController: UIViewController {
         self.reblogButton.titleEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         self.reblogButton.titleLabel?.font = UIFont.boldSystemFontOfSize(20)
         self.reblogButton.tintColor = UIColor.whiteColor()
-        self.reblogButton.backgroundColor = UIColor.blackColor()
+        self.reblogButton.backgroundColor = backgroundColorForButton(self.reblogButton)
         self.reblogButton.layer.cornerRadius = 5
         self.reblogButton.layer.opacity = 0
         self.reblogButton.addTarget(self, action: Selector("reblog:"), forControlEvents: UIControlEvents.TouchUpInside)
@@ -159,7 +160,7 @@ class QuickReblogViewController: UIViewController {
         self.queueButton.titleEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         self.queueButton.titleLabel?.font = UIFont.boldSystemFontOfSize(20)
         self.queueButton.tintColor = UIColor.whiteColor()
-        self.queueButton.backgroundColor = UIColor.blackColor()
+        self.queueButton.backgroundColor = backgroundColorForButton(self.queueButton)
         self.queueButton.layer.cornerRadius = 5
         self.queueButton.layer.opacity = 0
         self.queueButton.addTarget(self, action: Selector("queue:"), forControlEvents: UIControlEvents.TouchUpInside)
@@ -170,7 +171,7 @@ class QuickReblogViewController: UIViewController {
         self.shareButton.titleEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         self.shareButton.titleLabel?.font = UIFont.boldSystemFontOfSize(20)
         self.shareButton.tintColor = UIColor.whiteColor()
-        self.shareButton.backgroundColor = UIColor.blackColor()
+        self.shareButton.backgroundColor = backgroundColorForButton(self.shareButton)
         self.shareButton.layer.cornerRadius = 5
         self.shareButton.layer.opacity = 0
         self.shareButton.addTarget(self, action: Selector("schedule:"), forControlEvents: UIControlEvents.TouchUpInside)
@@ -181,7 +182,7 @@ class QuickReblogViewController: UIViewController {
         self.likeButton.titleEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         self.likeButton.titleLabel?.font = UIFont.boldSystemFontOfSize(20)
         self.likeButton.tintColor = UIColor.whiteColor()
-        self.likeButton.backgroundColor = UIColor.blackColor()
+        self.likeButton.backgroundColor = backgroundColorForButton(self.likeButton)
         self.likeButton.layer.cornerRadius = 5
         self.likeButton.layer.opacity = 0
         self.likeButton.addTarget(self, action: Selector("like:"), forControlEvents: UIControlEvents.TouchUpInside)
@@ -267,5 +268,31 @@ class QuickReblogViewController: UIViewController {
             }
         }
         return nil
+    }
+
+    func backgroundColorForButton(button: UIButton) -> (UIColor) {
+        var backgroundColor: UIColor!
+        switch button {
+        case self.reblogButton:
+            backgroundColor = UIColor.flatBlackColor()
+        case self.queueButton:
+            backgroundColor = UIColor.flatBlackColor()
+        case self.shareButton:
+            backgroundColor = UIColor.flatBlackColor()
+        case self.likeButton:
+            if self.post.liked.boolValue {
+                backgroundColor = UIColor.flatRedColor()
+            } else {
+                backgroundColor = UIColor.flatBlackColor()
+            }
+        default:
+            backgroundColor = UIColor.flatBlackColor()
+        }
+
+        if button == self.selectedButton {
+            return backgroundColor
+        }
+
+        return backgroundColor.colorWithAlphaComponent(0.75)
     }
 }

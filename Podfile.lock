@@ -20,6 +20,7 @@ PODS:
   - AFNetworking/UIKit (2.3.1):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - ChameleonFramework (1.1.1)
   - Colours (5.5.0)
   - FLAnimatedImage (1.0.1)
   - JXHTTP (1.0.0)
@@ -55,6 +56,7 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking
+  - ChameleonFramework
   - Colours
   - FLAnimatedImage
   - M13ProgressSuite
@@ -68,6 +70,7 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
+  ChameleonFramework: c60096686e3771f5d78f26cfbfd08955a8a88cbd
   Colours: 7abeb0fdebe2da3d8bd7305aee0798375f51f5d8
   FLAnimatedImage: a91333b191d57ecf7f86b85bf93145a7f63dafe5
   JXHTTP: dd1fe9c6fa21e7b2be9724ef2be16c66aafc44b4
