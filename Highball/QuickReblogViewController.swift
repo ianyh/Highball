@@ -38,14 +38,20 @@ class QuickReblogViewController: UIViewController {
                     scaleAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionDefault)
                     button.pop_removeAnimationForKey("selectedScale")
                     button.pop_addAnimation(scaleAnimation, forKey: "selectedScale")
-                    button.backgroundColor = self.backgroundColorForButton(button)
+                    let backgroundColorAnimation = POPBasicAnimation(propertyNamed: kPOPViewBackgroundColor)
+                    backgroundColorAnimation.toValue = self.backgroundColorForButton(button).CGColor
+                    button.pop_removeAnimationForKey("selectedBackgroundColor")
+                    button.pop_addAnimation(backgroundColorAnimation, forKey: "selectedBackgroundColor")
                 } else {
                     let scaleAnimation = POPBasicAnimation(propertyNamed: kPOPViewScaleXY)
                     scaleAnimation.toValue = NSValue(CGSize: CGSize(width: 1, height: 1))
                     scaleAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionDefault)
                     button.pop_removeAnimationForKey("selectedScale")
                     button.pop_addAnimation(scaleAnimation, forKey: "selectedScale")
-                    button.backgroundColor = backgroundColorForButton(button)
+                    let backgroundColorAnimation = POPBasicAnimation(propertyNamed: kPOPViewBackgroundColor)
+                    backgroundColorAnimation.toValue = self.backgroundColorForButton(button)
+                    button.pop_removeAnimationForKey("selectedBackgroundColor")
+                    button.pop_addAnimation(backgroundColorAnimation, forKey: "selectedBackgroundColor")
                 }
             }
         }
