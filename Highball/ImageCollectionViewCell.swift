@@ -54,9 +54,8 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
         self.contentView.addSubview(self.scrollView)
         self.scrollView.addSubview(self.imageView)
 
-        self.scrollView.snp_makeConstraints { make in
-            make.edges.equalTo(self.contentView)
-            println()
+        layout(self.scrollView, self.contentView) { scrollView, contentView in
+            scrollView.edges == contentView.edges; return
         }
 
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: Selector("onTap:"))

@@ -35,6 +35,8 @@ class TextReblogViewController: SLKTextViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.view.backgroundColor = UIColor.clearColor()
+
         var reblogTitle: String
         switch self.reblogType! {
         case .Reblog:
@@ -53,6 +55,7 @@ class TextReblogViewController: SLKTextViewController {
         self.tableView.sectionFooterHeight = 50
         self.tableView.showsVerticalScrollIndicator = false
         self.tableView.showsHorizontalScrollIndicator = false
+        self.tableView.backgroundColor = UIColor.clearColor()
 
         self.tableView.registerClass(PhotosetRowTableViewCell.classForCoder(), forCellReuseIdentifier: photosetRowTableViewCellIdentifier)
         self.tableView.registerClass(ContentTableViewCell.classForCoder(), forCellReuseIdentifier: contentTableViewCellIdentifier)
@@ -60,6 +63,20 @@ class TextReblogViewController: SLKTextViewController {
         self.tableView.registerClass(PostLinkTableViewCell.classForCoder(), forCellReuseIdentifier: postLinkTableViewCellIdentifier)
         self.tableView.registerClass(PostDialogueEntryTableViewCell.classForCoder(), forCellReuseIdentifier: postDialogueEntryTableViewCellIdentifier)
         self.tableView.registerClass(PostHeaderView.classForCoder(), forHeaderFooterViewReuseIdentifier: postHeaderViewIdentifier)
+
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Light)
+        let blurView = UIVisualEffectView(effect: blurEffect)
+        let vibrancyEffect = UIVibrancyEffect(forBlurEffect: blurEffect)
+        let vibrancyView = UIVisualEffectView(effect: vibrancyEffect)
+        self.view.insertSubview(vibrancyView, atIndex: 0)
+        self.view.insertSubview(blurView, atIndex: 0)
+        
+        layout(blurView, self.view) { blurView, view in
+            blurView.edges == view.edges; return
+        }
+        layout(vibrancyView, self.view) { vibrancyView, view in
+            vibrancyView.edges == view.edges; return
+        }
     }
 
     override func canPressRightButton() -> Bool {
@@ -169,7 +186,7 @@ class TextReblogViewController: SLKTextViewController {
             cell.transform = self.tableView.transform
             return cell
         case "answer":
-            switch AnswerRow.fromRaw(row)! {
+            switch AnswerRow(rawValue: row)! {
             case .Question:
                 let cell = tableView.dequeueReusableCellWithIdentifier(postQuestionTableViewCellIdentifier) as PostQuestionTableViewCell!
                 cell.post = post
@@ -182,7 +199,7 @@ class TextReblogViewController: SLKTextViewController {
                 return cell
             }
         case "quote":
-            switch QuoteRow.fromRaw(row)! {
+            switch QuoteRow(rawValue: row)! {
             case .Quote:
                 let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
                 cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
@@ -195,7 +212,7 @@ class TextReblogViewController: SLKTextViewController {
                 return cell
             }
         case "link":
-            switch LinkRow.fromRaw(row)! {
+            switch LinkRow(rawValue: row)! {
             case .Link:
                 let cell = tableView.dequeueReusableCellWithIdentifier(postLinkTableViewCellIdentifier) as PostLinkTableViewCell!
                 cell.post = post
@@ -215,7 +232,7 @@ class TextReblogViewController: SLKTextViewController {
             return cell
         case "video":
             let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
-            switch VideoRow.fromRaw(row)! {
+            switch VideoRow(rawValue: row)! {
             case .Player:
                 cell.content = post.htmlSecondaryBodyWithWidth(tableView.frame.size.width)
             case .Caption:
@@ -225,7 +242,7 @@ class TextReblogViewController: SLKTextViewController {
             return cell
         case "audio":
             let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
-            switch AudioRow.fromRaw(row)! {
+            switch AudioRow(rawValue: row)! {
             case .Player:
                 cell.content = post.htmlSecondaryBodyWithWidth(tableView.frame.size.width)
             case .Caption:
@@ -292,7 +309,7 @@ class TextReblogViewController: SLKTextViewController {
             }
             return 0
         case "answer":
-            switch AnswerRow.fromRaw(row)! {
+            switch AnswerRow(rawValue: row)! {
             case .Question:
                 return PostQuestionTableViewCell.heightForPost(post, width: tableView.frame.size.width)
             case .Answer:
@@ -302,7 +319,7 @@ class TextReblogViewController: SLKTextViewController {
                 return 0
             }
         case "quote":
-            switch QuoteRow.fromRaw(row)! {
+            switch QuoteRow(rawValue: row)! {
             case .Quote:
                 if let height = self.bodyHeightCache[post.id] {
                     return height
@@ -315,7 +332,7 @@ class TextReblogViewController: SLKTextViewController {
                 return 0
             }
         case "link":
-            switch LinkRow.fromRaw(row)! {
+            switch LinkRow(rawValue: row)! {
             case .Link:
                 return PostLinkTableViewCell.heightForPost(post, width: tableView.frame.size.width)
             case .Description:
@@ -328,7 +345,7 @@ class TextReblogViewController: SLKTextViewController {
             let dialogueEntry = post.dialogueEntries()[row]
             return PostDialogueEntryTableViewCell.heightForPostDialogueEntry(dialogueEntry, width: tableView.frame.size.width)
         case "video":
-            switch VideoRow.fromRaw(row)! {
+            switch VideoRow(rawValue: row)! {
             case .Player:
                 if let height = self.secondaryBodyHeightCache[post.id] {
                     return height
@@ -341,7 +358,7 @@ class TextReblogViewController: SLKTextViewController {
                 return 0
             }
         case "video":
-            switch AudioRow.fromRaw(row)! {
+            switch AudioRow(rawValue: row)! {
             case .Player:
                 if let height = self.secondaryBodyHeightCache[post.id] {
                     return height

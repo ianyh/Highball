@@ -49,18 +49,17 @@ class PhotosetRowTableViewCell: WCFastCell {
                     self.contentView.addSubview(imageView)
                     
                     if let leftImageView = lastImageView {
-                        imageView.snp_makeConstraints { (maker) -> () in
-                            maker.left.equalTo(leftImageView.snp_right)
-                            maker.height.equalTo(leftImageView.snp_height)
-                            maker.centerY.equalTo(leftImageView.snp_centerY)
-                            maker.width.equalTo(leftImageView.snp_width)
+                        layout(imageView, leftImageView) { imageView, leftImageView in
+                            imageView.centerY == leftImageView.centerY
+                            imageView.left == leftImageView.right
+                            imageView.size == leftImageView.size
                         }
                     } else {
-                        imageView.snp_makeConstraints { (maker) -> () in
-                            maker.left.equalTo(self.contentView.snp_left)
-                            maker.top.equalTo(self.contentView.snp_top)
-                            maker.bottom.equalTo(self.contentView.snp_bottom)
-                            maker.width.equalTo(self.contentView.snp_width).multipliedBy(widthRatio)
+                        layout(imageView, self.contentView) { imageView, contentView in
+                            imageView.left == contentView.left
+                            imageView.top == contentView.top
+                            imageView.bottom == contentView.bottom
+                            imageView.width == contentView.width * widthRatio
                         }
                     }
 

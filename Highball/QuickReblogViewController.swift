@@ -171,16 +171,15 @@ class QuickReblogViewController: UIViewController {
         self.view.addSubview(self.shareButton)
         self.view.addSubview(self.likeButton)
 
-        self.backgroundButton.snp_makeConstraints { maker in
-            let insets = UIEdgeInsetsZero
-            maker.edges.equalTo(self.view).insets(insets)
+        layout(self.backgroundButton, self.view) { backgroundButton, view in
+            backgroundButton.edges == view.edges; return
         }
 
-        self.startButton.snp_makeConstraints { (maker) -> () in
-            maker.height.equalTo(40)
-            maker.width.equalTo(40)
-            maker.centerX.equalTo(self.view.snp_left).offset(Float(self.startingPoint.x))
-            maker.centerY.equalTo(self.view.snp_top).offset(Float(self.startingPoint.y))
+        layout(self.startButton, self.view) { startButton, view in
+            startButton.centerX == view.left + Float(self.startingPoint.x)
+            startButton.centerY == view.top + Float(self.startingPoint.y)
+            startButton.height == 40
+            startButton.width == 40
         }
 
         for button in [ self.reblogButton, self.queueButton, self.shareButton, self.likeButton ] {
@@ -191,10 +190,10 @@ class QuickReblogViewController: UIViewController {
             button.layer.cornerRadius = 30
             button.layer.opacity = 0
             button.sizeToFit()
-            button.snp_makeConstraints { (maker) -> () in
-                maker.center.equalTo(self.startButton.snp_center)
-                maker.height.equalTo(60)
-                maker.width.equalTo(60)
+            layout(button, self.startButton) { button, startButton in
+                button.center == startButton.center
+                button.height == 60
+                button.width == 60
             }
         }
 

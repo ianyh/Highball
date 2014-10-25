@@ -69,17 +69,17 @@ class PostHeaderView: UITableViewHeaderFooterView {
         self.contentView.addSubview(self.avatarImageView)
         self.contentView.addSubview(self.usernameLabel)
 
-        self.avatarImageView.snp_makeConstraints { (maker) -> () in
-            maker.centerY.equalTo(self.contentView.snp_centerY)
-            maker.left.equalTo(self.contentView.snp_left).offset(4)
-            maker.width.equalTo(40)
-            maker.height.equalTo(40)
+        layout(self.avatarImageView, self.contentView) { avatarImageView, contentView in
+            avatarImageView.centerY == contentView.centerY
+            avatarImageView.left == contentView.left + 4
+            avatarImageView.width == 40
+            avatarImageView.height == 40
         }
 
-        self.usernameLabel.snp_makeConstraints { (maker) -> () in
-            maker.centerY.equalTo(self.contentView.snp_centerY)
-            maker.left.equalTo(self.avatarImageView.snp_right).offset(4)
-            maker.height.equalTo(30)
+        layout(self.usernameLabel, self.avatarImageView, self.contentView) { usernameLabel, avatarImageView, contentView in
+            usernameLabel.centerY == contentView.centerY
+            usernameLabel.left == avatarImageView.right + 4
+            usernameLabel.height == 30
         }
     }
 }

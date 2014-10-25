@@ -35,11 +35,8 @@ class ContentTableViewCell: WCFastCell {
 
         self.contentView.addSubview(self.contentWebView)
 
-        self.contentWebView.snp_makeConstraints { (maker) -> Void in
-            maker.top.equalTo(self.contentView.snp_top)
-            maker.right.equalTo(self.contentView.snp_right)
-            maker.bottom.equalTo(self.contentView.snp_bottom)
-            maker.left.equalTo(self.contentView.snp_left)
+        layout(self.contentWebView, self.contentView) { contentWebView, contentView in
+            contentWebView.edges == contentView.edges; return
         }
     }
 }

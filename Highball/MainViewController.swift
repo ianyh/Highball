@@ -165,11 +165,8 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITable
 
         self.view.addSubview(self.tableView)
 
-        self.tableView.snp_makeConstraints { (make) -> Void in
-            make.left.equalTo(self.view.snp_left)
-            make.right.equalTo(self.view.snp_right)
-            make.top.equalTo(self.view.snp_top)
-            make.bottom.equalTo(self.view.snp_bottom)
+        layout(self.tableView, self.view) { tableView, view in
+            tableView.edges == view.edges; return
         }
 
         self.longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: Selector("didLongPress:"))
@@ -346,6 +343,7 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITable
                                 reblogViewController.blogName = self.primaryBlog.name
                                 reblogViewController.bodyHeightCache = self.bodyHeightCache
                                 reblogViewController.secondaryBodyHeightCache = self.secondaryBodyHeightCache
+                                reblogViewController.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
 
                                 self.presentViewController(reblogViewController, animated: true, completion: nil)
                             case .Share:
@@ -472,7 +470,7 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITable
             cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
             return cell
         case "answer":
-            switch AnswerRow.fromRaw(indexPath.row)! {
+            switch AnswerRow(rawValue: indexPath.row)! {
             case .Question:
                 let cell = tableView.dequeueReusableCellWithIdentifier(postQuestionTableViewCellIdentifier) as PostQuestionTableViewCell!
                 cell.post = post
@@ -483,7 +481,7 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITable
                 return cell
             }
         case "quote":
-            switch QuoteRow.fromRaw(indexPath.row)! {
+            switch QuoteRow(rawValue: indexPath.row)! {
             case .Quote:
                 let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
                 cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
@@ -494,7 +492,7 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITable
                 return cell
             }
         case "link":
-            switch LinkRow.fromRaw(indexPath.row)! {
+            switch LinkRow(rawValue: indexPath.row)! {
             case .Link:
                 let cell = tableView.dequeueReusableCellWithIdentifier(postLinkTableViewCellIdentifier) as PostLinkTableViewCell!
                 cell.post = post
@@ -511,7 +509,7 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITable
             return cell
         case "video":
             let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
-            switch VideoRow.fromRaw(indexPath.row)! {
+            switch VideoRow(rawValue: indexPath.row)! {
             case .Player:
                 cell.content = post.htmlSecondaryBodyWithWidth(tableView.frame.size.width)
             case .Caption:
@@ -520,7 +518,7 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITable
             return cell
         case "audio":
             let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
-            switch AudioRow.fromRaw(indexPath.row)! {
+            switch AudioRow(rawValue: indexPath.row)! {
             case .Player:
                 cell.content = post.htmlSecondaryBodyWithWidth(tableView.frame.size.width)
             case .Caption:
@@ -584,7 +582,7 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITable
             }
             return 0
         case "answer":
-            switch AnswerRow.fromRaw(indexPath.row)! {
+            switch AnswerRow(rawValue: indexPath.row)! {
             case .Question:
                 return PostQuestionTableViewCell.heightForPost(post, width: tableView.frame.size.width)
             case .Answer:
@@ -594,7 +592,7 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITable
                 return 0
             }
         case "quote":
-            switch QuoteRow.fromRaw(indexPath.row)! {
+            switch QuoteRow(rawValue: indexPath.row)! {
             case .Quote:
                 if let height = self.bodyHeightCache[post.id] {
                     return height
@@ -607,7 +605,7 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITable
                 return 0
             }
         case "link":
-            switch LinkRow.fromRaw(indexPath.row)! {
+            switch LinkRow(rawValue: indexPath.row)! {
             case .Link:
                 return PostLinkTableViewCell.heightForPost(post, width: tableView.frame.size.width)
             case .Description:
@@ -620,7 +618,7 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITable
             let dialogueEntry = post.dialogueEntries()[indexPath.row]
             return PostDialogueEntryTableViewCell.heightForPostDialogueEntry(dialogueEntry, width: tableView.frame.size.width)
         case "video":
-            switch VideoRow.fromRaw(indexPath.row)! {
+            switch VideoRow(rawValue: indexPath.row)! {
             case .Player:
                 if let height = self.secondaryBodyHeightCache[post.id] {
                     return height
@@ -633,7 +631,7 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITable
                 return 0
             }
         case "video":
-            switch AudioRow.fromRaw(indexPath.row)! {
+            switch AudioRow(rawValue: indexPath.row)! {
             case .Player:
                 if let height = self.secondaryBodyHeightCache[post.id] {
                     return height
@@ -727,7 +725,7 @@ public extension UIWebView {
     }
 }
 
-public extension Dictionary {
+extension Dictionary {
     func keyForObject(object: Value!, isEqual: (Value!, Value!) -> (Bool)) -> (Key?) {
         for key in self.keys {
             if isEqual(object, self[key] as Value!) {

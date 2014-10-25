@@ -19,7 +19,7 @@ class PostLinkTableViewCell: WCFastCell {
             if let post = self.post {
                 let url = NSURL(string: post.urlString()!)
                 self.titleLabel.text = post.title()
-                self.urlLabel.text = url.host!
+                self.urlLabel.text = url?.host
             }
         }
     }
@@ -57,24 +57,23 @@ class PostLinkTableViewCell: WCFastCell {
         self.contentView.addSubview(self.titleLabel)
         self.contentView.addSubview(self.urlLabel)
 
-        self.bubbleView.snp_makeConstraints { (maker) -> Void in
-            maker.left.equalTo(self.contentView.snp_left).offset(8)
-            maker.right.equalTo(self.contentView.snp_right).offset(-8)
-            maker.top.equalTo(self.contentView.snp_top).offset(6)
-            maker.bottom.equalTo(self.contentView.snp_bottom).offset(-6)
+        layout(self.bubbleView, self.contentView) { bubbleView, contentView in
+            bubbleView.left == contentView.left + 8
+            bubbleView.right == contentView.right - 8
+            bubbleView.top == contentView.top + 6
+            bubbleView.bottom == contentView.bottom - 6
         }
 
-        self.urlLabel.snp_makeConstraints { (maker) -> Void in
-            maker.left.equalTo(self.bubbleView.snp_left).offset(20)
-            maker.right.equalTo(self.bubbleView.snp_right).offset(-20)
-            maker.bottom.equalTo(self.bubbleView.snp_bottom).offset(-14)
-            maker.height.equalTo(16)
+        layout(self.urlLabel, self.bubbleView) { urlLabel, bubbleView in
+            urlLabel.left == bubbleView.left + 20
+            urlLabel.right == bubbleView.right - 20
+            urlLabel.height == 16
         }
 
-        self.titleLabel.snp_makeConstraints { (maker) -> Void in
-            maker.left.equalTo(self.bubbleView.snp_left).offset(20)
-            maker.right.equalTo(self.bubbleView.snp_right).offset(-20)
-            maker.top.equalTo(self.bubbleView.snp_top).offset(14)
+        layout(self.titleLabel, self.bubbleView) { titleLabel, bubbleView in
+            titleLabel.left == bubbleView.left + 20
+            titleLabel.right == bubbleView.right - 20
+            titleLabel.top == bubbleView.top + 14
         }
     }
     

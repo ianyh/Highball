@@ -37,10 +37,10 @@ class PostDialogueEntryTableViewCell: WCFastCell {
 
         self.contentView.addSubview(self.contentLabel)
 
-        self.contentLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.contentView.snp_left).offset(20)
-            make.right.equalTo(self.contentView.snp_right).offset(-20)
-            make.top.equalTo(self.contentView.snp_top).offset(3)
+        layout(self.contentLabel, self.contentView) { contentLabel, contentView in
+            contentLabel.left == contentView.left + 20
+            contentLabel.right == contentView.right - 20
+            contentLabel.top == contentView.top + 3
         }
     }
 

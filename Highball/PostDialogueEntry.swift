@@ -18,9 +18,12 @@ class PostDialogueEntry {
     func formattedString() -> (NSAttributedString) {
         let label = self.json["label"].string!
         let phrase = self.json["phrase"].string!
-        let labelAttributes = [ NSFontAttributeName : UIFont(name: "Courier-Bold", size: 14) ]
-        let phraseAttributes = [ NSFontAttributeName : UIFont(name: "Courier", size: 14) ]
+        var labelAttributes = Dictionary<NSObject, AnyObject>()
+        var phraseAttributes = Dictionary<NSObject, AnyObject>()
         let attributedString = NSMutableAttributedString(string: "\(label) \(phrase)")
+
+        labelAttributes[NSFontAttributeName] = UIFont(name: "Courier-Bold", size: 14)
+        phraseAttributes[NSFontAttributeName] = UIFont(name: "Courier", size: 14)
 
         attributedString.setAttributes(labelAttributes, range: NSMakeRange(0, countElements(label)))
         attributedString.setAttributes(phraseAttributes, range: NSMakeRange(countElements(label), countElements(phrase) + 1))

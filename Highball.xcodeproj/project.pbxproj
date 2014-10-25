@@ -18,6 +18,19 @@
 		4050698619AA76BD0066ECE3 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4050698519AA76BD0066ECE3 /* MainViewController.swift */; };
 		4050698B19AA76BD0066ECE3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4050698A19AA76BD0066ECE3 /* Images.xcassets */; };
 		4050699719AA76BD0066ECE3 /* HighballTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4050699619AA76BD0066ECE3 /* HighballTests.swift */; };
+		40731BA819FC272100F6978D /* Coefficients.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731B9B19FC272100F6978D /* Coefficients.swift */; };
+		40731BA919FC272100F6978D /* Compound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731B9C19FC272100F6978D /* Compound.swift */; };
+		40731BAA19FC272100F6978D /* Dimension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731B9D19FC272100F6978D /* Dimension.swift */; };
+		40731BAB19FC272100F6978D /* Edge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731B9E19FC272100F6978D /* Edge.swift */; };
+		40731BAC19FC272100F6978D /* Edges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731B9F19FC272100F6978D /* Edges.swift */; };
+		40731BAD19FC272100F6978D /* Expression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731BA019FC272100F6978D /* Expression.swift */; };
+		40731BAE19FC272100F6978D /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731BA119FC272100F6978D /* Layout.swift */; };
+		40731BAF19FC272100F6978D /* LayoutProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731BA219FC272100F6978D /* LayoutProxy.swift */; };
+		40731BB019FC272100F6978D /* Point.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731BA319FC272100F6978D /* Point.swift */; };
+		40731BB119FC272100F6978D /* Priority.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731BA419FC272100F6978D /* Priority.swift */; };
+		40731BB219FC272100F6978D /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731BA519FC272100F6978D /* Property.swift */; };
+		40731BB319FC272100F6978D /* Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731BA619FC272100F6978D /* Size.swift */; };
+		40731BB419FC272100F6978D /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731BA719FC272100F6978D /* View.swift */; };
 		40778B9919B118D100F8EE13 /* PostHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40778B9819B118D100F8EE13 /* PostHeaderView.swift */; };
 		40778B9C19B15F9C00F8EE13 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40778B9B19B15F9C00F8EE13 /* Post.swift */; };
 		40778B9E19B160DD00F8EE13 /* PostPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40778B9D19B160DD00F8EE13 /* PostPhoto.swift */; };
@@ -33,16 +46,6 @@
 		40C78D1519BD29330002EB78 /* ReblogTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C78D1419BD29330002EB78 /* ReblogTransitionAnimator.swift */; };
 		40FF6D4319B940C6008119A3 /* Blog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FF6D4219B940C6008119A3 /* Blog.swift */; };
 		40FF6D4519B9F656008119A3 /* QuickReblogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FF6D4419B9F656008119A3 /* QuickReblogViewController.swift */; };
-		40FF6D5719BA098F008119A3 /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FF6D5119BA098F008119A3 /* Constraint.swift */; };
-		40FF6D5819BA098F008119A3 /* Constraint+SNPCompatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FF6D5219BA098F008119A3 /* Constraint+SNPCompatibility.swift */; };
-		40FF6D5919BA098F008119A3 /* ConstraintMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FF6D5319BA098F008119A3 /* ConstraintMaker.swift */; };
-		40FF6D5A19BA098F008119A3 /* Insets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FF6D5419BA098F008119A3 /* Insets.swift */; };
-		40FF6D5B19BA098F008119A3 /* LayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FF6D5519BA098F008119A3 /* LayoutConstraint.swift */; };
-		40FF6D5C19BA098F008119A3 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FF6D5619BA098F008119A3 /* View.swift */; };
-		40FF6D6719BA09A5008119A3 /* SNPConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = 40FF6D5E19BA09A5008119A3 /* SNPConstraint.m */; };
-		40FF6D6819BA09A5008119A3 /* SNPConstraint+SNPCompatibility.m in Sources */ = {isa = PBXBuildFile; fileRef = 40FF6D6019BA09A5008119A3 /* SNPConstraint+SNPCompatibility.m */; };
-		40FF6D6919BA09A5008119A3 /* SNPConstraintMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 40FF6D6219BA09A5008119A3 /* SNPConstraintMaker.m */; };
-		40FF6D6A19BA09A5008119A3 /* SNPUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 40FF6D6519BA09A5008119A3 /* SNPUtilities.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +88,20 @@
 		4050699519AA76BD0066ECE3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4050699619AA76BD0066ECE3 /* HighballTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighballTests.swift; sourceTree = "<group>"; };
 		405069A019AA77E80066ECE3 /* Highball-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Highball-Bridging-Header.h"; sourceTree = "<group>"; };
+		40731B9A19FC272100F6978D /* Cartography.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Cartography.h; path = Cartography/Cartography/Cartography.h; sourceTree = "<group>"; };
+		40731B9B19FC272100F6978D /* Coefficients.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Coefficients.swift; path = Cartography/Cartography/Coefficients.swift; sourceTree = "<group>"; };
+		40731B9C19FC272100F6978D /* Compound.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Compound.swift; path = Cartography/Cartography/Compound.swift; sourceTree = "<group>"; };
+		40731B9D19FC272100F6978D /* Dimension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Dimension.swift; path = Cartography/Cartography/Dimension.swift; sourceTree = "<group>"; };
+		40731B9E19FC272100F6978D /* Edge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Edge.swift; path = Cartography/Cartography/Edge.swift; sourceTree = "<group>"; };
+		40731B9F19FC272100F6978D /* Edges.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Edges.swift; path = Cartography/Cartography/Edges.swift; sourceTree = "<group>"; };
+		40731BA019FC272100F6978D /* Expression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Expression.swift; path = Cartography/Cartography/Expression.swift; sourceTree = "<group>"; };
+		40731BA119FC272100F6978D /* Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Layout.swift; path = Cartography/Cartography/Layout.swift; sourceTree = "<group>"; };
+		40731BA219FC272100F6978D /* LayoutProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LayoutProxy.swift; path = Cartography/Cartography/LayoutProxy.swift; sourceTree = "<group>"; };
+		40731BA319FC272100F6978D /* Point.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Point.swift; path = Cartography/Cartography/Point.swift; sourceTree = "<group>"; };
+		40731BA419FC272100F6978D /* Priority.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Priority.swift; path = Cartography/Cartography/Priority.swift; sourceTree = "<group>"; };
+		40731BA519FC272100F6978D /* Property.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Property.swift; path = Cartography/Cartography/Property.swift; sourceTree = "<group>"; };
+		40731BA619FC272100F6978D /* Size.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Size.swift; path = Cartography/Cartography/Size.swift; sourceTree = "<group>"; };
+		40731BA719FC272100F6978D /* View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = View.swift; path = Cartography/Cartography/View.swift; sourceTree = "<group>"; };
 		40778B9819B118D100F8EE13 /* PostHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostHeaderView.swift; sourceTree = "<group>"; };
 		40778B9B19B15F9C00F8EE13 /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		40778B9D19B160DD00F8EE13 /* PostPhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostPhoto.swift; sourceTree = "<group>"; };
@@ -100,22 +117,6 @@
 		40C78D1419BD29330002EB78 /* ReblogTransitionAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReblogTransitionAnimator.swift; sourceTree = "<group>"; };
 		40FF6D4219B940C6008119A3 /* Blog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Blog.swift; sourceTree = "<group>"; };
 		40FF6D4419B9F656008119A3 /* QuickReblogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickReblogViewController.swift; sourceTree = "<group>"; };
-		40FF6D5119BA098F008119A3 /* Constraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Constraint.swift; path = Snappy/Snappy/Constraint.swift; sourceTree = "<group>"; };
-		40FF6D5219BA098F008119A3 /* Constraint+SNPCompatibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Constraint+SNPCompatibility.swift"; path = "Snappy/Snappy/Constraint+SNPCompatibility.swift"; sourceTree = "<group>"; };
-		40FF6D5319BA098F008119A3 /* ConstraintMaker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConstraintMaker.swift; path = Snappy/Snappy/ConstraintMaker.swift; sourceTree = "<group>"; };
-		40FF6D5419BA098F008119A3 /* Insets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Insets.swift; path = Snappy/Snappy/Insets.swift; sourceTree = "<group>"; };
-		40FF6D5519BA098F008119A3 /* LayoutConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LayoutConstraint.swift; path = Snappy/Snappy/LayoutConstraint.swift; sourceTree = "<group>"; };
-		40FF6D5619BA098F008119A3 /* View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = View.swift; path = Snappy/Snappy/View.swift; sourceTree = "<group>"; };
-		40FF6D5D19BA09A5008119A3 /* SNPConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNPConstraint.h; path = Snappy/Snappy/SNPConstraint.h; sourceTree = "<group>"; };
-		40FF6D5E19BA09A5008119A3 /* SNPConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SNPConstraint.m; path = Snappy/Snappy/SNPConstraint.m; sourceTree = "<group>"; };
-		40FF6D5F19BA09A5008119A3 /* SNPConstraint+SNPCompatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SNPConstraint+SNPCompatibility.h"; path = "Snappy/Snappy/SNPConstraint+SNPCompatibility.h"; sourceTree = "<group>"; };
-		40FF6D6019BA09A5008119A3 /* SNPConstraint+SNPCompatibility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SNPConstraint+SNPCompatibility.m"; path = "Snappy/Snappy/SNPConstraint+SNPCompatibility.m"; sourceTree = "<group>"; };
-		40FF6D6119BA09A5008119A3 /* SNPConstraintMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNPConstraintMaker.h; path = Snappy/Snappy/SNPConstraintMaker.h; sourceTree = "<group>"; };
-		40FF6D6219BA09A5008119A3 /* SNPConstraintMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SNPConstraintMaker.m; path = Snappy/Snappy/SNPConstraintMaker.m; sourceTree = "<group>"; };
-		40FF6D6319BA09A5008119A3 /* SNPPlatform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNPPlatform.h; path = Snappy/Snappy/SNPPlatform.h; sourceTree = "<group>"; };
-		40FF6D6419BA09A5008119A3 /* SNPUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNPUtilities.h; path = Snappy/Snappy/SNPUtilities.h; sourceTree = "<group>"; };
-		40FF6D6519BA09A5008119A3 /* SNPUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SNPUtilities.m; path = Snappy/Snappy/SNPUtilities.m; sourceTree = "<group>"; };
-		40FF6D6619BA09A5008119A3 /* SNPView+SNPCompatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SNPView+SNPCompatibility.h"; path = "Snappy/Snappy/SNPView+SNPCompatibility.h"; sourceTree = "<group>"; };
 		B35C2FF3ECCE4C137A45D664 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -165,7 +166,7 @@
 		4050697219AA76BD0066ECE3 = {
 			isa = PBXGroup;
 			children = (
-				40FF6D4619BA04EA008119A3 /* Snappy */,
+				40731B9919FC270C00F6978D /* Cartography */,
 				401ED97D19AEA61000457377 /* SwiftyJSON */,
 				4050697D19AA76BD0066ECE3 /* Highball */,
 				4050699319AA76BD0066ECE3 /* HighballTests */,
@@ -225,6 +226,27 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		40731B9919FC270C00F6978D /* Cartography */ = {
+			isa = PBXGroup;
+			children = (
+				40731B9A19FC272100F6978D /* Cartography.h */,
+				40731B9B19FC272100F6978D /* Coefficients.swift */,
+				40731B9C19FC272100F6978D /* Compound.swift */,
+				40731B9D19FC272100F6978D /* Dimension.swift */,
+				40731B9E19FC272100F6978D /* Edge.swift */,
+				40731B9F19FC272100F6978D /* Edges.swift */,
+				40731BA019FC272100F6978D /* Expression.swift */,
+				40731BA119FC272100F6978D /* Layout.swift */,
+				40731BA219FC272100F6978D /* LayoutProxy.swift */,
+				40731BA319FC272100F6978D /* Point.swift */,
+				40731BA419FC272100F6978D /* Priority.swift */,
+				40731BA519FC272100F6978D /* Property.swift */,
+				40731BA619FC272100F6978D /* Size.swift */,
+				40731BA719FC272100F6978D /* View.swift */,
+			);
+			name = Cartography;
+			sourceTree = "<group>";
+		};
 		40778B9A19B15F7D00F8EE13 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -247,29 +269,6 @@
 				402D979819F1E442003DCD55 /* TextReblogViewController.swift */,
 			);
 			name = Controllers;
-			sourceTree = "<group>";
-		};
-		40FF6D4619BA04EA008119A3 /* Snappy */ = {
-			isa = PBXGroup;
-			children = (
-				40FF6D5D19BA09A5008119A3 /* SNPConstraint.h */,
-				40FF6D5E19BA09A5008119A3 /* SNPConstraint.m */,
-				40FF6D5F19BA09A5008119A3 /* SNPConstraint+SNPCompatibility.h */,
-				40FF6D6019BA09A5008119A3 /* SNPConstraint+SNPCompatibility.m */,
-				40FF6D6119BA09A5008119A3 /* SNPConstraintMaker.h */,
-				40FF6D6219BA09A5008119A3 /* SNPConstraintMaker.m */,
-				40FF6D6319BA09A5008119A3 /* SNPPlatform.h */,
-				40FF6D6419BA09A5008119A3 /* SNPUtilities.h */,
-				40FF6D6519BA09A5008119A3 /* SNPUtilities.m */,
-				40FF6D6619BA09A5008119A3 /* SNPView+SNPCompatibility.h */,
-				40FF6D5119BA098F008119A3 /* Constraint.swift */,
-				40FF6D5219BA098F008119A3 /* Constraint+SNPCompatibility.swift */,
-				40FF6D5319BA098F008119A3 /* ConstraintMaker.swift */,
-				40FF6D5419BA098F008119A3 /* Insets.swift */,
-				40FF6D5519BA098F008119A3 /* LayoutConstraint.swift */,
-				40FF6D5619BA098F008119A3 /* View.swift */,
-			);
-			name = Snappy;
 			sourceTree = "<group>";
 		};
 		A3D296309A504A00AFFABE53 /* Frameworks */ = {
@@ -453,38 +452,41 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40731BB019FC272100F6978D /* Point.swift in Sources */,
 				40A11E6819B518DD00B91843 /* ImagesViewController.swift in Sources */,
 				408C7D2319B387A500EFC410 /* PostDialogueEntryTableViewCell.swift in Sources */,
-				40FF6D5919BA098F008119A3 /* ConstraintMaker.swift in Sources */,
 				40A11E6B19B51FF700B91843 /* ImageCollectionViewCell.swift in Sources */,
+				40731BB319FC272100F6978D /* Size.swift in Sources */,
 				4050698619AA76BD0066ECE3 /* MainViewController.swift in Sources */,
 				40778B9919B118D100F8EE13 /* PostHeaderView.swift in Sources */,
 				40FF6D4519B9F656008119A3 /* QuickReblogViewController.swift in Sources */,
 				403F53DB19AECFEF00FF8F3B /* PhotosetRowTableViewCell.swift in Sources */,
-				40FF6D5C19BA098F008119A3 /* View.swift in Sources */,
 				408C7D2119B384C800EFC410 /* PostDialogueEntry.swift in Sources */,
+				40731BAF19FC272100F6978D /* LayoutProxy.swift in Sources */,
+				40731BAA19FC272100F6978D /* Dimension.swift in Sources */,
+				40731BB419FC272100F6978D /* View.swift in Sources */,
+				40731BB119FC272100F6978D /* Priority.swift in Sources */,
 				4050698419AA76BD0066ECE3 /* Highball.xcdatamodeld in Sources */,
 				4050698119AA76BD0066ECE3 /* AppDelegate.swift in Sources */,
 				408C7D1F19B36F7400EFC410 /* PostLinkTableViewCell.swift in Sources */,
 				408D393F19C12E550001981F /* ImageItemProvider.swift in Sources */,
 				403F53DF19AFCEB800FF8F3B /* String+HTML.swift in Sources */,
-				40FF6D6819BA09A5008119A3 /* SNPConstraint+SNPCompatibility.m in Sources */,
 				408D394119C12EF00001981F /* PostItemProvider.swift in Sources */,
 				40778B9C19B15F9C00F8EE13 /* Post.swift in Sources */,
 				402D979919F1E442003DCD55 /* TextReblogViewController.swift in Sources */,
-				40FF6D5819BA098F008119A3 /* Constraint+SNPCompatibility.swift in Sources */,
-				40FF6D5B19BA098F008119A3 /* LayoutConstraint.swift in Sources */,
+				40731BAC19FC272100F6978D /* Edges.swift in Sources */,
 				401ED97F19AEA62100457377 /* SwiftyJSON.swift in Sources */,
+				40731BAD19FC272100F6978D /* Expression.swift in Sources */,
+				40731BAB19FC272100F6978D /* Edge.swift in Sources */,
+				40731BB219FC272100F6978D /* Property.swift in Sources */,
 				40778B9E19B160DD00F8EE13 /* PostPhoto.swift in Sources */,
 				40FF6D4319B940C6008119A3 /* Blog.swift in Sources */,
 				403F53DD19AFB5DF00FF8F3B /* ContentTableViewCell.swift in Sources */,
-				40FF6D6A19BA09A5008119A3 /* SNPUtilities.m in Sources */,
-				40FF6D5A19BA098F008119A3 /* Insets.swift in Sources */,
-				40FF6D6719BA09A5008119A3 /* SNPConstraint.m in Sources */,
-				40FF6D5719BA098F008119A3 /* Constraint.swift in Sources */,
+				40731BAE19FC272100F6978D /* Layout.swift in Sources */,
 				40778BAA19B24BA500F8EE13 /* PostQuestionTableViewCell.swift in Sources */,
 				40C78D1519BD29330002EB78 /* ReblogTransitionAnimator.swift in Sources */,
-				40FF6D6919BA09A5008119A3 /* SNPConstraintMaker.m in Sources */,
+				40731BA919FC272100F6978D /* Compound.swift in Sources */,
+				40731BA819FC272100F6978D /* Coefficients.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -24,7 +24,5 @@
 #import <TMCache/TMCache.h>
 #import <WCFastCell/WCFastCell.h>
 #import <VBFPopFlatButton/VBFPopFlatButton.h>
-#import "SNPConstraint.h"
-#import "SNPConstraintMaker.h"
 
 #endif

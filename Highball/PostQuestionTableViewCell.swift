@@ -56,25 +56,22 @@ class PostQuestionTableViewCell: WCFastCell {
         self.contentView.addSubview(self.askerLabel)
         self.contentView.addSubview(self.contentLabel)
 
-        self.bubbleView.snp_makeConstraints { (maker) -> Void in
-            maker.left.equalTo(self.contentView.snp_left).offset(8)
-            maker.right.equalTo(self.contentView.snp_right).offset(-8)
-            maker.top.equalTo(self.contentView.snp_top).offset(6)
-            maker.bottom.equalTo(self.contentView.snp_bottom).offset(-6)
+        layout(self.bubbleView, self.contentView) { bubbleView, contentView in
+            bubbleView.edges == inset(contentView.edges, 6, 8, -6, -8); return
         }
 
-        self.askerLabel.snp_makeConstraints { (maker) -> Void in
-            maker.left.equalTo(self.bubbleView.snp_left)
-            maker.right.equalTo(self.bubbleView.snp_right)
-            maker.top.equalTo(self.bubbleView.snp_top)
-            maker.height.equalTo(20)
+        layout(self.askerLabel, self.bubbleView) { askerLabel, bubbleView in
+            askerLabel.left == bubbleView.left
+            askerLabel.right == bubbleView.right
+            askerLabel.top == bubbleView.top
+            askerLabel.height == 20
         }
 
-        self.contentLabel.snp_makeConstraints { (maker) -> Void in
-            maker.top.equalTo(self.askerLabel.snp_top).offset(14)
-            maker.left.equalTo(self.bubbleView.snp_left).offset(14)
-            maker.right.equalTo(self.bubbleView.snp_right).offset(14)
-            maker.bottom.equalTo(self.bubbleView.snp_bottom).offset(-8)
+        layout(self.contentLabel, self.askerLabel, self.bubbleView) { contentLabel, askerLabel, bubbleView in
+            contentLabel.top == askerLabel.top + 14
+            contentLabel.left == bubbleView.left + 14
+            contentLabel.right == bubbleView.right - 14
+            contentLabel.bottom == bubbleView.bottom - 8
         }
     }
 
