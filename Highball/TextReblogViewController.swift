@@ -56,6 +56,7 @@ class TextReblogViewController: SLKTextViewController {
         self.tableView.showsVerticalScrollIndicator = false
         self.tableView.showsHorizontalScrollIndicator = false
         self.tableView.backgroundColor = UIColor.clearColor()
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 20, 0)
 
         self.tableView.registerClass(PhotosetRowTableViewCell.classForCoder(), forCellReuseIdentifier: photosetRowTableViewCellIdentifier)
         self.tableView.registerClass(ContentTableViewCell.classForCoder(), forCellReuseIdentifier: contentTableViewCellIdentifier)
@@ -76,6 +77,17 @@ class TextReblogViewController: SLKTextViewController {
         }
         layout(vibrancyView, self.view) { vibrancyView, view in
             vibrancyView.edges == view.edges; return
+        }
+
+        let lightBlurEffect = UIBlurEffect(style: UIBlurEffectStyle.Light)
+        let lightBlurView = UIVisualEffectView(effect: lightBlurEffect)
+        self.view.addSubview(lightBlurView)
+
+        layout(lightBlurView, self.view) { lightBlurView, view in
+            lightBlurView.top == view.top
+            lightBlurView.left == view.left
+            lightBlurView.right == view.right
+            lightBlurView.height == 20
         }
     }
 
