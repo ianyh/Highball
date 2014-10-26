@@ -253,8 +253,6 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITable
                     let json = JSONValue(response)
                     let posts = json["posts"].array!.map { (post) -> (Post) in
                         return Post(json: post)
-                    }.filter { (post) -> (Bool) in
-                        return post.type == "photo" || post.type == "text"
                     }
                     
                     for post in posts {
