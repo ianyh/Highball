@@ -186,7 +186,7 @@ class QuickReblogViewController: UIViewController {
             button.titleEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
             button.titleLabel?.font = UIFont.boldSystemFontOfSize(20)
             button.tintColor = UIColor.whiteColor()
-            button.backgroundColor = backgroundColorForButton(self.likeButton)
+            button.backgroundColor = backgroundColorForButton(button)
             button.layer.cornerRadius = 30
             button.layer.opacity = 0
             button.sizeToFit()
