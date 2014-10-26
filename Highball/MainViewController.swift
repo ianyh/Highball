@@ -327,8 +327,8 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITable
             self.tableView.scrollEnabled = true
 
             if let viewController = self.reblogViewController {
-                let point = sender.locationInView(self.navigationController!.view)
-                let tableViewPoint = sender.locationInView(self.tableView)
+                let point = viewController.startingPoint
+                let tableViewPoint = tableView.convertPoint(point, fromView: self.navigationController!.view)
                 if let indexPath = self.tableView.indexPathForRowAtPoint(tableViewPoint) {
                     if let cell = self.tableView.cellForRowAtIndexPath(indexPath) {
                         let post = self.posts[indexPath.section]

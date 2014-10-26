@@ -34,7 +34,7 @@ class QuickReblogViewController: UIViewController {
             for button in [ self.reblogButton, self.queueButton, self.shareButton, self.likeButton ] {
                 if button == self.selectedButton {
                     let scaleAnimation = POPBasicAnimation(propertyNamed: kPOPViewScaleXY)
-                    scaleAnimation.toValue = NSValue(CGSize: CGSize(width: 1.2, height: 1.2))
+                    scaleAnimation.toValue = NSValue(CGSize: CGSize(width: 1.5, height: 1.5))
                     scaleAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionDefault)
                     button.pop_removeAnimationForKey("selectedScale")
                     button.pop_addAnimation(scaleAnimation, forKey: "selectedScale")
@@ -259,6 +259,6 @@ class QuickReblogViewController: UIViewController {
             return backgroundColor
         }
 
-        return backgroundColor.colorWithAlphaComponent(0.75)
+        return backgroundColor.colorWithAlphaComponent(0.5)
     }
 }
