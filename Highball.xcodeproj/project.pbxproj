@@ -15,7 +15,7 @@
 		403F53DF19AFCEB800FF8F3B /* String+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403F53DE19AFCEB800FF8F3B /* String+HTML.swift */; };
 		4050698119AA76BD0066ECE3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4050698019AA76BD0066ECE3 /* AppDelegate.swift */; };
 		4050698419AA76BD0066ECE3 /* Highball.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4050698219AA76BD0066ECE3 /* Highball.xcdatamodeld */; };
-		4050698619AA76BD0066ECE3 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4050698519AA76BD0066ECE3 /* MainViewController.swift */; };
+		4050698619AA76BD0066ECE3 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4050698519AA76BD0066ECE3 /* DashboardViewController.swift */; };
 		4050698B19AA76BD0066ECE3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4050698A19AA76BD0066ECE3 /* Images.xcassets */; };
 		4050699719AA76BD0066ECE3 /* HighballTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4050699619AA76BD0066ECE3 /* HighballTests.swift */; };
 		40731BA819FC272100F6978D /* Coefficients.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731B9B19FC272100F6978D /* Coefficients.swift */; };
@@ -83,7 +83,7 @@
 		4050697F19AA76BD0066ECE3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4050698019AA76BD0066ECE3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4050698319AA76BD0066ECE3 /* Highball.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Highball.xcdatamodel; sourceTree = "<group>"; };
-		4050698519AA76BD0066ECE3 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		4050698519AA76BD0066ECE3 /* DashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
 		4050698A19AA76BD0066ECE3 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		4050699019AA76BD0066ECE3 /* HighballTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HighballTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4050699519AA76BD0066ECE3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -263,7 +263,7 @@
 		40A11E6619B518B500B91843 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				4050698519AA76BD0066ECE3 /* MainViewController.swift */,
+				4050698519AA76BD0066ECE3 /* DashboardViewController.swift */,
 				40A11E6719B518DD00B91843 /* ImagesViewController.swift */,
 				40FF6D4419B9F656008119A3 /* QuickReblogViewController.swift */,
 				408D393E19C12E550001981F /* ImageItemProvider.swift */,
@@ -460,7 +460,7 @@
 				408C7D2319B387A500EFC410 /* PostDialogueEntryTableViewCell.swift in Sources */,
 				40A11E6B19B51FF700B91843 /* ImageCollectionViewCell.swift in Sources */,
 				40731BB319FC272100F6978D /* Size.swift in Sources */,
-				4050698619AA76BD0066ECE3 /* MainViewController.swift in Sources */,
+				4050698619AA76BD0066ECE3 /* DashboardViewController.swift in Sources */,
 				40778B9919B118D100F8EE13 /* PostHeaderView.swift in Sources */,
 				40FF6D4519B9F656008119A3 /* QuickReblogViewController.swift in Sources */,
 				403F53DB19AECFEF00FF8F3B /* PhotosetRowTableViewCell.swift in Sources */,

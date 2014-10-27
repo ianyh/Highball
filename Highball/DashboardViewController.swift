@@ -1,5 +1,5 @@
 //
-//  MainViewController.swift
+//  DashboardViewController.swift
 //  Highball
 //
 //  Created by Ian Ynda-Hummel on 8/24/14.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MainViewController: PostsViewController {
+class DashboardViewController: PostsViewController {
     var blogs: Array<Blog>!
     var primaryBlog: Blog! {
         didSet {
