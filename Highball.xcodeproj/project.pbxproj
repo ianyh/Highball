@@ -31,6 +31,7 @@
 		40731BB219FC272100F6978D /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731BA519FC272100F6978D /* Property.swift */; };
 		40731BB319FC272100F6978D /* Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731BA619FC272100F6978D /* Size.swift */; };
 		40731BB419FC272100F6978D /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731BA719FC272100F6978D /* View.swift */; };
+		40731BB819FDC38900F6978D /* PostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731BB719FDC38900F6978D /* PostsViewController.swift */; };
 		40778B9919B118D100F8EE13 /* PostHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40778B9819B118D100F8EE13 /* PostHeaderView.swift */; };
 		40778B9C19B15F9C00F8EE13 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40778B9B19B15F9C00F8EE13 /* Post.swift */; };
 		40778B9E19B160DD00F8EE13 /* PostPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40778B9D19B160DD00F8EE13 /* PostPhoto.swift */; };
@@ -102,6 +103,7 @@
 		40731BA519FC272100F6978D /* Property.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Property.swift; path = Cartography/Cartography/Property.swift; sourceTree = "<group>"; };
 		40731BA619FC272100F6978D /* Size.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Size.swift; path = Cartography/Cartography/Size.swift; sourceTree = "<group>"; };
 		40731BA719FC272100F6978D /* View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = View.swift; path = Cartography/Cartography/View.swift; sourceTree = "<group>"; };
+		40731BB719FDC38900F6978D /* PostsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsViewController.swift; sourceTree = "<group>"; };
 		40778B9819B118D100F8EE13 /* PostHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostHeaderView.swift; sourceTree = "<group>"; };
 		40778B9B19B15F9C00F8EE13 /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		40778B9D19B160DD00F8EE13 /* PostPhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostPhoto.swift; sourceTree = "<group>"; };
@@ -267,6 +269,7 @@
 				408D393E19C12E550001981F /* ImageItemProvider.swift */,
 				408D394019C12EF00001981F /* PostItemProvider.swift */,
 				402D979819F1E442003DCD55 /* TextReblogViewController.swift */,
+				40731BB719FDC38900F6978D /* PostsViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -464,6 +467,7 @@
 				408C7D2119B384C800EFC410 /* PostDialogueEntry.swift in Sources */,
 				40731BAF19FC272100F6978D /* LayoutProxy.swift in Sources */,
 				40731BAA19FC272100F6978D /* Dimension.swift in Sources */,
+				40731BB819FDC38900F6978D /* PostsViewController.swift in Sources */,
 				40731BB419FC272100F6978D /* View.swift in Sources */,
 				40731BB119FC272100F6978D /* Priority.swift in Sources */,
 				4050698419AA76BD0066ECE3 /* Highball.xcdatamodeld in Sources */,
