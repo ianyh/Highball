@@ -126,6 +126,8 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         self.panGestureRecognizer = UIPanGestureRecognizer(target: self, action: Selector("didPan:"))
         self.panGestureRecognizer.delegate = self
         self.view.addGestureRecognizer(self.panGestureRecognizer)
+
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Rewind, target: self, action: Selector("navigate:event:"))
     }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -136,10 +138,39 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
     
     func loadMore() {}
 
+    func navigate(sender: UIBarButtonItem, event: UIEvent) {
+        if let touches = event.allTouches() {
+            if let touch = touches.anyObject() as? UITouch {
+                if let navigationController = self.navigationController {
+                    let viewController = QuickNavigateController()
+                    
+                    viewController.startingPoint = touch.locationInView(self.view)
+                    viewController.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
+                    viewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
+                    viewController.view.bounds = navigationController.view.bounds
+
+                    viewController.completion = { navigateOption in
+                        if let option = navigateOption {
+                            switch(option) {
+                            case .Dashboard:
+                                navigationController.setViewControllers([DashboardViewController()], animated: false)
+                            case .Likes:
+                                navigationController.setViewControllers([LikesViewController()], animated: false)
+                            }
+                        }
+                        navigationController.dismissViewControllerAnimated(true, completion: nil)
+                    }
+                    
+                    navigationController.presentViewController(viewController, animated: true, completion: nil)
+                }
+            }
+        }
+    }
+
     func reblogBlogName() -> (String) {
         return ""
     }
-    
+
     func reloadTable() {
         if let posts = self.posts {
             var webViewsFinishedLoading = true
@@ -532,14 +563,16 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         }
         
         if !self.loadingTop! {
-            self.navigationController!.setIndeterminate(false)
-            if scrollView.contentOffset.y < 0 {
-                let distanceFromTop = scrollView.contentOffset.y + scrollView.contentInset.top + requiredRefreshDistance
-                let progress = 1 - max(min(distanceFromTop / requiredRefreshDistance, 1), 0)
-                self.navigationController!.showProgress()
-                self.navigationController!.setProgress(progress, animated: false)
-            } else {
-                self.navigationController!.cancelProgress()
+            if let navigationController = self.navigationController {
+                navigationController.setIndeterminate(false)
+                if scrollView.contentOffset.y < 0 {
+                    let distanceFromTop = scrollView.contentOffset.y + scrollView.contentInset.top + requiredRefreshDistance
+                    let progress = 1 - max(min(distanceFromTop / requiredRefreshDistance, 1), 0)
+                    navigationController.showProgress()
+                    navigationController.setProgress(progress, animated: false)
+                } else {
+                    navigationController.cancelProgress()
+                }
             }
         }
     }

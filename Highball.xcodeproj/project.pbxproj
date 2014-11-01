@@ -33,6 +33,7 @@
 		40731BB419FC272100F6978D /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731BA719FC272100F6978D /* View.swift */; };
 		40731BB819FDC38900F6978D /* PostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731BB719FDC38900F6978D /* PostsViewController.swift */; };
 		40731BBA19FDCAD300F6978D /* LikesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731BB919FDCAD300F6978D /* LikesViewController.swift */; };
+		40731BBC19FDCEF300F6978D /* QuickNavigateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731BBB19FDCEF300F6978D /* QuickNavigateController.swift */; };
 		40778B9919B118D100F8EE13 /* PostHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40778B9819B118D100F8EE13 /* PostHeaderView.swift */; };
 		40778B9C19B15F9C00F8EE13 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40778B9B19B15F9C00F8EE13 /* Post.swift */; };
 		40778B9E19B160DD00F8EE13 /* PostPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40778B9D19B160DD00F8EE13 /* PostPhoto.swift */; };
@@ -106,6 +107,7 @@
 		40731BA719FC272100F6978D /* View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = View.swift; path = Cartography/Cartography/View.swift; sourceTree = "<group>"; };
 		40731BB719FDC38900F6978D /* PostsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsViewController.swift; sourceTree = "<group>"; };
 		40731BB919FDCAD300F6978D /* LikesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikesViewController.swift; sourceTree = "<group>"; };
+		40731BBB19FDCEF300F6978D /* QuickNavigateController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickNavigateController.swift; sourceTree = "<group>"; };
 		40778B9819B118D100F8EE13 /* PostHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostHeaderView.swift; sourceTree = "<group>"; };
 		40778B9B19B15F9C00F8EE13 /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		40778B9D19B160DD00F8EE13 /* PostPhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostPhoto.swift; sourceTree = "<group>"; };
@@ -273,6 +275,7 @@
 				402D979819F1E442003DCD55 /* TextReblogViewController.swift */,
 				40731BB719FDC38900F6978D /* PostsViewController.swift */,
 				40731BB919FDCAD300F6978D /* LikesViewController.swift */,
+				40731BBB19FDCEF300F6978D /* QuickNavigateController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -478,6 +481,7 @@
 				408C7D1F19B36F7400EFC410 /* PostLinkTableViewCell.swift in Sources */,
 				408D393F19C12E550001981F /* ImageItemProvider.swift in Sources */,
 				403F53DF19AFCEB800FF8F3B /* String+HTML.swift in Sources */,
+				40731BBC19FDCEF300F6978D /* QuickNavigateController.swift in Sources */,
 				408D394119C12EF00001981F /* PostItemProvider.swift in Sources */,
 				40778B9C19B15F9C00F8EE13 /* Post.swift in Sources */,
 				402D979919F1E442003DCD55 /* TextReblogViewController.swift in Sources */,
