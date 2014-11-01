@@ -153,6 +153,16 @@ class DashboardViewController: PostsViewController {
                             
                             self.bodyWebViewCache[post.id] = webView
                         }
+
+                        if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.size.width) {
+                            let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1))
+                            let htmlString = content
+
+                            webView.delegate = self
+                            webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+
+                            self.secondaryBodyWebViewCache[post.id] = webView
+                        }
                     }
 
                     self.posts.extend(posts)
