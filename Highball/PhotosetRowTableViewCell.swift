@@ -30,7 +30,7 @@ class PhotosetRowTableViewCell: WCFastCell {
         self.clearImages()
     }
 
-    func updateImages() {
+    private func updateImages() {
         if let images = self.images {
             if let contentWidth = self.contentWidth {
                 self.clearImages()
@@ -93,7 +93,7 @@ class PhotosetRowTableViewCell: WCFastCell {
         }
     }
 
-    func clearImages() {
+    private func clearImages() {
         if let imageViews = self.imageViews {
             for imageView in imageViews {
                 imageView.sd_cancelCurrentAnimationImagesLoad()
@@ -119,5 +119,9 @@ class PhotosetRowTableViewCell: WCFastCell {
             return imageView.image
         }
         return nil
+    }
+
+    func cancelDownloads() {
+        self.clearImages()
     }
 }

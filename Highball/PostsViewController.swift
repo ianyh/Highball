@@ -552,6 +552,12 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
             }
         }
     }
+
+    func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        if let cell = tableView.cellForRowAtIndexPath(indexPath) as? PhotosetRowTableViewCell {
+            cell.cancelDownloads()
+        }
+    }
     
     // MARK: UIScrollViewDelegate
     
