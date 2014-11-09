@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		40080E8E1A0F042B00D883AE /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40080E8D1A0F042B00D883AE /* SettingsViewController.swift */; };
+		40080E901A0F11DD00D883AE /* LockSplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40080E8F1A0F11DD00D883AE /* LockSplashViewController.swift */; };
 		400FE01319B6A33200F72C3C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 400FE01219B6A33200F72C3C /* libPods.a */; };
 		401ED97F19AEA62100457377 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401ED97E19AEA62100457377 /* SwiftyJSON.swift */; };
 		402D979919F1E442003DCD55 /* TextReblogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402D979819F1E442003DCD55 /* TextReblogViewController.swift */; };
@@ -77,6 +78,7 @@
 /* Begin PBXFileReference section */
 		13500F55524D7A285BCE2BD6 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		40080E8D1A0F042B00D883AE /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		40080E8F1A0F11DD00D883AE /* LockSplashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockSplashViewController.swift; sourceTree = "<group>"; };
 		400FE01219B6A33200F72C3C /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Debug-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		401ED97E19AEA62100457377 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftyJSON.swift; path = SwiftyJSON/SwiftyJSON/SwiftyJSON.swift; sourceTree = "<group>"; };
 		402D979819F1E442003DCD55 /* TextReblogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextReblogViewController.swift; sourceTree = "<group>"; };
@@ -279,6 +281,7 @@
 				40731BB919FDCAD300F6978D /* LikesViewController.swift */,
 				40731BBB19FDCEF300F6978D /* QuickNavigateController.swift */,
 				40080E8D1A0F042B00D883AE /* SettingsViewController.swift */,
+				40080E8F1A0F11DD00D883AE /* LockSplashViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -468,6 +471,7 @@
 				40A11E6819B518DD00B91843 /* ImagesViewController.swift in Sources */,
 				408C7D2319B387A500EFC410 /* PostDialogueEntryTableViewCell.swift in Sources */,
 				40A11E6B19B51FF700B91843 /* ImageCollectionViewCell.swift in Sources */,
+				40080E901A0F11DD00D883AE /* LockSplashViewController.swift in Sources */,
 				40731BB319FC272100F6978D /* Size.swift in Sources */,
 				4050698619AA76BD0066ECE3 /* DashboardViewController.swift in Sources */,
 				40778B9919B118D100F8EE13 /* PostHeaderView.swift in Sources */,
