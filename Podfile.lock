@@ -34,6 +34,7 @@ PODS:
     - SlackTextViewController/Additions
   - SlackTextViewController/Additions (1.2.6):
     - SlackTextViewController/Additions
+  - SSKeychain (1.2.2)
   - TMCache (1.2.1)
   - TMTumblrSDK (1.0.8):
     - TMTumblrSDK/Activity
@@ -50,6 +51,8 @@ PODS:
   - TMTumblrSDK/AppClient (1.0.8):
     - TMTumblrSDK/Core
   - TMTumblrSDK/Core (1.0.8)
+  - VENTouchLock (1.0.1):
+    - SSKeychain (~> 1.0)
   - WCFastCell (1.1)
 
 DEPENDENCIES:
@@ -63,6 +66,7 @@ DEPENDENCIES:
   - SlackTextViewController
   - TMCache
   - TMTumblrSDK
+  - VENTouchLock
   - WCFastCell
 
 SPEC CHECKSUMS:
@@ -75,8 +79,10 @@ SPEC CHECKSUMS:
   RESideMenu: a9c1cd2e64e60e1d3166ddac01a83e215a0e4d30
   SDWebImage: 116e88633b5b416ea0ca4b334a4ac59cf72dd38d
   SlackTextViewController: c7974262249884d1519eeef6e8027e1788e75c9f
+  SSKeychain: cc48bd3ad24fcd9125adb9e0d23dd50b8bbd08b9
   TMCache: ed936c5b4684e4ea15113d46fba8829ed3baadad
   TMTumblrSDK: b9fada23e88b42ade2b492a6db95bfb1dff6304b
+  VENTouchLock: 62fc85b6f1f9c64e9d39e0489fd0ddc64aebaeb4
   WCFastCell: 8a9c6507a2a9d3eae9959dd3458a11ba5560503e
 
-COCOAPODS: 0.34.1
+COCOAPODS: 0.34.4

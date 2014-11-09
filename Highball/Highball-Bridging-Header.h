@@ -22,6 +22,7 @@
 #import "SLKTextViewController.h"
 #import <TMTumblrSDK/TMAPIClient.h>
 #import <TMCache/TMCache.h>
+#import <VENTouchLock/VENTouchLock.h>
 #import <WCFastCell/WCFastCell.h>
 
 #endif

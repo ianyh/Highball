@@ -11,6 +11,7 @@ import UIKit
 enum QuickNavigationOption {
     case Dashboard
     case Likes
+    case Settings
 }
 
 class QuickNavigateController: UIViewController {
@@ -26,15 +27,17 @@ class QuickNavigateController: UIViewController {
     
     private var dashboardButton: UIButton!
     private var likesButton: UIButton!
+    private var settingsButton: UIButton!
 
     var showingOptions: Bool = false {
         didSet {
             self.startButton.layer.pop_removeAllAnimations()
             self.dashboardButton.layer.pop_removeAllAnimations()
             self.likesButton.layer.pop_removeAllAnimations()
+            self.settingsButton.layer.pop_removeAllAnimations()
             
             if self.showingOptions {
-                for button in [ self.dashboardButton, self.likesButton ] {
+                for button in [ self.dashboardButton, self.likesButton, self.settingsButton ] {
                     var opacityAnimation = POPSpringAnimation(propertyNamed: kPOPLayerOpacity)
                     opacityAnimation.toValue = 1
                     opacityAnimation.name = "opacity"
@@ -46,8 +49,8 @@ class QuickNavigateController: UIViewController {
                 let center = self.view.convertPoint(self.startButton.center, toView: nil)
                 let distanceFromTop = center.y
                 let distanceFromBottom = UIScreen.mainScreen().bounds.size.height - center.y - 50
-                var angleFromTop: CGFloat = CGFloat(-M_PI_2) / 3
-                var angleFromBottom: CGFloat = CGFloat(-M_PI_2) / 3
+                var angleFromTop: CGFloat = CGFloat(-M_PI_2) / 4
+                var angleFromBottom: CGFloat = CGFloat(-M_PI_2) / 4
                 
                 if distanceFromTop < self.radius {
                     angleFromTop = acos(distanceFromTop / self.radius)
@@ -59,10 +62,10 @@ class QuickNavigateController: UIViewController {
                 
                 let startAngle = CGFloat(M_PI_2) + angleFromTop
                 let endAngle = CGFloat(M_PI + M_PI_2) - angleFromBottom
-                let initialAngle = startAngle + (endAngle - startAngle) / 4
-                let angleInterval = (endAngle - startAngle) / 2
+                let initialAngle = startAngle + (endAngle - startAngle) / 5
+                let angleInterval = (endAngle - startAngle) / 3
                 
-                for (index, button) in enumerate([ self.dashboardButton, self.likesButton ]) {
+                for (index, button) in enumerate([ self.dashboardButton, self.likesButton, self.settingsButton ]) {
                     let center = self.startButton.center
                     let angleOffset = angleInterval * CGFloat(index)
                     let angle = initialAngle + angleOffset
@@ -84,7 +87,7 @@ class QuickNavigateController: UIViewController {
                     button.layer.pop_addAnimation(positionAnimation, forKey: positionAnimation.name)
                 }
             } else {
-                for button in [ self.dashboardButton, self.likesButton ] {
+                for button in [ self.dashboardButton, self.likesButton, self.settingsButton ] {
                     var opacityAnimation = POPSpringAnimation(propertyNamed: kPOPLayerOpacity)
                     opacityAnimation.toValue = 0
                     opacityAnimation.name = "opacity"
@@ -124,11 +127,16 @@ class QuickNavigateController: UIViewController {
         self.likesButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
         self.likesButton.setTitle("L", forState: UIControlState.Normal)
         self.likesButton.addTarget(self, action: Selector("likes:"), forControlEvents: UIControlEvents.TouchUpInside)
-        
+
+        self.settingsButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        self.settingsButton.setTitle("S", forState: UIControlState.Normal)
+        self.settingsButton.addTarget(self, action: Selector("settings:"), forControlEvents: UIControlEvents.TouchUpInside)
+
         self.view.addSubview(self.backgroundButton)
         self.view.addSubview(self.startButton)
         self.view.addSubview(self.dashboardButton)
         self.view.addSubview(self.likesButton)
+        self.view.addSubview(self.settingsButton)
         
         layout(self.backgroundButton, self.view) { backgroundButton, view in
             backgroundButton.edges == view.edges; return
@@ -141,7 +149,7 @@ class QuickNavigateController: UIViewController {
             startButton.width == 40
         }
         
-        for button in [ self.dashboardButton, self.likesButton ] {
+        for button in [ self.dashboardButton, self.likesButton, self.settingsButton ] {
             button.titleEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
             button.titleLabel?.font = UIFont.boldSystemFontOfSize(20)
             button.tintColor = UIColor.whiteColor()
@@ -183,6 +191,10 @@ class QuickNavigateController: UIViewController {
 
     func likes(sender: UIButton) {
         self.finishWithOption(QuickNavigationOption.Likes)
+    }
+
+    func settings(sender: UIButton) {
+        self.finishWithOption(QuickNavigationOption.Settings)
     }
 
     func finishWithOption(option: QuickNavigationOption?) {

@@ -156,6 +156,13 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                                 navigationController.setViewControllers([DashboardViewController()], animated: false)
                             case .Likes:
                                 navigationController.setViewControllers([LikesViewController()], animated: false)
+                            case .Settings:
+                                navigationController.dismissViewControllerAnimated(true, completion: { () -> Void in
+                                    let settingsViewController = SettingsViewController(style: UITableViewStyle.Grouped)
+                                    let settingsNavigationViewController = UINavigationController(rootViewController: settingsViewController)
+                                    navigationController.presentViewController(settingsNavigationViewController, animated: true, completion: nil)
+                                })
+                                return
                             }
                         }
                         navigationController.dismissViewControllerAnimated(true, completion: nil)
