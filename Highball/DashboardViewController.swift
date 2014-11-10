@@ -255,19 +255,17 @@ class DashboardViewController: PostsViewController {
 
     func findOffset(bookmarkID: Int, startOffset: Int, endOffset: Int) {
         let offset = (startOffset + endOffset) / 2
-        TMAPIClient.sharedInstance().dashboard(["offset" : offset]) { (response: AnyObject!, error: NSError!) -> Void in
+        TMAPIClient.sharedInstance().dashboard(["offset" : offset, "limit" : 1]) { (response: AnyObject!, error: NSError!) -> Void in
             if let e = error {
                 return
             }
             let json = JSONValue(response)
-            let posts = json["posts"].array!.map { (post) -> (Post) in
+            let post = json["posts"].array!.map { (post) -> (Post) in
                 return Post(json: post)
-            }
-            let firstPost = posts.first!
-            let lastPost = posts.last!
-            if lastPost.id > bookmarkID {
-                self.findOffset(bookmarkID, startOffset: offset + 20, endOffset: endOffset)
-            } else if firstPost.id < bookmarkID {
+            }.first!
+            if post.id > bookmarkID {
+                self.findOffset(bookmarkID, startOffset: offset, endOffset: endOffset)
+            } else if post.id < bookmarkID {
                 self.findOffset(bookmarkID, startOffset: startOffset, endOffset: offset)
             } else {
                 self.currentOffset = offset
