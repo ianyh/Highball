@@ -65,6 +65,14 @@ class DashboardViewController: PostsViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.currentOffset = 0
+
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: UIBarButtonSystemItem.Bookmarks,
+            target: self,
+            action: Selector("bookmarks:event:")
+        )
+
         NSNotificationCenter.defaultCenter().addObserver(
             self,
             selector: Selector("applicationDidBecomeActive:"),
@@ -86,7 +94,13 @@ class DashboardViewController: PostsViewController {
 
         self.loadingTop = true
 
-        TMAPIClient.sharedInstance().dashboard([:]) { (response: AnyObject!, error: NSError!) -> Void in
+        if self.currentOffset >= 20 {
+            self.currentOffset! -= 20
+        } else if self.currentOffset > 0 {
+            self.currentOffset = 0
+        }
+
+        TMAPIClient.sharedInstance().dashboard([ "offset" : self.currentOffset! ]) { (response: AnyObject!, error: NSError!) -> Void in
             if let e = error {
                 println(e)
                 return
@@ -119,8 +133,6 @@ class DashboardViewController: PostsViewController {
             }
 
             self.posts = posts
-            self.currentOffset = 0
-
             self.loadingTop = false
         }
     }
@@ -177,5 +189,96 @@ class DashboardViewController: PostsViewController {
 
     override func reblogBlogName() -> (String) {
         return self.primaryBlog.name
+    }
+
+    func bookmarks(sender: UIButton, event: UIEvent) {
+        if let touches = event.allTouches() {
+            if let touch = touches.anyObject() as? UITouch {
+                if let navigationController = self.navigationController {
+                    let viewController = BookmarksViewController()
+
+                    viewController.startingPoint = touch.locationInView(self.view)
+                    viewController.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
+                    viewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
+                    viewController.view.bounds = navigationController.view.bounds
+
+                    viewController.completion = { bookmarksOption in
+                        if let option = bookmarksOption {
+                            switch(option) {
+                            case .Bookmark:
+                                if let indexPaths = self.tableView.indexPathsForVisibleRows() {
+                                    println(indexPaths)
+                                    if let firstIndexPath = indexPaths.first as? NSIndexPath {
+                                        let post = self.posts[firstIndexPath.section]
+                                        NSUserDefaults.standardUserDefaults().setObject(post.id, forKey: "HIPostIDBookmark")
+                                    }
+                                }
+                            case .Goto:
+                                self.gotoBookmark()
+                            case .Top:
+                                self.currentOffset = 0
+                                self.loadTop()
+                            }
+                        }
+                        navigationController.dismissViewControllerAnimated(true, completion: nil)
+                    }
+
+                    navigationController.presentViewController(viewController, animated: true, completion: nil)
+                }
+            }
+        }
+    }
+
+    func gotoBookmark() {
+        if let bookmarkID = NSUserDefaults.standardUserDefaults().objectForKey("HIPostIDBookmark") as? Int {
+            self.findMax(bookmarkID, offset: 0)
+        }
+    }
+
+    func findMax(bookmarkID: Int, offset: Int) {
+        TMAPIClient.sharedInstance().dashboard(["offset" : offset]) { (response: AnyObject!, error: NSError!) -> Void in
+            if let e = error {
+                return
+            }
+            let json = JSONValue(response)
+            let posts = json["posts"].array!.map { (post) -> (Post) in
+                return Post(json: post)
+            }
+            let lastPost = posts.last!
+            if lastPost.id > bookmarkID {
+                if offset == 0 {
+                    self.findMax(bookmarkID, offset: 20)
+                } else {
+                    self.findMax(bookmarkID, offset: offset * 2)
+                }
+            } else {
+                if offset == 0 {
+                    self.findOffset(bookmarkID, startOffset: offset, endOffset: 20)
+                } else {
+                    self.findOffset(bookmarkID, startOffset: offset, endOffset: offset * 2)
+                }
+            }
+        }
+    }
+
+    func findOffset(bookmarkID: Int, startOffset: Int, endOffset: Int) {
+        let offset = (startOffset + endOffset) / 2
+        TMAPIClient.sharedInstance().dashboard(["offset" : offset, "limit" : 1]) { (response: AnyObject!, error: NSError!) -> Void in
+            if let e = error {
+                return
+            }
+            let json = JSONValue(response)
+            let post = json["posts"].array!.map { (post) -> (Post) in
+                return Post(json: post)
+            }.first!
+            if post.id > bookmarkID {
+                self.findOffset(bookmarkID, startOffset: offset, endOffset: endOffset)
+            } else if post.id < bookmarkID {
+                self.findOffset(bookmarkID, startOffset: startOffset, endOffset: offset)
+            } else {
+                self.currentOffset = offset + 20
+                self.loadTop()
+            }
+        }
     }
 }
