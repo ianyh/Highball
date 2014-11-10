@@ -94,6 +94,12 @@ class DashboardViewController: PostsViewController {
 
         self.loadingTop = true
 
+        if self.currentOffset >= 20 {
+            self.currentOffset! -= 20
+        } else if self.currentOffset > 0 {
+            self.currentOffset = 0
+        }
+
         TMAPIClient.sharedInstance().dashboard([ "offset" : self.currentOffset! ]) { (response: AnyObject!, error: NSError!) -> Void in
             if let e = error {
                 println(e)
@@ -127,7 +133,6 @@ class DashboardViewController: PostsViewController {
             }
 
             self.posts = posts
-
             self.loadingTop = false
         }
     }
@@ -268,7 +273,7 @@ class DashboardViewController: PostsViewController {
             } else if post.id < bookmarkID {
                 self.findOffset(bookmarkID, startOffset: startOffset, endOffset: offset)
             } else {
-                self.currentOffset = offset
+                self.currentOffset = offset + 20
                 self.loadTop()
             }
         }
