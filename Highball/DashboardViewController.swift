@@ -215,6 +215,9 @@ class DashboardViewController: PostsViewController {
                                 }
                             case .Goto:
                                 self.gotoBookmark()
+                            case .Top:
+                                self.currentOffset = 0
+                                self.loadTop()
                             }
                         }
                         navigationController.dismissViewControllerAnimated(true, completion: nil)

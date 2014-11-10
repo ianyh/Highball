@@ -11,6 +11,7 @@ import UIKit
 enum BookmarksOption {
     case Bookmark
     case Goto
+    case Top
 }
 
 class BookmarksViewController: UIViewController {
@@ -26,15 +27,17 @@ class BookmarksViewController: UIViewController {
 
     private var saveButton: UIButton!
     private var gotoButton: UIButton!
+    private var topButton: UIButton!
 
     var showingOptions: Bool = false {
         didSet {
             self.startButton.layer.pop_removeAllAnimations()
             self.saveButton.layer.pop_removeAllAnimations()
             self.gotoButton.layer.pop_removeAllAnimations()
+            self.topButton.layer.pop_removeAllAnimations()
 
             if self.showingOptions {
-                for button in [ self.saveButton, self.gotoButton ] {
+                for button in [ self.saveButton, self.gotoButton, self.topButton ] {
                     var opacityAnimation = POPSpringAnimation(propertyNamed: kPOPLayerOpacity)
                     opacityAnimation.toValue = 1
                     opacityAnimation.name = "opacity"
@@ -42,12 +45,11 @@ class BookmarksViewController: UIViewController {
                     button.layer.pop_addAnimation(opacityAnimation, forKey: opacityAnimation.name)
                 }
 
-                let onLeft = self.startButton.center.x < CGRectGetMidX(self.view.bounds)
                 let center = self.view.convertPoint(self.startButton.center, toView: nil)
                 let distanceFromTop = center.y
                 let distanceFromBottom = UIScreen.mainScreen().bounds.size.height - center.y - 50
-                var angleFromTop: CGFloat = CGFloat(-M_PI_2) / 3
-                var angleFromBottom: CGFloat = CGFloat(-M_PI_2) / 3
+                var angleFromTop: CGFloat = CGFloat(-M_PI_2) / 4
+                var angleFromBottom: CGFloat = CGFloat(-M_PI_2) / 4
 
                 if distanceFromTop < self.radius {
                     angleFromTop = acos(distanceFromTop / self.radius)
@@ -59,20 +61,15 @@ class BookmarksViewController: UIViewController {
 
                 let startAngle = CGFloat(M_PI_2) + angleFromTop
                 let endAngle = CGFloat(M_PI + M_PI_2) - angleFromBottom
-                let initialAngle = startAngle + (endAngle - startAngle) / 4
-                let angleInterval = (endAngle - startAngle) / 2
+                let initialAngle = startAngle + (endAngle - startAngle) / 5
+                let angleInterval = (endAngle - startAngle) / 3
 
-                for (index, button) in enumerate([ self.saveButton, self.gotoButton ]) {
+                for (index, button) in enumerate([ self.saveButton, self.gotoButton, self.topButton ]) {
                     let center = self.startButton.center
                     let angleOffset = angleInterval * CGFloat(index)
                     let angle = initialAngle + angleOffset
                     let y = center.y - self.radius * sin(angle)
-                    var x: CGFloat!
-                    if onLeft {
-                        x = center.x - self.radius * cos(angle)
-                    } else {
-                        x = center.x + self.radius * cos(angle)
-                    }
+                    var x = center.x + self.radius * cos(angle)
                     let positionAnimation = POPSpringAnimation(propertyNamed: kPOPLayerPosition)
 
                     positionAnimation.toValue = NSValue(CGPoint: CGPoint(x: x, y: y))
@@ -84,7 +81,7 @@ class BookmarksViewController: UIViewController {
                     button.layer.pop_addAnimation(positionAnimation, forKey: positionAnimation.name)
                 }
             } else {
-                for button in [ self.saveButton, self.gotoButton ] {
+                for button in [ self.saveButton, self.gotoButton, self.topButton ] {
                     var opacityAnimation = POPSpringAnimation(propertyNamed: kPOPLayerOpacity)
                     opacityAnimation.toValue = 0
                     opacityAnimation.name = "opacity"
@@ -125,10 +122,15 @@ class BookmarksViewController: UIViewController {
         self.gotoButton.setTitle("G", forState: UIControlState.Normal)
         self.gotoButton.addTarget(self, action: Selector("goto:"), forControlEvents: UIControlEvents.TouchUpInside)
 
+        self.topButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        self.topButton.setTitle("T", forState: UIControlState.Normal)
+        self.topButton.addTarget(self, action: Selector("top:"), forControlEvents: UIControlEvents.TouchUpInside)
+
         self.view.addSubview(self.backgroundButton)
         self.view.addSubview(self.startButton)
         self.view.addSubview(self.saveButton)
         self.view.addSubview(self.gotoButton)
+        self.view.addSubview(self.topButton)
 
         layout(self.backgroundButton, self.view) { backgroundButton, view in
             backgroundButton.edges == view.edges; return
@@ -141,7 +143,7 @@ class BookmarksViewController: UIViewController {
             startButton.width == 40
         }
 
-        for button in [ self.saveButton, self.gotoButton ] {
+        for button in [ self.saveButton, self.gotoButton, self.topButton ] {
             button.titleEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
             button.titleLabel?.font = UIFont.boldSystemFontOfSize(20)
             button.tintColor = UIColor.whiteColor()
@@ -183,6 +185,10 @@ class BookmarksViewController: UIViewController {
 
     func goto(sender: UIButton) {
         self.finishWithOption(BookmarksOption.Goto)
+    }
+
+    func top(sender: UIButton) {
+        self.finishWithOption(BookmarksOption.Top)
     }
 
     private func finishWithOption(option: BookmarksOption?) {
