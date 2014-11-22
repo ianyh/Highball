@@ -17,7 +17,6 @@
 #import <FLAnimatedImage/FLAnimatedImageView.h>
 #import <M13ProgressSuite/UINavigationController+M13ProgressViewBar.h>
 #import <pop/POP.h>
-#import <RESideMenu/RESideMenu.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "SLKTextViewController.h"
 #import <TMTumblrSDK/TMAPIClient.h>
