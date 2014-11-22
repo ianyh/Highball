@@ -16,7 +16,8 @@ class DashboardViewController: PostsViewController {
         }
     }
 
-    var currentOffset: Int?
+    var topOffset = 0
+    var bottomOffset = 0
 
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
@@ -65,8 +66,6 @@ class DashboardViewController: PostsViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.currentOffset = 0
-
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: UIBarButtonSystemItem.Bookmarks,
             target: self,
@@ -94,13 +93,15 @@ class DashboardViewController: PostsViewController {
 
         self.loadingTop = true
 
-        if self.currentOffset >= 20 {
-            self.currentOffset! -= 20
-        } else if self.currentOffset > 0 {
-            self.currentOffset = 0
+        if self.topOffset >= 20 {
+            self.topOffset -= 20
+        } else if self.topOffset > 0 {
+            self.topOffset = 0
         }
 
-        TMAPIClient.sharedInstance().dashboard([ "offset" : self.currentOffset! ]) { (response: AnyObject!, error: NSError!) -> Void in
+        self.bottomOffset = 0
+
+        TMAPIClient.sharedInstance().dashboard([ "offset" : self.topOffset ]) { (response: AnyObject!, error: NSError!) -> Void in
             if let e = error {
                 println(e)
                 return
@@ -145,7 +146,7 @@ class DashboardViewController: PostsViewController {
         if let posts = self.posts {
             if let lastPost = posts.last {
                 self.loadingBottom = true
-                TMAPIClient.sharedInstance().dashboard(["offset" : self.currentOffset! + 20]) { (response: AnyObject!, error: NSError!) -> Void in
+                TMAPIClient.sharedInstance().dashboard(["offset" : self.topOffset + self.bottomOffset + 20]) { (response: AnyObject!, error: NSError!) -> Void in
                     if let e = error {
                         println(e)
                         return
@@ -178,7 +179,7 @@ class DashboardViewController: PostsViewController {
                     }
 
                     self.posts.extend(posts)
-                    self.currentOffset! += 20
+                    self.bottomOffset += 20
                     self.reloadTable()
 
                     self.loadingBottom = false
@@ -216,7 +217,7 @@ class DashboardViewController: PostsViewController {
                             case .Goto:
                                 self.gotoBookmark()
                             case .Top:
-                                self.currentOffset = 0
+                                self.topOffset = 0
                                 self.loadTop()
                             }
                         }
@@ -236,7 +237,7 @@ class DashboardViewController: PostsViewController {
     }
 
     func findMax(bookmarkID: Int, offset: Int) {
-        TMAPIClient.sharedInstance().dashboard(["offset" : offset]) { (response: AnyObject!, error: NSError!) -> Void in
+        TMAPIClient.sharedInstance().dashboard(["offset" : offset, "limit" : 1]) { (response: AnyObject!, error: NSError!) -> Void in
             if let e = error {
                 return
             }
@@ -276,7 +277,7 @@ class DashboardViewController: PostsViewController {
             } else if post.id < bookmarkID {
                 self.findOffset(bookmarkID, startOffset: startOffset, endOffset: offset)
             } else {
-                self.currentOffset = offset + 20
+                self.topOffset = offset + 20
                 self.loadTop()
             }
         }
