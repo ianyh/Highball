@@ -37,6 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
 
+        VENTouchLock.sharedInstance().backgroundLockVisible = false
         VENTouchLock.sharedInstance().setKeychainService(
             "com.highball.Highball",
             keychainAccount: "com.highball",
@@ -44,9 +45,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             passcodeAttemptLimit: UInt.max,
             splashViewControllerClass: LockSplashViewController.classForCoder()
         )
-        VENTouchLock.sharedInstance().backgroundLockVisible = false
 
         self.window?.makeKeyAndVisible()
+
+        if VENTouchLock.sharedInstance().isPasscodeSet() {
+            VENTouchLock.sharedInstance().lock()
+        }
 
         return true
     }
