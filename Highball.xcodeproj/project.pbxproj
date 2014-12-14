@@ -11,6 +11,7 @@
 		40080E901A0F11DD00D883AE /* LockSplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40080E8F1A0F11DD00D883AE /* LockSplashViewController.swift */; };
 		400FE01319B6A33200F72C3C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 400FE01219B6A33200F72C3C /* libPods.a */; };
 		401ED97F19AEA62100457377 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401ED97E19AEA62100457377 /* SwiftyJSON.swift */; };
+		402A20961A3D2C510007CCFF /* TitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402A20951A3D2C510007CCFF /* TitleTableViewCell.swift */; };
 		402D979919F1E442003DCD55 /* TextReblogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402D979819F1E442003DCD55 /* TextReblogViewController.swift */; };
 		403F53DB19AECFEF00FF8F3B /* PhotosetRowTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403F53DA19AECFEF00FF8F3B /* PhotosetRowTableViewCell.swift */; };
 		403F53DD19AFB5DF00FF8F3B /* ContentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403F53DC19AFB5DF00FF8F3B /* ContentTableViewCell.swift */; };
@@ -82,6 +83,7 @@
 		40080E8F1A0F11DD00D883AE /* LockSplashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockSplashViewController.swift; sourceTree = "<group>"; };
 		400FE01219B6A33200F72C3C /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Debug-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		401ED97E19AEA62100457377 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftyJSON.swift; path = SwiftyJSON/SwiftyJSON/SwiftyJSON.swift; sourceTree = "<group>"; };
+		402A20951A3D2C510007CCFF /* TitleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleTableViewCell.swift; sourceTree = "<group>"; };
 		402D979819F1E442003DCD55 /* TextReblogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextReblogViewController.swift; sourceTree = "<group>"; };
 		403F53DA19AECFEF00FF8F3B /* PhotosetRowTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosetRowTableViewCell.swift; sourceTree = "<group>"; };
 		403F53DC19AFB5DF00FF8F3B /* ContentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentTableViewCell.swift; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 				408C7D2219B387A500EFC410 /* PostDialogueEntryTableViewCell.swift */,
 				40A11E6A19B51FF700B91843 /* ImageCollectionViewCell.swift */,
 				40C78D1419BD29330002EB78 /* ReblogTransitionAnimator.swift */,
+				402A20951A3D2C510007CCFF /* TitleTableViewCell.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -498,6 +501,7 @@
 				40080E8E1A0F042B00D883AE /* SettingsViewController.swift in Sources */,
 				402D979919F1E442003DCD55 /* TextReblogViewController.swift in Sources */,
 				40731BAC19FC272100F6978D /* Edges.swift in Sources */,
+				402A20961A3D2C510007CCFF /* TitleTableViewCell.swift in Sources */,
 				401ED97F19AEA62100457377 /* SwiftyJSON.swift in Sources */,
 				40731BAD19FC272100F6978D /* Expression.swift in Sources */,
 				40731BAB19FC272100F6978D /* Edge.swift in Sources */,

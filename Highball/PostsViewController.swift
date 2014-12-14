@@ -34,6 +34,7 @@ enum AudioRow: Int {
 }
 
 let postHeaderViewIdentifier = "postHeaderViewIdentifier"
+let titleTableViewCellIdentifier = "titleTableViewCellIdentifier"
 let photosetRowTableViewCellIdentifier = "photosetRowTableViewCellIdentifier"
 let contentTableViewCellIdentifier = "contentTableViewCellIdentifier"
 let postQuestionTableViewCellIdentifier = "postQuestionTableViewCellIdentifier"
@@ -104,7 +105,8 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         self.tableView.sectionFooterHeight = 50
         self.tableView.showsVerticalScrollIndicator = false
         self.tableView.showsHorizontalScrollIndicator = false
-        
+
+        self.tableView.registerClass(TitleTableViewCell.classForCoder(), forCellReuseIdentifier: titleTableViewCellIdentifier)
         self.tableView.registerClass(PhotosetRowTableViewCell.classForCoder(), forCellReuseIdentifier: photosetRowTableViewCellIdentifier)
         self.tableView.registerClass(ContentTableViewCell.classForCoder(), forCellReuseIdentifier: contentTableViewCellIdentifier)
         self.tableView.registerClass(PostQuestionTableViewCell.classForCoder(), forCellReuseIdentifier: postQuestionTableViewCellIdentifier)
@@ -314,10 +316,9 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         case "photo":
             let postPhotos = post.photos()
             if postPhotos.count == 1 {
-                return 2
+                return 3
             }
-            
-            return post.layoutRows().count + 1
+            return 1 + post.layoutRows().count + 1
         case "text":
             return 1
         case "answer":
@@ -327,7 +328,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         case "link":
             return 2
         case "chat":
-            return post.dialogueEntries().count
+            return 1 + post.dialogueEntries().count
         case "video":
             return 2
         case "audio":
@@ -345,6 +346,10 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                 let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
                 cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
                 return cell
+            } else if indexPath.row == 0 {
+                let cell = tableView.dequeueReusableCellWithIdentifier(titleTableViewCellIdentifier) as TitleTableViewCell!
+                cell.titleLabel.text = post.title()
+                return cell
             }
             
             let cell = tableView.dequeueReusableCellWithIdentifier(photosetRowTableViewCellIdentifier) as PhotosetRowTableViewCell!
@@ -354,10 +359,10 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
             } else {
                 let photosetLayoutRows = post.layoutRows()
                 var photosIndexStart = 0
-                for photosetLayoutRow in photosetLayoutRows[0..<indexPath.row] {
+                for photosetLayoutRow in photosetLayoutRows[0..<indexPath.row-1] {
                     photosIndexStart += photosetLayoutRow
                 }
-                let photosetLayoutRow = photosetLayoutRows[indexPath.row]
+                let photosetLayoutRow = photosetLayoutRows[indexPath.row-1]
                 
                 cell.images = Array(postPhotos[(photosIndexStart)..<(photosIndexStart + photosetLayoutRow)])
             }
@@ -402,7 +407,12 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                 return cell
             }
         case "chat":
-            let dialogueEntry = post.dialogueEntries()[indexPath.row]
+            if indexPath.row == 0 {
+                let cell = tableView.dequeueReusableCellWithIdentifier(titleTableViewCellIdentifier) as TitleTableViewCell!
+                cell.titleLabel.text = post.title()
+                return cell;
+            }
+            let dialogueEntry = post.dialogueEntries()[indexPath.row - 1]
             let cell = tableView.dequeueReusableCellWithIdentifier(postDialogueEntryTableViewCellIdentifier) as PostDialogueEntryTableViewCell!
             cell.dialogueEntry = dialogueEntry
             return cell
@@ -449,6 +459,11 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                     return height
                 }
                 return 0
+            } else if indexPath.row == 0 {
+                if let title = post.title() {
+                    return TitleTableViewCell.heightForTitle(title, width: tableView.frame.size.width)
+                }
+                return 0
             }
             
             let postPhotos = post.photos()
@@ -459,10 +474,10 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
             } else {
                 let photosetLayoutRows = post.layoutRows()
                 var photosIndexStart = 0
-                for photosetLayoutRow in photosetLayoutRows[0..<indexPath.row] {
+                for photosetLayoutRow in photosetLayoutRows[0..<indexPath.row-1] {
                     photosIndexStart += photosetLayoutRow
                 }
-                let photosetLayoutRow = photosetLayoutRows[indexPath.row]
+                let photosetLayoutRow = photosetLayoutRows[indexPath.row - 1]
                 
                 images = Array(postPhotos[(photosIndexStart)..<(photosIndexStart + photosetLayoutRow)])
             }
@@ -514,7 +529,13 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                 return 0
             }
         case "chat":
-            let dialogueEntry = post.dialogueEntries()[indexPath.row]
+            if indexPath.row == 0 {
+                if let title = post.title() {
+                    return TitleTableViewCell.heightForTitle(title, width: tableView.frame.size.width)
+                }
+                return 0
+            }
+            let dialogueEntry = post.dialogueEntries()[indexPath.row - 1]
             return PostDialogueEntryTableViewCell.heightForPostDialogueEntry(dialogueEntry, width: tableView.frame.size.width)
         case "video":
             switch VideoRow(rawValue: indexPath.row)! {
