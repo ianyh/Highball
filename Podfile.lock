@@ -69,11 +69,6 @@ EXTERNAL SOURCES:
   VENTouchLock:
     :git: https://github.com/ianyh/VENTouchLock.git
 
-CHECKOUT OPTIONS:
-  VENTouchLock:
-    :commit: 74d70f7b63669801aa937c385772d9fe05bc9a19
-    :git: https://github.com/ianyh/VENTouchLock.git
-
 SPEC CHECKSUMS:
   AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
   ChameleonFramework: c60096686e3771f5d78f26cfbfd08955a8a88cbd
