@@ -76,7 +76,9 @@ class PhotosetRowTableViewCell: WCFastCell {
                                     TMCache.sharedCache().setObject(data, forKey: imageURL.absoluteString)
                                 }
                             })
-                            downloadOperations.append(imageDownloadOperation)
+                            if let operation = imageDownloadOperation {
+                                downloadOperations.append(operation)
+                            }
                         }
                     } else {
                         imageView.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "Placeholder"))
