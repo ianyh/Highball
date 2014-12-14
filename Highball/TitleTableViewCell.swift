@@ -48,4 +48,5 @@ class TitleTableViewCell: WCFastCell {
 
         return extraHeight + ceil(titleRect.size.height)
     }
+
 }

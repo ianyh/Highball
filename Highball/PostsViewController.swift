@@ -99,7 +99,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         self.tableView = UITableView()
         self.tableView.dataSource = self
         self.tableView.delegate = self
-        self.tableView.allowsSelection = false
+        self.tableView.allowsSelection = true
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         self.tableView.sectionHeaderHeight = 50
         self.tableView.sectionFooterHeight = 50
@@ -124,7 +124,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         self.longPressGestureRecognizer.delegate = self
         self.longPressGestureRecognizer.minimumPressDuration = 0.3
         self.view.addGestureRecognizer(self.longPressGestureRecognizer)
-        
+
         self.panGestureRecognizer = UIPanGestureRecognizer(target: self, action: Selector("didPan:"))
         self.panGestureRecognizer.delegate = self
         self.view.addGestureRecognizer(self.panGestureRecognizer)
@@ -567,15 +567,15 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
             return 0
         }
     }
-    
+
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if let cell = tableView.cellForRowAtIndexPath(indexPath) {
             if let photosetRowCell = cell as? PhotosetRowTableViewCell {
                 let post = self.posts[indexPath.section]
                 let viewController = ImagesViewController()
-                
+
                 viewController.post = post
-                
+
                 self.presentViewController(viewController, animated: true, completion: nil)
             }
         }
