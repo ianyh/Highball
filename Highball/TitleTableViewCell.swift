@@ -32,18 +32,18 @@ class TitleTableViewCell: WCFastCell {
         self.contentView.addSubview(self.titleLabel)
 
         layout(self.titleLabel, self.contentView) { titleLabel, contentView in
-            titleLabel.left == contentView.left + 20
-            titleLabel.right == contentView.right - 20
-            titleLabel.top == contentView.top + 3
+            titleLabel.left == contentView.left + 10
+            titleLabel.right == contentView.right - 10
+            titleLabel.top == contentView.top + 4
         }
     }
 
 
     class func heightForTitle(title: String, width: CGFloat!) -> CGFloat {
-        let extraHeight: CGFloat = 3 + 3
-        let modifiedWidth = width - 20 - 20
+        let extraHeight: CGFloat = 4 + 4
+        let modifiedWidth = width - 10 - 10
         let constrainedSize = CGSize(width: modifiedWidth, height: CGFloat.max)
-        let attributedTitle = NSAttributedString(string: title)
+        let attributedTitle = NSAttributedString(string: title, attributes: [ NSFontAttributeName : UIFont.boldSystemFontOfSize(16) ])
         let titleRect = attributedTitle.boundingRectWithSize(constrainedSize, options: NSStringDrawingOptions.UsesLineFragmentOrigin, context: nil)
 
         return extraHeight + ceil(titleRect.size.height)

@@ -41,8 +41,7 @@ class PostLinkTableViewCell: WCFastCell {
         
         self.bubbleView.backgroundColor = UIColor(red: 86.0/255.0, green: 188.0/255.0, blue: 138.0/255.0, alpha: 1)
         self.bubbleView.clipsToBounds = true
-        self.bubbleView.layer.cornerRadius = 5
-        
+
         self.titleLabel.font = UIFont.boldSystemFontOfSize(19)
         self.titleLabel.textColor = UIColor.whiteColor()
         self.titleLabel.numberOfLines = 0
@@ -58,28 +57,26 @@ class PostLinkTableViewCell: WCFastCell {
         self.contentView.addSubview(self.urlLabel)
 
         layout(self.bubbleView, self.contentView) { bubbleView, contentView in
-            bubbleView.left == contentView.left + 8
-            bubbleView.right == contentView.right - 8
-            bubbleView.top == contentView.top + 6
-            bubbleView.bottom == contentView.bottom - 6
-        }
-
-        layout(self.urlLabel, self.bubbleView) { urlLabel, bubbleView in
-            urlLabel.left == bubbleView.left + 20
-            urlLabel.right == bubbleView.right - 20
-            urlLabel.height == 16
+            bubbleView.edges == contentView.edges; return
         }
 
         layout(self.titleLabel, self.bubbleView) { titleLabel, bubbleView in
-            titleLabel.left == bubbleView.left + 20
-            titleLabel.right == bubbleView.right - 20
+            titleLabel.left == bubbleView.left + 10
+            titleLabel.right == bubbleView.right - 10
             titleLabel.top == bubbleView.top + 14
         }
+
+        layout(self.urlLabel, self.titleLabel, self.bubbleView) { urlLabel, titleLabel, bubbleView in
+            urlLabel.left == bubbleView.left + 20
+            urlLabel.right == bubbleView.right - 20
+            urlLabel.top == titleLabel.bottom + 4
+            urlLabel.height == 16
+        }
     }
-    
+
     class func heightForPost(post: Post!, width: CGFloat!) -> CGFloat {
-        let extraHeight: CGFloat = 6 + 14 + 14 + 16 + 14 + 6
-        let modifiedWidth = width - 16 - 40
+        let extraHeight: CGFloat = 14 + 4 + 16 + 14
+        let modifiedWidth = width - 16
         let constrainedSize = CGSize(width: modifiedWidth, height: CGFloat.max)
         let titleAttributes = [ NSFontAttributeName : UIFont.boldSystemFontOfSize(19) ]
 

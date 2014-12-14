@@ -40,8 +40,6 @@ class PostQuestionTableViewCell: WCFastCell {
         self.contentLabel = UILabel()
 
         self.bubbleView.backgroundColor = UIColor(white: 245.0/255.0, alpha: 1)
-        self.bubbleView.clipsToBounds = true
-        self.bubbleView.layer.cornerRadius = 5
         self.bubbleView.layer.borderColor = UIColor(white: 217.0/255.0, alpha: 1).CGColor
         self.bubbleView.layer.borderWidth = 1
 
@@ -57,13 +55,13 @@ class PostQuestionTableViewCell: WCFastCell {
         self.contentView.addSubview(self.contentLabel)
 
         layout(self.bubbleView, self.contentView) { bubbleView, contentView in
-            bubbleView.edges == inset(contentView.edges, 6, 8, -6, -8); return
+            bubbleView.edges == inset(contentView.edges, 1, 0); return
         }
 
         layout(self.askerLabel, self.bubbleView) { askerLabel, bubbleView in
-            askerLabel.left == bubbleView.left
-            askerLabel.right == bubbleView.right
-            askerLabel.top == bubbleView.top
+            askerLabel.left == bubbleView.left + 10
+            askerLabel.right == bubbleView.right - 10
+            askerLabel.top == bubbleView.top + 12
             askerLabel.height == 20
         }
 
@@ -79,10 +77,11 @@ class PostQuestionTableViewCell: WCFastCell {
         let question = post.question()! as NSString
         let questionAttributes = [ NSFontAttributeName : UIFont.systemFontOfSize(14) ]
         let modifiedWidth = width - 16 - 28
-        let extraHeight: CGFloat = 6 + 10 + 20 + 14 + 8 + 6
+        let extraHeight: CGFloat = 12 + 20 + 14 + 8
         let constrainedSize = CGSize(width: modifiedWidth, height: CGFloat.max)
         let questionRect = question.boundingRectWithSize(constrainedSize, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: questionAttributes, context: nil)
 
         return extraHeight + ceil(questionRect.size.height)
     }
+
 }

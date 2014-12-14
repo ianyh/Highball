@@ -126,4 +126,5 @@ class PhotosetRowTableViewCell: WCFastCell {
     func cancelDownloads() {
         self.clearImages()
     }
+
 }
