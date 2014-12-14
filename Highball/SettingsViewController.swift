@@ -45,10 +45,10 @@ class SettingsViewController : UITableViewController {
 
         switch PasscodeRow(rawValue: indexPath.row)! {
         case .Set:
-            cell.textLabel.text = "Passcode"
+            cell.textLabel?.text = "Passcode"
             cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         case .UseTouch:
-            cell.textLabel.text = "Use Touch ID"
+            cell.textLabel?.text = "Use Touch ID"
             if VENTouchLock.shouldUseTouchID() {
                 cell.accessoryType = UITableViewCellAccessoryType.Checkmark
             } else {
