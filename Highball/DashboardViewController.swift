@@ -253,10 +253,10 @@ class DashboardViewController: PostsViewController {
                     self.findMax(bookmarkID, offset: offset * 2)
                 }
             } else {
-                if offset == 0 {
-                    self.findOffset(bookmarkID, startOffset: offset, endOffset: 20)
+                if offset == 20 {
+                    self.findOffset(bookmarkID, startOffset: 0, endOffset: 20)
                 } else {
-                    self.findOffset(bookmarkID, startOffset: offset, endOffset: offset * 2)
+                    self.findOffset(bookmarkID, startOffset: offset / 2, endOffset: offset)
                 }
             }
         }
