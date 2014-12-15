@@ -38,15 +38,15 @@ class PostDialogueEntryTableViewCell: WCFastCell {
         self.contentView.addSubview(self.contentLabel)
 
         layout(self.contentLabel, self.contentView) { contentLabel, contentView in
-            contentLabel.left == contentView.left + 20
-            contentLabel.right == contentView.right - 20
-            contentLabel.top == contentView.top + 3
+            contentLabel.left == contentView.left + 10
+            contentLabel.right == contentView.right - 10
+            contentLabel.top == contentView.top + 4
         }
     }
 
     class func heightForPostDialogueEntry(post: PostDialogueEntry!, width: CGFloat!) -> CGFloat {
-        let extraHeight: CGFloat = 3 + 3
-        let modifiedWidth = width - 20 - 20
+        let extraHeight: CGFloat = 4 + 4
+        let modifiedWidth = width - 10 - 10
         let constrainedSize = CGSize(width: modifiedWidth, height: CGFloat.max)
         let content = post.formattedString()
         let contentRect = content.boundingRectWithSize(constrainedSize, options: NSStringDrawingOptions.UsesLineFragmentOrigin, context: nil)

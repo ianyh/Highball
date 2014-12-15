@@ -48,7 +48,7 @@ PODS:
   - TMTumblrSDK/AppClient (1.0.8):
     - TMTumblrSDK/Core
   - TMTumblrSDK/Core (1.0.8)
-  - VENTouchLock (1.0.3):
+  - VENTouchLock (1.0.4):
     - SSKeychain (~> 1.0)
   - WCFastCell (1.1)
 
@@ -69,6 +69,11 @@ EXTERNAL SOURCES:
   VENTouchLock:
     :git: https://github.com/ianyh/VENTouchLock.git
 
+CHECKOUT OPTIONS:
+  VENTouchLock:
+    :commit: e1e5a3f284071baa31b05b4be9394dd1881d9b7e
+    :git: https://github.com/ianyh/VENTouchLock.git
+
 SPEC CHECKSUMS:
   AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
   ChameleonFramework: c60096686e3771f5d78f26cfbfd08955a8a88cbd
@@ -81,7 +86,7 @@ SPEC CHECKSUMS:
   SSKeychain: cc48bd3ad24fcd9125adb9e0d23dd50b8bbd08b9
   TMCache: ed936c5b4684e4ea15113d46fba8829ed3baadad
   TMTumblrSDK: b9fada23e88b42ade2b492a6db95bfb1dff6304b
-  VENTouchLock: 40fe12c4080f7c3b175fe6ce6a10e8ee4cb9478f
+  VENTouchLock: f4481ca3f62fe575057fd45cd73ef9a35cad896f
   WCFastCell: 8a9c6507a2a9d3eae9959dd3458a11ba5560503e
 
 COCOAPODS: 0.35.0

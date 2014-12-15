@@ -11,6 +11,7 @@ import UIKit
 class SettingsViewController : UITableViewController {
     private enum PasscodeRow: Int {
         case Set
+        case ClearPasscode
         case UseTouch
     }
     let settingsCellIdentifier = "settingsCellIdentifier"
@@ -35,9 +36,9 @@ class SettingsViewController : UITableViewController {
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if VENTouchLock.canUseTouchID() {
-            return 2
+            return 3
         }
-        return 1
+        return 2
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -45,8 +46,14 @@ class SettingsViewController : UITableViewController {
 
         switch PasscodeRow(rawValue: indexPath.row)! {
         case .Set:
-            cell.textLabel?.text = "Passcode"
+            if VENTouchLock.sharedInstance().isPasscodeSet() {
+                cell.textLabel?.text = "Update Passcode"
+            } else {
+                cell.textLabel?.text = "Set Passcode"
+            }
             cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+        case .ClearPasscode:
+            cell.textLabel?.text = "Clear Passcode"
         case .UseTouch:
             cell.textLabel?.text = "Use Touch ID"
             if VENTouchLock.shouldUseTouchID() {
@@ -69,6 +76,11 @@ class SettingsViewController : UITableViewController {
                 }
                 navigationController.pushViewController(viewController, animated: true)
             }
+        case .ClearPasscode:
+            if VENTouchLock.sharedInstance().isPasscodeSet() {
+                VENTouchLock.sharedInstance().deletePasscode()
+            }
+            tableView.reloadData()
         case .UseTouch:
             if VENTouchLock.shouldUseTouchID() {
                 VENTouchLock.setShouldUseTouchID(false)

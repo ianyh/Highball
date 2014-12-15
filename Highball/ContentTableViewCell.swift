@@ -50,4 +50,5 @@ class ContentTableViewCell: WCFastCell, UIWebViewDelegate {
         }
         return false
     }
+
 }
