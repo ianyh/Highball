@@ -41,7 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         VENTouchLock.sharedInstance().setKeychainService(
             "com.highball.Highball",
             keychainAccount: "com.highball",
-            touchIDReason: "",
+            touchIDReason: "Scan fingerprint to open.",
             passcodeAttemptLimit: UInt.max,
             splashViewControllerClass: LockSplashViewController.classForCoder()
         )
