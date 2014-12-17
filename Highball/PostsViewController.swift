@@ -8,6 +8,11 @@
 
 import UIKit
 
+enum TextRow: Int {
+    case Title
+    case Body
+}
+
 enum AnswerRow: Int {
     case Question
     case Answer
@@ -316,11 +321,11 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         case "photo":
             let postPhotos = post.photos()
             if postPhotos.count == 1 {
-                return 3
+                return 2
             }
-            return 1 + post.layoutRows().count + 1
+            return post.layoutRows().count + 1
         case "text":
-            return 1
+            return 2
         case "answer":
             return 2
         case "quote":
@@ -346,10 +351,6 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                 let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
                 cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
                 return cell
-            } else if indexPath.row == 0 {
-                let cell = tableView.dequeueReusableCellWithIdentifier(titleTableViewCellIdentifier) as TitleTableViewCell!
-                cell.titleLabel.text = post.title()
-                return cell
             }
             
             let cell = tableView.dequeueReusableCellWithIdentifier(photosetRowTableViewCellIdentifier) as PhotosetRowTableViewCell!
@@ -359,10 +360,10 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
             } else {
                 let photosetLayoutRows = post.layoutRows()
                 var photosIndexStart = 0
-                for photosetLayoutRow in photosetLayoutRows[0..<indexPath.row-1] {
+                for photosetLayoutRow in photosetLayoutRows[0..<indexPath.row] {
                     photosIndexStart += photosetLayoutRow
                 }
-                let photosetLayoutRow = photosetLayoutRows[indexPath.row-1]
+                let photosetLayoutRow = photosetLayoutRows[indexPath.row]
                 
                 cell.images = Array(postPhotos[(photosIndexStart)..<(photosIndexStart + photosetLayoutRow)])
             }
@@ -370,9 +371,16 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
             
             return cell
         case "text":
-            let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
-            cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
-            return cell
+            switch TextRow(rawValue: indexPath.row)! {
+            case .Title:
+                let cell = tableView.dequeueReusableCellWithIdentifier(titleTableViewCellIdentifier) as TitleTableViewCell!
+                cell.titleLabel.text = post.title()
+                return cell
+            case .Body:
+                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
+                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
+                return cell
+            }
         case "answer":
             switch AnswerRow(rawValue: indexPath.row)! {
             case .Question:
@@ -459,11 +467,6 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                     return height
                 }
                 return 0
-            } else if indexPath.row == 0 {
-                if let title = post.title() {
-                    return TitleTableViewCell.heightForTitle(title, width: tableView.frame.size.width)
-                }
-                return 0
             }
             
             let postPhotos = post.photos()
@@ -474,10 +477,10 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
             } else {
                 let photosetLayoutRows = post.layoutRows()
                 var photosIndexStart = 0
-                for photosetLayoutRow in photosetLayoutRows[0..<indexPath.row-1] {
+                for photosetLayoutRow in photosetLayoutRows[0..<indexPath.row] {
                     photosIndexStart += photosetLayoutRow
                 }
-                let photosetLayoutRow = photosetLayoutRows[indexPath.row - 1]
+                let photosetLayoutRow = photosetLayoutRows[indexPath.row]
                 
                 images = Array(postPhotos[(photosIndexStart)..<(photosIndexStart + photosetLayoutRow)])
             }
@@ -491,10 +494,18 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
             
             return minHeight
         case "text":
-            if let height = self.bodyHeightCache[post.id] {
-                return height
+            switch TextRow(rawValue: indexPath.row)! {
+            case .Title:
+                if let title = post.title() {
+                    return TitleTableViewCell.heightForTitle(title, width: tableView.frame.size.width)
+                }
+                return 0
+            case .Body:
+                if let height = self.bodyHeightCache[post.id] {
+                    return height
+                }
+                return 0
             }
-            return 0
         case "answer":
             switch AnswerRow(rawValue: indexPath.row)! {
             case .Question:
