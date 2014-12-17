@@ -48,10 +48,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         self.window?.makeKeyAndVisible()
 
-        if VENTouchLock.sharedInstance().isPasscodeSet() {
-            VENTouchLock.sharedInstance().lock()
-        }
-
         return true
     }
 
