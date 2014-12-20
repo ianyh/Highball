@@ -20,6 +20,10 @@ struct Account {
     }
 }
 
+func ==(lhs: Account, rhs: Account) -> Bool {
+    return lhs.token == rhs.token
+}
+
 struct AccountsService {
     private static let accountsDefaultsKey = "AccountsViewControllerAccountsDefaultsKey"
     private static let lastAccountDefaultsKey = "lastAccountDefaultsKey"
@@ -31,9 +35,6 @@ struct AccountsService {
     static var account: Account?
 
     static func start(completion: () -> ()) {
-//        NSUserDefaults.standardUserDefaults().removeObjectForKey(self.accountsDefaultsKey)
-//        NSUserDefaults.standardUserDefaults().removeObjectForKey(self.lastAccountDefaultsKey)
-
         if let lastAccount = self.lastAccount() {
             self.loginToAccount(lastAccount, completion)
             return
@@ -80,9 +81,16 @@ struct AccountsService {
 
     static func loginToAccount(account: Account, completion: () -> ()) {
         self.account = account
+        let accountDictionary = [
+            self.accountBlogDataKey : NSKeyedArchiver.archivedDataWithRootObject(account.blog),
+            self.accountOAuthTokenKey : account.token,
+            self.accountOAuthTokenSecretKey : account.tokenSecret
+        ]
 
         TMAPIClient.sharedInstance().OAuthToken = account.token
         TMAPIClient.sharedInstance().OAuthTokenSecret = account.tokenSecret
+
+        NSUserDefaults.standardUserDefaults().setObject(accountDictionary, forKey: self.lastAccountDefaultsKey)
 
         dispatch_async(dispatch_get_main_queue(), completion)
     }

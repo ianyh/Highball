@@ -56,6 +56,14 @@ class AccountsViewController: UITableViewController {
 
             cell.textLabel?.text = account.blog.name
 
+            if let currentAccount = AccountsService.account {
+                if account == currentAccount {
+                    cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+                } else {
+                    cell.accessoryType = UITableViewCellAccessoryType.None
+                }
+            }
+
             return cell
         case .AddAccount:
             let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) as UITableViewCell!
