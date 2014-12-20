@@ -79,7 +79,6 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         }
     }
     var loadingBottom: Bool?
-    var loggingIn = false
     var lastPoint: CGPoint?
     
     required override init() {
@@ -135,6 +134,18 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         self.view.addGestureRecognizer(self.panGestureRecognizer)
 
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Rewind, target: self, action: Selector("navigate:event:"))
+    }
+
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+
+        if let posts = self.posts {
+            if countElements(posts) > 0 {
+                return
+            }
+        }
+
+        self.loadTop()
     }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {

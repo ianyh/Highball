@@ -21,11 +21,11 @@ class Post {
     let shortURLString: String!
     var liked: Bool!
 
-    private let json: JSONValue!
+    private let json: JSON!
 
-    required init(json: JSONValue!) {
+    required init(json: JSON!) {
         self.json = json
-        self.id = json["id"].integer!
+        self.id = json["id"].int!
         self.type = json["type"].string!
         self.blogName = json["blog_name"].string!
         self.reblogKey = json["reblog_key"].string!
@@ -35,7 +35,7 @@ class Post {
 
     func photos() -> (Array<PostPhoto>) {
         if let photos = self.json["photos"].array {
-            return photos.map { (photoJSON: JSONValue!) -> (PostPhoto) in
+            return photos.map { (photoJSON: JSON!) -> (PostPhoto) in
                 return PostPhoto(json: photoJSON)
             }
         }
@@ -57,7 +57,7 @@ class Post {
     func dialogueEntries() -> (Array<PostDialogueEntry>) {
         var dialogueEntries = Array<PostDialogueEntry>()
         if let entries = self.json["dialogue"].array {
-            return entries.map { (entryJSON: JSONValue!) -> (PostDialogueEntry) in
+            return entries.map { (entryJSON: JSON) -> (PostDialogueEntry) in
                 return PostDialogueEntry(json: entryJSON)
             }
         }
@@ -105,12 +105,12 @@ class Post {
             bodyString = self.json["source"].string
         case "video":
             if let players = self.json["player"].array {
-                let sortedPlayers = players.sorted({ $0["width"].integer! > $1["width"].integer! })
+                let sortedPlayers = players.sorted({ $0["width"].int! > $1["width"].int! })
                 if countElements(sortedPlayers) > 0 {
                     let screenWidth = UIScreen.mainScreen().bounds.size.width
                     var finalPlayer: String? = sortedPlayers.first!["embed_code"].string!
                     for player in sortedPlayers {
-                        if player["width"].integer! < Int(screenWidth) {
+                        if player["width"].int! < Int(screenWidth) {
                             break
                         }
                         finalPlayer = player["embed_code"].string!

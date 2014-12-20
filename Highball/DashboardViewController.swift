@@ -9,59 +9,8 @@
 import UIKit
 
 class DashboardViewController: PostsViewController {
-    var blogs: Array<Blog>!
-    var primaryBlog: Blog! {
-        didSet {
-            self.navigationItem.title = self.primaryBlog.name
-        }
-    }
-
     var topOffset = 0
     var bottomOffset = 0
-
-    deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
-    }
-
-    func login() {
-        if self.loggingIn {
-            return
-        }
-
-        self.loggingIn = true
-
-        if let oauthToken = TMAPIClient.sharedInstance().OAuthToken {
-            TMAPIClient.sharedInstance().userInfo { response, error in
-                if let e = error {
-                    println(e)
-                    return
-                }
-
-                let json = JSONValue(response)
-                println(json)
-
-                self.blogs = json["user"]["blogs"].array!.map({ Blog(json: $0) })
-                self.primaryBlog = self.blogs.filter({ $0.primary }).first
-
-                self.loadTop()
-            }
-        } else {
-            TMAPIClient.sharedInstance().authenticate("highballtumblr") { (error: NSError!) -> Void in
-                self.loggingIn = false
-
-                if error == nil {
-                    NSUserDefaults.standardUserDefaults().setObject(TMAPIClient.sharedInstance().OAuthToken, forKey: "HighballOAuthToken")
-                    NSUserDefaults.standardUserDefaults().setObject(TMAPIClient.sharedInstance().OAuthTokenSecret, forKey: "HighballOAuthTokenSecret")
-
-                    self.login()
-                }
-            }
-        }
-    }
-
-    func applicationDidBecomeActive(notification: NSNotification!) {
-        self.login()
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,18 +21,7 @@ class DashboardViewController: PostsViewController {
             action: Selector("bookmarks:event:")
         )
 
-        NSNotificationCenter.defaultCenter().addObserver(
-            self,
-            selector: Selector("applicationDidBecomeActive:"),
-            name: UIApplicationDidBecomeActiveNotification,
-            object: nil
-        )
-    }
-
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-
-        self.login()
+        self.navigationItem.title = AccountsService.account.blog.name
     }
 
     override func loadTop() {
@@ -104,36 +42,36 @@ class DashboardViewController: PostsViewController {
         TMAPIClient.sharedInstance().dashboard([ "offset" : self.topOffset ]) { (response: AnyObject!, error: NSError!) -> Void in
             if let e = error {
                 println(e)
-                return
-            }
-            let json = JSONValue(response)
-            let posts = json["posts"].array!.map { (post) -> (Post) in
-                return Post(json: post)
-            }
-
-            for post in posts {
-                if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
-                    let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1))
-                    let htmlString = content
-
-                    webView.delegate = self
-                    webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
-        
-                    self.bodyWebViewCache[post.id] = webView
+            } else {
+                let json = JSON(response)
+                let posts = json["posts"].array!.map { (post) -> (Post) in
+                    return Post(json: post)
                 }
 
-                if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.size.width) {
-                    let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1))
-                    let htmlString = content
+                for post in posts {
+                    if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
+                        let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1))
+                        let htmlString = content
 
-                    webView.delegate = self
-                    webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
-        
-                    self.secondaryBodyWebViewCache[post.id] = webView
+                        webView.delegate = self
+                        webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+
+                        self.bodyWebViewCache[post.id] = webView
+                    }
+
+                    if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.size.width) {
+                        let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1))
+                        let htmlString = content
+
+                        webView.delegate = self
+                        webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+
+                        self.secondaryBodyWebViewCache[post.id] = webView
+                    }
                 }
-            }
 
-            self.posts = posts
+                self.posts = posts
+            }
             self.loadingTop = false
         }
     }
@@ -149,38 +87,38 @@ class DashboardViewController: PostsViewController {
                 TMAPIClient.sharedInstance().dashboard(["offset" : self.topOffset + self.bottomOffset + 20]) { (response: AnyObject!, error: NSError!) -> Void in
                     if let e = error {
                         println(e)
-                        return
-                    }
-                    let json = JSONValue(response)
-                    let posts = json["posts"].array!.map { (post) -> (Post) in
-                        return Post(json: post)
-                    }
-                    
-                    for post in posts {
-                        if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
-                            let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1))
-                            let htmlString = content
-                            
-                            webView.delegate = self
-                            webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
-                            
-                            self.bodyWebViewCache[post.id] = webView
+                    } else {
+                        let json = JSON(response)
+                        let posts = json["posts"].array!.map { (post) -> (Post) in
+                            return Post(json: post)
                         }
 
-                        if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.size.width) {
-                            let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1))
-                            let htmlString = content
+                        for post in posts {
+                            if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
+                                let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1))
+                                let htmlString = content
 
-                            webView.delegate = self
-                            webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+                                webView.delegate = self
+                                webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
 
-                            self.secondaryBodyWebViewCache[post.id] = webView
+                                self.bodyWebViewCache[post.id] = webView
+                            }
+
+                            if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.size.width) {
+                                let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1))
+                                let htmlString = content
+
+                                webView.delegate = self
+                                webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+
+                                self.secondaryBodyWebViewCache[post.id] = webView
+                            }
                         }
-                    }
 
-                    self.posts.extend(posts)
-                    self.bottomOffset += 20
-                    self.reloadTable()
+                        self.posts.extend(posts)
+                        self.bottomOffset += 20
+                        self.reloadTable()
+                    }
 
                     self.loadingBottom = false
                 }
@@ -189,7 +127,7 @@ class DashboardViewController: PostsViewController {
     }
 
     override func reblogBlogName() -> (String) {
-        return self.primaryBlog.name
+        return AccountsService.account.blog.name
     }
 
     func bookmarks(sender: UIButton, event: UIEvent) {
@@ -241,7 +179,7 @@ class DashboardViewController: PostsViewController {
             if let e = error {
                 return
             }
-            let json = JSONValue(response)
+            let json = JSON(response)
             let posts = json["posts"].array!.map { (post) -> (Post) in
                 return Post(json: post)
             }
@@ -268,7 +206,7 @@ class DashboardViewController: PostsViewController {
             if let e = error {
                 return
             }
-            let json = JSONValue(response)
+            let json = JSON(response)
             let post = json["posts"].array!.map { (post) -> (Post) in
                 return Post(json: post)
             }.first!
