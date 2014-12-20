@@ -19,50 +19,6 @@ class DashboardViewController: PostsViewController {
     var topOffset = 0
     var bottomOffset = 0
 
-    deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
-    }
-
-    func login() {
-//        if self.loggingIn {
-//            return
-//        }
-//
-//        self.loggingIn = true
-//
-//        if let oauthToken = TMAPIClient.sharedInstance().OAuthToken {
-//            TMAPIClient.sharedInstance().userInfo { response, error in
-//                if let e = error {
-//                    println(e)
-//                    return
-//                }
-//
-//                let json = JSON(response)
-//                println(json)
-//
-//                self.blogs = json["user"]["blogs"].array!//.map({ Blog(json: $0) })
-//                self.primaryBlog = self.blogs.filter({ $0.primary }).first
-//
-//                self.loadTop()
-//            }
-//        } else {
-//            TMAPIClient.sharedInstance().authenticate("highballtumblr") { (error: NSError!) -> Void in
-//                self.loggingIn = false
-//
-//                if error == nil {
-//                    NSUserDefaults.standardUserDefaults().setObject(TMAPIClient.sharedInstance().OAuthToken, forKey: "HighballOAuthToken")
-//                    NSUserDefaults.standardUserDefaults().setObject(TMAPIClient.sharedInstance().OAuthTokenSecret, forKey: "HighballOAuthTokenSecret")
-//
-//                    self.login()
-//                }
-//            }
-//        }
-    }
-
-    func applicationDidBecomeActive(notification: NSNotification!) {
-        self.login()
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -71,19 +27,6 @@ class DashboardViewController: PostsViewController {
             target: self,
             action: Selector("bookmarks:event:")
         )
-
-        NSNotificationCenter.defaultCenter().addObserver(
-            self,
-            selector: Selector("applicationDidBecomeActive:"),
-            name: UIApplicationDidBecomeActiveNotification,
-            object: nil
-        )
-    }
-
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-
-        self.login()
     }
 
     override func loadTop() {
@@ -107,7 +50,6 @@ class DashboardViewController: PostsViewController {
                 return
             }
             let json = JSON(response)
-//            println(json)
             let posts = json["posts"].array!.map { (post) -> (Post) in
                 return Post(json: post)
             }
