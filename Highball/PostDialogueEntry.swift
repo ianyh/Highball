@@ -9,9 +9,9 @@
 import Foundation
 
 class PostDialogueEntry {
-    private let json: JSONValue!
+    private let json: JSON!
 
-    required init(json: JSONValue!) {
+    required init(json: JSON!) {
         self.json = json
     }
 

@@ -8,19 +8,35 @@
 
 import Foundation
 
-class Blog {
-    let name: String!
-    let url: String!
-    let title: String!
-    let primary: Bool!
+class Blog: NSObject, NSCoding {
+    private let jsonCodingKey = "jsonCodingKey"
 
-    private let json: JSONValue!
+    let name: String
+    let url: String
+    let title: String
+    let primary: Bool
 
-    required init(json: JSONValue) {
+    private let json: JSON!
+
+    required init(json: JSON) {
         self.json = json
         self.name = json["name"].string!
         self.url = json["url"].string!
         self.title = json["title"].string!
         self.primary = json["primary"].bool!
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        let jsonData = aDecoder.decodeObjectForKey(jsonCodingKey) as NSData!
+        let json = JSON(data: jsonData)
+        self.json = json
+        self.name = json["name"].string!
+        self.url = json["url"].string!
+        self.title = json["title"].string!
+        self.primary = json["primary"].bool!
+    }
+
+    func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(self.json.rawData(), forKey: self.jsonCodingKey)
     }
 }

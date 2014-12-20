@@ -18,39 +18,39 @@ class LikesViewController: PostsViewController {
     }
     
     func login() {
-        if self.loggingIn {
-            return
-        }
-        
-        self.loggingIn = true
-        
-        if let oauthToken = TMAPIClient.sharedInstance().OAuthToken {
-            TMAPIClient.sharedInstance().userInfo { response, error in
-                if let e = error {
-                    println(e)
-                    return
-                }
-                
-                let json = JSONValue(response)
-                println(json)
-                
-                self.blogs = json["user"]["blogs"].array!.map({ Blog(json: $0) })
-                self.primaryBlog = self.blogs.filter({ $0.primary }).first
-                
-                self.loadTop()
-            }
-        } else {
-            TMAPIClient.sharedInstance().authenticate("highballtumblr") { (error: NSError!) -> Void in
-                self.loggingIn = false
-                
-                if error == nil {
-                    NSUserDefaults.standardUserDefaults().setObject(TMAPIClient.sharedInstance().OAuthToken, forKey: "HighballOAuthToken")
-                    NSUserDefaults.standardUserDefaults().setObject(TMAPIClient.sharedInstance().OAuthTokenSecret, forKey: "HighballOAuthTokenSecret")
-                    
-                    self.login()
-                }
-            }
-        }
+//        if self.loggingIn {
+//            return
+//        }
+//        
+//        self.loggingIn = true
+//        
+//        if let oauthToken = TMAPIClient.sharedInstance().OAuthToken {
+//            TMAPIClient.sharedInstance().userInfo { response, error in
+//                if let e = error {
+//                    println(e)
+//                    return
+//                }
+//                
+//                let json = JSON(response)
+//                println(json)
+//                
+//                self.blogs = json["user"]["blogs"].array!.map({ Blog(json: $0) })
+//                self.primaryBlog = self.blogs.filter({ $0.primary }).first
+//                
+//                self.loadTop()
+//            }
+//        } else {
+//            TMAPIClient.sharedInstance().authenticate("highballtumblr") { (error: NSError!) -> Void in
+//                self.loggingIn = false
+//                
+//                if error == nil {
+//                    NSUserDefaults.standardUserDefaults().setObject(TMAPIClient.sharedInstance().OAuthToken, forKey: "HighballOAuthToken")
+//                    NSUserDefaults.standardUserDefaults().setObject(TMAPIClient.sharedInstance().OAuthTokenSecret, forKey: "HighballOAuthTokenSecret")
+//                    
+//                    self.login()
+//                }
+//            }
+//        }
     }
     
     func applicationDidBecomeActive(notification: NSNotification!) {
@@ -88,7 +88,7 @@ class LikesViewController: PostsViewController {
                 println(e)
                 return
             }
-            let json = JSONValue(response)
+            let json = JSON(response)
             let posts = json["liked_posts"].array!.map { (post) -> (Post) in
                 return Post(json: post)
             }
@@ -135,7 +135,7 @@ class LikesViewController: PostsViewController {
                         println(e)
                         return
                     }
-                    let json = JSONValue(response)
+                    let json = JSON(response)
                     let posts = json["liked_posts"].array!.map { (post) -> (Post) in
                         return Post(json: post)
                     }

@@ -9,6 +9,10 @@
 import UIKit
 
 class SettingsViewController : UITableViewController {
+    private enum SettingsSection: Int {
+        case Accounts
+        case Passcode
+    }
     private enum PasscodeRow: Int {
         case Set
         case ClearPasscode
@@ -34,32 +38,47 @@ class SettingsViewController : UITableViewController {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if VENTouchLock.canUseTouchID() {
-            return 3
-        }
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 2
+    }
+
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch SettingsSection(rawValue: section)! {
+        case .Accounts:
+            return 1
+        case .Passcode:
+            if VENTouchLock.canUseTouchID() {
+                return 3
+            }
+            return 2
+        }
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = self.tableView.dequeueReusableCellWithIdentifier(settingsCellIdentifier, forIndexPath: indexPath) as UITableViewCell
 
-        switch PasscodeRow(rawValue: indexPath.row)! {
-        case .Set:
-            if VENTouchLock.sharedInstance().isPasscodeSet() {
-                cell.textLabel?.text = "Update Passcode"
-            } else {
-                cell.textLabel?.text = "Set Passcode"
-            }
+        switch SettingsSection(rawValue: indexPath.section)! {
+        case .Accounts:
+            cell.textLabel?.text = "Accounts"
             cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
-        case .ClearPasscode:
-            cell.textLabel?.text = "Clear Passcode"
-        case .UseTouch:
-            cell.textLabel?.text = "Use Touch ID"
-            if VENTouchLock.shouldUseTouchID() {
-                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
-            } else {
-                cell.accessoryType = UITableViewCellAccessoryType.None
+        case .Passcode:
+            switch PasscodeRow(rawValue: indexPath.row)! {
+            case .Set:
+                if VENTouchLock.sharedInstance().isPasscodeSet() {
+                    cell.textLabel?.text = "Update Passcode"
+                } else {
+                    cell.textLabel?.text = "Set Passcode"
+                }
+                cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+            case .ClearPasscode:
+                cell.textLabel?.text = "Clear Passcode"
+            case .UseTouch:
+                cell.textLabel?.text = "Use Touch ID"
+                if VENTouchLock.shouldUseTouchID() {
+                    cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+                } else {
+                    cell.accessoryType = UITableViewCellAccessoryType.None
+                }
             }
         }
 
@@ -67,27 +86,36 @@ class SettingsViewController : UITableViewController {
     }
 
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        switch PasscodeRow(rawValue: indexPath.row)! {
-        case .Set:
-            let viewController = VENTouchLockCreatePasscodeViewController()
+        tableView.deselectRowAtIndexPath(indexPath, animated: false)
+
+        switch SettingsSection(rawValue: indexPath.section)! {
+        case .Accounts:
             if let navigationController = self.navigationController {
-                viewController.willFinishWithResult = { finished in
-                    navigationController.popViewControllerAnimated(true); return
+                navigationController.pushViewController(AccountsViewController(), animated: true)
+            }
+        case .Passcode:
+            switch PasscodeRow(rawValue: indexPath.row)! {
+            case .Set:
+                let viewController = VENTouchLockCreatePasscodeViewController()
+                if let navigationController = self.navigationController {
+                    viewController.willFinishWithResult = { finished in
+                        navigationController.popViewControllerAnimated(true); return
+                    }
+                    navigationController.pushViewController(viewController, animated: true)
                 }
-                navigationController.pushViewController(viewController, animated: true)
+            case .ClearPasscode:
+                if VENTouchLock.sharedInstance().isPasscodeSet() {
+                    VENTouchLock.sharedInstance().deletePasscode()
+                }
+                tableView.reloadData()
+            case .UseTouch:
+                if VENTouchLock.shouldUseTouchID() {
+                    VENTouchLock.setShouldUseTouchID(false)
+                } else {
+                    VENTouchLock.setShouldUseTouchID(true)
+                }
+                tableView.reloadData()
             }
-        case .ClearPasscode:
-            if VENTouchLock.sharedInstance().isPasscodeSet() {
-                VENTouchLock.sharedInstance().deletePasscode()
-            }
-            tableView.reloadData()
-        case .UseTouch:
-            if VENTouchLock.shouldUseTouchID() {
-                VENTouchLock.setShouldUseTouchID(false)
-            } else {
-                VENTouchLock.setShouldUseTouchID(true)
-            }
-            tableView.reloadData()
         }
     }
 }

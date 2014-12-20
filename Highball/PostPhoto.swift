@@ -9,19 +9,19 @@
 import Foundation
 
 class PostPhoto {
-    private let json: JSONValue!
+    private let json: JSON!
 
-    required init(json: JSONValue!) {
+    required init(json: JSON!) {
         self.json = json
     }
 
     func urlWithWidth(width: CGFloat) -> (NSURL!) {
         let originalSize = self.json["original_size"]
-        let alternateSizes = self.json["alt_sizes"].array!.sorted({ $0["width"].integer! > $1["width"].integer! })
+        let alternateSizes = self.json["alt_sizes"].array!.sorted({ $0["width"].int! > $1["width"].int! })
 
         var smallestFittedSize = self.json["original_size"]
         for size in alternateSizes {
-            if CGFloat(size["width"].integer!) < width {
+            if CGFloat(size["width"].int!) < width {
                 break
             }
 
@@ -32,14 +32,14 @@ class PostPhoto {
     }
 
     func width() -> (CGFloat) {
-        if let width = self.json["original_size"]["width"].integer {
+        if let width = self.json["original_size"]["width"].int {
             return CGFloat(width)
         }
         return 0
     }
 
     func height() -> (CGFloat) {
-        if let height = self.json["original_size"]["height"].integer {
+        if let height = self.json["original_size"]["height"].int {
             return CGFloat(height)
         }
         return 0

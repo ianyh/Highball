@@ -19,17 +19,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         TMAPIClient.sharedInstance().OAuthConsumerKey = "YhlYiD2dAUE6UH01ugPKQafm2XESBWsaOYPz7xV0q53SDn3ChU"
         TMAPIClient.sharedInstance().OAuthConsumerSecret = "ONVNS5UCfZMMhrekfjBknUXgjQ5I2J1a0aVDCfso2mfRcC4nEF"
 
-        if let oAuthToken = NSUserDefaults.standardUserDefaults().stringForKey("HighballOAuthToken") {
-            TMAPIClient.sharedInstance().OAuthToken = oAuthToken
-            TMAPIClient.sharedInstance().OAuthTokenSecret = NSUserDefaults.standardUserDefaults().stringForKey("HighballOAuthTokenSecret")
-        }
+//        if let oAuthToken = NSUserDefaults.standardUserDefaults().stringForKey("HighballOAuthToken") {
+//            TMAPIClient.sharedInstance().OAuthToken = oAuthToken
+//            TMAPIClient.sharedInstance().OAuthTokenSecret = NSUserDefaults.standardUserDefaults().stringForKey("HighballOAuthTokenSecret")
+//        }
 
         // Only keep cache for 24 hours
         TMCache.sharedCache().diskCache.ageLimit = 86400
 
-        self.navigationController = UINavigationController(rootViewController: DashboardViewController())
+        self.navigationController = UINavigationController()
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         self.window?.rootViewController = self.navigationController
+
+        AccountsService.start { () -> () in
+            self.navigationController?.viewControllers = [DashboardViewController()]; return
+        }
 
         if let bundleInfoDictionary = NSBundle.mainBundle().infoDictionary {
             if let key = bundleInfoDictionary["HBCrashlyticsAPIKey"] as? NSString {
