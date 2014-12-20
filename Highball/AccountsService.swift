@@ -96,7 +96,7 @@ struct AccountsService {
     }
 
     static func authenticateNewAccount(completion: (account: Account?) -> ()) {
-        let currentAccount = self.account
+        let currentAccount: Account? = self.account
 
         self.account = nil
 
@@ -133,16 +133,38 @@ struct AccountsService {
                 accountDictionaries.append(accountDictionary)
 
                 NSUserDefaults.standardUserDefaults().setObject(accountDictionaries, forKey: self.accountsDefaultsKey)
-                NSUserDefaults.standardUserDefaults().setObject(accountDictionary, forKey: self.lastAccountDefaultsKey)
+//                NSUserDefaults.standardUserDefaults().setObject(accountDictionary, forKey: self.lastAccountDefaultsKey)
 
                 self.account = currentAccount
 
-                TMAPIClient.sharedInstance().OAuthToken = self.account?.token
-                TMAPIClient.sharedInstance().OAuthTokenSecret = self.account?.tokenSecret
+                TMAPIClient.sharedInstance().OAuthToken = currentAccount?.token
+                TMAPIClient.sharedInstance().OAuthTokenSecret = currentAccount?.tokenSecret
 
                 completion(account: account)
             }
         })
+    }
+
+    static func deleteAccount(account: Account, completion: () -> ()) {
+        let accountDictionaries = self.accounts().filter({ existingAccount in
+            return !(existingAccount == account)
+        }).map({ existingAccount -> Dictionary<String, AnyObject> in
+            return [
+                self.accountBlogDataKey : NSKeyedArchiver.archivedDataWithRootObject(existingAccount.blog),
+                self.accountOAuthTokenKey : existingAccount.token,
+                self.accountOAuthTokenSecretKey : existingAccount.tokenSecret
+            ]
+        })
+
+        NSUserDefaults.standardUserDefaults().setObject(accountDictionaries, forKey: self.accountsDefaultsKey)
+
+        if self.account == account {
+            self.account = nil
+            NSUserDefaults.standardUserDefaults().removeObjectForKey(self.lastAccountDefaultsKey)
+            self.start(completion)
+        } else {
+            dispatch_async(dispatch_get_main_queue(), completion)
+        }
     }
 
     private static func accountDictionaries() -> Array<Dictionary<String, AnyObject>> {

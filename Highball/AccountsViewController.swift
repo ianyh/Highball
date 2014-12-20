@@ -69,6 +69,7 @@ class AccountsViewController: UITableViewController {
             let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) as UITableViewCell!
 
             cell.textLabel?.text = "Add account"
+            cell.accessoryType = UITableViewCellAccessoryType.None
 
             return cell
         }
@@ -86,6 +87,20 @@ class AccountsViewController: UITableViewController {
                 self.accounts = AccountsService.accounts()
                 self.tableView.reloadData()
             }
+        }
+    }
+
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return Section(rawValue: indexPath.section) == Section.Accounts
+    }
+
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if Section(rawValue: indexPath.section) == Section.Accounts {
+            let account = self.accounts[indexPath.row]
+            AccountsService.deleteAccount(account, completion: { () -> () in
+                self.accounts = AccountsService.accounts()
+                self.tableView.reloadData()
+            })
         }
     }
 }
