@@ -32,7 +32,7 @@ struct AccountsService {
     private static let accountOAuthTokenKey = "accountOAuthToken"
     private static let accountOAuthTokenSecretKey = "accountOAuthTokenSecret"
 
-    static var account: Account?
+    static var account: Account!
 
     static func start(completion: () -> ()) {
         if let lastAccount = self.lastAccount() {

@@ -9,8 +9,6 @@
 import UIKit
 
 class LikesViewController: PostsViewController {
-    var blogs: Array<Blog>!
-    var primaryBlog: Blog!
     var currentOffset: Int?
 
     override func viewDidLoad() {
@@ -106,6 +104,6 @@ class LikesViewController: PostsViewController {
     }
     
     override func reblogBlogName() -> (String) {
-        return self.primaryBlog.name
+        return AccountsService.account.blog.name
     }
 }

@@ -74,17 +74,18 @@ class AccountsViewController: UITableViewController {
         }
     }
 
-    override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        if Section(rawValue: indexPath.section) == Section.AddAccount {
-            return indexPath
-        }
-        return nil
-    }
-
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        AccountsService.authenticateNewAccount { (account) -> () in
-            self.accounts = AccountsService.accounts()
-            self.tableView.reloadData()
+        switch Section(rawValue: indexPath.section)! {
+        case .Accounts:
+            let account = self.accounts[indexPath.row]
+            AccountsService.loginToAccount(account, completion: { () -> () in
+                self.tableView.reloadData()
+            })
+        case .AddAccount:
+            AccountsService.authenticateNewAccount { (account) -> () in
+                self.accounts = AccountsService.accounts()
+                self.tableView.reloadData()
+            }
         }
     }
 }

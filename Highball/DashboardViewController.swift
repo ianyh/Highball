@@ -9,13 +9,6 @@
 import UIKit
 
 class DashboardViewController: PostsViewController {
-    var blogs: Array<Blog>!
-    var primaryBlog: Blog! {
-        didSet {
-            self.navigationItem.title = self.primaryBlog.name
-        }
-    }
-
     var topOffset = 0
     var bottomOffset = 0
 
@@ -27,6 +20,8 @@ class DashboardViewController: PostsViewController {
             target: self,
             action: Selector("bookmarks:event:")
         )
+
+        self.navigationItem.title = AccountsService.account.blog.name
     }
 
     override func loadTop() {
@@ -132,7 +127,7 @@ class DashboardViewController: PostsViewController {
     }
 
     override func reblogBlogName() -> (String) {
-        return self.primaryBlog.name
+        return AccountsService.account.blog.name
     }
 
     func bookmarks(sender: UIButton, event: UIEvent) {
