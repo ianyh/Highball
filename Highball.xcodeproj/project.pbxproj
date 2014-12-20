@@ -16,7 +16,6 @@
 		403F53DD19AFB5DF00FF8F3B /* ContentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403F53DC19AFB5DF00FF8F3B /* ContentTableViewCell.swift */; };
 		403F53DF19AFCEB800FF8F3B /* String+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403F53DE19AFCEB800FF8F3B /* String+HTML.swift */; };
 		4050698119AA76BD0066ECE3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4050698019AA76BD0066ECE3 /* AppDelegate.swift */; };
-		4050698419AA76BD0066ECE3 /* Highball.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4050698219AA76BD0066ECE3 /* Highball.xcdatamodeld */; };
 		4050698619AA76BD0066ECE3 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4050698519AA76BD0066ECE3 /* DashboardViewController.swift */; };
 		4050698B19AA76BD0066ECE3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4050698A19AA76BD0066ECE3 /* Images.xcassets */; };
 		4050699719AA76BD0066ECE3 /* HighballTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4050699619AA76BD0066ECE3 /* HighballTests.swift */; };
@@ -92,7 +91,6 @@
 		4050697B19AA76BD0066ECE3 /* Highball.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Highball.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4050697F19AA76BD0066ECE3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4050698019AA76BD0066ECE3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		4050698319AA76BD0066ECE3 /* Highball.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Highball.xcdatamodel; sourceTree = "<group>"; };
 		4050698519AA76BD0066ECE3 /* DashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
 		4050698A19AA76BD0066ECE3 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		4050699019AA76BD0066ECE3 /* HighballTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HighballTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -213,7 +211,6 @@
 				4050698019AA76BD0066ECE3 /* AppDelegate.swift */,
 				403F53DE19AFCEB800FF8F3B /* String+HTML.swift */,
 				4050698A19AA76BD0066ECE3 /* Images.xcassets */,
-				4050698219AA76BD0066ECE3 /* Highball.xcdatamodeld */,
 				4050697E19AA76BD0066ECE3 /* Supporting Files */,
 				405069A019AA77E80066ECE3 /* Highball-Bridging-Header.h */,
 			);
@@ -497,7 +494,6 @@
 				40731BB819FDC38900F6978D /* PostsViewController.swift in Sources */,
 				40731BB419FC272100F6978D /* View.swift in Sources */,
 				40731BB119FC272100F6978D /* Priority.swift in Sources */,
-				4050698419AA76BD0066ECE3 /* Highball.xcdatamodeld in Sources */,
 				4050698119AA76BD0066ECE3 /* AppDelegate.swift in Sources */,
 				408C7D1F19B36F7400EFC410 /* PostLinkTableViewCell.swift in Sources */,
 				408D393F19C12E550001981F /* ImageItemProvider.swift in Sources */,
@@ -739,19 +735,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		4050698219AA76BD0066ECE3 /* Highball.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				4050698319AA76BD0066ECE3 /* Highball.xcdatamodel */,
-			);
-			currentVersion = 4050698319AA76BD0066ECE3 /* Highball.xcdatamodel */;
-			path = Highball.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 4050697319AA76BD0066ECE3 /* Project object */;
 }
