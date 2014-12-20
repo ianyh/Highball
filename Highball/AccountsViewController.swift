@@ -80,6 +80,9 @@ class AccountsViewController: UITableViewController {
         case .Accounts:
             let account = self.accounts[indexPath.row]
             AccountsService.loginToAccount(account, completion: { () -> () in
+                if let navigationController = self.presentingViewController as? UINavigationController {
+                    navigationController.viewControllers = [DashboardViewController()]
+                }
                 self.tableView.reloadData()
             })
         case .AddAccount:

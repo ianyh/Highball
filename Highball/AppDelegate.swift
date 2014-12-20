@@ -49,5 +49,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         return true
     }
+
+    func application(application: UIApplication, handleOpenURL url: NSURL) -> Bool {
+        return TMAPIClient.sharedInstance().handleOpenURL(url)
+    }
 }
 
