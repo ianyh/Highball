@@ -27,38 +27,38 @@ class LikesViewController: PostsViewController {
         TMAPIClient.sharedInstance().likes([:]) { (response: AnyObject!, error: NSError!) -> Void in
             if let e = error {
                 println(e)
-                return
-            }
-            let json = JSON(response)
-            let posts = json["liked_posts"].array!.map { (post) -> (Post) in
-                return Post(json: post)
-            }
-            
-            for post in posts {
-                if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
-                    let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1))
-                    let htmlString = content
-                    
-                    webView.delegate = self
-                    webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
-                    
-                    self.bodyWebViewCache[post.id] = webView
+            } else {
+                let json = JSON(response)
+                let posts = json["liked_posts"].array!.map { (post) -> (Post) in
+                    return Post(json: post)
                 }
-                
-                if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.size.width) {
-                    let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1))
-                    let htmlString = content
-                    
-                    webView.delegate = self
-                    webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
-                    
-                    self.secondaryBodyWebViewCache[post.id] = webView
+
+                for post in posts {
+                    if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
+                        let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1))
+                        let htmlString = content
+
+                        webView.delegate = self
+                        webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+
+                        self.bodyWebViewCache[post.id] = webView
+                    }
+
+                    if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.size.width) {
+                        let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1))
+                        let htmlString = content
+
+                        webView.delegate = self
+                        webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+
+                        self.secondaryBodyWebViewCache[post.id] = webView
+                    }
                 }
+
+                self.posts = posts
+                self.currentOffset = 0
             }
-            
-            self.posts = posts
-            self.currentOffset = 0
-            
+
             self.loadingTop = false
         }
     }
@@ -74,29 +74,29 @@ class LikesViewController: PostsViewController {
                 TMAPIClient.sharedInstance().likes(["offset" : self.currentOffset! + 20]) { (response: AnyObject!, error: NSError!) -> Void in
                     if let e = error {
                         println(e)
-                        return
-                    }
-                    let json = JSON(response)
-                    let posts = json["liked_posts"].array!.map { (post) -> (Post) in
-                        return Post(json: post)
-                    }
-                    
-                    for post in posts {
-                        if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
-                            let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1))
-                            let htmlString = content
-                            
-                            webView.delegate = self
-                            webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
-                            
-                            self.bodyWebViewCache[post.id] = webView
+                    } else {
+                        let json = JSON(response)
+                        let posts = json["liked_posts"].array!.map { (post) -> (Post) in
+                            return Post(json: post)
                         }
+
+                        for post in posts {
+                            if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
+                                let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1))
+                                let htmlString = content
+
+                                webView.delegate = self
+                                webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+
+                                self.bodyWebViewCache[post.id] = webView
+                            }
+                        }
+
+                        self.posts.extend(posts)
+                        self.currentOffset! += 20
+                        self.reloadTable()
                     }
-                    
-                    self.posts.extend(posts)
-                    self.currentOffset! += 20
-                    self.reloadTable()
-                    
+
                     self.loadingBottom = false
                 }
             }
