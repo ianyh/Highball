@@ -133,7 +133,6 @@ struct AccountsService {
                 accountDictionaries.append(accountDictionary)
 
                 NSUserDefaults.standardUserDefaults().setObject(accountDictionaries, forKey: self.accountsDefaultsKey)
-//                NSUserDefaults.standardUserDefaults().setObject(accountDictionary, forKey: self.lastAccountDefaultsKey)
 
                 self.account = currentAccount
 

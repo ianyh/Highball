@@ -79,7 +79,6 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         }
     }
     var loadingBottom: Bool?
-    var loggingIn = false
     var lastPoint: CGPoint?
     
     required override init() {
