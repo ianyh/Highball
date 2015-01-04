@@ -54,7 +54,8 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
     private var longPressGestureRecognizer: UILongPressGestureRecognizer!
     private var panGestureRecognizer: UIPanGestureRecognizer!
     private var reblogViewController: QuickReblogViewController?
-    
+
+    var webViewCache: Array<UIWebView>!
     var bodyWebViewCache: Dictionary<Int, UIWebView>!
     var bodyHeightCache: Dictionary<Int, CGFloat>!
     var secondaryBodyWebViewCache: Dictionary<Int, UIWebView>!
@@ -92,7 +93,8 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         
         self.loadingTop = false
         self.loadingBottom = false
-        
+
+        self.webViewCache = Array<UIWebView>()
         self.bodyWebViewCache = Dictionary<Int, UIWebView>()
         self.bodyHeightCache = Dictionary<Int, CGFloat>()
         self.secondaryBodyWebViewCache = Dictionary<Int, UIWebView>()
@@ -145,7 +147,31 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
 
         self.loadTop()
     }
-    
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+
+        self.webViewCache.removeAll()
+    }
+
+    func popWebView() -> UIWebView {
+        let frame = CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1)
+
+        if countElements(self.webViewCache) > 0 {
+            let webView = self.webViewCache.removeAtIndex(0)
+            webView.frame = frame
+            return webView
+        }
+
+        let webView = UIWebView(frame: frame)
+        webView.delegate = self
+        return webView
+    }
+
+    func pushWebView(webView: UIWebView) {
+        self.webViewCache.append(webView)
+    }
+
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
@@ -176,20 +202,18 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
 
                 for post in posts {
                     if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
-                        let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1))
+                        let webView = self.popWebView()
                         let htmlString = content
 
-                        webView.delegate = self
                         webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
 
                         self.bodyWebViewCache[post.id] = webView
                     }
 
                     if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.size.width) {
-                        let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1))
+                        let webView = self.popWebView()
                         let htmlString = content
 
-                        webView.delegate = self
                         webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
 
                         self.secondaryBodyWebViewCache[post.id] = webView
@@ -735,7 +759,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
     
     // MARK: UIWebViewDelegate
     
-    func webViewDidFinishLoad(webView: UIWebView!) {
+    func webViewDidFinishLoad(webView: UIWebView) {
         if let postId = self.bodyWebViewCache.keyForObject(webView, isEqual: ==) {
             self.bodyHeightCache[postId] = webView.documentHeight()
             self.bodyWebViewCache[postId] = nil
@@ -745,6 +769,8 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
             self.secondaryBodyWebViewCache[postId] = nil
             self.reloadTable()
         }
+
+        self.pushWebView(webView)
     }
     
     // MARK: UIViewControllerTransitioningDelegate
