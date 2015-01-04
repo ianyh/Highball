@@ -60,6 +60,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
     var bodyHeightCache: Dictionary<Int, CGFloat>!
     var secondaryBodyWebViewCache: Dictionary<Int, UIWebView>!
     var secondaryBodyHeightCache: Dictionary<Int, CGFloat>!
+    var heightCache: Dictionary<NSIndexPath, CGFloat>!
 
     var posts: Array<Post>!
     var topOffset = 0
@@ -99,6 +100,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         self.bodyHeightCache = Dictionary<Int, CGFloat>()
         self.secondaryBodyWebViewCache = Dictionary<Int, UIWebView>()
         self.secondaryBodyHeightCache = Dictionary<Int, CGFloat>()
+        self.heightCache = Dictionary<NSIndexPath, CGFloat>()
         
         self.tableView = UITableView()
         self.tableView.dataSource = self
@@ -599,7 +601,11 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                 }
                 return 0
             }
-            
+
+            if let height = self.heightCache[indexPath] {
+                return height
+            }
+
             let postPhotos = post.photos()
             var images: Array<PostPhoto>!
             
@@ -622,13 +628,21 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                 let scale = image.height() / image.width()
                 return imageWidth * scale
                 }.reduce(CGFloat.max, combine: { min($0, $1) })
-            
+
+            self.heightCache[indexPath] = minHeight
+
             return minHeight
         case "text":
             switch TextRow(rawValue: indexPath.row)! {
             case .Title:
                 if let title = post.title() {
-                    return TitleTableViewCell.heightForTitle(title, width: tableView.frame.size.width)
+                    if let height = self.heightCache[indexPath] {
+                        return height
+                    }
+
+                    let height = TitleTableViewCell.heightForTitle(title, width: tableView.frame.size.width)
+                    self.heightCache[indexPath] = height
+                    return height
                 }
                 return 0
             case .Body:
@@ -640,7 +654,13 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         case "answer":
             switch AnswerRow(rawValue: indexPath.row)! {
             case .Question:
-                return PostQuestionTableViewCell.heightForPost(post, width: tableView.frame.size.width)
+                if let height = self.heightCache[indexPath] {
+                    return height
+                }
+
+                let height = PostQuestionTableViewCell.heightForPost(post, width: tableView.frame.size.width)
+                self.heightCache[indexPath] = height
+                return height
             case .Answer:
                 if let height = self.bodyHeightCache[post.id] {
                     return height
@@ -663,7 +683,13 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         case "link":
             switch LinkRow(rawValue: indexPath.row)! {
             case .Link:
-                return PostLinkTableViewCell.heightForPost(post, width: tableView.frame.size.width)
+                if let height = self.heightCache[indexPath] {
+                    return height
+                }
+
+                let height = PostLinkTableViewCell.heightForPost(post, width: tableView.frame.size.width)
+                self.heightCache[indexPath] = height
+                return height
             case .Description:
                 if let height = self.bodyHeightCache[post.id] {
                     return height
@@ -673,12 +699,24 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         case "chat":
             if indexPath.row == 0 {
                 if let title = post.title() {
-                    return TitleTableViewCell.heightForTitle(title, width: tableView.frame.size.width)
+                    if let height = self.heightCache[indexPath] {
+                        return height
+                    }
+
+                    let height = TitleTableViewCell.heightForTitle(title, width: tableView.frame.size.width)
+                    self.heightCache[indexPath] = height
+                    return height
                 }
                 return 0
             }
             let dialogueEntry = post.dialogueEntries()[indexPath.row - 1]
-            return PostDialogueEntryTableViewCell.heightForPostDialogueEntry(dialogueEntry, width: tableView.frame.size.width)
+            if let height = self.heightCache[indexPath] {
+                return height
+            }
+
+            let height = PostDialogueEntryTableViewCell.heightForPostDialogueEntry(dialogueEntry, width: tableView.frame.size.width)
+            self.heightCache[indexPath] = height
+            return height
         case "video":
             switch VideoRow(rawValue: indexPath.row)! {
             case .Player:
