@@ -238,7 +238,9 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                     if let e = error {
                         println(e)
                     } else {
-                        let posts = self.postsFromJSON(JSON(response))
+                        let posts = self.postsFromJSON(JSON(response)).filter { post in
+                            return post.id < lastPost.id
+                        }
 
                         for post in posts {
                             if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
