@@ -724,8 +724,10 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
     }
 
     func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        if let cell = tableView.cellForRowAtIndexPath(indexPath) as? PhotosetRowTableViewCell {
-            cell.cancelDownloads()
+        if let photosetRowCell = cell as? PhotosetRowTableViewCell {
+            photosetRowCell.cancelDownloads()
+        } else if let contentCell = cell as? ContentTableViewCell {
+            contentCell.content = nil
         }
     }
     
