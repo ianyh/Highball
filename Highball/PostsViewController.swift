@@ -208,18 +208,18 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                         let webView = self.popWebView()
                         let htmlString = content
 
-                        webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
-
                         self.bodyWebViewCache[post.id] = webView
+
+                        webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
                     }
 
                     if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.size.width) {
                         let webView = self.popWebView()
                         let htmlString = content
 
-                        webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
-
                         self.secondaryBodyWebViewCache[post.id] = webView
+
+                        webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
                     }
                 }
                 
@@ -231,6 +231,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
     
     func loadMore() {
         if self.loadingTop || self.loadingBottom {
+            self.reloadTable()
             return
         }
 
@@ -809,6 +810,20 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
             self.reloadTable()
         } else if let postId = self.secondaryBodyWebViewCache.keyForObject(webView, isEqual: ==) {
             self.secondaryBodyHeightCache[postId] = webView.documentHeight()
+            self.secondaryBodyWebViewCache[postId] = nil
+            self.reloadTable()
+        }
+
+        self.pushWebView(webView)
+    }
+
+    func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
+        if let postId = self.bodyWebViewCache.keyForObject(webView, isEqual: ==) {
+            self.bodyHeightCache[postId] = 0
+            self.bodyWebViewCache[postId] = nil
+            self.reloadTable()
+        } else if let postId = self.secondaryBodyWebViewCache.keyForObject(webView, isEqual: ==) {
+            self.secondaryBodyHeightCache[postId] = 0
             self.secondaryBodyWebViewCache[postId] = nil
             self.reloadTable()
         }
