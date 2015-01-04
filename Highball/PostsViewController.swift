@@ -224,6 +224,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                 }
                 
                 self.posts = posts
+                self.heightCache.removeAll()
                 self.reloadTable()
             }
         }
@@ -478,6 +479,9 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        if indexPath.section > self.posts.count - 10 {
+            self.loadMore()
+        }
         let post = posts[indexPath.section]
         switch post.type {
         case "photo":
@@ -773,12 +777,6 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
     // MARK: UIScrollViewDelegate
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        let distanceFromBottom = scrollView.contentSize.height - scrollView.frame.size.height - scrollView.contentOffset.y
-        
-        if distanceFromBottom < 2000 {
-            self.loadMore()
-        }
-        
         if !self.loadingTop {
             if let navigationController = self.navigationController {
                 navigationController.setIndeterminate(false)
