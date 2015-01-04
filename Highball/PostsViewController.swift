@@ -197,6 +197,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         self.requestPosts(["offset" : self.topOffset]) { (response: AnyObject!, error: NSError!) -> Void in
             if let e = error {
                 println(e)
+                self.loadingTop = false
             } else {
                 let posts = self.postsFromJSON(JSON(response))
 
@@ -221,8 +222,8 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                 }
                 
                 self.posts = posts
+                self.reloadTable()
             }
-            self.loadingTop = false
         }
     }
     
@@ -237,6 +238,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                 self.requestPosts(["offset" : self.topOffset + self.bottomOffset + 20]) { (response: AnyObject!, error: NSError!) -> Void in
                     if let e = error {
                         println(e)
+                        self.loadingBottom = false
                     } else {
                         let posts = self.postsFromJSON(JSON(response)).filter { post in
                             return post.id < lastPost.id
@@ -268,8 +270,6 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                         self.bottomOffset += 20
                         self.reloadTable()
                     }
-                    
-                    self.loadingBottom = false
                 }
             }
         }
@@ -330,7 +330,10 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                 }
             }
         }
-        
+
+        self.loadingTop = false
+        self.loadingBottom = false
+
         self.tableView.reloadData()
     }
     
