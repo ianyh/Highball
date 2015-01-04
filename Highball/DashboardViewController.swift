@@ -9,9 +9,6 @@
 import UIKit
 
 class DashboardViewController: PostsViewController {
-    var topOffset = 0
-    var bottomOffset = 0
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -24,106 +21,17 @@ class DashboardViewController: PostsViewController {
         self.navigationItem.title = AccountsService.account.blog.name
     }
 
-    override func loadTop() {
-        if self.loadingTop! {
-            return
-        }
-
-        self.loadingTop = true
-
-        if self.topOffset >= 20 {
-            self.topOffset -= 20
-        } else if self.topOffset > 0 {
-            self.topOffset = 0
-        }
-
-        self.bottomOffset = 0
-
-        TMAPIClient.sharedInstance().dashboard([ "offset" : self.topOffset ]) { (response: AnyObject!, error: NSError!) -> Void in
-            if let e = error {
-                println(e)
-            } else {
-                let json = JSON(response)
-                let posts = json["posts"].array!.map { (post) -> (Post) in
-                    return Post(json: post)
-                }
-
-                for post in posts {
-                    if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
-                        let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1))
-                        let htmlString = content
-
-                        webView.delegate = self
-                        webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
-
-                        self.bodyWebViewCache[post.id] = webView
-                    }
-
-                    if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.size.width) {
-                        let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1))
-                        let htmlString = content
-
-                        webView.delegate = self
-                        webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
-
-                        self.secondaryBodyWebViewCache[post.id] = webView
-                    }
-                }
-
-                self.posts = posts
+    override func postsFromJSON(json: JSON) -> Array<Post> {
+        if let postsJSON = json["posts"].array {
+            return postsJSON.map { (post) -> (Post) in
+                return Post(json: post)
             }
-            self.loadingTop = false
         }
+        return []
     }
 
-    override func loadMore() {
-        if self.loadingTop! || self.loadingBottom! {
-            return
-        }
-
-        if let posts = self.posts {
-            if let lastPost = posts.last {
-                self.loadingBottom = true
-                TMAPIClient.sharedInstance().dashboard(["offset" : self.topOffset + self.bottomOffset + 20]) { (response: AnyObject!, error: NSError!) -> Void in
-                    if let e = error {
-                        println(e)
-                    } else {
-                        let json = JSON(response)
-                        let posts = json["posts"].array!.map { (post) -> (Post) in
-                            return Post(json: post)
-                        }
-
-                        for post in posts {
-                            if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
-                                let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1))
-                                let htmlString = content
-
-                                webView.delegate = self
-                                webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
-
-                                self.bodyWebViewCache[post.id] = webView
-                            }
-
-                            if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.size.width) {
-                                let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1))
-                                let htmlString = content
-
-                                webView.delegate = self
-                                webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
-
-                                self.secondaryBodyWebViewCache[post.id] = webView
-                            }
-                        }
-
-                        self.posts.extend(posts)
-                        self.bottomOffset += 20
-                        self.reloadTable()
-                    }
-
-                    self.loadingBottom = false
-                }
-            }
-        }
+    override func requestPosts(parameters: Dictionary<String, AnyObject>, callback: TMAPICallback) {
+        TMAPIClient.sharedInstance().dashboard(parameters, callback: callback)
     }
 
     override func reblogBlogName() -> (String) {

@@ -59,26 +59,24 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
     var bodyHeightCache: Dictionary<Int, CGFloat>!
     var secondaryBodyWebViewCache: Dictionary<Int, UIWebView>!
     var secondaryBodyHeightCache: Dictionary<Int, CGFloat>!
-    
-    var posts: Array<Post>! {
-        didSet {
-            self.reloadTable()
-        }
-    }
 
-    var loadingTop: Bool? {
+    var posts: Array<Post>!
+    var topOffset = 0
+    var bottomOffset = 0
+
+    var loadingTop: Bool = false {
         didSet {
-            self.navigationController!.setIndeterminate(true)
-            if let loadingTop = self.loadingTop {
-                if loadingTop {
-                    self.navigationController!.showProgress()
+            if let navigationController = self.navigationController {
+                navigationController.setIndeterminate(true)
+                if self.loadingTop {
+                    navigationController.showProgress()
                 } else {
-                    self.navigationController!.cancelProgress()
+                    navigationController.cancelProgress()
                 }
             }
         }
     }
-    var loadingBottom: Bool?
+    var loadingBottom = false
     var lastPoint: CGPoint?
     
     required override init() {
@@ -152,9 +150,104 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         return true
     }
 
-    func loadTop() {}
+    func postsFromJSON(json: JSON) -> Array<Post> { return [] }
+    func requestPosts(parameters: Dictionary<String, AnyObject>, callback: TMAPICallback) { NSException().raise() }
+
+    func loadTop() {
+        if self.loadingTop {
+            return
+        }
+
+        self.loadingTop = true
+
+        if self.topOffset >= 20 {
+            self.topOffset -= 20
+        } else if self.topOffset > 0 {
+            self.topOffset = 0
+        }
+
+        self.bottomOffset = 0
+
+        self.requestPosts(["offset" : self.topOffset]) { (response: AnyObject!, error: NSError!) -> Void in
+            if let e = error {
+                println(e)
+            } else {
+                let posts = self.postsFromJSON(JSON(response))
+
+                for post in posts {
+                    if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
+                        let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1))
+                        let htmlString = content
+
+                        webView.delegate = self
+                        webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+
+                        self.bodyWebViewCache[post.id] = webView
+                    }
+
+                    if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.size.width) {
+                        let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1))
+                        let htmlString = content
+
+                        webView.delegate = self
+                        webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+
+                        self.secondaryBodyWebViewCache[post.id] = webView
+                    }
+                }
+                
+                self.posts = posts
+            }
+            self.loadingTop = false
+        }
+    }
     
-    func loadMore() {}
+    func loadMore() {
+        if self.loadingTop || self.loadingBottom {
+            return
+        }
+
+        if let posts = self.posts {
+            if let lastPost = posts.last {
+                self.loadingBottom = true
+                self.requestPosts(["offset" : self.topOffset + self.bottomOffset + 20]) { (response: AnyObject!, error: NSError!) -> Void in
+                    if let e = error {
+                        println(e)
+                    } else {
+                        let posts = self.postsFromJSON(JSON(response))
+
+                        for post in posts {
+                            if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
+                                let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1))
+                                let htmlString = content
+
+                                webView.delegate = self
+                                webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+
+                                self.bodyWebViewCache[post.id] = webView
+                            }
+
+                            if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.size.width) {
+                                let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1))
+                                let htmlString = content
+
+                                webView.delegate = self
+                                webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+
+                                self.secondaryBodyWebViewCache[post.id] = webView
+                            }
+                        }
+
+                        self.posts.extend(posts)
+                        self.bottomOffset += 20
+                        self.reloadTable()
+                    }
+                    
+                    self.loadingBottom = false
+                }
+            }
+        }
+    }
 
     func navigate(sender: UIBarButtonItem, event: UIEvent) {
         if let touches = event.allTouches() {
@@ -618,7 +711,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
             self.loadMore()
         }
         
-        if !self.loadingTop! {
+        if !self.loadingTop {
             if let navigationController = self.navigationController {
                 navigationController.setIndeterminate(false)
                 if scrollView.contentOffset.y < 0 {
