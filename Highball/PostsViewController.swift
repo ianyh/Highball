@@ -232,7 +232,6 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
     
     func loadMore() {
         if self.loadingTop || self.loadingBottom {
-            self.reloadTable()
             return
         }
 
@@ -319,7 +318,6 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
 
     func reloadTable() {
         if let posts = self.posts {
-            var webViewsFinishedLoading = true
             for post in posts {
                 if let content = post.body() {
                     if let height = self.bodyHeightCache[post.id] {} else {
@@ -479,9 +477,6 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if indexPath.section > self.posts.count - 10 {
-            self.loadMore()
-        }
         let post = posts[indexPath.section]
         switch post.type {
         case "photo":
@@ -777,6 +772,12 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
     // MARK: UIScrollViewDelegate
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
+        let distanceFromBottom = scrollView.contentSize.height - scrollView.frame.size.height - scrollView.contentOffset.y
+        
+        if distanceFromBottom < 2000 {
+            self.loadMore()
+        }
+        
         if !self.loadingTop {
             if let navigationController = self.navigationController {
                 navigationController.setIndeterminate(false)
