@@ -243,10 +243,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                         println(e)
                         self.loadingBottom = false
                     } else {
-                        let posts = self.postsFromJSON(JSON(response)).filter { post in
-                            return post.id < lastPost.id
-                        }
-
+                        let posts = self.postsFromJSON(JSON(response))
                         for post in posts {
                             if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
                                 let webView = self.popWebView()
