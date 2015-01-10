@@ -22,6 +22,7 @@ class DashboardViewController: PostsViewController {
     }
 
     override func postsFromJSON(json: JSON) -> Array<Post> {
+        println(json)
         if let postsJSON = json["posts"].array {
             return postsJSON.map { (post) -> (Post) in
                 return Post(json: post)

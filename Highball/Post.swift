@@ -162,4 +162,11 @@ class Post {
     func urlString() -> (String?) {
         return self.json["url"].string
     }
+
+    func tags() -> Array<String>? {
+        if let tags = self.json["tags"].array {
+            
+        }
+        return self.json["tags"].array as Array<String>
+    }
 }

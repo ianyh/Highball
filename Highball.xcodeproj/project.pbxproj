@@ -19,6 +19,7 @@
 		4050698619AA76BD0066ECE3 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4050698519AA76BD0066ECE3 /* DashboardViewController.swift */; };
 		4050698B19AA76BD0066ECE3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4050698A19AA76BD0066ECE3 /* Images.xcassets */; };
 		4050699719AA76BD0066ECE3 /* HighballTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4050699619AA76BD0066ECE3 /* HighballTests.swift */; };
+		406690651A5A17A1006345B0 /* TagsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 406690641A5A17A1006345B0 /* TagsTableViewCell.swift */; };
 		40731BA819FC272100F6978D /* Coefficients.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731B9B19FC272100F6978D /* Coefficients.swift */; };
 		40731BA919FC272100F6978D /* Compound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731B9C19FC272100F6978D /* Compound.swift */; };
 		40731BAA19FC272100F6978D /* Dimension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731B9D19FC272100F6978D /* Dimension.swift */; };
@@ -97,6 +98,7 @@
 		4050699519AA76BD0066ECE3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4050699619AA76BD0066ECE3 /* HighballTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighballTests.swift; sourceTree = "<group>"; };
 		405069A019AA77E80066ECE3 /* Highball-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Highball-Bridging-Header.h"; sourceTree = "<group>"; };
+		406690641A5A17A1006345B0 /* TagsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsTableViewCell.swift; sourceTree = "<group>"; };
 		40731B9A19FC272100F6978D /* Cartography.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Cartography.h; path = Cartography/Cartography/Cartography.h; sourceTree = "<group>"; };
 		40731B9B19FC272100F6978D /* Coefficients.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Coefficients.swift; path = Cartography/Cartography/Coefficients.swift; sourceTree = "<group>"; };
 		40731B9C19FC272100F6978D /* Compound.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Compound.swift; path = Cartography/Cartography/Compound.swift; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 				40A11E6A19B51FF700B91843 /* ImageCollectionViewCell.swift */,
 				40C78D1419BD29330002EB78 /* ReblogTransitionAnimator.swift */,
 				402A20951A3D2C510007CCFF /* TitleTableViewCell.swift */,
+				406690641A5A17A1006345B0 /* TagsTableViewCell.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -500,6 +503,7 @@
 				40F8CE9A1A41143000609ABF /* AccountsService.swift in Sources */,
 				40F8CE961A41111300609ABF /* AccountsViewController.swift in Sources */,
 				403F53DF19AFCEB800FF8F3B /* String+HTML.swift in Sources */,
+				406690651A5A17A1006345B0 /* TagsTableViewCell.swift in Sources */,
 				40731BBC19FDCEF300F6978D /* QuickNavigateController.swift in Sources */,
 				408D394119C12EF00001981F /* PostItemProvider.swift in Sources */,
 				40778B9C19B15F9C00F8EE13 /* Post.swift in Sources */,
