@@ -14,35 +14,46 @@ enum ReblogType {
 }
 
 class Post {
-    let id: Int!
-    let type: String!
-    let blogName: String!
-    let reblogKey: String!
-    let shortURLString: String!
-    var liked: Bool!
-
     private let json: JSON!
 
-    required init(json: JSON!) {
-        self.json = json
-        self.id = json["id"].int!
-        self.type = json["type"].string!
-        self.blogName = json["blog_name"].string!
-        self.reblogKey = json["reblog_key"].string!
-        self.shortURLString = json["short_url"].string!
-        self.liked = json["liked"].bool!
-    }
-
-    func photos() -> (Array<PostPhoto>) {
-        if let photos = self.json["photos"].array {
-            return photos.map { (photoJSON: JSON!) -> (PostPhoto) in
-                return PostPhoto(json: photoJSON)
-            }
+    var id: Int {
+        get {
+            return self.json["id"].int!
         }
-        return []
+    }
+    var type: String {
+        get {
+            return self.json["type"].string!
+        }
+    }
+    var blogName: String {
+        get {
+            return self.json["blog_name"].string!
+        }
+    }
+    var reblogKey: String {
+        get {
+            return self.json["reblog_key"].string!
+        }
+    }
+    var shortURLString: String {
+        get {
+            return self.json["short_url"].string!
+        }
     }
 
-    func layoutRows() -> (Array<Int>) {
+    var photos: Array<PostPhoto> {
+        get {
+            if let photos = self.json["photos"].array {
+                return photos.map { (photoJSON: JSON!) -> (PostPhoto) in
+                    return PostPhoto(json: photoJSON)
+                }
+            }
+            return []
+        }
+    }
+
+    var layoutRows: Array<Int> {
         var photosetLayoutRows = Array<Int>()
         if let layoutString = self.json["photoset_layout"].string {
             for character in layoutString {
@@ -54,88 +65,125 @@ class Post {
         return photosetLayoutRows
     }
 
-    func dialogueEntries() -> (Array<PostDialogueEntry>) {
-        var dialogueEntries = Array<PostDialogueEntry>()
-        if let entries = self.json["dialogue"].array {
-            return entries.map { (entryJSON: JSON) -> (PostDialogueEntry) in
-                return PostDialogueEntry(json: entryJSON)
+    var dialogueEntries: Array<PostDialogueEntry> {
+        get {
+            var dialogueEntries = Array<PostDialogueEntry>()
+            if let entries = self.json["dialogue"].array {
+                return entries.map { (entryJSON: JSON) -> (PostDialogueEntry) in
+                    return PostDialogueEntry(json: entryJSON)
+                }
             }
+            return dialogueEntries
         }
-        return dialogueEntries
     }
 
-    func body() -> (String?) {
-        var bodyString: String?
-        switch self.type {
-        case "photo":
-            bodyString = self.json["caption"].string
-        case "text":
-            bodyString = self.json["body"].string
-        case "answer":
-            bodyString = self.json["answer"].string
-        case "quote":
-            bodyString = self.json["text"].string
-        case "link":
-            bodyString = self.json["description"].string
-        case "video":
-            bodyString = self.json["caption"].string
-        case "audio":
-            bodyString = self.json["caption"].string
-        default:
-            bodyString = nil
-        }
-
-        if let string = bodyString {
-            if countElements(string) > 0 {
-                return string
+    var body: String? {
+        get {
+            var bodyString: String?
+            switch self.type {
+            case "photo":
+                bodyString = self.json["caption"].string
+            case "text":
+                bodyString = self.json["body"].string
+            case "answer":
+                bodyString = self.json["answer"].string
+            case "quote":
+                bodyString = self.json["text"].string
+            case "link":
+                bodyString = self.json["description"].string
+            case "video":
+                bodyString = self.json["caption"].string
+            case "audio":
+                bodyString = self.json["caption"].string
+            default:
+                bodyString = nil
             }
-        }
 
-        return nil
+            if let string = bodyString {
+                if countElements(string) > 0 {
+                    return string
+                }
+            }
+
+            return nil
+        }
+    }
+
+    var secondaryBody: String? {
+        get {
+            var bodyString: String?
+            switch self.type {
+            case "quote":
+                bodyString = self.json["source"].string
+            case "video":
+                if let players = self.json["player"].array {
+                    let sortedPlayers = players.sorted({ $0["width"].int! > $1["width"].int! })
+                    if countElements(sortedPlayers) > 0 {
+                        let screenWidth = UIScreen.mainScreen().bounds.size.width
+                        var finalPlayer: String? = sortedPlayers.first!["embed_code"].string!
+                        for player in sortedPlayers {
+                            if player["width"].int! < Int(screenWidth) {
+                                break
+                            }
+                            finalPlayer = player["embed_code"].string!
+                        }
+                        bodyString = finalPlayer
+                    }
+                }
+            case "audio":
+                bodyString = self.json["player"].string
+            default:
+                bodyString = nil
+            }
+
+            if let string = bodyString {
+                if countElements(string) > 0 {
+                    return string
+                }
+            }
+
+            return nil
+        }
+    }
+
+    var asker: String? {
+        get {
+            return self.json["asking_name"].string
+        }
+    }
+
+    var question: String? {
+        get {
+            return self.json["question"].string
+        }
+    }
+
+    var title: String? {
+        get {
+            return self.json["title"].string
+        }
+    }
+
+    var urlString: String? {
+        get {
+            return self.json["url"].string
+        }
+    }
+
+    var liked = false
+
+    required init(json: JSON!) {
+        self.json = json
+        self.liked = json["liked"].bool!
     }
 
     func htmlBodyWithWidth(width: CGFloat) -> (String?) {
-        return self.body()?.htmlStringWithTumblrStyle(width)
-    }
-
-    func secondaryBody() -> (String?) {
-        var bodyString: String?
-        switch self.type {
-        case "quote":
-            bodyString = self.json["source"].string
-        case "video":
-            if let players = self.json["player"].array {
-                let sortedPlayers = players.sorted({ $0["width"].int! > $1["width"].int! })
-                if countElements(sortedPlayers) > 0 {
-                    let screenWidth = UIScreen.mainScreen().bounds.size.width
-                    var finalPlayer: String? = sortedPlayers.first!["embed_code"].string!
-                    for player in sortedPlayers {
-                        if player["width"].int! < Int(screenWidth) {
-                            break
-                        }
-                        finalPlayer = player["embed_code"].string!
-                    }
-                    bodyString = finalPlayer
-                }
-            }
-        case "audio":
-            bodyString = self.json["player"].string
-        default:
-            bodyString = nil
-        }
-
-        if let string = bodyString {
-            if countElements(string) > 0 {
-                return string
-            }
-        }
-
-        return nil
+        return self.body?.htmlStringWithTumblrStyle(width)
     }
 
     func htmlSecondaryBodyWithWidth(width: CGFloat) -> (String?) {
         var stringToStyle: String?
-        if let secondaryBody = self.secondaryBody() {
+        if let secondaryBody = self.secondaryBody {
             switch self.type {
             case "quote":
                 stringToStyle = "<table><tr><td>-&nbsp;</td><td>\(secondaryBody)</td></tr></table>"
@@ -145,21 +193,5 @@ class Post {
         }
 
         return stringToStyle?.htmlStringWithTumblrStyle(width)
-    }
-
-    func asker() -> (String?) {
-        return self.json["asking_name"].string
-    }
-
-    func question() -> (String?) {
-        return self.json["question"].string
-    }
-
-    func title() -> (String?) {
-        return self.json["title"].string
-    }
-
-    func urlString() -> (String?) {
-        return self.json["url"].string
     }
 }

@@ -319,11 +319,11 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
     func reloadTable() {
         if let posts = self.posts {
             for post in posts {
-                if let content = post.body() {
+                if let content = post.body {
                     if let height = self.bodyHeightCache[post.id] {} else {
                         return
                     }
-                } else if let content = post.secondaryBody() {
+                } else if let content = post.secondaryBody {
                     if let height = self.secondaryBodyHeightCache[post.id] {} else {
                         return
                     }
@@ -452,11 +452,11 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         let post = self.posts[section]
         switch post.type {
         case "photo":
-            let postPhotos = post.photos()
+            let postPhotos = post.photos
             if postPhotos.count == 1 {
                 return 2
             }
-            return post.layoutRows().count + 1
+            return post.layoutRows.count + 1
         case "text":
             return 2
         case "answer":
@@ -466,7 +466,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         case "link":
             return 2
         case "chat":
-            return 1 + post.dialogueEntries().count
+            return 1 + post.dialogueEntries.count
         case "video":
             return 2
         case "audio":
@@ -487,11 +487,11 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
             }
             
             let cell = tableView.dequeueReusableCellWithIdentifier(photosetRowTableViewCellIdentifier) as PhotosetRowTableViewCell!
-            let postPhotos = post.photos()
+            let postPhotos = post.photos
             if postPhotos.count == 1 {
                 cell.images = postPhotos
             } else {
-                let photosetLayoutRows = post.layoutRows()
+                let photosetLayoutRows = post.layoutRows
                 var photosIndexStart = 0
                 for photosetLayoutRow in photosetLayoutRows[0..<indexPath.row] {
                     photosIndexStart += photosetLayoutRow
@@ -507,7 +507,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
             switch TextRow(rawValue: indexPath.row)! {
             case .Title:
                 let cell = tableView.dequeueReusableCellWithIdentifier(titleTableViewCellIdentifier) as TitleTableViewCell!
-                cell.titleLabel.text = post.title()
+                cell.titleLabel.text = post.title
                 return cell
             case .Body:
                 let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
@@ -550,10 +550,10 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         case "chat":
             if indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCellWithIdentifier(titleTableViewCellIdentifier) as TitleTableViewCell!
-                cell.titleLabel.text = post.title()
+                cell.titleLabel.text = post.title
                 return cell;
             }
-            let dialogueEntry = post.dialogueEntries()[indexPath.row - 1]
+            let dialogueEntry = post.dialogueEntries[indexPath.row - 1]
             let cell = tableView.dequeueReusableCellWithIdentifier(postDialogueEntryTableViewCellIdentifier) as PostDialogueEntryTableViewCell!
             cell.dialogueEntry = dialogueEntry
             return cell
@@ -606,13 +606,13 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                 return height
             }
 
-            let postPhotos = post.photos()
+            let postPhotos = post.photos
             var images: Array<PostPhoto>!
             
             if postPhotos.count == 1 {
                 images = postPhotos
             } else {
-                let photosetLayoutRows = post.layoutRows()
+                let photosetLayoutRows = post.layoutRows
                 var photosIndexStart = 0
                 for photosetLayoutRow in photosetLayoutRows[0..<indexPath.row] {
                     photosIndexStart += photosetLayoutRow
@@ -625,7 +625,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
             let imageCount = images.count
             let imageWidth = tableView.frame.size.width / CGFloat(images.count)
             let minHeight = images.map { (image: PostPhoto) -> CGFloat in
-                let scale = image.height() / image.width()
+                let scale = image.height / image.width
                 return imageWidth * scale
                 }.reduce(CGFloat.max, combine: { min($0, $1) })
 
@@ -635,7 +635,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         case "text":
             switch TextRow(rawValue: indexPath.row)! {
             case .Title:
-                if let title = post.title() {
+                if let title = post.title {
                     if let height = self.heightCache[indexPath] {
                         return height
                     }
@@ -698,7 +698,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
             }
         case "chat":
             if indexPath.row == 0 {
-                if let title = post.title() {
+                if let title = post.title {
                     if let height = self.heightCache[indexPath] {
                         return height
                     }
@@ -709,7 +709,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                 }
                 return 0
             }
-            let dialogueEntry = post.dialogueEntries()[indexPath.row - 1]
+            let dialogueEntry = post.dialogueEntries[indexPath.row - 1]
             if let height = self.heightCache[indexPath] {
                 return height
             }

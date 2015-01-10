@@ -132,12 +132,12 @@ class TextReblogViewController: SLKTextViewController {
         if let post = self.post {
             switch self.post.type {
             case "photo":
-                let postPhotos = post.photos()
+                let postPhotos = post.photos
                 if postPhotos.count == 1 {
                     return 2
                 }
                 
-                return post.layoutRows().count + 1
+                return post.layoutRows.count + 1
             case "text":
                 return 1
             case "answer":
@@ -147,7 +147,7 @@ class TextReblogViewController: SLKTextViewController {
             case "link":
                 return 2
             case "chat":
-                return post.dialogueEntries().count
+                return post.dialogueEntries.count
             case "video":
                 return 2
             case "audio":
@@ -176,11 +176,11 @@ class TextReblogViewController: SLKTextViewController {
             let cell = tableView.dequeueReusableCellWithIdentifier(photosetRowTableViewCellIdentifier) as PhotosetRowTableViewCell!
             cell.transform = self.tableView.transform
 
-            let postPhotos = post.photos()
+            let postPhotos = post.photos
             if postPhotos.count == 1 {
                 cell.images = postPhotos
             } else {
-                let photosetLayoutRows = post.layoutRows()
+                let photosetLayoutRows = post.layoutRows
                 var photosIndexStart = 0
                 for photosetLayoutRow in photosetLayoutRows[0..<row] {
                     photosIndexStart += photosetLayoutRow
@@ -237,7 +237,7 @@ class TextReblogViewController: SLKTextViewController {
                 return cell
             }
         case "chat":
-            let dialogueEntry = post.dialogueEntries()[row]
+            let dialogueEntry = post.dialogueEntries[row]
             let cell = tableView.dequeueReusableCellWithIdentifier(postDialogueEntryTableViewCellIdentifier) as PostDialogueEntryTableViewCell!
             cell.dialogueEntry = dialogueEntry
             cell.transform = self.tableView.transform
@@ -291,13 +291,13 @@ class TextReblogViewController: SLKTextViewController {
                 return 0
             }
             
-            let postPhotos = post.photos()
+            let postPhotos = post.photos
             var images: Array<PostPhoto>!
             
             if postPhotos.count == 1 {
                 images = postPhotos
             } else {
-                let photosetLayoutRows = post.layoutRows()
+                let photosetLayoutRows = post.layoutRows
                 var photosIndexStart = 0
                 for photosetLayoutRow in photosetLayoutRows[0..<row] {
                     photosIndexStart += photosetLayoutRow
@@ -310,7 +310,7 @@ class TextReblogViewController: SLKTextViewController {
             let imageCount = images.count
             let imageWidth = tableView.frame.size.width / CGFloat(images.count)
             let minHeight = images.map { (image: PostPhoto) -> CGFloat in
-                let scale = image.height() / image.width()
+                let scale = image.height / image.width
                 return imageWidth * scale
                 }.reduce(CGFloat.max, combine: { min($0, $1) })
             
@@ -354,7 +354,7 @@ class TextReblogViewController: SLKTextViewController {
                 return 0
             }
         case "chat":
-            let dialogueEntry = post.dialogueEntries()[row]
+            let dialogueEntry = post.dialogueEntries[row]
             return PostDialogueEntryTableViewCell.heightForPostDialogueEntry(dialogueEntry, width: tableView.frame.size.width)
         case "video":
             switch VideoRow(rawValue: row)! {

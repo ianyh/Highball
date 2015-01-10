@@ -41,14 +41,14 @@ class ImagesViewController: UIViewController, UICollectionViewDataSource, UIColl
 
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if let post = self.post {
-            return post.photos().count
+            return post.photos.count
         }
         return 0
     }
 
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(imageCollectionViewCellIdentifier, forIndexPath: indexPath) as ImageCollectionViewCell
-        let postPhoto = self.post!.photos()[indexPath.row]
+        let postPhoto = self.post!.photos[indexPath.row]
 
         cell.contentWidth = collectionView.frame.size.width
         cell.photo = postPhoto

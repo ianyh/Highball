@@ -15,7 +15,7 @@ class PostDialogueEntryTableViewCell: WCFastCell {
     var dialogueEntry: PostDialogueEntry? {
         didSet {
             if let dialogueEntry = self.dialogueEntry {
-                self.contentLabel.attributedText = dialogueEntry.formattedString()
+                self.contentLabel.attributedText = dialogueEntry.formattedString
             }
         }
     }
@@ -48,7 +48,7 @@ class PostDialogueEntryTableViewCell: WCFastCell {
         let extraHeight: CGFloat = 4 + 4
         let modifiedWidth = width - 10 - 10
         let constrainedSize = CGSize(width: modifiedWidth, height: CGFloat.max)
-        let content = post.formattedString()
+        let content = post.formattedString
         let contentRect = content.boundingRectWithSize(constrainedSize, options: NSStringDrawingOptions.UsesLineFragmentOrigin, context: nil)
 
         return extraHeight + ceil(contentRect.size.height)
