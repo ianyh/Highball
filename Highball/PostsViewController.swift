@@ -765,6 +765,15 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         }
     }
 
+    func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        if let cell = tableView.cellForRowAtIndexPath(indexPath) {
+            if let photosetRowCell = cell as? PhotosetRowTableViewCell {
+                return indexPath
+            }
+        }
+        return nil
+    }
+
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if let cell = tableView.cellForRowAtIndexPath(indexPath) {
             if let photosetRowCell = cell as? PhotosetRowTableViewCell {
