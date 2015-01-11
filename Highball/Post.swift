@@ -42,6 +42,17 @@ class Post {
         }
     }
 
+    var tags: Array<String> {
+        get {
+            if let tags = self.json["tags"].array {
+                return tags.map { tag in
+                    return "#\(tag)"
+                }
+            }
+            return []
+        }
+    }
+
     var photos: Array<PostPhoto> {
         get {
             if let photos = self.json["photos"].array {
@@ -167,17 +178,6 @@ class Post {
     var urlString: String? {
         get {
             return self.json["url"].string
-        }
-    }
-
-    var tags: Array<String> {
-        get {
-            if let tags = self.json["tags"].array {
-                return tags.map { tag in
-                    return "\(tag)"
-                }
-            }
-            return []
         }
     }
 

@@ -22,7 +22,6 @@ class DashboardViewController: PostsViewController {
     }
 
     override func postsFromJSON(json: JSON) -> Array<Post> {
-        println(json)
         if let postsJSON = json["posts"].array {
             return postsJSON.map { (post) -> (Post) in
                 return Post(json: post)
@@ -55,7 +54,6 @@ class DashboardViewController: PostsViewController {
                             switch(option) {
                             case .Bookmark:
                                 if let indexPaths = self.tableView.indexPathsForVisibleRows() {
-                                    println(indexPaths)
                                     if let firstIndexPath = indexPaths.first as? NSIndexPath {
                                         let post = self.posts[firstIndexPath.section]
                                         NSUserDefaults.standardUserDefaults().setObject(post.id, forKey: "HIPostIDBookmark")

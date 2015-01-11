@@ -45,6 +45,7 @@ let contentTableViewCellIdentifier = "contentTableViewCellIdentifier"
 let postQuestionTableViewCellIdentifier = "postQuestionTableViewCellIdentifier"
 let postLinkTableViewCellIdentifier = "postLinkTableViewCellIdentifier"
 let postDialogueEntryTableViewCellIdentifier = "postDialogueEntryTableViewCellIdentifier"
+let postTagsTableViewCellIdentifier = "postTagsTableViewCellIdentifier"
 
 class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate, UIWebViewDelegate {
     var tableView: UITableView!
@@ -118,6 +119,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         self.tableView.registerClass(PostQuestionTableViewCell.classForCoder(), forCellReuseIdentifier: postQuestionTableViewCellIdentifier)
         self.tableView.registerClass(PostLinkTableViewCell.classForCoder(), forCellReuseIdentifier: postLinkTableViewCellIdentifier)
         self.tableView.registerClass(PostDialogueEntryTableViewCell.classForCoder(), forCellReuseIdentifier: postDialogueEntryTableViewCellIdentifier)
+        self.tableView.registerClass(TagsTableViewCell.classForCoder(), forCellReuseIdentifier: postTagsTableViewCellIdentifier)
         self.tableView.registerClass(PostHeaderView.classForCoder(), forHeaderFooterViewReuseIdentifier: postHeaderViewIdentifier)
         
         self.view.addSubview(self.tableView)
@@ -447,37 +449,47 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let post = self.posts[section]
+        var rowCount = 0
         switch post.type {
         case "photo":
             let postPhotos = post.photos
             if postPhotos.count == 1 {
-                return 2
+                rowCount = 2
             }
-            return post.layoutRows.count + 1
+            rowCount = post.layoutRows.count + 1
         case "text":
-            return 2
+            rowCount = 2
         case "answer":
-            return 2
+            rowCount = 2
         case "quote":
-            return 2
+            rowCount = 2
         case "link":
-            return 2
+            rowCount = 2
         case "chat":
-            return 1 + post.dialogueEntries.count
+            rowCount = 1 + post.dialogueEntries.count
         case "video":
-            return 2
+            rowCount = 2
         case "audio":
-            return 2
+            rowCount = 2
         default:
-            return 0
+            rowCount = 0
         }
+
+        return rowCount + 1
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let post = posts[indexPath.section]
+
+        if indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 1 {
+            let cell = tableView.dequeueReusableCellWithIdentifier(postTagsTableViewCellIdentifier) as TagsTableViewCell!
+            cell.tags = post.tags
+            return cell
+        }
+
         switch post.type {
         case "photo":
-            if indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 1 {
+            if indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 2 {
                 let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
                 cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
                 return cell
@@ -590,9 +602,17 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         let post = posts[indexPath.section]
+
+        if indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 1 {
+            if post.tags.count > 0 {
+                return 20
+            }
+            return 0
+        }
+
         switch post.type {
         case "photo":
-            if indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 1 {
+            if indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 2 {
                 if let height = self.bodyHeightCache[post.id] {
                     return height
                 }

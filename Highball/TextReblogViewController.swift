@@ -115,8 +115,6 @@ class TextReblogViewController: SLKTextViewController {
         TMAPIClient.sharedInstance().reblogPost(self.blogName, parameters: parameters) { response, error in
             if let e = error {
                 println(e)
-            } else {
-                println("reblog success")
             }
             self.dismissViewControllerAnimated(true, completion: nil)
         }

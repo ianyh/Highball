@@ -21,8 +21,8 @@ class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollecti
             return ceil(tagRect.size.width)
         }
 
-        required override init() {
-            super.init()
+        override init(frame: CGRect) {
+            super.init(frame: frame)
             self.setUpCell()
         }
 
@@ -33,7 +33,8 @@ class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollecti
 
         func setUpCell() {
             self.tagLabel = UILabel()
-            self.tagLabel.font = UIFont.systemFontOfSize(12)
+            self.tagLabel.font = UIFont.systemFontOfSize(10)
+            self.tagLabel.textColor = UIColor.grayColor()
 
             self.contentView.addSubview(self.tagLabel)
 
@@ -63,16 +64,26 @@ class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollecti
     }
     
     func setUpCell() {
-        self.collectionView = UICollectionView()
+        let collectionViewLayout = UICollectionViewFlowLayout()
+        collectionViewLayout.scrollDirection = UICollectionViewScrollDirection.Horizontal
+        collectionViewLayout.minimumInteritemSpacing = 5
+
+        self.collectionView = UICollectionView(frame: self.bounds, collectionViewLayout: collectionViewLayout)
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
+        self.collectionView.scrollsToTop = false
+        self.collectionView.showsHorizontalScrollIndicator = false
+        self.collectionView.showsVerticalScrollIndicator = false
+        self.collectionView.bounces = true
+        self.collectionView.alwaysBounceHorizontal = true
+        self.collectionView.backgroundColor = UIColor.whiteColor()
 
         self.collectionView.registerClass(TagCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: tagCollectionViewCellIdentifier)
 
         self.contentView.addSubview(self.collectionView)
         
         layout(self.collectionView, self.contentView) { collectionView, contentView in
-            collectionView.edges == contentView.edges; return
+            collectionView.edges == inset(contentView.edges, 3, 0); return
         }
     }
 
