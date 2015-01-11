@@ -16,10 +16,10 @@ class PostQuestionTableViewCell: WCFastCell {
     var post: Post? {
         didSet {
             if let post = self.post {
-                let asker = post.asker()!
+                let asker = post.asker!
 
                 self.askerLabel.text = "\(asker) said:"
-                self.contentLabel.text = post.question()!
+                self.contentLabel.text = post.question!
             }
         }
     }
@@ -74,7 +74,7 @@ class PostQuestionTableViewCell: WCFastCell {
     }
 
     class func heightForPost(post: Post!, width: CGFloat!) -> CGFloat {
-        let question = post.question()! as NSString
+        let question = post.question! as NSString
         let questionAttributes = [ NSFontAttributeName : UIFont.systemFontOfSize(14) ]
         let modifiedWidth = width - 16 - 28
         let extraHeight: CGFloat = 12 + 20 + 14 + 8

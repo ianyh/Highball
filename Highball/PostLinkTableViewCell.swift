@@ -17,8 +17,8 @@ class PostLinkTableViewCell: WCFastCell {
     var post: Post? {
         didSet {
             if let post = self.post {
-                let url = NSURL(string: post.urlString()!)
-                self.titleLabel.text = post.title()
+                let url = NSURL(string: post.urlString!)
+                self.titleLabel.text = post.title
                 self.urlLabel.text = url?.host
             }
         }
@@ -80,7 +80,7 @@ class PostLinkTableViewCell: WCFastCell {
         let constrainedSize = CGSize(width: modifiedWidth, height: CGFloat.max)
         let titleAttributes = [ NSFontAttributeName : UIFont.boldSystemFontOfSize(19) ]
 
-        if let title = post.title() as NSString? {
+        if let title = post.title as NSString? {
             let titleRect = title.boundingRectWithSize(constrainedSize, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: titleAttributes, context: nil)
 
             return extraHeight + ceil(titleRect.size.height)
