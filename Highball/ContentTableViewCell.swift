@@ -7,9 +7,10 @@
 //
 
 import UIKit
+import WebKit
 
-class ContentTableViewCell: WCFastCell, UIWebViewDelegate {
-    var contentWebView: UIWebView!
+class ContentTableViewCell: WCFastCell, WKNavigationDelegate {
+    var contentWebView: WKWebView!
     var webViewShouldLoad = false
     var content: String? {
         didSet {
@@ -31,10 +32,10 @@ class ContentTableViewCell: WCFastCell, UIWebViewDelegate {
     }
 
     func setUpCell() {
-        self.contentWebView = UIWebView()
+        self.contentWebView = WKWebView(frame: self.contentView.frame, scaleToFit: true)
         self.contentWebView.userInteractionEnabled = false
         self.contentWebView.scrollView.scrollEnabled = false
-        self.contentWebView.delegate = self
+        self.contentWebView.navigationDelegate = self
 
         self.contentView.addSubview(self.contentWebView)
 
@@ -43,12 +44,12 @@ class ContentTableViewCell: WCFastCell, UIWebViewDelegate {
         }
     }
 
-    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+    func webView(webView: WKWebView, decidePolicyForNavigationAction navigationAction: WKNavigationAction, decisionHandler: (WKNavigationActionPolicy) -> Void) {
         if self.webViewShouldLoad {
             self.webViewShouldLoad = false
-            return true
+            decisionHandler(WKNavigationActionPolicy.Allow)
+        } else {
+            decisionHandler(WKNavigationActionPolicy.Cancel)
         }
-        return false
     }
-
 }

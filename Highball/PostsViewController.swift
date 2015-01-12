@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import WebKit
 
 enum TextRow: Int {
     case Title
@@ -47,7 +48,7 @@ let postLinkTableViewCellIdentifier = "postLinkTableViewCellIdentifier"
 let postDialogueEntryTableViewCellIdentifier = "postDialogueEntryTableViewCellIdentifier"
 let postTagsTableViewCellIdentifier = "postTagsTableViewCellIdentifier"
 
-class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate, UIWebViewDelegate {
+class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate, WKNavigationDelegate {
     var tableView: UITableView!
     
     private let requiredRefreshDistance: CGFloat = 60
@@ -56,10 +57,10 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
     private var panGestureRecognizer: UIPanGestureRecognizer!
     private var reblogViewController: QuickReblogViewController?
 
-    var webViewCache: Array<UIWebView>!
-    var bodyWebViewCache: Dictionary<Int, UIWebView>!
+    var webViewCache: Array<WKWebView>!
+    var bodyWebViewCache: Dictionary<Int, WKWebView>!
     var bodyHeightCache: Dictionary<Int, CGFloat>!
-    var secondaryBodyWebViewCache: Dictionary<Int, UIWebView>!
+    var secondaryBodyWebViewCache: Dictionary<Int, WKWebView>!
     var secondaryBodyHeightCache: Dictionary<Int, CGFloat>!
     var heightCache: Dictionary<NSIndexPath, CGFloat>!
 
@@ -96,10 +97,10 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         self.loadingTop = false
         self.loadingBottom = false
 
-        self.webViewCache = Array<UIWebView>()
-        self.bodyWebViewCache = Dictionary<Int, UIWebView>()
+        self.webViewCache = Array<WKWebView>()
+        self.bodyWebViewCache = Dictionary<Int, WKWebView>()
         self.bodyHeightCache = Dictionary<Int, CGFloat>()
-        self.secondaryBodyWebViewCache = Dictionary<Int, UIWebView>()
+        self.secondaryBodyWebViewCache = Dictionary<Int, WKWebView>()
         self.secondaryBodyHeightCache = Dictionary<Int, CGFloat>()
         self.heightCache = Dictionary<NSIndexPath, CGFloat>()
         
@@ -158,7 +159,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         self.webViewCache.removeAll()
     }
 
-    func popWebView() -> UIWebView {
+    func popWebView() -> WKWebView {
         let frame = CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1)
 
         if countElements(self.webViewCache) > 0 {
@@ -167,12 +168,12 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
             return webView
         }
 
-        let webView = UIWebView(frame: frame)
-        webView.delegate = self
+        let webView = WKWebView(frame: frame, scaleToFit: true)
+        webView.navigationDelegate = self
         return webView
     }
 
-    func pushWebView(webView: UIWebView) {
+    func pushWebView(webView: WKWebView) {
         self.webViewCache.append(webView)
     }
 
@@ -826,23 +827,25 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         }
     }
     
-    // MARK: UIWebViewDelegate
-    
-    func webViewDidFinishLoad(webView: UIWebView) {
-        if let postId = self.bodyWebViewCache.keyForObject(webView, isEqual: ==) {
-            self.bodyHeightCache[postId] = webView.documentHeight()
-            self.bodyWebViewCache[postId] = nil
-            self.reloadTable()
-        } else if let postId = self.secondaryBodyWebViewCache.keyForObject(webView, isEqual: ==) {
-            self.secondaryBodyHeightCache[postId] = webView.documentHeight()
-            self.secondaryBodyWebViewCache[postId] = nil
-            self.reloadTable()
-        }
+    // MARK: WKNavigationDelegate
 
-        self.pushWebView(webView)
+    func webView(webView: WKWebView, didFinishNavigation navigation: WKNavigation!) {
+        webView.getDocumentHeight { height in
+            if let postId = self.bodyWebViewCache.keyForObject(webView, isEqual: ==) {
+                self.bodyHeightCache[postId] = height
+                self.bodyWebViewCache[postId] = nil
+                self.reloadTable()
+            } else if let postId = self.secondaryBodyWebViewCache.keyForObject(webView, isEqual: ==) {
+                self.secondaryBodyHeightCache[postId] = height
+                self.secondaryBodyWebViewCache[postId] = nil
+                self.reloadTable()
+            }
+
+            self.pushWebView(webView)
+        }
     }
 
-    func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
+    func webView(webView: WKWebView, didFailNavigation navigation: WKNavigation!, withError error: NSError) {
         if let postId = self.bodyWebViewCache.keyForObject(webView, isEqual: ==) {
             self.bodyHeightCache[postId] = 0
             self.bodyWebViewCache[postId] = nil
@@ -852,7 +855,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
             self.secondaryBodyWebViewCache[postId] = nil
             self.reloadTable()
         }
-
+        
         self.pushWebView(webView)
     }
     
@@ -871,9 +874,17 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
     }
 }
 
-extension UIWebView {
-    func documentHeight() -> (CGFloat) {
-        return CGFloat(self.stringByEvaluatingJavaScriptFromString("var body = document.body, html = document.documentElement;Math.max( body.scrollHeight, body.offsetHeight,html.clientHeight, html.scrollHeight, html.offsetHeight );")!.toInt()!)
+extension WKWebView {
+    func getDocumentHeight(completion: (CGFloat) -> ()) {
+        self.evaluateJavaScript("var body = document.body, html = document.documentElement;Math.max( body.scrollHeight, body.offsetHeight,html.clientHeight, html.scrollHeight, html.offsetHeight );", completionHandler: { result, error in
+            if let e = error {
+                completion(0)
+            } else if let height = JSON(result).int {
+                completion(CGFloat(height))
+            } else {
+                completion(0)
+            }
+        })
     }
 }
 
