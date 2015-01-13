@@ -481,7 +481,14 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let post = posts[indexPath.section]
+        let cell = self.tableView(tableView, cellForRowAtIndexPath: indexPath, post: post)
 
+        cell.selectionStyle = UITableViewCellSelectionStyle.None
+
+        return cell
+    }
+
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath, post: Post) -> UITableViewCell {
         if indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 1 {
             let cell = tableView.dequeueReusableCellWithIdentifier(postTagsTableViewCellIdentifier) as TagsTableViewCell!
             cell.tags = post.tags
