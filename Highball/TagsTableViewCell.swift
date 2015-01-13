@@ -15,7 +15,7 @@ class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollecti
 
         class func widthForTag(tag: String) -> CGFloat {
             let constrainedSize = CGSize(width: CGFloat.max, height: CGFloat.max)
-            let attributedTag = NSAttributedString(string: tag, attributes: [ NSFontAttributeName : UIFont.systemFontOfSize(12) ])
+            let attributedTag = NSAttributedString(string: tag, attributes: [ NSFontAttributeName : UIFont.systemFontOfSize(14) ])
             let tagRect = attributedTag.boundingRectWithSize(constrainedSize, options: NSStringDrawingOptions.UsesLineFragmentOrigin, context: nil)
             
             return ceil(tagRect.size.width)
@@ -33,7 +33,7 @@ class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollecti
 
         func setUpCell() {
             self.tagLabel = UILabel()
-            self.tagLabel.font = UIFont.systemFontOfSize(10)
+            self.tagLabel.font = UIFont.systemFontOfSize(14)
             self.tagLabel.textColor = UIColor.grayColor()
 
             self.contentView.addSubview(self.tagLabel)
@@ -77,13 +77,14 @@ class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollecti
         self.collectionView.bounces = true
         self.collectionView.alwaysBounceHorizontal = true
         self.collectionView.backgroundColor = UIColor.whiteColor()
+        self.collectionView.contentInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
 
         self.collectionView.registerClass(TagCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: tagCollectionViewCellIdentifier)
 
         self.contentView.addSubview(self.collectionView)
         
         layout(self.collectionView, self.contentView) { collectionView, contentView in
-            collectionView.edges == inset(contentView.edges, 3, 0); return
+            collectionView.edges == contentView.edges; return
         }
     }
 

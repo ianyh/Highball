@@ -613,7 +613,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
 
         if indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 1 {
             if post.tags.count > 0 {
-                return 20
+                return 30
             }
             return 0
         }
