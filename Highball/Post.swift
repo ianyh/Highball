@@ -53,12 +53,19 @@ class Post {
         }
     }
 
+    private var cachedPhotos: Array<PostPhoto>?
     var photos: Array<PostPhoto> {
         get {
-            if let photos = self.json["photos"].array {
-                return photos.map { (photoJSON: JSON!) -> (PostPhoto) in
+            if let cachedPhotos = self.cachedPhotos {
+                return cachedPhotos
+            }
+
+            if let photosJSON = self.json["photos"].array {
+                let photos = photosJSON.map { (photoJSON: JSON!) -> (PostPhoto) in
                     return PostPhoto(json: photoJSON)
                 }
+                self.cachedPhotos = photos
+                return photos
             }
             return []
         }
@@ -110,13 +117,7 @@ class Post {
                 bodyString = nil
             }
 
-            if let string = bodyString {
-                if countElements(string) > 0 {
-                    return string
-                }
-            }
-
-            return nil
+            return bodyString
         }
     }
 
