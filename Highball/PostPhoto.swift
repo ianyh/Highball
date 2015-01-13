@@ -11,23 +11,19 @@ import Foundation
 class PostPhoto {
     private let json: JSON!
 
-    var width: CGFloat {
-        get {
-            if let width = self.json["original_size"]["width"].int {
-                return CGFloat(width)
-            }
-            return 0
+    lazy var width: CGFloat = {
+        if let width = self.json["original_size"]["width"].int {
+            return CGFloat(width)
         }
-    }
+        return 0
+    }()
 
-    var height: CGFloat {
-        get {
-            if let height = self.json["original_size"]["height"].int {
-                return CGFloat(height)
-            }
-            return 0
+    lazy var height: CGFloat = {
+        if let height = self.json["original_size"]["height"].int {
+            return CGFloat(height)
         }
-    }
+        return 0
+    }()
 
     required init(json: JSON!) {
         self.json = json

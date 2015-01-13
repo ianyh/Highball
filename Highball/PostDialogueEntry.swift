@@ -11,23 +11,21 @@ import Foundation
 class PostDialogueEntry {
     private let json: JSON!
 
-    var formattedString: NSAttributedString {
-        get {
-            let label = self.json["label"].string!
-            let phrase = self.json["phrase"].string!
-            var labelAttributes = Dictionary<NSObject, AnyObject>()
-            var phraseAttributes = Dictionary<NSObject, AnyObject>()
-            let attributedString = NSMutableAttributedString(string: "\(label) \(phrase)")
-
-            labelAttributes[NSFontAttributeName] = UIFont(name: "Courier-Bold", size: 14)
-            phraseAttributes[NSFontAttributeName] = UIFont(name: "Courier", size: 14)
-
-            attributedString.setAttributes(labelAttributes, range: NSMakeRange(0, countElements(label)))
-            attributedString.setAttributes(phraseAttributes, range: NSMakeRange(countElements(label), countElements(phrase) + 1))
-
-            return attributedString
-        }
-    }
+    lazy var formattedString: NSAttributedString = {
+        let label = self.json["label"].string!
+        let phrase = self.json["phrase"].string!
+        var labelAttributes = Dictionary<NSObject, AnyObject>()
+        var phraseAttributes = Dictionary<NSObject, AnyObject>()
+        let attributedString = NSMutableAttributedString(string: "\(label) \(phrase)")
+        
+        labelAttributes[NSFontAttributeName] = UIFont(name: "Courier-Bold", size: 14)
+        phraseAttributes[NSFontAttributeName] = UIFont(name: "Courier", size: 14)
+        
+        attributedString.setAttributes(labelAttributes, range: NSMakeRange(0, countElements(label)))
+        attributedString.setAttributes(phraseAttributes, range: NSMakeRange(countElements(label), countElements(phrase) + 1))
+        
+        return attributedString
+    }()
 
     required init(json: JSON!) {
         self.json = json

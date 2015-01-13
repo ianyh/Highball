@@ -16,62 +16,46 @@ enum ReblogType {
 class Post {
     private let json: JSON!
 
-    var id: Int {
-        get {
-            return self.json["id"].int!
-        }
-    }
-    var type: String {
-        get {
-            return self.json["type"].string!
-        }
-    }
-    var blogName: String {
-        get {
-            return self.json["blog_name"].string!
-        }
-    }
-    var reblogKey: String {
-        get {
-            return self.json["reblog_key"].string!
-        }
-    }
-    var shortURLString: String {
-        get {
-            return self.json["short_url"].string!
-        }
-    }
+    lazy var id: Int = {
+        return self.json["id"].int!
+    }()
 
-    var tags: Array<String> {
-        get {
-            if let tags = self.json["tags"].array {
-                return tags.map { tag in
-                    return "#\(tag)"
-                }
+    lazy var type: String = {
+        return self.json["type"].string!
+    }()
+
+    lazy var blogName: String = {
+        return self.json["blog_name"].string!
+    }()
+
+    lazy var reblogKey: String = {
+        return self.json["reblog_key"].string!
+    }()
+
+    lazy var shortURLString: String = {
+        return self.json["short_url"].string!
+    }()
+
+    lazy var tags: Array<String> = {
+        if let tags = self.json["tags"].array {
+            return tags.map { tag in
+                return "#\(tag)"
             }
-            return []
         }
-    }
+        return []
+    }()
 
-    private var cachedPhotos: Array<PostPhoto>?
-    var photos: Array<PostPhoto> {
-        get {
-            if let cachedPhotos = self.cachedPhotos {
-                return cachedPhotos
+    lazy var photos: Array<PostPhoto> = {
+        if let photosJSON = self.json["photos"].array {
+            let photos = photosJSON.map { (photoJSON: JSON!) -> (PostPhoto) in
+                return PostPhoto(json: photoJSON)
             }
-
-            if let photosJSON = self.json["photos"].array {
-                let photos = photosJSON.map { (photoJSON: JSON!) -> (PostPhoto) in
-                    return PostPhoto(json: photoJSON)
-                }
-                self.cachedPhotos = photos
-                return photos
-            }
-            return []
+            return photos
         }
-    }
+        return []
+    }()
 
-    var layoutRows: Array<Int> {
+    lazy var layoutRows: Array<Int> = {
         var photosetLayoutRows = Array<Int>()
         if let layoutString = self.json["photoset_layout"].string {
             for character in layoutString {
@@ -81,106 +65,92 @@ class Post {
             photosetLayoutRows = [1]
         }
         return photosetLayoutRows
-    }
+    }()
 
-    var dialogueEntries: Array<PostDialogueEntry> {
-        get {
-            var dialogueEntries = Array<PostDialogueEntry>()
-            if let entries = self.json["dialogue"].array {
-                return entries.map { (entryJSON: JSON) -> (PostDialogueEntry) in
-                    return PostDialogueEntry(json: entryJSON)
-                }
+    lazy var dialogueEntries: Array<PostDialogueEntry> = {
+        var dialogueEntries = Array<PostDialogueEntry>()
+        if let entries = self.json["dialogue"].array {
+            return entries.map { (entryJSON: JSON) -> (PostDialogueEntry) in
+                return PostDialogueEntry(json: entryJSON)
             }
-            return dialogueEntries
         }
-    }
+        return dialogueEntries
+    }()
 
-    var body: String? {
-        get {
-            var bodyString: String?
-            switch self.type {
-            case "photo":
-                bodyString = self.json["caption"].string
-            case "text":
-                bodyString = self.json["body"].string
-            case "answer":
-                bodyString = self.json["answer"].string
-            case "quote":
-                bodyString = self.json["text"].string
-            case "link":
-                bodyString = self.json["description"].string
-            case "video":
-                bodyString = self.json["caption"].string
-            case "audio":
-                bodyString = self.json["caption"].string
-            default:
-                bodyString = nil
-            }
-
-            return bodyString
+    lazy var body: String? = {
+        var bodyString: String?
+        switch self.type {
+        case "photo":
+            bodyString = self.json["caption"].string
+        case "text":
+            bodyString = self.json["body"].string
+        case "answer":
+            bodyString = self.json["answer"].string
+        case "quote":
+            bodyString = self.json["text"].string
+        case "link":
+            bodyString = self.json["description"].string
+        case "video":
+            bodyString = self.json["caption"].string
+        case "audio":
+            bodyString = self.json["caption"].string
+        default:
+            bodyString = nil
         }
-    }
+        
+        return bodyString
+    }()
 
-    var secondaryBody: String? {
-        get {
-            var bodyString: String?
-            switch self.type {
-            case "quote":
-                bodyString = self.json["source"].string
-            case "video":
-                if let players = self.json["player"].array {
-                    let sortedPlayers = players.sorted({ $0["width"].int! > $1["width"].int! })
-                    if countElements(sortedPlayers) > 0 {
-                        let screenWidth = UIScreen.mainScreen().bounds.size.width
-                        var finalPlayer: String? = sortedPlayers.first!["embed_code"].string!
-                        for player in sortedPlayers {
-                            if player["width"].int! < Int(screenWidth) {
-                                break
-                            }
-                            finalPlayer = player["embed_code"].string!
+    lazy var secondaryBody: String? = {
+        var bodyString: String?
+        switch self.type {
+        case "quote":
+            bodyString = self.json["source"].string
+        case "video":
+            if let players = self.json["player"].array {
+                let sortedPlayers = players.sorted({ $0["width"].int! > $1["width"].int! })
+                if countElements(sortedPlayers) > 0 {
+                    let screenWidth = UIScreen.mainScreen().bounds.size.width
+                    var finalPlayer: String? = sortedPlayers.first!["embed_code"].string!
+                    for player in sortedPlayers {
+                        if player["width"].int! < Int(screenWidth) {
+                            break
                         }
-                        bodyString = finalPlayer
+                        finalPlayer = player["embed_code"].string!
                     }
-                }
-            case "audio":
-                bodyString = self.json["player"].string
-            default:
-                bodyString = nil
-            }
-
-            if let string = bodyString {
-                if countElements(string) > 0 {
-                    return string
+                    bodyString = finalPlayer
                 }
             }
-
-            return nil
+        case "audio":
+            bodyString = self.json["player"].string
+        default:
+            bodyString = nil
         }
-    }
-
-    var asker: String? {
-        get {
-            return self.json["asking_name"].string
+        
+        if let string = bodyString {
+            if countElements(string) > 0 {
+                return string
+            }
         }
-    }
+        
+        return nil
+    }()
 
-    var question: String? {
-        get {
-            return self.json["question"].string
-        }
-    }
+    lazy var asker: String? = {
+        return self.json["asking_name"].string
+    }()
 
-    var title: String? {
-        get {
-            return self.json["title"].string
-        }
-    }
+    lazy var question: String? = {
+        return self.json["question"].string
+    }()
 
-    var urlString: String? {
-        get {
-            return self.json["url"].string
-        }
-    }
+    lazy var title: String? = {
+        return self.json["title"].string
+    }()
+
+    lazy var urlString: String? = {
+        return self.json["url"].string
+    }()
 
     var liked = false
 
