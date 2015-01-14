@@ -9,6 +9,7 @@
 import UIKit
 
 class PhotosetRowTableViewCell: WCFastCell {
+    private let imageLoadQueue = dispatch_queue_create("imageLoadQueue", nil)
 
     var imageViews: Array<FLAnimatedImageView>?
     var shareHandler: ((UIImage) -> ())?
@@ -68,11 +69,21 @@ class PhotosetRowTableViewCell: WCFastCell {
 
                     if imageURL.pathExtension == "gif" {
                         if let data = TMCache.sharedCache().objectForKey(imageURL.absoluteString) as? NSData {
-                            imageView.animatedImage = FLAnimatedImage(animatedGIFData: data)
+                            dispatch_async(self.imageLoadQueue, {
+                                let animatedImage = FLAnimatedImage(animatedGIFData: data)
+                                dispatch_async(dispatch_get_main_queue(), {
+                                    imageView.animatedImage = animatedImage
+                                })
+                            })
                         } else {
                             let imageDownloadOperation = imageDownloader.downloadImageWithURL(imageURL, options: SDWebImageDownloaderOptions.UseNSURLCache, progress: nil, completed: { (image, data, error, finished) -> Void in
                                 if finished && error == nil {
-                                    imageView.animatedImage = FLAnimatedImage(animatedGIFData: data)
+                                    dispatch_async(self.imageLoadQueue, {
+                                        let animatedImage = FLAnimatedImage(animatedGIFData: data)
+                                        dispatch_async(dispatch_get_main_queue(), {
+                                            imageView.animatedImage = animatedImage
+                                        })
+                                    })
                                     TMCache.sharedCache().setObject(data, forKey: imageURL.absoluteString)
                                 }
                             })
