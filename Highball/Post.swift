@@ -87,7 +87,7 @@ class Post {
         default:
             bodyString = nil
         }
-        self.body = bodyString
+        self.body = nil
         if let string = bodyString {
             if countElements(string) > 0 {
                 self.body = string
@@ -117,7 +117,7 @@ class Post {
         default:
             bodyString = nil
         }
-        self.secondaryBody = bodyString
+        self.secondaryBody = nil
         if let string = bodyString {
             if countElements(string) > 0 {
                 self.secondaryBody = string
