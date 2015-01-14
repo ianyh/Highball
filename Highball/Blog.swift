@@ -16,7 +16,7 @@ class Blog: NSObject, NSCoding {
     let title: String
     let primary: Bool
 
-    private let json: JSON!
+    private let json: JSON
 
     required init(json: JSON) {
         self.json = json

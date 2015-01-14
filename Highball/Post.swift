@@ -14,70 +14,60 @@ enum ReblogType {
 }
 
 class Post {
-    private let json: JSON!
+    private let json: JSON
+    let id: Int
+    let type: String
+    let blogName: String
+    let reblogKey: String
+    let shortURLString: String
+    let tags: Array<String>
+    let photos: Array<PostPhoto>
+    let layoutRows: Array<Int>
+    let dialogueEntries: Array<PostDialogueEntry>
+    let body: String?
+    let secondaryBody: String?
+    let asker: String?
+    let question: String?
+    let title: String?
+    let urlString: String?
 
-    lazy var id: Int = {
-        return self.json["id"].int!
-    }()
-
-    lazy var type: String = {
-        return self.json["type"].string!
-    }()
-
-    lazy var blogName: String = {
-        return self.json["blog_name"].string!
-    }()
-
-    lazy var reblogKey: String = {
-        return self.json["reblog_key"].string!
-    }()
-
-    lazy var shortURLString: String = {
-        return self.json["short_url"].string!
-    }()
-
-    lazy var tags: Array<String> = {
-        if let tags = self.json["tags"].array {
-            return tags.map { tag in
+    required init(json: JSON!) {
+        self.json = json
+        self.id = json["id"].int!
+        self.type = json["type"].string!
+        self.blogName = json["blog_name"].string!
+        self.reblogKey = json["reblog_key"].string!
+        self.shortURLString = json["short_url"].string!
+        if let tagsJSON = json["tags"].array {
+            self.tags = tagsJSON.map { tag in
                 return "#\(tag)"
             }
+        } else {
+            self.tags = []
         }
-        return []
-    }()
-
-    lazy var photos: Array<PostPhoto> = {
         if let photosJSON = self.json["photos"].array {
-            let photos = photosJSON.map { (photoJSON: JSON!) -> (PostPhoto) in
+            self.photos = photosJSON.map { photoJSON in
                 return PostPhoto(json: photoJSON)
             }
-            return photos
+        } else {
+            self.photos = []
         }
-        return []
-    }()
-
-    lazy var layoutRows: Array<Int> = {
-        var photosetLayoutRows = Array<Int>()
         if let layoutString = self.json["photoset_layout"].string {
+            var photosetLayoutRows = Array<Int>()
             for character in layoutString {
                 photosetLayoutRows.insert("\(character)".toInt()!, atIndex: 0)
             }
+            self.layoutRows = photosetLayoutRows
         } else {
-            photosetLayoutRows = [1]
+            self.layoutRows = [1]
         }
-        return photosetLayoutRows
-    }()
-
-    lazy var dialogueEntries: Array<PostDialogueEntry> = {
-        var dialogueEntries = Array<PostDialogueEntry>()
-        if let entries = self.json["dialogue"].array {
-            return entries.map { (entryJSON: JSON) -> (PostDialogueEntry) in
+        if let entriesJSON = self.json["dialogue"].array {
+            self.dialogueEntries = entriesJSON.map { entryJSON in
                 return PostDialogueEntry(json: entryJSON)
             }
+        } else {
+            self.dialogueEntries = []
         }
-        return dialogueEntries
-    }()
-
-    lazy var body: String? = {
         var bodyString: String?
         switch self.type {
         case "photo":
@@ -97,12 +87,13 @@ class Post {
         default:
             bodyString = nil
         }
-        
-        return bodyString
-    }()
-
-    lazy var secondaryBody: String? = {
-        var bodyString: String?
+        self.body = bodyString
+        if let string = bodyString {
+            if countElements(string) > 0 {
+                self.body = string
+            }
+        }
+        bodyString = nil
         switch self.type {
         case "quote":
             bodyString = self.json["source"].string
@@ -126,38 +117,20 @@ class Post {
         default:
             bodyString = nil
         }
-        
+        self.secondaryBody = bodyString
         if let string = bodyString {
             if countElements(string) > 0 {
-                return string
+                self.secondaryBody = string
             }
         }
-        
-        return nil
-    }()
-
-    lazy var asker: String? = {
-        return self.json["asking_name"].string
-    }()
-
-    lazy var question: String? = {
-        return self.json["question"].string
-    }()
-
-    lazy var title: String? = {
-        return self.json["title"].string
-    }()
-
-    lazy var urlString: String? = {
-        return self.json["url"].string
-    }()
-
-    var liked = false
-
-    required init(json: JSON!) {
-        self.json = json
+        self.asker = json["asking_name"].string
+        self.question = json["question"].string
+        self.title = json["title"].string
+        self.urlString = json["url"].string
         self.liked = json["liked"].bool!
     }
+
+    var liked = false
 
     func htmlBodyWithWidth(width: CGFloat) -> (String?) {
         return self.body?.htmlStringWithTumblrStyle(width)

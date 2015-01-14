@@ -9,32 +9,26 @@
 import Foundation
 
 class PostPhoto {
-    private let json: JSON!
+    private let json: JSON
+    let width: CGFloat
+    let height: CGFloat
+    let originalSize: JSON
+    let alternateSizes: Array<JSON>
 
-    lazy var width: CGFloat = {
-        if let width = self.json["original_size"]["width"].int {
-            return CGFloat(width)
-        }
-        return 0
-    }()
-
-    lazy var height: CGFloat = {
-        if let height = self.json["original_size"]["height"].int {
-            return CGFloat(height)
-        }
-        return 0
-    }()
-
-    lazy var originalSize: JSON = {
-        return self.json["original_size"]
-    }()
-
-    lazy var alternateSizes: Array<JSON> = {
-        return self.json["alt_sizes"].array!.sorted({ $0["width"].int! > $1["width"].int! })
-    }()
-
-    required init(json: JSON!) {
+    required init(json: JSON) {
         self.json = json
+        if let width = json["original_size"]["width"].int {
+            self.width = CGFloat(width)
+        } else {
+            self.width = 0
+        }
+        if let height = json["original_size"]["height"].int {
+            self.height = CGFloat(height)
+        } else {
+            self.height = 0
+        }
+        self.originalSize = json["original_size"]
+        self.alternateSizes = json["alt_sizes"].array!.sorted({ $0["width"].int! > $1["width"].int! })
     }
 
     func urlWithWidth(width: CGFloat) -> (NSURL!) {

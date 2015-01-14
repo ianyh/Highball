@@ -52,6 +52,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
     var tableView: UITableView!
     
     private let requiredRefreshDistance: CGFloat = 60
+    private let postParseQueue = dispatch_queue_create("postParseQueue", nil)
     
     private var longPressGestureRecognizer: UILongPressGestureRecognizer!
     private var panGestureRecognizer: UIPanGestureRecognizer!
@@ -168,7 +169,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
             return webView
         }
 
-        let webView = WKWebView(frame: frame, scaleToFit: true)
+        let webView = WKWebView(frame: frame)
         webView.navigationDelegate = self
         return webView
     }
@@ -204,31 +205,38 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                 println(e)
                 self.loadingTop = false
             } else {
-                let posts = self.postsFromJSON(JSON(response))
+                dispatch_async(self.postParseQueue, {
+                    let posts = self.postsFromJSON(JSON(response))
+                    for post in posts {
+                        dispatch_async(dispatch_get_main_queue(), {
+                            if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
+                                let webView = self.popWebView()
+                                let htmlString = content
 
-                for post in posts {
-                    if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
-                        let webView = self.popWebView()
-                        let htmlString = content
+                                self.bodyWebViewCache[post.id] = webView
 
-                        self.bodyWebViewCache[post.id] = webView
+                                webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+                            }
+                        })
 
-                        webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+                        dispatch_async(dispatch_get_main_queue(), {
+                            if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.size.width) {
+                                let webView = self.popWebView()
+                                let htmlString = content
+
+                                self.secondaryBodyWebViewCache[post.id] = webView
+
+                                webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+                            }
+                        })
                     }
 
-                    if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.size.width) {
-                        let webView = self.popWebView()
-                        let htmlString = content
-
-                        self.secondaryBodyWebViewCache[post.id] = webView
-
-                        webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
-                    }
-                }
-                
-                self.posts = posts
-                self.heightCache.removeAll()
-                self.reloadTable()
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.posts = posts
+                        self.heightCache.removeAll()
+                        self.reloadTable()
+                    })
+                })
             }
         }
     }
@@ -246,30 +254,38 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                         println(e)
                         self.loadingBottom = false
                     } else {
-                        let posts = self.postsFromJSON(JSON(response))
-                        for post in posts {
-                            if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
-                                let webView = self.popWebView()
-                                let htmlString = content
+                        dispatch_async(self.postParseQueue, {
+                            let posts = self.postsFromJSON(JSON(response))
+                            for post in posts {
+                                dispatch_async(dispatch_get_main_queue(), {
+                                    if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
+                                        let webView = self.popWebView()
+                                        let htmlString = content
 
-                                webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+                                        self.bodyWebViewCache[post.id] = webView
 
-                                self.bodyWebViewCache[post.id] = webView
+                                        webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+                                    }
+                                })
+
+                                dispatch_async(dispatch_get_main_queue(), {
+                                    if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.size.width) {
+                                        let webView = self.popWebView()
+                                        let htmlString = content
+
+                                        self.secondaryBodyWebViewCache[post.id] = webView
+
+                                        webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+                                    }
+                                })
                             }
 
-                            if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.size.width) {
-                                let webView = self.popWebView()
-                                let htmlString = content
-
-                                webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
-
-                                self.secondaryBodyWebViewCache[post.id] = webView
-                            }
-                        }
-
-                        self.posts.extend(posts)
-                        self.bottomOffset += 20
-                        self.reloadTable()
+                            dispatch_async(dispatch_get_main_queue(), {
+                                self.posts.extend(posts)
+                                self.bottomOffset += 20
+                                self.reloadTable()
+                            })
+                        })
                     }
                 }
             }

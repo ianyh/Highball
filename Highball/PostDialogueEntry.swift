@@ -9,9 +9,12 @@
 import Foundation
 
 class PostDialogueEntry {
-    private let json: JSON!
+    private let json: JSON
+    let formattedString: NSAttributedString
 
-    lazy var formattedString: NSAttributedString = {
+    required init(json: JSON) {
+        self.json = json
+
         let label = self.json["label"].string!
         let phrase = self.json["phrase"].string!
         var labelAttributes = Dictionary<NSObject, AnyObject>()
@@ -24,10 +27,6 @@ class PostDialogueEntry {
         attributedString.setAttributes(labelAttributes, range: NSMakeRange(0, countElements(label)))
         attributedString.setAttributes(phraseAttributes, range: NSMakeRange(countElements(label), countElements(phrase) + 1))
         
-        return attributedString
-    }()
-
-    required init(json: JSON!) {
-        self.json = json
+        self.formattedString = attributedString
     }
 }

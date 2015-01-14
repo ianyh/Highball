@@ -32,7 +32,7 @@ class ContentTableViewCell: WCFastCell, WKNavigationDelegate {
     }
 
     func setUpCell() {
-        self.contentWebView = WKWebView(frame: self.contentView.frame, scaleToFit: true)
+        self.contentWebView = WKWebView(frame: self.contentView.frame)
         self.contentWebView.userInteractionEnabled = false
         self.contentWebView.scrollView.scrollEnabled = false
         self.contentWebView.navigationDelegate = self
