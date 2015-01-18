@@ -9,6 +9,7 @@
 import UIKit
 
 class PostHeaderView: UITableViewHeaderFooterView {
+    private let avatarLoadQueue = dispatch_queue_create("avatarLoadQueue", nil)
     private var avatarImageView: UIImageView!
     private var usernameLabel: UILabel!
 
@@ -20,7 +21,12 @@ class PostHeaderView: UITableViewHeaderFooterView {
                 self.avatarImageView.image = UIImage(named: "Placeholder")
 
                 if let data = TMCache.sharedCache().objectForKey("avatar:\(blogName)") as? NSData {
-                    self.avatarImageView.image = UIImage(data: data)
+                    dispatch_async(self.avatarLoadQueue, {
+                        let image = UIImage(data: data)
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.avatarImageView.image = image
+                        })
+                    })
                 } else {
                     TMAPIClient.sharedInstance().avatar(blogName, size: 40) { (response: AnyObject!, error: NSError!) in
                         if let e = error {
@@ -28,7 +34,12 @@ class PostHeaderView: UITableViewHeaderFooterView {
                         } else {
                             let data = response as NSData!
                             TMCache.sharedCache().setObject(data, forKey: "avatar:\(blogName)")
-                            self.avatarImageView.image = UIImage(data: data)
+                            dispatch_async(self.avatarLoadQueue, {
+                                let image = UIImage(data: data)
+                                dispatch_async(dispatch_get_main_queue(), {
+                                    self.avatarImageView.image = image
+                                })
+                            })
                         }
                     }
                 }

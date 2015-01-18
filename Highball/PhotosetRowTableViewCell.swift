@@ -15,14 +15,12 @@ class PhotosetRowTableViewCell: WCFastCell {
     var shareHandler: ((UIImage) -> ())?
     var imageDownloadOperations: Array<SDWebImageOperation>?
     
-    var contentWidth: CGFloat? {
-        didSet {
-            self.updateImages()
-        }
-    }
+    var contentWidth: CGFloat! = 0
     var images: Array<PostPhoto>? {
         didSet {
-            self.updateImages()
+            dispatch_async(dispatch_get_main_queue(), {
+                self.updateImages()
+            })
         }
     }
 
@@ -66,6 +64,7 @@ class PhotosetRowTableViewCell: WCFastCell {
 
                     imageView.image = UIImage(named: "Placeholder")
                     imageView.userInteractionEnabled = true
+                    imageView.contentMode = UIViewContentMode.ScaleAspectFit
 
                     if imageURL.pathExtension == "gif" {
                         if let data = TMCache.sharedCache().objectForKey(imageURL.absoluteString) as? NSData {

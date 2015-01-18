@@ -518,9 +518,11 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                 cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
                 return cell
             }
-            
             let cell = tableView.dequeueReusableCellWithIdentifier(photosetRowTableViewCellIdentifier) as PhotosetRowTableViewCell!
             let postPhotos = post.photos
+
+            cell.contentWidth = tableView.frame.size.width
+
             if postPhotos.count == 1 {
                 cell.images = postPhotos
             } else {
@@ -533,7 +535,6 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                 
                 cell.images = Array(postPhotos[(photosIndexStart)..<(photosIndexStart + photosetLayoutRow)])
             }
-            cell.contentWidth = tableView.frame.size.width
             
             return cell
         case "text":

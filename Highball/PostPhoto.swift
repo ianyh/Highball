@@ -12,8 +12,7 @@ class PostPhoto {
     private let json: JSON
     let width: CGFloat
     let height: CGFloat
-    let originalSize: JSON
-    let alternateSizes: Array<JSON>
+    let sizes: Array<JSON>
 
     required init(json: JSON) {
         self.json = json
@@ -27,20 +26,22 @@ class PostPhoto {
         } else {
             self.height = 0
         }
-        self.originalSize = json["original_size"]
-        self.alternateSizes = json["alt_sizes"].array!.sorted({ $0["width"].int! > $1["width"].int! })
+        var sizes = [json["original_size"]]
+        sizes.extend(json["alt_sizes"].arrayValue.sorted({ $0["width"].int! > $1["width"].int! }))
+        self.sizes = sizes
     }
 
-    func urlWithWidth(width: CGFloat) -> (NSURL!) {
-        var smallestFittedSize = self.originalSize
-        for size in self.alternateSizes {
-            if CGFloat(size["width"].int!) < width {
-                break
+    func urlWithWidth(width: CGFloat) -> NSURL {
+        let largerSizes = self.sizes.filter {
+            if let sizeWidth = $0["width"].int {
+                return CGFloat(sizeWidth) > width
             }
-
-            smallestFittedSize = size
+            return false
         }
-
-        return NSURL(string: smallestFittedSize["url"].string!)
+        if let smallestFittedSize = largerSizes.last {
+            return NSURL(string: smallestFittedSize["url"].string!)!
+        } else {
+            return NSURL(string: self.sizes.first!["url"].stringValue)!
+        }
     }
 }
