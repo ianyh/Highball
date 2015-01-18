@@ -62,7 +62,8 @@ class PhotosetRowTableViewCell: WCFastCell {
                         }
                     }
 
-                    imageView.image = UIImage(named: "Placeholder")
+                    imageView.image = nil
+                    imageView.backgroundColor = UIColor.grayColor()
                     imageView.userInteractionEnabled = true
                     imageView.contentMode = UIViewContentMode.ScaleAspectFit
 
@@ -91,7 +92,7 @@ class PhotosetRowTableViewCell: WCFastCell {
                             }
                         }
                     } else {
-                        imageView.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "Placeholder"))
+                        imageView.sd_setImageWithURL(imageURL)
                     }
                     
                     lastImageView = imageView
