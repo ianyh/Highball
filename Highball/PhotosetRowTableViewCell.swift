@@ -68,9 +68,12 @@ class PhotosetRowTableViewCell: WCFastCell {
                     imageView.contentMode = UIViewContentMode.ScaleAspectFit
 
                     if imageURL.pathExtension == "gif" {
-                        if let data = TMCache.sharedCache().objectForKey(imageURL.absoluteString) as? NSData {
+                        if let animatedImage = AnimatedImageCache.animatedImageForKey(cacheKey) {
+                            imageView.animatedImage = animatedImage
+                        } else if let data = TMCache.sharedCache().objectForKey(imageURL.absoluteString) as? NSData {
                             dispatch_async(self.imageLoadQueue, {
                                 let animatedImage = FLAnimatedImage(animatedGIFData: data)
+                                AnimatedImageCache.setAnimatedImage(animatedImage, forKey: cacheKey)
                                 dispatch_async(dispatch_get_main_queue(), {
                                     imageView.animatedImage = animatedImage
                                 })
@@ -80,6 +83,7 @@ class PhotosetRowTableViewCell: WCFastCell {
                                 if finished && error == nil {
                                     dispatch_async(self.imageLoadQueue, {
                                         let animatedImage = FLAnimatedImage(animatedGIFData: data)
+                                        AnimatedImageCache.setAnimatedImage(animatedImage, forKey: cacheKey)
                                         dispatch_async(dispatch_get_main_queue(), {
                                             imageView.animatedImage = animatedImage
                                         })

@@ -10,6 +10,7 @@
 		40080E8E1A0F042B00D883AE /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40080E8D1A0F042B00D883AE /* SettingsViewController.swift */; };
 		40080E901A0F11DD00D883AE /* LockSplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40080E8F1A0F11DD00D883AE /* LockSplashViewController.swift */; };
 		400FE01319B6A33200F72C3C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 400FE01219B6A33200F72C3C /* libPods.a */; };
+		402033591A6C785400BA136C /* AnimatedImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402033581A6C785400BA136C /* AnimatedImageCache.swift */; };
 		402A20961A3D2C510007CCFF /* TitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402A20951A3D2C510007CCFF /* TitleTableViewCell.swift */; };
 		402D979919F1E442003DCD55 /* TextReblogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402D979819F1E442003DCD55 /* TextReblogViewController.swift */; };
 		403F53DB19AECFEF00FF8F3B /* PhotosetRowTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403F53DA19AECFEF00FF8F3B /* PhotosetRowTableViewCell.swift */; };
@@ -84,6 +85,7 @@
 		40080E8D1A0F042B00D883AE /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		40080E8F1A0F11DD00D883AE /* LockSplashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockSplashViewController.swift; sourceTree = "<group>"; };
 		400FE01219B6A33200F72C3C /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Debug-iphoneos/libPods.a"; sourceTree = "<group>"; };
+		402033581A6C785400BA136C /* AnimatedImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedImageCache.swift; sourceTree = "<group>"; };
 		402A20951A3D2C510007CCFF /* TitleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleTableViewCell.swift; sourceTree = "<group>"; };
 		402D979819F1E442003DCD55 /* TextReblogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextReblogViewController.swift; sourceTree = "<group>"; };
 		403F53DA19AECFEF00FF8F3B /* PhotosetRowTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosetRowTableViewCell.swift; sourceTree = "<group>"; };
@@ -274,6 +276,7 @@
 				408C7D2019B384C800EFC410 /* PostDialogueEntry.swift */,
 				40FF6D4219B940C6008119A3 /* Blog.swift */,
 				40F8CE991A41143000609ABF /* AccountsService.swift */,
+				402033581A6C785400BA136C /* AnimatedImageCache.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -521,6 +524,7 @@
 				40778BAA19B24BA500F8EE13 /* PostQuestionTableViewCell.swift in Sources */,
 				40C78D1519BD29330002EB78 /* ReblogTransitionAnimator.swift in Sources */,
 				40731BA919FC272100F6978D /* Compound.swift in Sources */,
+				402033591A6C785400BA136C /* AnimatedImageCache.swift in Sources */,
 				40731BA819FC272100F6978D /* Coefficients.swift in Sources */,
 				40731BBA19FDCAD300F6978D /* LikesViewController.swift in Sources */,
 			);
