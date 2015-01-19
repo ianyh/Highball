@@ -73,8 +73,8 @@ class PhotosetRowTableViewCell: WCFastCell {
                         } else if let data = TMCache.sharedCache().objectForKey(imageURL.absoluteString) as? NSData {
                             dispatch_async(self.imageLoadQueue, {
                                 let animatedImage = FLAnimatedImage(animatedGIFData: data)
-                                AnimatedImageCache.setAnimatedImage(animatedImage, forKey: cacheKey)
                                 dispatch_async(dispatch_get_main_queue(), {
+                                    AnimatedImageCache.setAnimatedImage(animatedImage, forKey: cacheKey)
                                     imageView.animatedImage = animatedImage
                                 })
                             })
@@ -83,8 +83,8 @@ class PhotosetRowTableViewCell: WCFastCell {
                                 if finished && error == nil {
                                     dispatch_async(self.imageLoadQueue, {
                                         let animatedImage = FLAnimatedImage(animatedGIFData: data)
-                                        AnimatedImageCache.setAnimatedImage(animatedImage, forKey: cacheKey)
                                         dispatch_async(dispatch_get_main_queue(), {
+                                            AnimatedImageCache.setAnimatedImage(animatedImage, forKey: cacheKey)
                                             imageView.animatedImage = animatedImage
                                         })
                                     })
