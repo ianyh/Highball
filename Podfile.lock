@@ -32,6 +32,7 @@ PODS:
     - SlackTextViewController/Additions (= 1.2.6)
   - SlackTextViewController/Additions (1.2.6)
   - SSKeychain (1.2.2)
+  - SVPullToRefresh (0.4.1)
   - TMCache (1.2.1)
   - TMTumblrSDK (1.0.8):
     - TMTumblrSDK/Activity (= 1.0.8)
@@ -60,6 +61,7 @@ DEPENDENCIES:
   - pop
   - SDWebImage
   - SlackTextViewController
+  - SVPullToRefresh
   - TMCache
   - TMTumblrSDK
   - VENTouchLock
@@ -75,6 +77,7 @@ SPEC CHECKSUMS:
   SDWebImage: 116e88633b5b416ea0ca4b334a4ac59cf72dd38d
   SlackTextViewController: 3bc6c6e2c89638f8497331b8d084bec0f0ec28ff
   SSKeychain: cc48bd3ad24fcd9125adb9e0d23dd50b8bbd08b9
+  SVPullToRefresh: d5161ebc833a38b465364412e5e307ca80bbb190
   TMCache: ed936c5b4684e4ea15113d46fba8829ed3baadad
   TMTumblrSDK: b9fada23e88b42ade2b492a6db95bfb1dff6304b
   VENTouchLock: d6d65a8f502d46f8707e9cc9d0065456f248555f

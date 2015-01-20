@@ -19,6 +19,7 @@
 #import <pop/POP.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "SLKTextViewController.h"
+#import "UIScrollView+SVInfiniteScrolling.h"
 #import <TMTumblrSDK/TMAPIClient.h>
 #import <TMCache/TMCache.h>
 #import <VENTouchLock/VENTouchLock.h>
