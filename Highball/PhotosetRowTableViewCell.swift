@@ -63,6 +63,13 @@ class PhotosetRowTableViewCell: WCFastCell {
                                 imageView.size == leftImageView.size
                             }
                         }
+                    } else if images.count == 1 {
+                        layout(imageView, self.contentView) { imageView, contentView in
+                            imageView.left == contentView.left
+                            imageView.top == contentView.top
+                            imageView.bottom == contentView.bottom
+                            imageView.right == contentView.right
+                        }
                     } else {
                         layout(imageView, self.contentView) { imageView, contentView in
                             imageView.left == contentView.left
@@ -75,7 +82,7 @@ class PhotosetRowTableViewCell: WCFastCell {
                     imageView.image = nil
                     imageView.backgroundColor = UIColor.whiteColor()
                     imageView.userInteractionEnabled = true
-                    imageView.contentMode = UIViewContentMode.ScaleAspectFit
+                    imageView.contentMode = UIViewContentMode.ScaleAspectFill
 
                     if imageURL.pathExtension == "gif" {
                         if let animatedImage = AnimatedImageCache.animatedImageForKey(cacheKey) {
