@@ -43,6 +43,10 @@ class DashboardViewController: PostsViewController {
         self.navigationItem.title = AccountsService.account.blog.name
     }
 
+    override func viewDidDisappear(animated: Bool) {
+        self.bookmark()
+    }
+
     override func postsFromJSON(json: JSON) -> Array<Post> {
         if let postsJSON = json["posts"].array {
             return postsJSON.map { (post) -> (Post) in
@@ -61,6 +65,10 @@ class DashboardViewController: PostsViewController {
     }
 
     func applicationWillResignActive(notification: NSNotification) {
+        self.bookmark()
+    }
+
+    func bookmark() {
         if let indexPaths = self.tableView.indexPathsForVisibleRows() {
             if let firstIndexPath = indexPaths.first as? NSIndexPath {
                 let post = self.posts[firstIndexPath.section]
@@ -68,7 +76,6 @@ class DashboardViewController: PostsViewController {
             }
         }
     }
-
     func bookmarks(sender: UIButton, event: UIEvent) {
         if let touches = event.allTouches() {
             if let touch = touches.anyObject() as? UITouch {
