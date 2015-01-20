@@ -668,10 +668,10 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
             
             let imageCount = images.count
             let imageWidth = tableView.frame.size.width / CGFloat(images.count)
-            let minHeight = images.map { (image: PostPhoto) -> CGFloat in
+            let minHeight = floor(images.map { (image: PostPhoto) -> CGFloat in
                 let scale = image.height / image.width
                 return imageWidth * scale
-                }.reduce(CGFloat.max, combine: { min($0, $1) })
+                }.reduce(CGFloat.max, combine: { min($0, $1) }))
 
             self.heightCache[indexPath] = minHeight
 
