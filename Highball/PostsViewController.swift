@@ -114,7 +114,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         self.tableView.sectionFooterHeight = 50
         self.tableView.showsVerticalScrollIndicator = false
         self.tableView.showsHorizontalScrollIndicator = false
-        self.tableView.addInfiniteScrollingWithActionHandler { self.loadMore() }
+        self.tableView.addInfiniteScrollingWithActionHandler {}
 
         self.tableView.registerClass(TitleTableViewCell.classForCoder(), forCellReuseIdentifier: titleTableViewCellIdentifier)
         self.tableView.registerClass(PhotosetRowTableViewCell.classForCoder(), forCellReuseIdentifier: photosetRowTableViewCellIdentifier)
@@ -825,6 +825,12 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
     // MARK: UIScrollViewDelegate
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
+        let distanceFromBottom = scrollView.contentSize.height - scrollView.frame.size.height - scrollView.contentOffset.y
+
+        if distanceFromBottom < 2000 {
+            self.loadMore()
+        }
+
         if !self.loadingTop {
             if let navigationController = self.navigationController {
                 navigationController.setIndeterminate(false)
