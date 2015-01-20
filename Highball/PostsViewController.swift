@@ -83,6 +83,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
     }
     var loadingBottom = false
     var lastPoint: CGPoint?
+    var loadingCompletion: (() -> ())?
     
     required override init() {
         super.init(nibName: nil, bundle: nil)
@@ -233,8 +234,10 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                     }
 
                     dispatch_async(dispatch_get_main_queue(), {
-                        self.posts = posts
-                        self.heightCache.removeAll()
+                        self.loadingCompletion = {
+                            self.posts = posts
+                            self.heightCache.removeAll()
+                        }
                         self.reloadTable()
                     })
                 })
@@ -282,8 +285,10 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                             }
 
                             dispatch_async(dispatch_get_main_queue(), {
-                                self.posts.extend(posts)
-                                self.bottomOffset += 20
+                                self.loadingCompletion = {
+                                    self.posts.extend(posts)
+                                    self.bottomOffset += 20
+                                }
                                 self.reloadTable()
                             })
                         })
@@ -337,22 +342,29 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         if let posts = self.posts {
             for post in posts {
                 if let content = post.body {
-                    if let height = self.bodyHeightCache[post.id] {} else {
+                    if let webView = self.bodyWebViewCache[post.id] {
                         return
                     }
                 } else if let content = post.secondaryBody {
-                    if let height = self.secondaryBodyHeightCache[post.id] {} else {
+                    if let webView = self.secondaryBodyWebViewCache[post.id] {
                         return
                     }
                 }
             }
         }
 
-        self.loadingTop = false
-        self.loadingBottom = false
+        if let completion = self.loadingCompletion {
+            completion()
+        }
 
         self.tableView.infiniteScrollingView.stopAnimating()
-        self.tableView.reloadData()
+        if self.loadingTop || self.loadingBottom {
+            self.tableView.reloadData()
+        }
+
+        self.loadingCompletion = nil
+        self.loadingTop = false
+        self.loadingBottom = false
     }
     
     func didLongPress(sender: UILongPressGestureRecognizer) {
