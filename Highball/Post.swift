@@ -19,6 +19,7 @@ class Post {
     let type: String
     let blogName: String
     let reblogKey: String
+    let timestamp: Int
     let shortURLString: String
     let tags: Array<String>
     let photos: Array<PostPhoto>
@@ -37,6 +38,7 @@ class Post {
         self.type = json["type"].string!
         self.blogName = json["blog_name"].string!
         self.reblogKey = json["reblog_key"].string!
+        self.timestamp = json["timestamp"].int!
         self.shortURLString = json["short_url"].string!
         if let tagsJSON = json["tags"].array {
             self.tags = tagsJSON.map { tag in

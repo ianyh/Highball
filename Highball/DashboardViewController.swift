@@ -56,7 +56,7 @@ class DashboardViewController: PostsViewController {
                                 if let indexPaths = self.tableView.indexPathsForVisibleRows() {
                                     if let firstIndexPath = indexPaths.first as? NSIndexPath {
                                         let post = self.posts[firstIndexPath.section]
-                                        NSUserDefaults.standardUserDefaults().setObject(post.id, forKey: "HIPostIDBookmark")
+                                        NSUserDefaults.standardUserDefaults().setObject(post.timestamp, forKey: "HITimestampBookmark")
                                     }
                                 }
                             case .Goto:
@@ -76,12 +76,12 @@ class DashboardViewController: PostsViewController {
     }
 
     func gotoBookmark() {
-        if let bookmarkID = NSUserDefaults.standardUserDefaults().objectForKey("HIPostIDBookmark") as? Int {
-            self.findMax(bookmarkID, offset: 0)
+        if let bookmarkTimestamp = NSUserDefaults.standardUserDefaults().objectForKey("HITimestampBookmark") as? Int {
+            self.findMax(bookmarkTimestamp, offset: 0)
         }
     }
 
-    func findMax(bookmarkID: Int, offset: Int) {
+    func findMax(bookmarkTimestamp: Int, offset: Int) {
         TMAPIClient.sharedInstance().dashboard(["offset" : offset, "limit" : 1]) { (response: AnyObject!, error: NSError!) -> Void in
             if let e = error {
                 return
@@ -91,23 +91,23 @@ class DashboardViewController: PostsViewController {
                 return Post(json: post)
             }
             let lastPost = posts.last!
-            if lastPost.id > bookmarkID {
+            if lastPost.timestamp > bookmarkTimestamp {
                 if offset == 0 {
-                    self.findMax(bookmarkID, offset: 20)
+                    self.findMax(bookmarkTimestamp, offset: 20)
                 } else {
-                    self.findMax(bookmarkID, offset: offset * 2)
+                    self.findMax(bookmarkTimestamp, offset: offset * 2)
                 }
             } else {
                 if offset == 20 {
-                    self.findOffset(bookmarkID, startOffset: 0, endOffset: 20)
+                    self.findOffset(bookmarkTimestamp, startOffset: 0, endOffset: 20)
                 } else {
-                    self.findOffset(bookmarkID, startOffset: offset / 2, endOffset: offset)
+                    self.findOffset(bookmarkTimestamp, startOffset: offset / 2, endOffset: offset)
                 }
             }
         }
     }
 
-    func findOffset(bookmarkID: Int, startOffset: Int, endOffset: Int) {
+    func findOffset(bookmarkTimestamp: Int, startOffset: Int, endOffset: Int) {
         let offset = (startOffset + endOffset) / 2
         TMAPIClient.sharedInstance().dashboard(["offset" : offset, "limit" : 1]) { (response: AnyObject!, error: NSError!) -> Void in
             if let e = error {
@@ -117,10 +117,10 @@ class DashboardViewController: PostsViewController {
             let post = json["posts"].array!.map { (post) -> (Post) in
                 return Post(json: post)
             }.first!
-            if post.id > bookmarkID {
-                self.findOffset(bookmarkID, startOffset: offset, endOffset: endOffset)
-            } else if post.id < bookmarkID {
-                self.findOffset(bookmarkID, startOffset: startOffset, endOffset: offset)
+            if post.timestamp > bookmarkTimestamp {
+                self.findOffset(bookmarkTimestamp, startOffset: offset, endOffset: endOffset)
+            } else if post.timestamp < bookmarkTimestamp {
+                self.findOffset(bookmarkTimestamp, startOffset: startOffset, endOffset: offset)
             } else {
                 self.topOffset = offset + 20
                 self.loadTop()
