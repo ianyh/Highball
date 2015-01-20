@@ -37,21 +37,31 @@ class PhotosetRowTableViewCell: WCFastCell {
                 let imageManager = SDWebImageManager.sharedManager()
                 let imageDownloader = SDWebImageDownloader.sharedDownloader()
                 let widthRatio: Float = 1.0 / Float(images.count)
+                let lastImageIndex = images.count - 1
                 var imageViews = Array<FLAnimatedImageView>()
                 var downloadOperations = Array<SDWebImageOperation>()
                 var lastImageView: UIImageView?
-                for image in images {
+                for (index, image) in enumerate(images) {
                     let imageView = FLAnimatedImageView()
                     let imageURL = image.urlWithWidth(contentWidth)
                     let cacheKey = imageManager.cacheKeyForURL(imageURL)
                     
                     self.contentView.addSubview(imageView)
-                    
+
                     if let leftImageView = lastImageView {
-                        layout(imageView, leftImageView) { imageView, leftImageView in
-                            imageView.centerY == leftImageView.centerY
-                            imageView.left == leftImageView.right
-                            imageView.size == leftImageView.size
+                        if index == lastImageIndex {
+                            layout(imageView, leftImageView, self.contentView) { imageView, leftImageView, contentView in
+                                imageView.centerY == leftImageView.centerY
+                                imageView.left == leftImageView.right
+                                imageView.right == contentView.right
+                                imageView.height == leftImageView.height
+                            }
+                        } else {
+                            layout(imageView, leftImageView, self.contentView) { imageView, leftImageView, contentView in
+                                imageView.centerY == leftImageView.centerY
+                                imageView.left == leftImageView.right
+                                imageView.size == leftImageView.size
+                            }
                         }
                     } else {
                         layout(imageView, self.contentView) { imageView, contentView in
