@@ -9,6 +9,28 @@
 import UIKit
 
 class DashboardViewController: PostsViewController {
+    required init() {
+        super.init()
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: Selector("applicationWillResignActive:"),
+            name: UIApplicationWillResignActiveNotification,
+            object: nil
+        )
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(
+            self,
+            name: UIApplicationWillResignActiveNotification,
+            object: nil
+        )
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -36,6 +58,15 @@ class DashboardViewController: PostsViewController {
 
     override func reblogBlogName() -> (String) {
         return AccountsService.account.blog.name
+    }
+
+    func applicationWillResignActive(notification: NSNotification) {
+        if let indexPaths = self.tableView.indexPathsForVisibleRows() {
+            if let firstIndexPath = indexPaths.first as? NSIndexPath {
+                let post = self.posts[firstIndexPath.section]
+                NSUserDefaults.standardUserDefaults().setObject(post.timestamp, forKey: "HITimestampBookmark")
+            }
+        }
     }
 
     func bookmarks(sender: UIButton, event: UIEvent) {
