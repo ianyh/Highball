@@ -9,13 +9,13 @@
 import Foundation
 
 struct AnimatedImageCache {
-    private static var animatedImageCache = Dictionary<String, FLAnimatedImage>()
+    private static var animatedImageCache = NSCache()
 
     static func setAnimatedImage(animatedImage: FLAnimatedImage, forKey key: String) {
-        self.animatedImageCache[key] = animatedImage
+        self.animatedImageCache.setObject(animatedImage, forKey: key)
     }
 
     static func animatedImageForKey(key: String) -> FLAnimatedImage? {
-        return self.animatedImageCache[key]
+        return self.animatedImageCache.objectForKey(key) as? FLAnimatedImage
     }
 }
