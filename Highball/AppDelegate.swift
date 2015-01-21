@@ -19,8 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         TMAPIClient.sharedInstance().OAuthConsumerKey = "YhlYiD2dAUE6UH01ugPKQafm2XESBWsaOYPz7xV0q53SDn3ChU"
         TMAPIClient.sharedInstance().OAuthConsumerSecret = "ONVNS5UCfZMMhrekfjBknUXgjQ5I2J1a0aVDCfso2mfRcC4nEF"
 
-        // Only keep cache for 24 hours
-        TMCache.sharedCache().diskCache.ageLimit = 86400
+        // Only keep cache for 12 hours
+        TMCache.sharedCache().diskCache.ageLimit = 43200
 
         self.navigationController = UINavigationController()
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
@@ -54,4 +54,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return TMAPIClient.sharedInstance().handleOpenURL(url)
     }
 }
-
