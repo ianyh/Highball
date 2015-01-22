@@ -9,7 +9,6 @@
 import UIKit
 
 enum BookmarksOption {
-    case Bookmark
     case Goto
     case Top
 }
@@ -170,10 +169,6 @@ class BookmarksViewController: UIViewController {
 
     func exit(sender: UIButton) {
         self.finishWithOption(nil)
-    }
-
-    func save(sender: UIButton) {
-        self.finishWithOption(BookmarksOption.Bookmark)
     }
 
     func goto(sender: UIButton) {

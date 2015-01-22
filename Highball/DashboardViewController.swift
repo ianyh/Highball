@@ -72,10 +72,11 @@ class DashboardViewController: PostsViewController {
         if let indexPaths = self.tableView.indexPathsForVisibleRows() {
             if let firstIndexPath = indexPaths.first as? NSIndexPath {
                 let post = self.posts[firstIndexPath.section]
-                NSUserDefaults.standardUserDefaults().setObject(post.timestamp, forKey: "HITimestampBookmark")
+                NSUserDefaults.standardUserDefaults().setObject(post.timestamp, forKey: "HITimestampBookmark:\(AccountsService.account.blog.url)")
             }
         }
     }
+
     func bookmarks(sender: UIButton, event: UIEvent) {
         if let touches = event.allTouches() {
             if let touch = touches.anyObject() as? UITouch {
@@ -90,13 +91,6 @@ class DashboardViewController: PostsViewController {
                     viewController.completion = { bookmarksOption in
                         if let option = bookmarksOption {
                             switch(option) {
-                            case .Bookmark:
-                                if let indexPaths = self.tableView.indexPathsForVisibleRows() {
-                                    if let firstIndexPath = indexPaths.first as? NSIndexPath {
-                                        let post = self.posts[firstIndexPath.section]
-                                        NSUserDefaults.standardUserDefaults().setObject(post.timestamp, forKey: "HITimestampBookmark")
-                                    }
-                                }
                             case .Goto:
                                 self.gotoBookmark()
                             case .Top:
@@ -114,7 +108,7 @@ class DashboardViewController: PostsViewController {
     }
 
     func gotoBookmark() {
-        if let bookmarkTimestamp = NSUserDefaults.standardUserDefaults().objectForKey("HITimestampBookmark") as? Int {
+        if let bookmarkTimestamp = NSUserDefaults.standardUserDefaults().objectForKey("HITimestampBookmark:\(AccountsService.account.blog.url)") as? Int {
             self.findMax(bookmarkTimestamp, offset: 0)
         }
     }
