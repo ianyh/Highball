@@ -21,7 +21,7 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - ChameleonFramework (1.1.1)
-  - FLAnimatedImage (1.0.7)
+  - FLAnimatedImage (1.0.8)
   - JXHTTP (1.0.0)
   - M13ProgressSuite (1.2.5)
   - pop (1.0.6)
@@ -70,7 +70,7 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
   ChameleonFramework: c60096686e3771f5d78f26cfbfd08955a8a88cbd
-  FLAnimatedImage: d9e8422a9e1d8ee9a657b7433b4a9b073ef3efb3
+  FLAnimatedImage: 8669ace2a531fc0bb7344a6326f48c3a4c3de84b
   JXHTTP: dd1fe9c6fa21e7b2be9724ef2be16c66aafc44b4
   M13ProgressSuite: bf63f5592f1e40767da5203199804ad5eed3eb48
   pop: e518794da38942c05255eb64b36d894e70cb4f00
