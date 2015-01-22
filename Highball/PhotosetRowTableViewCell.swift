@@ -80,7 +80,7 @@ class PhotosetRowTableViewCell: WCFastCell {
                     }
 
                     imageView.image = nil
-                    imageView.backgroundColor = UIColor.whiteColor()
+                    imageView.backgroundColor = UIColor.lightGrayColor()
                     imageView.userInteractionEnabled = true
                     imageView.contentMode = UIViewContentMode.ScaleAspectFill
 
