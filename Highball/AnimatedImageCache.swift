@@ -11,8 +11,10 @@ import Foundation
 struct AnimatedImageCache {
     private static var animatedImageCache = NSCache()
 
-    static func setAnimatedImage(animatedImage: FLAnimatedImage, forKey key: String) {
-        self.animatedImageCache.setObject(animatedImage, forKey: key)
+    static func setAnimatedImage(animatedImage: FLAnimatedImage?, forKey key: String) {
+        if let image = animatedImage {
+            self.animatedImageCache.setObject(image, forKey: key)
+        }
     }
 
     static func animatedImageForKey(key: String) -> FLAnimatedImage? {
