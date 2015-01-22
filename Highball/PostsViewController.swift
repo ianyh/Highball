@@ -157,9 +157,8 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
     }
 
     override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-
         self.webViewCache.removeAll()
+        super.didReceiveMemoryWarning()
     }
 
     func popWebView() -> WKWebView {
