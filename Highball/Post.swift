@@ -18,6 +18,7 @@ class Post {
     let id: Int
     let type: String
     let blogName: String
+    let rebloggedBlogName: String?
     let reblogKey: String
     let timestamp: Int
     let shortURLString: String
@@ -37,6 +38,7 @@ class Post {
         self.id = json["id"].int!
         self.type = json["type"].string!
         self.blogName = json["blog_name"].string!
+        self.rebloggedBlogName = json["reblogged_from_name"].string
         self.reblogKey = json["reblog_key"].string!
         self.timestamp = json["timestamp"].int!
         self.shortURLString = json["short_url"].string!

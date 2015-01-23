@@ -201,7 +201,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
 
         self.bottomOffset = 0
 
-        self.requestPosts(["offset" : self.topOffset]) { (response: AnyObject!, error: NSError!) -> Void in
+        self.requestPosts(["offset" : self.topOffset, "reblog_info" : "true"]) { (response: AnyObject!, error: NSError!) -> Void in
             if let e = error {
                 println(e)
                 self.loadingTop = false
@@ -252,7 +252,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         if let posts = self.posts {
             if let lastPost = posts.last {
                 self.loadingBottom = true
-                self.requestPosts(["offset" : self.topOffset + self.bottomOffset + 20]) { (response: AnyObject!, error: NSError!) -> Void in
+                self.requestPosts(["offset" : self.topOffset + self.bottomOffset + 20, "reblog_info" : "true"]) { (response: AnyObject!, error: NSError!) -> Void in
                     if let e = error {
                         println(e)
                         self.loadingBottom = false
