@@ -82,10 +82,8 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
     func loadPhoto() {
         if let photo = self.photo {
             if let contentWidth = self.contentWidth {
-                let imageManager = SDWebImageManager.sharedManager()
                 let imageURL = photo.urlWithWidth(contentWidth)
-                let cacheKey = imageManager.cacheKeyForURL(imageURL)
-                self.imageView.setImageByTypeWithURL(imageURL, cacheKey: cacheKey)
+                self.imageView.setImageByTypeWithURL(imageURL)
             }
         }
     }

@@ -32,7 +32,6 @@ class PhotosetRowTableViewCell: WCFastCell {
             if let contentWidth = self.contentWidth {
                 self.clearImages()
 
-                let imageManager = SDWebImageManager.sharedManager()
                 let widthRatio: Float = 1.0 / Float(images.count)
                 let lastImageIndex = images.count - 1
                 var imageViews = Array<FLAnimatedImageView>()
@@ -41,7 +40,6 @@ class PhotosetRowTableViewCell: WCFastCell {
                 for (index, image) in enumerate(images) {
                     let imageView = FLAnimatedImageView()
                     let imageURL = image.urlWithWidth(contentWidth)
-                    let cacheKey = imageManager.cacheKeyForURL(imageURL)
                     
                     self.contentView.addSubview(imageView)
 
@@ -81,7 +79,7 @@ class PhotosetRowTableViewCell: WCFastCell {
                     imageView.userInteractionEnabled = true
                     imageView.contentMode = UIViewContentMode.ScaleAspectFill
 
-                    let operation = imageView.setImageByTypeWithURL(imageURL, cacheKey: cacheKey)
+                    let operation = imageView.setImageByTypeWithURL(imageURL)
                     if let operation = operation {
                         downloadOperations.append(operation)
                     }

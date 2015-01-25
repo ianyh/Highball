@@ -218,6 +218,7 @@
 				4048DF7819AAB597000524F7 /* Views */,
 				4050698019AA76BD0066ECE3 /* AppDelegate.swift */,
 				403F53DE19AFCEB800FF8F3B /* String+HTML.swift */,
+				40D015A01A753BCD00CE4511 /* FLAnimatedImageView+GIFs.swift */,
 				4050698A19AA76BD0066ECE3 /* Images.xcassets */,
 				4050697E19AA76BD0066ECE3 /* Supporting Files */,
 				405069A019AA77E80066ECE3 /* Highball-Bridging-Header.h */,

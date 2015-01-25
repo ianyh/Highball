@@ -11,9 +11,10 @@ import Foundation
 private let imageLoadQueue = dispatch_queue_create("imageLoadQueue", nil)
 
 extension FLAnimatedImageView {
-    func setImageByTypeWithURL(imageURL: NSURL, cacheKey: String) -> (SDWebImageOperation?) {
+    func setImageByTypeWithURL(imageURL: NSURL) -> (SDWebImageOperation?) {
         let imageManager = SDWebImageManager.sharedManager()
         let imageDownloader = SDWebImageDownloader.sharedDownloader()
+        let cacheKey = imageManager.cacheKeyForURL(imageURL)
 
         if imageURL.pathExtension == "gif" {
             if let animatedImage = AnimatedImageCache.animatedImageForKey(cacheKey) {
