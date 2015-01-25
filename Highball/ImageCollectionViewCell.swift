@@ -9,9 +9,8 @@
 import UIKit
 
 class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
-
     var scrollView: UIScrollView!
-    var imageView: UIImageView!
+    var imageView: FLAnimatedImageView!
     var onTapHandler: (() -> ())?
 
     var contentWidth: CGFloat? {
@@ -42,7 +41,7 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
 
     func setUpCell() {
         self.scrollView = UIScrollView()
-        self.imageView = UIImageView()
+        self.imageView = FLAnimatedImageView()
 
         self.scrollView.delegate = self
         self.scrollView.maximumZoomScale = 5.0
@@ -74,6 +73,8 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
 
     override func prepareForReuse() {
         super.prepareForReuse()
+        self.imageView.image = nil
+        self.imageView.animatedImage = nil
         self.scrollView.zoomScale = 1
         self.centerScrollViewContents()
     }
@@ -81,8 +82,10 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
     func loadPhoto() {
         if let photo = self.photo {
             if let contentWidth = self.contentWidth {
+                let imageManager = SDWebImageManager.sharedManager()
                 let imageURL = photo.urlWithWidth(contentWidth)
-                self.imageView.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "Placeholder"))
+                let cacheKey = imageManager.cacheKeyForURL(imageURL)
+                self.imageView.setImageByTypeWithURL(imageURL, cacheKey: cacheKey)
             }
         }
     }
@@ -119,5 +122,4 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
             handler()
         }
     }
-
 }
