@@ -9,8 +9,6 @@
 import UIKit
 
 class PhotosetRowTableViewCell: WCFastCell {
-    private let imageLoadQueue = dispatch_queue_create("imageLoadQueue", nil)
-
     var imageViews: Array<FLAnimatedImageView>?
     var shareHandler: ((UIImage) -> ())?
     var imageDownloadOperations: Array<SDWebImageOperation>?
@@ -35,7 +33,6 @@ class PhotosetRowTableViewCell: WCFastCell {
                 self.clearImages()
 
                 let imageManager = SDWebImageManager.sharedManager()
-                let imageDownloader = SDWebImageDownloader.sharedDownloader()
                 let widthRatio: Float = 1.0 / Float(images.count)
                 let lastImageIndex = images.count - 1
                 var imageViews = Array<FLAnimatedImageView>()
@@ -84,38 +81,11 @@ class PhotosetRowTableViewCell: WCFastCell {
                     imageView.userInteractionEnabled = true
                     imageView.contentMode = UIViewContentMode.ScaleAspectFill
 
-                    if imageURL.pathExtension == "gif" {
-                        if let animatedImage = AnimatedImageCache.animatedImageForKey(cacheKey) {
-                            imageView.animatedImage = animatedImage
-                        } else if let data = TMCache.sharedCache().objectForKey(imageURL.absoluteString) as? NSData {
-                            dispatch_async(self.imageLoadQueue, {
-                                let animatedImage = FLAnimatedImage(animatedGIFData: data)
-                                dispatch_async(dispatch_get_main_queue(), {
-                                    AnimatedImageCache.setAnimatedImage(animatedImage, forKey: cacheKey)
-                                    imageView.animatedImage = animatedImage
-                                })
-                            })
-                        } else {
-                            let imageDownloadOperation = imageDownloader.downloadImageWithURL(imageURL, options: SDWebImageDownloaderOptions.UseNSURLCache, progress: nil, completed: { (image, data, error, finished) -> Void in
-                                if finished && error == nil {
-                                    dispatch_async(self.imageLoadQueue, {
-                                        let animatedImage = FLAnimatedImage(animatedGIFData: data)
-                                        dispatch_async(dispatch_get_main_queue(), {
-                                            AnimatedImageCache.setAnimatedImage(animatedImage, forKey: cacheKey)
-                                            imageView.animatedImage = animatedImage
-                                        })
-                                    })
-                                    TMCache.sharedCache().setObject(data, forKey: imageURL.absoluteString)
-                                }
-                            })
-                            if let operation = imageDownloadOperation {
-                                downloadOperations.append(operation)
-                            }
-                        }
-                    } else {
-                        imageView.sd_setImageWithURL(imageURL)
+                    let operation = imageView.setImageByTypeWithURL(imageURL, cacheKey: cacheKey)
+                    if let operation = operation {
+                        downloadOperations.append(operation)
                     }
-                    
+
                     lastImageView = imageView
 
                     imageViews.append(imageView)
