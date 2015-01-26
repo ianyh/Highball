@@ -156,4 +156,25 @@ class Post {
 
         return stringToStyle?.htmlStringWithTumblrStyle(width)
     }
+
+    func videoURL() -> NSURL? {
+        if let permalinkURLString = self.permalinkURLString {
+            if let permalinkURL = NSURL(string: permalinkURLString) {
+                let document = NSString(data: NSData(contentsOfURL: permalinkURL)!, encoding: NSASCIIStringEncoding) as? String
+                if let document = document {
+                    let metaStringRange = document.rangeOfString("twitter:player:stream.*?content=\".*?\"", options: NSStringCompareOptions.RegularExpressionSearch)
+                    if let metaStringRange = metaStringRange {
+                        let metaString = document.substringWithRange(metaStringRange)
+                        var urlStringRange = metaString.rangeOfString("http.*?\"", options: NSStringCompareOptions.RegularExpressionSearch)
+                        urlStringRange?.endIndex--
+                        if let urlStringRange = urlStringRange {
+                            let urlString = metaString.substringWithRange(urlStringRange)
+                            return NSURL(string: urlString)
+                        }
+                    }
+                }
+            }
+        }
+        return nil
+    }
 }

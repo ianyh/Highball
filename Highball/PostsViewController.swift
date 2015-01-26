@@ -46,6 +46,7 @@ let contentTableViewCellIdentifier = "contentTableViewCellIdentifier"
 let postQuestionTableViewCellIdentifier = "postQuestionTableViewCellIdentifier"
 let postLinkTableViewCellIdentifier = "postLinkTableViewCellIdentifier"
 let postDialogueEntryTableViewCellIdentifier = "postDialogueEntryTableViewCellIdentifier"
+let videoTableViewCellIdentifier = "videoTableViewCellIdentifier"
 let postTagsTableViewCellIdentifier = "postTagsTableViewCellIdentifier"
 
 class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate, WKNavigationDelegate {
@@ -124,6 +125,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         self.tableView.registerClass(PostLinkTableViewCell.classForCoder(), forCellReuseIdentifier: postLinkTableViewCellIdentifier)
         self.tableView.registerClass(PostDialogueEntryTableViewCell.classForCoder(), forCellReuseIdentifier: postDialogueEntryTableViewCellIdentifier)
         self.tableView.registerClass(TagsTableViewCell.classForCoder(), forCellReuseIdentifier: postTagsTableViewCellIdentifier)
+        self.tableView.registerClass(VideoTableViewCell.classForCoder(), forCellReuseIdentifier: videoTableViewCellIdentifier)
         self.tableView.registerClass(PostHeaderView.classForCoder(), forHeaderFooterViewReuseIdentifier: postHeaderViewIdentifier)
         
         self.view.addSubview(self.tableView)
@@ -605,14 +607,17 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
             cell.dialogueEntry = dialogueEntry
             return cell
         case "video":
-            let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
             switch VideoRow(rawValue: indexPath.row)! {
             case .Player:
-                cell.content = post.htmlSecondaryBodyWithWidth(tableView.frame.size.width)
+                let cell = tableView.dequeueReusableCellWithIdentifier(videoTableViewCellIdentifier) as VideoTableViewCell!
+                cell.contentWidth = tableView.frame.size.width
+                cell.post = post
+                return cell
             case .Caption:
+                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
                 cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
+                return cell
             }
-            return cell
         case "audio":
             let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
             switch AudioRow(rawValue: indexPath.row)! {
@@ -775,10 +780,11 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         case "video":
             switch VideoRow(rawValue: indexPath.row)! {
             case .Player:
-                if let height = self.secondaryBodyHeightCache[post.id] {
-                    return height
-                }
-                return 0
+                return 320
+//                if let height = self.secondaryBodyHeightCache[post.id] {
+//                    return height
+//                }
+//                return 0
             case .Caption:
                 if let height = self.bodyHeightCache[post.id] {
                     return height
