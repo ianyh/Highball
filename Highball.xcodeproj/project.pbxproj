@@ -183,7 +183,6 @@
 				40C78D1419BD29330002EB78 /* ReblogTransitionAnimator.swift */,
 				402A20951A3D2C510007CCFF /* TitleTableViewCell.swift */,
 				406690641A5A17A1006345B0 /* TagsTableViewCell.swift */,
-				40D015A01A753BCD00CE4511 /* FLAnimatedImageView+GIFs.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
