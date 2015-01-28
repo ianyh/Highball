@@ -8,17 +8,30 @@
 
 import Foundation
 import MediaPlayer
+import AVFoundation
 
 class VideoTableViewCell: UITableViewCell {
-    private enum VideoPlaybackState {
-        case Normal
-        case StartingPlayback
-        case Playing
+    private var player: AVPlayer! {
+        willSet {
+            if let player = self.player {
+                player.rate = 0.0
+            }
+        }
     }
-    private var moviePlayer: MPMoviePlayerController!
+    private var playerLayer: AVPlayerLayer! {
+        willSet {
+            if let playerLayer = self.playerLayer {
+                playerLayer.removeFromSuperlayer()
+            }
+        }
+        didSet {
+            if let playerLayer = self.playerLayer {
+                playerLayer.frame = self.contentView.layer.bounds
+                self.contentView.layer.insertSublayer(playerLayer, atIndex: 0)
+            }
+        }
+    }
     private var thumbnailImageView: FLAnimatedImageView!
-    private var playButton: UIButton!
-    private var state = VideoPlaybackState.Normal
     var contentWidth: CGFloat = 0
     var post: Post? {
         didSet {
@@ -27,6 +40,13 @@ class VideoTableViewCell: UITableViewCell {
                     if let thumbnailURL = NSURL(string: thumbnailURLString) {
                         self.thumbnailImageView.setImageByTypeWithURL(thumbnailURL)
                     }
+                }
+
+                self.player = nil
+                self.playerLayer = nil
+
+                post.getVideoPlayer() { player in
+                    self.player = player
                 }
             }
         }
@@ -44,67 +64,78 @@ class VideoTableViewCell: UITableViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
+        self.playerLayer = nil
+        self.player = nil
+        self.thumbnailImageView.hidden = false
     }
 
-    func setUpCell() {
-        self.moviePlayer = MPMoviePlayerController()
-        self.thumbnailImageView = FLAnimatedImageView()
-        self.playButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
 
-        self.moviePlayer.scalingMode = MPMovieScalingMode.AspectFit
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if let playerLayer = self.playerLayer {
+            CATransaction.begin()
+            CATransaction.disableActions()
+            playerLayer.frame = self.contentView.layer.bounds
+            CATransaction.commit()
+        }
+    }
+
+    private func setUpCell() {
+        self.backgroundColor = UIColor.redColor()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("playDidEnd:"), name: AVPlayerItemDidPlayToEndTimeNotification, object: nil)
+
+        self.thumbnailImageView = FLAnimatedImageView()
 
         self.thumbnailImageView.backgroundColor = UIColor.lightGrayColor()
-
-        self.playButton.setTitle("Play", forState: UIControlState.Normal)
-        self.playButton.addTarget(self, action: Selector("playVideo"), forControlEvents: UIControlEvents.TouchUpInside)
-
-        self.contentView.addSubview(self.moviePlayer.view)
+        self.thumbnailImageView.contentMode = UIViewContentMode.ScaleAspectFit
         self.contentView.addSubview(self.thumbnailImageView)
-        self.contentView.addSubview(self.playButton)
-
-        layout(self.moviePlayer.view, self.contentView) { moviePlayerView, contentView in
-            moviePlayerView.edges == contentView.edges; return
-        }
 
         layout(self.thumbnailImageView, self.contentView) { imageView, contentView in
             imageView.edges == contentView.edges; return
         }
+    }
 
-        layout(self.playButton, self.contentView) { button, contentView in
-            button.edges == contentView.edges; return
+    func isPlaying() -> Bool {
+        if let player = self.player {
+            return player.rate == 1.0
+        } else {
+            return false
         }
     }
 
-    func playVideo() {
-        if self.state == VideoPlaybackState.Normal {
-            if let post = self.post {
-                self.state = VideoPlaybackState.StartingPlayback
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) {
-                    let videoURL = post.videoURL()
-                    dispatch_async(dispatch_get_main_queue()) {
-                        if self.state == VideoPlaybackState.StartingPlayback {
-                            self.thumbnailImageView.hidden = true
-                            self.playButton.hidden = true
-                            println(videoURL)
-                            self.moviePlayer.contentURL = videoURL
-                            self.moviePlayer.play()
-                            self.state = VideoPlaybackState.Playing
-                        }
-                    }
-                }
+    func play() {
+        self.setPlayback(true)
+    }
+
+    func stop() {
+        self.setPlayback(false)
+    }
+
+    private func setPlayback(playback: Bool) {
+        if let player = self.player {
+            if let playerLayer = self.playerLayer {} else {
+                self.playerLayer = AVPlayerLayer(player: player)
+            }
+            self.thumbnailImageView.hidden = true
+            if playback {
+                player.rate = 1.0
+            } else {
+                player.rate = 0.0
             }
         }
     }
 
-    func pause() {
-        self.moviePlayer.stop()
-        self.state = VideoPlaybackState.Normal
-    }
-
-    func reset() {
-        self.moviePlayer.stop()
-        self.thumbnailImageView.hidden = false
-        self.playButton.hidden = false
-        self.state = VideoPlaybackState.Normal
+    func playDidEnd(notification: NSNotification) {
+        if let player = self.player {
+            if let playerItem = notification.object as? AVPlayerItem {
+                if player.currentItem == playerItem {
+                    player.seekToTime(kCMTimeZero)
+                    player.play()
+                }
+            }
+        }
     }
 }

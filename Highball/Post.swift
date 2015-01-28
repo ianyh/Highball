@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import AVFoundation
 
 enum ReblogType {
     case Reblog
@@ -35,6 +36,8 @@ class Post {
     let thumbnailURLString: String?
     let permalinkURLString: String?
     var liked = false
+
+    var cachedVideoPlayer: AVPlayer?
 
     required init(json: JSON!) {
         self.json = json
@@ -155,6 +158,28 @@ class Post {
         }
 
         return stringToStyle?.htmlStringWithTumblrStyle(width)
+    }
+
+    func getVideoPlayer(completion: (AVPlayer?) -> ()) {
+        if let videoPlayer = self.cachedVideoPlayer {
+            dispatch_async(dispatch_get_main_queue()) {
+                completion(videoPlayer)
+            }
+        }
+
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) {
+            if let videoURL = self.videoURL() {
+                let videoPlayer = AVPlayer(URL: videoURL)
+                self.cachedVideoPlayer = videoPlayer
+                dispatch_async(dispatch_get_main_queue()) {
+                    completion(videoPlayer)
+                }
+            } else {
+                dispatch_async(dispatch_get_main_queue()) {
+                    completion(nil)
+                }
+            }
+        }
     }
 
     func videoURL() -> NSURL? {

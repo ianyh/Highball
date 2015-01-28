@@ -52,6 +52,8 @@
 		40AA70831A0FD5D1000D91DD /* BookmarksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AA70821A0FD5D1000D91DD /* BookmarksViewController.swift */; };
 		40C78D1519BD29330002EB78 /* ReblogTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C78D1419BD29330002EB78 /* ReblogTransitionAnimator.swift */; };
 		40D015A11A753BCD00CE4511 /* FLAnimatedImageView+GIFs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D015A01A753BCD00CE4511 /* FLAnimatedImageView+GIFs.swift */; };
+		40DF7DB21A7672E900CE3D4C /* VideoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40DF7DB11A7672E900CE3D4C /* VideoTableViewCell.swift */; };
+		40DF7DB41A79919900CE3D4C /* VideoPlayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40DF7DB31A79919900CE3D4C /* VideoPlayController.swift */; };
 		40F8CE961A41111300609ABF /* AccountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F8CE951A41111300609ABF /* AccountsViewController.swift */; };
 		40F8CE9A1A41143000609ABF /* AccountsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F8CE991A41143000609ABF /* AccountsService.swift */; };
 		40F8CE9C1A43CABD00609ABF /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F8CE9B1A43CABD00609ABF /* SwiftyJSON.swift */; };
@@ -134,6 +136,8 @@
 		40AA70821A0FD5D1000D91DD /* BookmarksViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarksViewController.swift; sourceTree = "<group>"; };
 		40C78D1419BD29330002EB78 /* ReblogTransitionAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReblogTransitionAnimator.swift; sourceTree = "<group>"; };
 		40D015A01A753BCD00CE4511 /* FLAnimatedImageView+GIFs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FLAnimatedImageView+GIFs.swift"; sourceTree = "<group>"; };
+		40DF7DB11A7672E900CE3D4C /* VideoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoTableViewCell.swift; sourceTree = "<group>"; };
+		40DF7DB31A79919900CE3D4C /* VideoPlayController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlayController.swift; sourceTree = "<group>"; };
 		40F8CE951A41111300609ABF /* AccountsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsViewController.swift; sourceTree = "<group>"; };
 		40F8CE991A41143000609ABF /* AccountsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsService.swift; sourceTree = "<group>"; };
 		40F8CE9B1A43CABD00609ABF /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftyJSON.swift; path = SwiftyJSON/Source/SwiftyJSON.swift; sourceTree = "<group>"; };
@@ -173,6 +177,7 @@
 		4048DF7819AAB597000524F7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				40DF7DB11A7672E900CE3D4C /* VideoTableViewCell.swift */,
 				40778B9819B118D100F8EE13 /* PostHeaderView.swift */,
 				403F53DA19AECFEF00FF8F3B /* PhotosetRowTableViewCell.swift */,
 				403F53DC19AFB5DF00FF8F3B /* ContentTableViewCell.swift */,
@@ -300,6 +305,7 @@
 				40080E8F1A0F11DD00D883AE /* LockSplashViewController.swift */,
 				40AA70821A0FD5D1000D91DD /* BookmarksViewController.swift */,
 				40F8CE951A41111300609ABF /* AccountsViewController.swift */,
+				40DF7DB31A79919900CE3D4C /* VideoPlayController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -506,6 +512,7 @@
 				4050698119AA76BD0066ECE3 /* AppDelegate.swift in Sources */,
 				408C7D1F19B36F7400EFC410 /* PostLinkTableViewCell.swift in Sources */,
 				408D393F19C12E550001981F /* ImageItemProvider.swift in Sources */,
+				40DF7DB41A79919900CE3D4C /* VideoPlayController.swift in Sources */,
 				40F8CE9A1A41143000609ABF /* AccountsService.swift in Sources */,
 				40F8CE961A41111300609ABF /* AccountsViewController.swift in Sources */,
 				403F53DF19AFCEB800FF8F3B /* String+HTML.swift in Sources */,
@@ -522,6 +529,7 @@
 				40D015A11A753BCD00CE4511 /* FLAnimatedImageView+GIFs.swift in Sources */,
 				40731BB219FC272100F6978D /* Property.swift in Sources */,
 				40778B9E19B160DD00F8EE13 /* PostPhoto.swift in Sources */,
+				40DF7DB21A7672E900CE3D4C /* VideoTableViewCell.swift in Sources */,
 				40FF6D4319B940C6008119A3 /* Blog.swift in Sources */,
 				403F53DD19AFB5DF00FF8F3B /* ContentTableViewCell.swift in Sources */,
 				40731BAE19FC272100F6978D /* Layout.swift in Sources */,

@@ -809,15 +809,6 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         }
     }
 
-    func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        if let cell = tableView.cellForRowAtIndexPath(indexPath) {
-            if let photosetRowCell = cell as? PhotosetRowTableViewCell {
-                return indexPath
-            }
-        }
-        return nil
-    }
-
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if let cell = tableView.cellForRowAtIndexPath(indexPath) {
             if let photosetRowCell = cell as? PhotosetRowTableViewCell {
@@ -827,6 +818,19 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                 viewController.post = post
 
                 self.presentViewController(viewController, animated: true, completion: nil)
+            } else if let videoCell = cell as? VideoTableViewCell {
+                if videoCell.isPlaying() {
+                    videoCell.stop()
+                } else {
+                    let viewController = VideoPlayController(completion: { play in
+                        if play {
+                            videoCell.play()
+                        }
+                    })
+                    viewController.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+                    viewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
+                    self.presentViewController(viewController, animated: true, completion: nil)
+                }
             }
         }
     }
