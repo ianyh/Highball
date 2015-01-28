@@ -36,6 +36,8 @@ class Post {
     let thumbnailURLString: String?
     let permalinkURLString: String?
     let videoType: String?
+    let videoWidth: Float?
+    let videoHeight: Float?
     var liked = false
 
     var cachedVideoPlayer: AVPlayer?
@@ -141,6 +143,8 @@ class Post {
         self.thumbnailURLString = json["thumbnail_url"].string
         self.permalinkURLString = json["permalink_url"].string
         self.videoType = json["video_type"].string
+        self.videoWidth = json["thumbnail_width"].float
+        self.videoHeight = json["thumbnail_height"].float
         self.liked = json["liked"].bool!
     }
 
@@ -211,6 +215,20 @@ class Post {
                 }
             default:
                 return nil
+            }
+        }
+
+        return nil
+    }
+
+    func videoHeightWidthWidth(width: CGFloat) -> CGFloat? {
+        if self.type != "video" {
+            return nil
+        }
+
+        if let videoWidth = self.videoWidth {
+            if let videoHeight = self.videoHeight {
+                return floor(CGFloat(videoHeight / videoWidth) * width)
             }
         }
 

@@ -780,11 +780,15 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         case "video":
             switch VideoRow(rawValue: indexPath.row)! {
             case .Player:
+                if let height = self.heightCache[indexPath] {
+                    return height
+                }
+                if let height = post.videoHeightWidthWidth(tableView.frame.size.width) {
+                    self.heightCache[indexPath] = height
+                    return height
+                }
+                self.heightCache[indexPath] = 320
                 return 320
-//                if let height = self.secondaryBodyHeightCache[post.id] {
-//                    return height
-//                }
-//                return 0
             case .Caption:
                 if let height = self.bodyHeightCache[post.id] {
                     return height
