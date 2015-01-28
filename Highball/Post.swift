@@ -35,6 +35,7 @@ class Post {
     let urlString: String?
     let thumbnailURLString: String?
     let permalinkURLString: String?
+    let videoType: String?
     var liked = false
 
     var cachedVideoPlayer: AVPlayer?
@@ -139,6 +140,7 @@ class Post {
         self.urlString = json["url"].string
         self.thumbnailURLString = json["thumbnail_url"].string
         self.permalinkURLString = json["permalink_url"].string
+        self.videoType = json["video_type"].string
         self.liked = json["liked"].bool!
     }
 
@@ -183,23 +185,35 @@ class Post {
     }
 
     func videoURL() -> NSURL? {
-        if let permalinkURLString = self.permalinkURLString {
-            if let permalinkURL = NSURL(string: permalinkURLString) {
-                let document = NSString(data: NSData(contentsOfURL: permalinkURL)!, encoding: NSASCIIStringEncoding) as? String
-                if let document = document {
-                    let metaStringRange = document.rangeOfString("twitter:player:stream.*?content=\".*?\"", options: NSStringCompareOptions.RegularExpressionSearch)
-                    if let metaStringRange = metaStringRange {
-                        let metaString = document.substringWithRange(metaStringRange)
-                        var urlStringRange = metaString.rangeOfString("http.*?\"", options: NSStringCompareOptions.RegularExpressionSearch)
-                        urlStringRange?.endIndex--
-                        if let urlStringRange = urlStringRange {
-                            let urlString = metaString.substringWithRange(urlStringRange)
-                            return NSURL(string: urlString)
+        if self.type != "video" {
+            return nil
+        }
+
+        if let videoType = self.videoType {
+            switch videoType {
+            case "vine":
+                if let permalinkURLString = self.permalinkURLString {
+                    if let permalinkURL = NSURL(string: permalinkURLString) {
+                        let document = NSString(data: NSData(contentsOfURL: permalinkURL)!, encoding: NSASCIIStringEncoding) as? String
+                        if let document = document {
+                            let metaStringRange = document.rangeOfString("twitter:player:stream.*?content=\".*?\"", options: NSStringCompareOptions.RegularExpressionSearch)
+                            if let metaStringRange = metaStringRange {
+                                let metaString = document.substringWithRange(metaStringRange)
+                                var urlStringRange = metaString.rangeOfString("http.*?\"", options: NSStringCompareOptions.RegularExpressionSearch)
+                                urlStringRange?.endIndex--
+                                if let urlStringRange = urlStringRange {
+                                    let urlString = metaString.substringWithRange(urlStringRange)
+                                    return NSURL(string: urlString)
+                                }
+                            }
                         }
                     }
                 }
+            default:
+                return nil
             }
         }
+
         return nil
     }
 }
