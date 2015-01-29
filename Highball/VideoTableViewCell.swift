@@ -10,7 +10,13 @@ import Foundation
 import MediaPlayer
 import AVFoundation
 
-class VideoTableViewCell: UITableViewCell {
+@objc protocol VideoPlaybackCell {
+    func isPlaying() -> Bool
+    func play()
+    func stop()
+}
+
+class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
     private var player: AVPlayer! {
         willSet {
             if let player = self.player {
@@ -32,7 +38,6 @@ class VideoTableViewCell: UITableViewCell {
         }
     }
     private var thumbnailImageView: FLAnimatedImageView!
-    var contentWidth: CGFloat = 0
     var post: Post? {
         didSet {
             if let post = self.post {

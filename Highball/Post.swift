@@ -148,11 +148,6 @@ class Post {
         self.videoWidth = json["thumbnail_width"].float
         self.videoHeight = json["thumbnail_height"].float
         self.liked = json["liked"].bool!
-        if let videoType = self.videoType {
-            if videoType == "tumblr" {
-                println(json)
-            }
-        }
     }
 
     func htmlBodyWithWidth(width: CGFloat) -> (String?) {
@@ -219,6 +214,10 @@ class Post {
                             }
                         }
                     }
+                }
+            case "youtube":
+                if let permalinkURLString = self.permalinkURLString {
+                    return NSURL(string: permalinkURLString)
                 }
             default:
                 if let videoURLString = self.videoURLString {

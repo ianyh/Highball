@@ -52,6 +52,7 @@ PODS:
   - VENTouchLock (1.0.6):
     - SSKeychain (~> 1.0)
   - WCFastCell (1.1)
+  - youtube-ios-player-helper (0.1.1)
 
 DEPENDENCIES:
   - AFNetworking
@@ -66,6 +67,7 @@ DEPENDENCIES:
   - TMTumblrSDK
   - VENTouchLock
   - WCFastCell
+  - youtube-ios-player-helper
 
 SPEC CHECKSUMS:
   AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
@@ -82,5 +84,6 @@ SPEC CHECKSUMS:
   TMTumblrSDK: b9fada23e88b42ade2b492a6db95bfb1dff6304b
   VENTouchLock: d6d65a8f502d46f8707e9cc9d0065456f248555f
   WCFastCell: 8a9c6507a2a9d3eae9959dd3458a11ba5560503e
+  youtube-ios-player-helper: 53aecd0b4763a77e6890e9a7c55abb7b5c4bedea
 
 COCOAPODS: 0.35.0

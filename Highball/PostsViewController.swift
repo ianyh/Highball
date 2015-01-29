@@ -47,6 +47,7 @@ let postQuestionTableViewCellIdentifier = "postQuestionTableViewCellIdentifier"
 let postLinkTableViewCellIdentifier = "postLinkTableViewCellIdentifier"
 let postDialogueEntryTableViewCellIdentifier = "postDialogueEntryTableViewCellIdentifier"
 let videoTableViewCellIdentifier = "videoTableViewCellIdentifier"
+let youtubeTableViewCellIdentifier = "youtubeTableViewCellIdentifier"
 let postTagsTableViewCellIdentifier = "postTagsTableViewCellIdentifier"
 
 class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate, WKNavigationDelegate {
@@ -126,6 +127,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         self.tableView.registerClass(PostDialogueEntryTableViewCell.classForCoder(), forCellReuseIdentifier: postDialogueEntryTableViewCellIdentifier)
         self.tableView.registerClass(TagsTableViewCell.classForCoder(), forCellReuseIdentifier: postTagsTableViewCellIdentifier)
         self.tableView.registerClass(VideoTableViewCell.classForCoder(), forCellReuseIdentifier: videoTableViewCellIdentifier)
+        self.tableView.registerClass(YoutubeTableViewCell.classForCoder(), forCellReuseIdentifier: youtubeTableViewCellIdentifier)
         self.tableView.registerClass(PostHeaderView.classForCoder(), forHeaderFooterViewReuseIdentifier: postHeaderViewIdentifier)
         
         self.view.addSubview(self.tableView)
@@ -609,10 +611,16 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         case "video":
             switch VideoRow(rawValue: indexPath.row)! {
             case .Player:
-                let cell = tableView.dequeueReusableCellWithIdentifier(videoTableViewCellIdentifier) as VideoTableViewCell!
-                cell.contentWidth = tableView.frame.size.width
-                cell.post = post
-                return cell
+                switch post.videoType! {
+                case "youtube":
+                    let cell = tableView.dequeueReusableCellWithIdentifier(youtubeTableViewCellIdentifier) as YoutubeTableViewCell!
+                    cell.post = post
+                    return cell
+                default:
+                    let cell = tableView.dequeueReusableCellWithIdentifier(videoTableViewCellIdentifier) as VideoTableViewCell!
+                    cell.post = post
+                    return cell
+                }
             case .Caption:
                 let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
                 cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
@@ -822,7 +830,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                 viewController.post = post
 
                 self.presentViewController(viewController, animated: true, completion: nil)
-            } else if let videoCell = cell as? VideoTableViewCell {
+            } else if let videoCell = cell as? VideoPlaybackCell {
                 if videoCell.isPlaying() {
                     videoCell.stop()
                 } else {

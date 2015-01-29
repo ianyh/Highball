@@ -12,3 +12,4 @@ pod 'TMTumblrSDK'
 pod 'TMCache'
 pod 'VENTouchLock'
 pod 'WCFastCell'
+pod "youtube-ios-player-helper"
