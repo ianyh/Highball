@@ -89,7 +89,6 @@ class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
     }
 
     private func setUpCell() {
-        self.backgroundColor = UIColor.redColor()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("playDidEnd:"), name: AVPlayerItemDidPlayToEndTimeNotification, object: nil)
 
         self.thumbnailImageView = FLAnimatedImageView()
