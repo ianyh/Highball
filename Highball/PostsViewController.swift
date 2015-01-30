@@ -95,8 +95,14 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         super.init(coder: aDecoder)
     }
 
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("resignActive:"), name: UIApplicationWillResignActiveNotification, object: nil)
         
         self.loadingTop = false
         self.loadingBottom = false
@@ -163,6 +169,10 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
     override func didReceiveMemoryWarning() {
         self.webViewCache.removeAll()
         super.didReceiveMemoryWarning()
+    }
+
+    func resignActive(notification: NSNotification) {
+        self.webViewCache.removeAll()
     }
 
     func popWebView() -> WKWebView {
