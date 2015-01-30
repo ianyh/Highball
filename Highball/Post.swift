@@ -69,11 +69,29 @@ class Post {
         if let layoutString = self.json["photoset_layout"].string {
             var photosetLayoutRows = Array<Int>()
             for character in layoutString {
-                photosetLayoutRows.insert("\(character)".toInt()!, atIndex: 0)
+                photosetLayoutRows.append("\(character)".toInt()!)
             }
             self.layoutRows = photosetLayoutRows
+        } else if self.photos.count == 0 {
+            self.layoutRows = []
+        } else if self.photos.count % 2 == 0 {
+            var layoutRows = Array<Int>()
+            for i in 0...self.photos.count/2-1 {
+                layoutRows.append(2)
+            }
+            self.layoutRows = layoutRows
+        } else if self.photos.count % 3 == 0 {
+            var layoutRows = Array<Int>()
+            for i in 0...self.photos.count/3-1 {
+                layoutRows.append(3)
+            }
+            self.layoutRows = layoutRows
         } else {
-            self.layoutRows = [1]
+            var layoutRows = Array<Int>()
+            for i in 0...self.photos.count-1 {
+                layoutRows.append(1)
+            }
+            self.layoutRows = layoutRows
         }
         if let entriesJSON = self.json["dialogue"].array {
             self.dialogueEntries = entriesJSON.map { entryJSON in
