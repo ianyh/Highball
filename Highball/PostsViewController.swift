@@ -397,7 +397,6 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
             }
         } else if sender.state == UIGestureRecognizerState.Ended {
             self.tableView.scrollEnabled = true
-            
             if let viewController = self.reblogViewController {
                 let point = viewController.startingPoint
                 let tableViewPoint = tableView.convertPoint(point, fromView: self.navigationController!.view)
@@ -416,6 +415,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                                 reblogViewController.bodyHeightCache = self.bodyHeightCache
                                 reblogViewController.secondaryBodyHeightCache = self.secondaryBodyHeightCache
                                 reblogViewController.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
+                                reblogViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
                                 
                                 self.presentViewController(reblogViewController, animated: true, completion: nil)
                             case .Share:

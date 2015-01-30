@@ -5,3 +5,5 @@
 * App icon.
 * Support for videos.
 * Lay out photosets without layout strings.
+* UI tweaks.
+
