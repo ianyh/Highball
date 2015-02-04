@@ -34,8 +34,11 @@ class DashboardViewController: PostsViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        let downArrow = FAKFontAwesome.angleDownIconWithSize(30)
+        let downArrowImage = downArrow.imageWithSize(CGSize(width: 30, height: 30))
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: UIBarButtonSystemItem.Bookmarks,
+            image: downArrowImage,
+            style: UIBarButtonItemStyle.Plain,
             target: self,
             action: Selector("bookmarks:event:")
         )

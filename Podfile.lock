@@ -22,6 +22,21 @@ PODS:
     - AFNetworking/NSURLSession
   - ChameleonFramework (1.1.2)
   - FLAnimatedImage (1.0.8)
+  - FontAwesomeKit (2.1.9):
+    - FontAwesomeKit/Core (= 2.1.9)
+    - FontAwesomeKit/FontAwesome (= 2.1.9)
+    - FontAwesomeKit/FoundationIcons (= 2.1.9)
+    - FontAwesomeKit/IonIcons (= 2.1.9)
+    - FontAwesomeKit/Zocial (= 2.1.9)
+  - FontAwesomeKit/Core (2.1.9)
+  - FontAwesomeKit/FontAwesome (2.1.9):
+    - FontAwesomeKit/Core
+  - FontAwesomeKit/FoundationIcons (2.1.9):
+    - FontAwesomeKit/Core
+  - FontAwesomeKit/IonIcons (2.1.9):
+    - FontAwesomeKit/Core
+  - FontAwesomeKit/Zocial (2.1.9):
+    - FontAwesomeKit/Core
   - JXHTTP (1.0.4)
   - M13ProgressSuite (1.2.7)
   - pop (1.0.7)
@@ -58,6 +73,7 @@ DEPENDENCIES:
   - AFNetworking
   - ChameleonFramework
   - FLAnimatedImage
+  - FontAwesomeKit (from `https://github.com/PrideChung/FontAwesomeKit.git`)
   - M13ProgressSuite
   - pop
   - SDWebImage
@@ -69,10 +85,20 @@ DEPENDENCIES:
   - WCFastCell
   - youtube-ios-player-helper
 
+EXTERNAL SOURCES:
+  FontAwesomeKit:
+    :git: https://github.com/PrideChung/FontAwesomeKit.git
+
+CHECKOUT OPTIONS:
+  FontAwesomeKit:
+    :commit: 62066f604c164c2e1c5be704df368d55955a52ce
+    :git: https://github.com/PrideChung/FontAwesomeKit.git
+
 SPEC CHECKSUMS:
   AFNetworking: 0f54cb5d16ce38c1b76948faffb8d5fb705021c7
   ChameleonFramework: 5d34a29b6db60594a9998f6dfdffa8ac5f05979a
   FLAnimatedImage: 8669ace2a531fc0bb7344a6326f48c3a4c3de84b
+  FontAwesomeKit: 0cd610453ce270f34ad17378c68de98aad0e05ef
   JXHTTP: 528be324dcd08afdd63bc0ac1b80c4df2cb2b5f0
   M13ProgressSuite: 931cde7e91d474c04edb4b34517d75ca6d88ccf2
   pop: 2f14a1ea61339767af9e66741b418c831b3844df

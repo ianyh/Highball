@@ -15,6 +15,7 @@
 #import <Crashlytics/Crashlytics.h>
 #import <FLAnimatedImage/FLAnimatedImage.h>
 #import <FLAnimatedImage/FLAnimatedImageView.h>
+#import <FontAwesomeKit/FontAwesomeKit.h>
 #import <M13ProgressSuite/UINavigationController+M13ProgressViewBar.h>
 #import <pop/POP.h>
 #import <SDWebImage/UIImageView+WebCache.h>

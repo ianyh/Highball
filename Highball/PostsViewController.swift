@@ -151,7 +151,14 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         self.panGestureRecognizer.delegate = self
         self.view.addGestureRecognizer(self.panGestureRecognizer)
 
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Rewind, target: self, action: Selector("navigate:event:"))
+        let menuIcon = FAKFontAwesome.barsIconWithSize(20)
+        let menuIconImage = menuIcon.imageWithSize(CGSize(width: 20, height: 20))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: menuIconImage,
+            style: UIBarButtonItemStyle.Plain,
+            target: self,
+            action: Selector("navigate:event:")
+        )
     }
 
     override func viewDidAppear(animated: Bool) {
