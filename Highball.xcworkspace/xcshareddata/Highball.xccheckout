@@ -22,9 +22,9 @@
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>364D2E5F611143E7C4D0A99C691B1988FBD5381F</key>
-		<string>../Cartography/</string>
+		<string>../Cartography</string>
 		<key>C861FC00CEE0F6A6BE81FCFF6785FAA78C58EBB3</key>
-		<string>../SwiftyJSON/</string>
+		<string>../SwiftyJSON</string>
 		<key>F5E8547D5B1D06496079592E5F6C57D1A9787AD0</key>
 		<string>..</string>
 	</dict>

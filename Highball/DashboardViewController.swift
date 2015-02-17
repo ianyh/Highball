@@ -81,32 +81,21 @@ class DashboardViewController: PostsViewController {
     }
 
     func bookmarks(sender: UIButton, event: UIEvent) {
-        if let touches = event.allTouches() {
-            if let touch = touches.anyObject() as? UITouch {
-                if let navigationController = self.navigationController {
-                    let viewController = BookmarksViewController()
-
-                    viewController.startingPoint = touch.locationInView(self.view)
-                    viewController.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
-                    viewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-                    viewController.view.bounds = navigationController.view.bounds
-
-                    viewController.completion = { bookmarksOption in
-                        if let option = bookmarksOption {
-                            switch(option) {
-                            case .Goto:
-                                self.gotoBookmark()
-                            case .Top:
-                                self.topOffset = 0
-                                self.loadTop()
-                            }
-                        }
-                        navigationController.dismissViewControllerAnimated(true, completion: nil)
-                    }
-
-                    navigationController.presentViewController(viewController, animated: true, completion: nil)
-                }
-            }
+        if self.topOffset > 0 {
+            let alertController = UIAlertController(title: "", message: "Go to top of your feed?", preferredStyle: UIAlertControllerStyle.Alert)
+            alertController.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default, handler: { action -> Void in
+                self.topOffset = 0
+                self.loadTop()
+            }))
+            alertController.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.Cancel, handler: nil))
+            self.presentViewController(alertController, animated: true, completion: nil)
+        } else {
+            let alertController = UIAlertController(title: "", message: "Go to your last dashboard position?", preferredStyle: UIAlertControllerStyle.Alert)
+            alertController.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default, handler: { action -> Void in
+                self.gotoBookmark()
+            }))
+            alertController.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.Cancel, handler: nil))
+            self.presentViewController(alertController, animated: true, completion: nil)
         }
     }
 
