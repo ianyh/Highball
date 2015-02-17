@@ -5,17 +5,15 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>59F0E819-EE49-42AC-8488-49830D8B51DD</string>
+	<string>F4DB9E9A-6A67-4D93-86BA-B7F261C5C109</string>
 	<key>IDESourceControlProjectName</key>
 	<string>Highball</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>364D2E5F611143E7C4D0A99C691B1988FBD5381F</key>
 		<string>https://github.com/robb/Cartography.git</string>
-		<key>3AF18F9C6F5D633BAA0B3F935459E0C777C82047</key>
-		<string>https://github.com/Masonry/Snappy.git</string>
 		<key>C861FC00CEE0F6A6BE81FCFF6785FAA78C58EBB3</key>
-		<string>https://github.com/lingoer/SwiftyJSON.git</string>
+		<string>https://github.com/SwiftyJSON/SwiftyJSON.git</string>
 		<key>F5E8547D5B1D06496079592E5F6C57D1A9787AD0</key>
 		<string>https://github.com/ianyh/Highball.git</string>
 	</dict>
@@ -24,11 +22,9 @@
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>364D2E5F611143E7C4D0A99C691B1988FBD5381F</key>
-		<string>..Cartography</string>
-		<key>3AF18F9C6F5D633BAA0B3F935459E0C777C82047</key>
-		<string>../Snappy</string>
+		<string>../Cartography/</string>
 		<key>C861FC00CEE0F6A6BE81FCFF6785FAA78C58EBB3</key>
-		<string>..SwiftyJSON</string>
+		<string>../SwiftyJSON/</string>
 		<key>F5E8547D5B1D06496079592E5F6C57D1A9787AD0</key>
 		<string>..</string>
 	</dict>
@@ -44,6 +40,14 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>364D2E5F611143E7C4D0A99C691B1988FBD5381F</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Cartography</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>F5E8547D5B1D06496079592E5F6C57D1A9787AD0</string>
 			<key>IDESourceControlWCCName</key>
 			<string>Highball</string>
@@ -52,25 +56,9 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>364D2E5F611143E7C4D0A99C691B1988FBD5381F</string>
-			<key>IDESourceControlWCCName</key>
-			<string>HighballCartography</string>
-		</dict>
-		<dict>
-			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
-			<string>public.vcs.git</string>
-			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>C861FC00CEE0F6A6BE81FCFF6785FAA78C58EBB3</string>
 			<key>IDESourceControlWCCName</key>
-			<string>HighballSwiftyJSON</string>
-		</dict>
-		<dict>
-			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
-			<string>public.vcs.git</string>
-			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>3AF18F9C6F5D633BAA0B3F935459E0C777C82047</string>
-			<key>IDESourceControlWCCName</key>
-			<string>Snappy</string>
+			<string>SwiftyJSON</string>
 		</dict>
 	</array>
 </dict>
