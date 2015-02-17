@@ -53,4 +53,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, handleOpenURL url: NSURL) -> Bool {
         return TMAPIClient.sharedInstance().handleOpenURL(url)
     }
+
+    func applicationDidReceiveMemoryWarning(application: UIApplication) {
+        AnimatedImageCache.clearCache()
+    }
 }

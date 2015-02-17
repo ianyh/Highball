@@ -20,4 +20,8 @@ struct AnimatedImageCache {
     static func animatedImageForKey(key: String) -> FLAnimatedImage? {
         return self.animatedImageCache.objectForKey(key) as? FLAnimatedImage
     }
+
+    static func clearCache() {
+        self.animatedImageCache.removeAllObjects()
+    }
 }
