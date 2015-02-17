@@ -279,7 +279,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                         self.loadingBottom = false
                     } else {
                         dispatch_async(self.postParseQueue, {
-                            let posts = self.postsFromJSON(JSON(response))
+                            let posts = self.postsFromJSON(JSON(response)).filter { return $0.timestamp < lastPost.timestamp }
                             for post in posts {
                                 dispatch_async(dispatch_get_main_queue(), {
                                     if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
