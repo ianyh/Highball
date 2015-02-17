@@ -149,19 +149,19 @@ class QuickReblogViewController: UIViewController {
         self.startButton.sizeToFit()
 
         self.reblogButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        self.reblogButton.setTitle("R", forState: UIControlState.Normal)
+        self.reblogButton.setAttributedTitle(FAKFontAwesome.retweetIconWithSize(20).attributedString(), forState: UIControlState.Normal)
         self.reblogButton.addTarget(self, action: Selector("reblog:"), forControlEvents: UIControlEvents.TouchUpInside)
 
         self.queueButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        self.queueButton.setTitle("Q", forState: UIControlState.Normal)
+        self.queueButton.setAttributedTitle(FAKFontAwesome.plusSquareOIconWithSize(20).attributedString(), forState: UIControlState.Normal)
         self.queueButton.addTarget(self, action: Selector("queue:"), forControlEvents: UIControlEvents.TouchUpInside)
 
         self.shareButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        self.shareButton.setTitle("S", forState: UIControlState.Normal)
+        self.shareButton.setAttributedTitle(FAKFontAwesome.shareSquareOIconWithSize(20).attributedString(), forState: UIControlState.Normal)
         self.shareButton.addTarget(self, action: Selector("schedule:"), forControlEvents: UIControlEvents.TouchUpInside)
 
         self.likeButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        self.likeButton.setTitle("L", forState: UIControlState.Normal)
+        self.likeButton.setAttributedTitle(FAKFontAwesome.heartIconWithSize(20).attributedString(), forState: UIControlState.Normal)
         self.likeButton.addTarget(self, action: Selector("like:"), forControlEvents: UIControlEvents.TouchUpInside)
 
         self.view.addSubview(self.backgroundButton)
