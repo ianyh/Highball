@@ -1,5 +1,12 @@
 # Highball changelog
 
+## 0.5.3
+
+* Don't reload entire table when adding posts.
+* Wait for full height calculation when loading posts.
+* Select account from lock screen.
+* A bunch of icons.
+
 ## 0.5.1
 
 * Fix a bug that caused the app to hang when opening.
