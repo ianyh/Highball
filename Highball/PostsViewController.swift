@@ -52,7 +52,8 @@ let postTagsTableViewCellIdentifier = "postTagsTableViewCellIdentifier"
 
 class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate, WKNavigationDelegate {
     var tableView: UITableView!
-    
+
+    private var heightComputationQueue: NSOperationQueue!
     private let requiredRefreshDistance: CGFloat = 60
     private let postParseQueue = dispatch_queue_create("postParseQueue", nil)
     
@@ -103,7 +104,10 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         super.viewDidLoad()
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("resignActive:"), name: UIApplicationWillResignActiveNotification, object: nil)
-        
+
+        self.heightComputationQueue = NSOperationQueue()
+        self.heightComputationQueue.underlyingQueue = dispatch_get_main_queue()
+
         self.loadingTop = false
         self.loadingBottom = false
 
@@ -229,37 +233,38 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
             } else {
                 dispatch_async(self.postParseQueue, {
                     let posts = self.postsFromJSON(JSON(response))
-                    for post in posts {
-                        dispatch_async(dispatch_get_main_queue(), {
-                            if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
-                                let webView = self.popWebView()
-                                let htmlString = content
-
-                                self.bodyWebViewCache[post.id] = webView
-
-                                webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+                    dispatch_async(dispatch_get_main_queue()) {
+                        for post in posts {
+                            self.heightComputationQueue.addOperationWithBlock() {
+                                if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
+                                    let webView = self.popWebView()
+                                    let htmlString = content
+                                    
+                                    self.bodyWebViewCache[post.id] = webView
+                                    
+                                    webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+                                }
                             }
-                        })
+                            self.heightComputationQueue.addOperationWithBlock() {
+                                if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.size.width) {
+                                    let webView = self.popWebView()
+                                    let htmlString = content
+                                    
+                                    self.secondaryBodyWebViewCache[post.id] = webView
+                                    
+                                    webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+                                }
+                            }
+                        }
 
                         dispatch_async(dispatch_get_main_queue(), {
-                            if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.size.width) {
-                                let webView = self.popWebView()
-                                let htmlString = content
-
-                                self.secondaryBodyWebViewCache[post.id] = webView
-
-                                webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+                            self.loadingCompletion = {
+                                self.posts = posts
+                                self.heightCache.removeAll()
                             }
+                            self.reloadTable()
                         })
                     }
-
-                    dispatch_async(dispatch_get_main_queue(), {
-                        self.loadingCompletion = {
-                            self.posts = posts
-                            self.heightCache.removeAll()
-                        }
-                        self.reloadTable()
-                    })
                 })
             }
         }
@@ -280,37 +285,38 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                     } else {
                         dispatch_async(self.postParseQueue, {
                             let posts = self.postsFromJSON(JSON(response)).filter { return $0.timestamp < lastPost.timestamp }
-                            for post in posts {
-                                dispatch_async(dispatch_get_main_queue(), {
-                                    if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
-                                        let webView = self.popWebView()
-                                        let htmlString = content
-
-                                        self.bodyWebViewCache[post.id] = webView
-
-                                        webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+                            dispatch_async(dispatch_get_main_queue()) {
+                                for post in posts {
+                                    self.heightComputationQueue.addOperationWithBlock() {
+                                        if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
+                                            let webView = self.popWebView()
+                                            let htmlString = content
+                                            
+                                            self.bodyWebViewCache[post.id] = webView
+                                            
+                                            webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+                                        }
                                     }
-                                })
+                                    self.heightComputationQueue.addOperationWithBlock() {
+                                        if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.size.width) {
+                                            let webView = self.popWebView()
+                                            let htmlString = content
+                                            
+                                            self.secondaryBodyWebViewCache[post.id] = webView
+                                            
+                                            webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+                                        }
+                                    }
+                                }
 
                                 dispatch_async(dispatch_get_main_queue(), {
-                                    if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.size.width) {
-                                        let webView = self.popWebView()
-                                        let htmlString = content
-
-                                        self.secondaryBodyWebViewCache[post.id] = webView
-
-                                        webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+                                    self.loadingCompletion = {
+                                        self.posts.extend(posts)
+                                        self.bottomOffset += 20
                                     }
+                                    self.reloadTable()
                                 })
                             }
-
-                            dispatch_async(dispatch_get_main_queue(), {
-                                self.loadingCompletion = {
-                                    self.posts.extend(posts)
-                                    self.bottomOffset += 20
-                                }
-                                self.reloadTable()
-                            })
                         })
                     }
                 }
@@ -359,6 +365,10 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
     }
 
     func reloadTable() {
+        if self.heightComputationQueue.operationCount > 0 {
+            return
+        }
+
         if let posts = self.posts {
             for post in posts {
                 if let content = post.body {
