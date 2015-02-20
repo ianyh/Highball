@@ -64,7 +64,7 @@ class QuickReblogViewController: UIViewController {
             self.queueButton.layer.pop_removeAllAnimations()
             self.shareButton.layer.pop_removeAllAnimations()
             self.likeButton.layer.pop_removeAllAnimations()
-            
+
             if self.showingOptions {
                 for button in [ self.reblogButton, self.queueButton, self.shareButton, self.likeButton ] {
                     var opacityAnimation = POPSpringAnimation(propertyNamed: kPOPLayerOpacity)
@@ -149,19 +149,19 @@ class QuickReblogViewController: UIViewController {
         self.startButton.sizeToFit()
 
         self.reblogButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        self.reblogButton.setAttributedTitle(FAKFontAwesome.retweetIconWithSize(20).attributedString(), forState: UIControlState.Normal)
+        self.reblogButton.setImage(FAKIonIcons.iosLoopStrongIconWithSize(20).imageWithSize(CGSize(width: 20, height: 20)), forState: UIControlState.Normal)
         self.reblogButton.addTarget(self, action: Selector("reblog:"), forControlEvents: UIControlEvents.TouchUpInside)
 
         self.queueButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        self.queueButton.setAttributedTitle(FAKFontAwesome.plusSquareOIconWithSize(20).attributedString(), forState: UIControlState.Normal)
+        self.queueButton.setImage(FAKIonIcons.iosListOutlineIconWithSize(20).imageWithSize(CGSize(width: 20, height: 20)), forState: UIControlState.Normal)
         self.queueButton.addTarget(self, action: Selector("queue:"), forControlEvents: UIControlEvents.TouchUpInside)
 
         self.shareButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        self.shareButton.setAttributedTitle(FAKFontAwesome.shareSquareOIconWithSize(20).attributedString(), forState: UIControlState.Normal)
+        self.shareButton.setImage(FAKIonIcons.iosUploadOutlineIconWithSize(20).imageWithSize(CGSize(width: 20, height: 20)), forState: UIControlState.Normal)
         self.shareButton.addTarget(self, action: Selector("schedule:"), forControlEvents: UIControlEvents.TouchUpInside)
 
         self.likeButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        self.likeButton.setAttributedTitle(FAKFontAwesome.heartIconWithSize(20).attributedString(), forState: UIControlState.Normal)
+        self.likeButton.setImage(FAKIonIcons.iosHeartOutlineIconWithSize(20).imageWithSize(CGSize(width: 20, height: 20)), forState: UIControlState.Normal)
         self.likeButton.addTarget(self, action: Selector("like:"), forControlEvents: UIControlEvents.TouchUpInside)
 
         self.view.addSubview(self.backgroundButton)
@@ -202,10 +202,10 @@ class QuickReblogViewController: UIViewController {
         self.startButton.frame = startButtonFrame
     }
 
-    override func viewDidAppear(animated: Bool) {
+     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        self.showingOptions = true
+        dispatch_async(dispatch_get_main_queue()) { _ in self.showingOptions = true; return }
     }
 
     func updateWithPoint(point: CGPoint) {
@@ -259,6 +259,6 @@ class QuickReblogViewController: UIViewController {
             return backgroundColor
         }
 
-        return backgroundColor.colorWithAlphaComponent(0.5)
+        return backgroundColor.colorWithAlphaComponent(0.75)
     }
 }

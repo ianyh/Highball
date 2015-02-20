@@ -45,7 +45,7 @@ class TextReblogViewController: SLKTextViewController {
             reblogTitle = "Queue"
         }
 
-        self.textInputbar.leftButton.setImage(UIImage(named: "Queue"), forState: UIControlState.Normal)
+        self.textInputbar.leftButton.setImage(FAKIonIcons.androidCloseIconWithSize(30).imageWithSize(CGSize(width: 30, height: 30)), forState: UIControlState.Normal)
         self.textInputbar.rightButton.setTitle(reblogTitle, forState: UIControlState.Normal)
         self.textInputbar.autoHideRightButton = false
 

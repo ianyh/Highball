@@ -151,8 +151,8 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         self.panGestureRecognizer.delegate = self
         self.view.addGestureRecognizer(self.panGestureRecognizer)
 
-        let menuIcon = FAKFontAwesome.barsIconWithSize(20)
-        let menuIconImage = menuIcon.imageWithSize(CGSize(width: 20, height: 20))
+        let menuIcon = FAKIonIcons.iosGearOutlineIconWithSize(30);
+        let menuIconImage = menuIcon.imageWithSize(CGSize(width: 30, height: 30))
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: menuIconImage,
             style: UIBarButtonItemStyle.Plain,

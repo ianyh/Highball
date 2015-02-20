@@ -34,7 +34,7 @@ class DashboardViewController: PostsViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let downArrow = FAKFontAwesome.angleDownIconWithSize(30)
+        let downArrow =  FAKIonIcons.iosArrowDownIconWithSize(30);
         let downArrowImage = downArrow.imageWithSize(CGSize(width: 30, height: 30))
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: downArrowImage,
@@ -86,7 +86,7 @@ class DashboardViewController: PostsViewController {
             alertController.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default, handler: { action -> Void in
                 self.topOffset = 0
                 self.loadTop()
-                let downArrow = FAKFontAwesome.angleDownIconWithSize(30)
+                let downArrow = FAKIonIcons.iosArrowDownIconWithSize(30);
                 let downArrowImage = downArrow.imageWithSize(CGSize(width: 30, height: 30))
                 self.navigationItem.rightBarButtonItem = UIBarButtonItem(
                     image: downArrowImage,
@@ -101,7 +101,7 @@ class DashboardViewController: PostsViewController {
             let alertController = UIAlertController(title: "", message: "Go to your last dashboard position?", preferredStyle: UIAlertControllerStyle.Alert)
             alertController.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default, handler: { action -> Void in
                 self.gotoBookmark()
-                let upArrow = FAKFontAwesome.angleUpIconWithSize(30)
+                let upArrow = FAKIonIcons.iosArrowUpIconWithSize(30);
                 let upArrowImage = upArrow.imageWithSize(CGSize(width: 30, height: 30))
                 self.navigationItem.rightBarButtonItem = UIBarButtonItem(
                     image: upArrowImage,
