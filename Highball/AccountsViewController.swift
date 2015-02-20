@@ -38,7 +38,6 @@ class AccountsViewController: UITableViewController {
         return 2
     }
 
-
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch Section(rawValue: section)! {
         case .Accounts:
