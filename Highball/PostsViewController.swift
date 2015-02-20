@@ -261,6 +261,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                             self.loadingCompletion = {
                                 self.posts = posts
                                 self.heightCache.removeAll()
+                                self.tableView.reloadData()
                             }
                             self.reloadTable()
                         })
@@ -311,8 +312,12 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
 
                                 dispatch_async(dispatch_get_main_queue(), {
                                     self.loadingCompletion = {
+                                        let indexSet = NSIndexSet(indexesInRange: NSMakeRange(self.posts.count, posts.count))
+
                                         self.posts.extend(posts)
-                                        self.bottomOffset += 20
+                                        self.bottomOffset += posts.count
+                                        
+                                        self.tableView.insertSections(indexSet, withRowAnimation: UITableViewRowAnimation.None)
                                     }
                                     self.reloadTable()
                                 })
@@ -383,13 +388,11 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
             }
         }
 
-        if let completion = self.loadingCompletion {
-            completion()
-        }
-
         self.tableView.infiniteScrollingView.stopAnimating()
         if self.loadingTop || self.loadingBottom {
-            self.tableView.reloadData()
+            if let completion = self.loadingCompletion {
+                completion()
+            }
         }
 
         self.loadingCompletion = nil
