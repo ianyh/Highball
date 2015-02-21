@@ -38,6 +38,7 @@
 		40731BB819FDC38900F6978D /* PostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731BB719FDC38900F6978D /* PostsViewController.swift */; };
 		40731BBA19FDCAD300F6978D /* LikesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731BB919FDCAD300F6978D /* LikesViewController.swift */; };
 		40731BBC19FDCEF300F6978D /* QuickNavigateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731BBB19FDCEF300F6978D /* QuickNavigateController.swift */; };
+		4074B6611A99269C00774E00 /* TagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4074B6601A99269C00774E00 /* TagViewController.swift */; };
 		40778B9919B118D100F8EE13 /* PostHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40778B9819B118D100F8EE13 /* PostHeaderView.swift */; };
 		40778B9C19B15F9C00F8EE13 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40778B9B19B15F9C00F8EE13 /* Post.swift */; };
 		40778B9E19B160DD00F8EE13 /* PostPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40778B9D19B160DD00F8EE13 /* PostPhoto.swift */; };
@@ -123,6 +124,7 @@
 		40731BB719FDC38900F6978D /* PostsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsViewController.swift; sourceTree = "<group>"; };
 		40731BB919FDCAD300F6978D /* LikesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikesViewController.swift; sourceTree = "<group>"; };
 		40731BBB19FDCEF300F6978D /* QuickNavigateController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickNavigateController.swift; sourceTree = "<group>"; };
+		4074B6601A99269C00774E00 /* TagViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagViewController.swift; sourceTree = "<group>"; };
 		40778B9819B118D100F8EE13 /* PostHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostHeaderView.swift; sourceTree = "<group>"; };
 		40778B9B19B15F9C00F8EE13 /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		40778B9D19B160DD00F8EE13 /* PostPhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostPhoto.swift; sourceTree = "<group>"; };
@@ -309,6 +311,7 @@
 				40F8CE951A41111300609ABF /* AccountsViewController.swift */,
 				40DF7DB31A79919900CE3D4C /* VideoPlayController.swift */,
 				40B609521A99234B0089E431 /* BlogViewController.swift */,
+				4074B6601A99269C00774E00 /* TagViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -531,6 +534,7 @@
 				40731BAD19FC272100F6978D /* Expression.swift in Sources */,
 				40731BAB19FC272100F6978D /* Edge.swift in Sources */,
 				40D015A11A753BCD00CE4511 /* FLAnimatedImageView+GIFs.swift in Sources */,
+				4074B6611A99269C00774E00 /* TagViewController.swift in Sources */,
 				40731BB219FC272100F6978D /* Property.swift in Sources */,
 				40778B9E19B160DD00F8EE13 /* PostPhoto.swift in Sources */,
 				40DF7DB21A7672E900CE3D4C /* VideoTableViewCell.swift in Sources */,
