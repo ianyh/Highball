@@ -12,9 +12,9 @@ class TagViewController: PostsViewController {
     private let tag: String!
     
     required init(tag: String) {
-        self.tag = tag
+        self.tag = tag.substringFromIndex(advance(tag.startIndex, 1))
         super.init()
-        self.navigationItem.title = "#\(tag)"
+        self.navigationItem.title = tag
     }
     
     required init() {
@@ -24,9 +24,14 @@ class TagViewController: PostsViewController {
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.navigationItem.leftBarButtonItem = nil
+    }
+
     override func postsFromJSON(json: JSON) -> Array<Post> {
-        if let postsJSON = json["posts"].array {
+        if let postsJSON = json.array {
             return postsJSON.map { (post) -> (Post) in
                 return Post(json: post)
             }
@@ -35,7 +40,16 @@ class TagViewController: PostsViewController {
     }
     
     override func requestPosts(parameters: Dictionary<String, AnyObject>, callback: TMAPICallback) {
-        TMAPIClient.sharedInstance().tagged(self.tag, parameters: parameters, callback: callback)
+        var modifiedParameters = Dictionary<String, AnyObject>()
+        for (key, value) in parameters {
+            modifiedParameters[key] = value
+        }
+        if let posts = self.posts {
+            if let lastPost = posts.last {
+                modifiedParameters["before"] = "\(lastPost.timestamp)"
+            }
+        }
+        TMAPIClient.sharedInstance().tagged(self.tag, parameters: modifiedParameters, callback: callback)
     }
     
     override func reblogBlogName() -> (String) {

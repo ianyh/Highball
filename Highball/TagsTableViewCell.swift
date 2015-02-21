@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol TagsTableViewCellDelegate {
+    func tagsTableViewCell(cell: TagsTableViewCell, didSelectTag tag: String)
+}
+
 class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     private let tagCollectionViewCellIdentifier = "tagCollectionViewCellIdentifier"
     private class TagCollectionViewCell: UICollectionViewCell {
@@ -45,6 +49,7 @@ class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollecti
     }
 
     private var collectionView: UICollectionView!
+    var delegate: TagsTableViewCellDelegate?
     var tags: Array<String>? {
         didSet {
             if let collectionView = self.collectionView {
@@ -108,5 +113,11 @@ class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollecti
         let tag = self.tags![indexPath.row]
 
         return CGSize(width: TagCollectionViewCell.widthForTag(tag), height: collectionView.frame.size.height)
+    }
+
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        if let delegate = self.delegate {
+            delegate.tagsTableViewCell(self, didSelectTag: self.tags![indexPath.row])
+        }
     }
 }

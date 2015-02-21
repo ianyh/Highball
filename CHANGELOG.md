@@ -3,6 +3,7 @@
 ## 0.5.4
 
 * Give indication of failed image loads.
+* View posts for a tag.
 
 ## 0.5.3
 

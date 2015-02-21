@@ -50,7 +50,7 @@ let videoTableViewCellIdentifier = "videoTableViewCellIdentifier"
 let youtubeTableViewCellIdentifier = "youtubeTableViewCellIdentifier"
 let postTagsTableViewCellIdentifier = "postTagsTableViewCellIdentifier"
 
-class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate, WKNavigationDelegate {
+class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate, WKNavigationDelegate, TagsTableViewCellDelegate {
     var tableView: UITableView!
 
     private var heightComputationQueue: NSOperationQueue!
@@ -554,6 +554,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath, post: Post) -> UITableViewCell {
         if indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 1 {
             let cell = tableView.dequeueReusableCellWithIdentifier(postTagsTableViewCellIdentifier) as TagsTableViewCell!
+            cell.delegate = self
             cell.tags = post.tags
             return cell
         }
@@ -960,6 +961,14 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         animator.presenting = false
         
         return animator
+    }
+
+    // MARK: TagsTableViewCellDelegate
+
+    func tagsTableViewCell(cell: TagsTableViewCell, didSelectTag tag: String) {
+        if let navigationController = self.navigationController {
+            navigationController.pushViewController(TagViewController(tag: tag), animated: true)
+        }
     }
 }
 
