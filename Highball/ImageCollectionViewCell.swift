@@ -11,6 +11,8 @@ import UIKit
 class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
     var scrollView: UIScrollView!
     var imageView: FLAnimatedImageView!
+    var failedImageView: UIImageView!
+    
     var onTapHandler: (() -> ())?
 
     var contentWidth: CGFloat? {
@@ -42,6 +44,7 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
     func setUpCell() {
         self.scrollView = UIScrollView()
         self.imageView = FLAnimatedImageView()
+        self.failedImageView = UIImageView()
 
         self.scrollView.delegate = self
         self.scrollView.maximumZoomScale = 5.0
@@ -50,11 +53,18 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
 
         self.imageView.contentMode = UIViewContentMode.ScaleAspectFit
 
+        self.failedImageView.image = FAKIonIcons.iosCameraOutlineIconWithSize(50).imageWithSize(CGSize(width: 50, height: 50))
+
         self.contentView.addSubview(self.scrollView)
         self.scrollView.addSubview(self.imageView)
+        self.scrollView.addSubview(self.failedImageView)
 
         layout(self.scrollView, self.contentView) { scrollView, contentView in
             scrollView.edges == contentView.edges; return
+        }
+
+        layout(self.failedImageView, self.imageView) { failedImageView, imageView in
+            failedImageView.edges == imageView.edges; return
         }
 
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: Selector("onTap:"))
@@ -75,6 +85,7 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
         super.prepareForReuse()
         self.imageView.image = nil
         self.imageView.animatedImage = nil
+        self.failedImageView.hidden = true
         self.scrollView.zoomScale = 1
         self.centerScrollViewContents()
     }
@@ -83,7 +94,9 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
         if let photo = self.photo {
             if let contentWidth = self.contentWidth {
                 let imageURL = photo.urlWithWidth(contentWidth)
-                self.imageView.setImageByTypeWithURL(imageURL)
+                self.imageView.setImageByTypeWithURL(imageURL) { imageExists in
+                    self.failedImageView.hidden = imageExists; return
+                }
             }
         }
     }

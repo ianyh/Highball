@@ -18,7 +18,7 @@ class YoutubeTableViewCell: UITableViewCell, YTPlayerViewDelegate, VideoPlayback
             if let post = self.post {
                 if let thumbnailURLString = post.thumbnailURLString {
                     if let thumbnailURL = NSURL(string: thumbnailURLString) {
-                        self.thumbnailImageView.setImageByTypeWithURL(thumbnailURL)
+                        self.thumbnailImageView.setImageByTypeWithURL(thumbnailURL, nil)
                     }
                 }
 

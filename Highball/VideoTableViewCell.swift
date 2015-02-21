@@ -24,7 +24,7 @@ class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
             if let post = self.post {
                 if let thumbnailURLString = post.thumbnailURLString {
                     if let thumbnailURL = NSURL(string: thumbnailURLString) {
-                        self.thumbnailImageView.setImageByTypeWithURL(thumbnailURL)
+                        self.thumbnailImageView.setImageByTypeWithURL(thumbnailURL, nil)
                     }
                 }
 

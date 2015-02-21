@@ -11,7 +11,7 @@ import Foundation
 private let imageLoadQueue = dispatch_queue_create("imageLoadQueue", nil)
 
 extension FLAnimatedImageView {
-    func setImageByTypeWithURL(imageURL: NSURL) -> (SDWebImageOperation?) {
+    func setImageByTypeWithURL(imageURL: NSURL, completion: ((Bool) -> ())?) -> (SDWebImageOperation?) {
         let imageManager = SDWebImageManager.sharedManager()
         let imageDownloader = SDWebImageDownloader.sharedDownloader()
         let cacheKey = imageManager.cacheKeyForURL(imageURL)
@@ -19,12 +19,18 @@ extension FLAnimatedImageView {
         if imageURL.pathExtension == "gif" {
             if let animatedImage = AnimatedImageCache.animatedImageForKey(cacheKey) {
                 self.animatedImage = animatedImage
+                if let completion = completion {
+                    completion(true)
+                }
             } else if let data = TMCache.sharedCache().objectForKey(imageURL.absoluteString) as? NSData {
                 dispatch_async(imageLoadQueue, {
                     let animatedImage = FLAnimatedImage(animatedGIFData: data)
                     AnimatedImageCache.setAnimatedImage(animatedImage, forKey: cacheKey)
                     dispatch_async(dispatch_get_main_queue(), {
                         self.animatedImage = animatedImage
+                        if let completion = completion {
+                            completion(true)
+                        }
                     })
                 })
             } else {
@@ -34,15 +40,26 @@ extension FLAnimatedImageView {
                             let animatedImage = FLAnimatedImage(animatedGIFData: data)
                             AnimatedImageCache.setAnimatedImage(animatedImage, forKey: cacheKey)
                             dispatch_async(dispatch_get_main_queue(), {
+                                if let completion = completion {
+                                    completion(true)
+                                }
                                 self.animatedImage = animatedImage
                             })
                         })
                         TMCache.sharedCache().setObject(data, forKey: imageURL.absoluteString)
+                    } else {
+                        if let completion = completion {
+                            completion(false)
+                        }
                     }
                 })
             }
         } else {
-            self.sd_setImageWithURL(imageURL)
+            self.sd_setImageWithURL(imageURL) { image, error, cacheType, url in
+                if let completion = completion {
+                    completion(image != nil)
+                }
+            }
         }
 
         return nil
