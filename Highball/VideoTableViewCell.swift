@@ -17,26 +17,7 @@ import AVFoundation
 }
 
 class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
-    private var player: AVPlayer! {
-        willSet {
-            if let player = self.player {
-                player.rate = 0.0
-            }
-        }
-    }
-    private var playerLayer: AVPlayerLayer! {
-        willSet {
-            if let playerLayer = self.playerLayer {
-                playerLayer.removeFromSuperlayer()
-            }
-        }
-        didSet {
-            if let playerLayer = self.playerLayer {
-                playerLayer.frame = self.contentView.layer.bounds
-                self.contentView.layer.insertSublayer(playerLayer, atIndex: 0)
-            }
-        }
-    }
+    private var player: MPMoviePlayerController!
     private var thumbnailImageView: FLAnimatedImageView!
     var post: Post? {
         didSet {
@@ -47,11 +28,9 @@ class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
                     }
                 }
 
-                self.player = nil
-                self.playerLayer = nil
-
-                post.getVideoPlayer() { player in
-                    self.player = player
+                if let url = post.videoURL() {
+                    self.player.contentURL = url
+                    self.player.prepareToPlay()
                 }
             }
         }
@@ -69,33 +48,26 @@ class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        self.playerLayer = nil
-        self.player = nil
+        self.player.stop()
         self.thumbnailImageView.hidden = false
     }
 
-    deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        if let playerLayer = self.playerLayer {
-            CATransaction.begin()
-            CATransaction.disableActions()
-            playerLayer.frame = self.contentView.layer.bounds
-            CATransaction.commit()
-        }
-    }
-
     private func setUpCell() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("playDidEnd:"), name: AVPlayerItemDidPlayToEndTimeNotification, object: nil)
+        self.player = MPMoviePlayerController()
+        self.player.shouldAutoplay = false
+        self.player.controlStyle = MPMovieControlStyle.None
 
         self.thumbnailImageView = FLAnimatedImageView()
 
         self.thumbnailImageView.backgroundColor = UIColor.lightGrayColor()
         self.thumbnailImageView.contentMode = UIViewContentMode.ScaleAspectFit
+
+        self.contentView.addSubview(self.player.view)
         self.contentView.addSubview(self.thumbnailImageView)
+
+        layout(self.player.view, self.contentView) { playerView, contentView in
+            playerView.edges == contentView.edges; return
+        }
 
         layout(self.thumbnailImageView, self.contentView) { imageView, contentView in
             imageView.edges == contentView.edges; return
@@ -103,11 +75,7 @@ class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
     }
 
     func isPlaying() -> Bool {
-        if let player = self.player {
-            return player.rate == 1.0
-        } else {
-            return false
-        }
+        return self.player.playbackState == MPMoviePlaybackState.Playing
     }
 
     func play() {
@@ -119,27 +87,11 @@ class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
     }
 
     private func setPlayback(playback: Bool) {
-        if let player = self.player {
-            if let playerLayer = self.playerLayer {} else {
-                self.playerLayer = AVPlayerLayer(player: player)
-            }
-            self.thumbnailImageView.hidden = true
-            if playback {
-                player.rate = 1.0
-            } else {
-                player.rate = 0.0
-            }
-        }
-    }
-
-    func playDidEnd(notification: NSNotification) {
-        if let player = self.player {
-            if let playerItem = notification.object as? AVPlayerItem {
-                if player.currentItem == playerItem {
-                    player.seekToTime(kCMTimeZero)
-                    player.play()
-                }
-            }
+        self.thumbnailImageView.hidden = true
+        if playback {
+            self.player.play()
+        } else {
+            self.player.pause()
         }
     }
 }
