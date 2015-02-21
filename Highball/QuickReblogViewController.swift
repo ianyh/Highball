@@ -149,19 +149,19 @@ class QuickReblogViewController: UIViewController {
         self.startButton.sizeToFit()
 
         self.reblogButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        self.reblogButton.setImage(FAKIonIcons.iosLoopStrongIconWithSize(20).imageWithSize(CGSize(width: 20, height: 20)), forState: UIControlState.Normal)
+        self.reblogButton.setImage(FAKIonIcons.iosLoopStrongIconWithSize(25).imageWithSize(CGSize(width: 25, height: 25)), forState: UIControlState.Normal)
         self.reblogButton.addTarget(self, action: Selector("reblog:"), forControlEvents: UIControlEvents.TouchUpInside)
 
         self.queueButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        self.queueButton.setImage(FAKIonIcons.iosListOutlineIconWithSize(20).imageWithSize(CGSize(width: 20, height: 20)), forState: UIControlState.Normal)
+        self.queueButton.setImage(FAKIonIcons.iosListOutlineIconWithSize(25).imageWithSize(CGSize(width: 25, height: 25)), forState: UIControlState.Normal)
         self.queueButton.addTarget(self, action: Selector("queue:"), forControlEvents: UIControlEvents.TouchUpInside)
 
         self.shareButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        self.shareButton.setImage(FAKIonIcons.iosUploadOutlineIconWithSize(20).imageWithSize(CGSize(width: 20, height: 20)), forState: UIControlState.Normal)
+        self.shareButton.setImage(FAKIonIcons.iosUploadOutlineIconWithSize(25).imageWithSize(CGSize(width: 25, height: 25)), forState: UIControlState.Normal)
         self.shareButton.addTarget(self, action: Selector("schedule:"), forControlEvents: UIControlEvents.TouchUpInside)
 
         self.likeButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        self.likeButton.setImage(FAKIonIcons.iosHeartOutlineIconWithSize(20).imageWithSize(CGSize(width: 20, height: 20)), forState: UIControlState.Normal)
+        self.likeButton.setImage(FAKIonIcons.iosHeartOutlineIconWithSize(25).imageWithSize(CGSize(width: 25, height: 25)), forState: UIControlState.Normal)
         self.likeButton.addTarget(self, action: Selector("like:"), forControlEvents: UIControlEvents.TouchUpInside)
 
         self.view.addSubview(self.backgroundButton)
