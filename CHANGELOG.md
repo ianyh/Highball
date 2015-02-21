@@ -1,5 +1,9 @@
 # Highball changelog
 
+## 0.5.4
+
+* Give indication of failed image loads.
+
 ## 0.5.3
 
 * Don't reload entire table when adding posts.
