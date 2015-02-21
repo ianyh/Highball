@@ -676,7 +676,24 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let post = posts[section]
         let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(postHeaderViewIdentifier) as PostHeaderView
-        
+
+        view.tapHandler = { post in
+            if let navigationController = self.navigationController {
+                if let rebloggedBlogName = post.rebloggedBlogName {
+                    let alertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+                    alertController.addAction(UIAlertAction(title: post.blogName, style: UIAlertActionStyle.Default, handler: { alertAction in
+                        self.navigationController!.pushViewController(BlogViewController(blogName: post.blogName), animated: true)
+                    }))
+                    alertController.addAction(UIAlertAction(title: rebloggedBlogName, style: UIAlertActionStyle.Default, handler: { alertAction in
+                        self.navigationController!.pushViewController(BlogViewController(blogName: rebloggedBlogName), animated: true)
+                    }))
+                    alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: { _ in }))
+                    self.presentViewController(alertController, animated: true, completion: nil)
+                } else {
+                    self.navigationController!.pushViewController(BlogViewController(blogName: post.blogName), animated: true)
+                }
+            }
+        }
         view.post = post
         
         return view

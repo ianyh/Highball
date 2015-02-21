@@ -25,6 +25,11 @@ class BlogViewController: PostsViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.navigationItem.leftBarButtonItem = nil
+    }
+
     override func postsFromJSON(json: JSON) -> Array<Post> {
         if let postsJSON = json["posts"].array {
             return postsJSON.map { (post) -> (Post) in

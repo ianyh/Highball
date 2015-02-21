@@ -9,6 +9,8 @@
 import UIKit
 
 class PostHeaderView: UITableViewHeaderFooterView {
+    var tapHandler: ((Post) -> ())?
+
     private let avatarLoadQueue = dispatch_queue_create("avatarLoadQueue", nil)
     private var avatarImageView: UIImageView!
     private var usernameLabel: UILabel!
@@ -95,10 +97,14 @@ class PostHeaderView: UITableViewHeaderFooterView {
         self.bottomUsernameLabel.font = UIFont.systemFontOfSize(12)
         self.bottomUsernameLabel.textColor = UIColor.whiteColor()
 
+        let button = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        button.addTarget(self, action: Selector("tap:"), forControlEvents: UIControlEvents.TouchUpInside)
+
         self.contentView.addSubview(self.avatarImageView)
         self.contentView.addSubview(self.usernameLabel)
         self.contentView.addSubview(self.topUsernameLabel)
         self.contentView.addSubview(self.bottomUsernameLabel)
+        self.contentView.addSubview(button)
 
         layout(self.avatarImageView, self.contentView) { avatarImageView, contentView in
             avatarImageView.centerY == contentView.centerY
@@ -123,6 +129,18 @@ class PostHeaderView: UITableViewHeaderFooterView {
             usernameLabel.centerY == contentView.centerY + 8
             usernameLabel.left == avatarImageView.right + 4
             usernameLabel.height == 20
+        }
+
+        layout(button, self.contentView) { button, contentView in
+            button.edges == contentView.edges; return
+        }
+    }
+
+    func tap(sender: UIButton) {
+        if let tapHandler = self.tapHandler {
+            if let post = self.post {
+                tapHandler(post)
+            }
         }
     }
 }

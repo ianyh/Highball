@@ -4,6 +4,7 @@
 
 * Give indication of failed image loads.
 * View posts for a tag.
+* View posts for a blog.
 
 ## 0.5.3
 
