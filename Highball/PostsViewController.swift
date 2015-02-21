@@ -279,13 +279,13 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         if let posts = self.posts {
             if let lastPost = posts.last {
                 self.loadingBottom = true
-                self.requestPosts(["offset" : self.topOffset + self.bottomOffset + 20, "reblog_info" : "true"]) { (response: AnyObject!, error: NSError!) -> Void in
+                self.requestPosts(["max_id" : "\(lastPost.id)", "reblog_info" : "true"]) { (response: AnyObject!, error: NSError!) -> Void in
                     if let e = error {
                         println(e)
                         self.loadingBottom = false
                     } else {
                         dispatch_async(self.postParseQueue, {
-                            let posts = self.postsFromJSON(JSON(response)).filter { return $0.timestamp < lastPost.timestamp }
+                            let posts = self.postsFromJSON(JSON(response))
                             dispatch_async(dispatch_get_main_queue()) {
                                 for post in posts {
                                     self.heightComputationQueue.addOperationWithBlock() {
