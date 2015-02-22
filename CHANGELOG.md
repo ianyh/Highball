@@ -5,6 +5,7 @@
 * Give indication of failed image loads.
 * View posts for a tag.
 * View posts for a blog.
+* Should finally have fixed a bug that would cause an "end" to the feed.
 
 ## 0.5.3
 
