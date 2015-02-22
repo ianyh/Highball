@@ -6,6 +6,7 @@
 * View posts for a tag.
 * View posts for a blog.
 * Should finally have fixed a bug that would cause an "end" to the feed.
+* Should actually finally wait for full height calculation when loading posts.
 
 ## 0.5.3
 

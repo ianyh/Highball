@@ -74,7 +74,7 @@ DEPENDENCIES:
   - ChameleonFramework
   - FLAnimatedImage
   - FontAwesomeKit (from `https://github.com/PrideChung/FontAwesomeKit.git`)
-  - M13ProgressSuite
+  - M13ProgressSuite (from `https://github.com/ianyh/M13ProgressSuite.git`)
   - pop
   - SDWebImage
   - SlackTextViewController
@@ -88,11 +88,16 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   FontAwesomeKit:
     :git: https://github.com/PrideChung/FontAwesomeKit.git
+  M13ProgressSuite:
+    :git: https://github.com/ianyh/M13ProgressSuite.git
 
 CHECKOUT OPTIONS:
   FontAwesomeKit:
     :commit: 62066f604c164c2e1c5be704df368d55955a52ce
     :git: https://github.com/PrideChung/FontAwesomeKit.git
+  M13ProgressSuite:
+    :commit: 57321a0f4aff566b459b8956b5f7ec889c5b8438
+    :git: https://github.com/ianyh/M13ProgressSuite.git
 
 SPEC CHECKSUMS:
   AFNetworking: 0f54cb5d16ce38c1b76948faffb8d5fb705021c7
@@ -100,7 +105,7 @@ SPEC CHECKSUMS:
   FLAnimatedImage: 8669ace2a531fc0bb7344a6326f48c3a4c3de84b
   FontAwesomeKit: 0cd610453ce270f34ad17378c68de98aad0e05ef
   JXHTTP: 528be324dcd08afdd63bc0ac1b80c4df2cb2b5f0
-  M13ProgressSuite: 931cde7e91d474c04edb4b34517d75ca6d88ccf2
+  M13ProgressSuite: 03d194af6359da440641ba758aed5a18b0386a86
   pop: 2f14a1ea61339767af9e66741b418c831b3844df
   SDWebImage: 116e88633b5b416ea0ca4b334a4ac59cf72dd38d
   SlackTextViewController: 2dcf79adbfc49447e90256ce863c1de412199942

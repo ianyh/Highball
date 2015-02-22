@@ -74,10 +74,11 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
     var loadingTop: Bool = false {
         didSet {
             if let navigationController = self.navigationController {
-                navigationController.setIndeterminate(true)
                 if self.loadingTop {
+                    navigationController.setIndeterminate(true)
                     navigationController.showProgress()
                 } else {
+                    navigationController.setIndeterminate(false)
                     navigationController.cancelProgress()
                 }
             }
@@ -384,18 +385,10 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
             return
         }
 
-        if let posts = self.posts {
-            for post in posts {
-                if let content = post.body {
-                    if let webView = self.bodyWebViewCache[post.id] {
-                        return
-                    }
-                } else if let content = post.secondaryBody {
-                    if let webView = self.secondaryBodyWebViewCache[post.id] {
-                        return
-                    }
-                }
-            }
+        if self.bodyWebViewCache.count > 0 {
+            return
+        } else if self.secondaryBodyWebViewCache.count > 0 {
+            return
         }
 
         self.tableView.infiniteScrollingView.stopAnimating()
@@ -924,14 +917,15 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
 
         if !self.loadingTop {
             if let navigationController = self.navigationController {
-                navigationController.setIndeterminate(false)
-                if scrollView.contentOffset.y < 0 {
-                    let distanceFromTop = scrollView.contentOffset.y + scrollView.contentInset.top + requiredRefreshDistance
-                    let progress = 1 - max(min(distanceFromTop / requiredRefreshDistance, 1), 0)
-                    navigationController.showProgress()
-                    navigationController.setProgress(progress, animated: false)
-                } else {
-                    navigationController.cancelProgress()
+                if !navigationController.getIndeterminate() {
+                    if scrollView.contentOffset.y < 0 {
+                        let distanceFromTop = scrollView.contentOffset.y + scrollView.contentInset.top + requiredRefreshDistance
+                        let progress = 1 - max(min(distanceFromTop / requiredRefreshDistance, 1), 0)
+                        navigationController.showProgress()
+                        navigationController.setProgress(progress, animated: false)
+                    } else {
+                        navigationController.cancelProgress()
+                    }
                 }
             }
         }
