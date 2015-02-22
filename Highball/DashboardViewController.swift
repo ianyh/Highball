@@ -75,16 +75,16 @@ class DashboardViewController: PostsViewController {
         if let indexPaths = self.tableView.indexPathsForVisibleRows() {
             if let firstIndexPath = indexPaths.first as? NSIndexPath {
                 let post = self.posts[firstIndexPath.section]
-                NSUserDefaults.standardUserDefaults().setObject(post.timestamp, forKey: "HITimestampBookmark:\(AccountsService.account.blog.url)")
+                NSUserDefaults.standardUserDefaults().setObject(post.id, forKey: "HIBookmarkID:\(AccountsService.account.blog.url)")
             }
         }
     }
 
     func bookmarks(sender: UIButton, event: UIEvent) {
-        if self.topOffset > 0 {
+        if let topID = self.topID {
             let alertController = UIAlertController(title: "", message: "Go to top of your feed?", preferredStyle: UIAlertControllerStyle.Alert)
             alertController.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default, handler: { action -> Void in
-                self.topOffset = 0
+                self.topID = nil
                 self.loadTop()
                 let downArrow = FAKIonIcons.iosArrowDownIconWithSize(30);
                 let downArrowImage = downArrow.imageWithSize(CGSize(width: 30, height: 30))
@@ -116,55 +116,11 @@ class DashboardViewController: PostsViewController {
     }
 
     func gotoBookmark() {
-        if let bookmarkTimestamp = NSUserDefaults.standardUserDefaults().objectForKey("HITimestampBookmark:\(AccountsService.account.blog.url)") as? Int {
-            self.findMax(bookmarkTimestamp, offset: 0)
-        }
-    }
-
-    func findMax(bookmarkTimestamp: Int, offset: Int) {
-        TMAPIClient.sharedInstance().dashboard(["offset" : offset, "limit" : 1]) { (response: AnyObject!, error: NSError!) -> Void in
-            if let e = error {
-                return
-            }
-            let json = JSON(response)
-            let posts = json["posts"].array!.map { (post) -> (Post) in
-                return Post(json: post)
-            }
-            let lastPost = posts.last!
-            if lastPost.timestamp > bookmarkTimestamp {
-                if offset == 0 {
-                    self.findMax(bookmarkTimestamp, offset: 20)
-                } else {
-                    self.findMax(bookmarkTimestamp, offset: offset * 2)
-                }
-            } else {
-                if offset == 20 {
-                    self.findOffset(bookmarkTimestamp, startOffset: 0, endOffset: 20)
-                } else {
-                    self.findOffset(bookmarkTimestamp, startOffset: offset / 2, endOffset: offset)
-                }
-            }
-        }
-    }
-
-    func findOffset(bookmarkTimestamp: Int, startOffset: Int, endOffset: Int) {
-        let offset = (startOffset + endOffset) / 2
-        TMAPIClient.sharedInstance().dashboard(["offset" : offset, "limit" : 1]) { (response: AnyObject!, error: NSError!) -> Void in
-            if let e = error {
-                return
-            }
-            let json = JSON(response)
-            let post = json["posts"].array!.map { (post) -> (Post) in
-                return Post(json: post)
-            }.first!
-            if post.timestamp > bookmarkTimestamp {
-                self.findOffset(bookmarkTimestamp, startOffset: offset, endOffset: endOffset)
-            } else if post.timestamp < bookmarkTimestamp {
-                self.findOffset(bookmarkTimestamp, startOffset: startOffset, endOffset: offset)
-            } else {
-                self.topOffset = offset + 20
-                self.loadTop()
-            }
+        if let bookmarkID = NSUserDefaults.standardUserDefaults().objectForKey("HIBookmarkID:\(AccountsService.account.blog.url)") as? Int {
+            self.topID = bookmarkID
+            self.posts = []
+            self.heightCache.removeAll()
+            self.loadTop()
         }
     }
 }

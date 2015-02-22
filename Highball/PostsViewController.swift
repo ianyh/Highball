@@ -69,8 +69,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
     var heightCache: Dictionary<NSIndexPath, CGFloat>!
 
     var posts: Array<Post>!
-    var topOffset = 0
-    var bottomOffset = 0
+    var topID: Int? = nil
 
     var loadingTop: Bool = false {
         didSet {
@@ -218,55 +217,99 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
 
         self.loadingTop = true
 
-        if self.topOffset >= 20 {
-            self.topOffset -= 20
-        } else if self.topOffset > 0 {
-            self.topOffset = 0
-        }
-
-        self.bottomOffset = 0
-
-        self.requestPosts(["offset" : self.topOffset, "reblog_info" : "true"]) { (response: AnyObject!, error: NSError!) -> Void in
-            if let e = error {
-                println(e)
-                self.loadingTop = false
-            } else {
-                dispatch_async(self.postParseQueue, {
-                    let posts = self.postsFromJSON(JSON(response))
-                    dispatch_async(dispatch_get_main_queue()) {
-                        for post in posts {
-                            self.heightComputationQueue.addOperationWithBlock() {
-                                if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
-                                    let webView = self.popWebView()
-                                    let htmlString = content
-                                    
-                                    self.bodyWebViewCache[post.id] = webView
-                                    
-                                    webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+        if let topID = self.topID {
+            self.requestPosts(["since_id" : "\(topID)", "reblog_info" : "true"]) { (response: AnyObject!, error: NSError!) in
+                if let e = error {
+                    println(e)
+                    self.loadingTop = false
+                } else {
+                    dispatch_async(self.postParseQueue, {
+                        let posts = self.postsFromJSON(JSON(response))
+                        dispatch_async(dispatch_get_main_queue()) {
+                            for post in posts {
+                                self.heightComputationQueue.addOperationWithBlock() {
+                                    if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
+                                        let webView = self.popWebView()
+                                        let htmlString = content
+                                        
+                                        self.bodyWebViewCache[post.id] = webView
+                                        
+                                        webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+                                    }
+                                }
+                                self.heightComputationQueue.addOperationWithBlock() {
+                                    if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.size.width) {
+                                        let webView = self.popWebView()
+                                        let htmlString = content
+                                        
+                                        self.secondaryBodyWebViewCache[post.id] = webView
+                                        
+                                        webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+                                    }
                                 }
                             }
-                            self.heightComputationQueue.addOperationWithBlock() {
-                                if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.size.width) {
-                                    let webView = self.popWebView()
-                                    let htmlString = content
-                                    
-                                    self.secondaryBodyWebViewCache[post.id] = webView
-                                    
-                                    webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+                            
+                            dispatch_async(dispatch_get_main_queue(), {
+                                self.loadingCompletion = {
+                                    if self.posts.count > 0 {
+                                        self.posts = posts + self.posts
+                                    } else {
+                                        self.posts = posts
+                                    }
+                                    if let firstPost = posts.first {
+                                        self.topID = firstPost.id
+                                    }
+                                    self.tableView.reloadData()
                                 }
-                            }
+                                self.reloadTable()
+                            })
                         }
-
-                        dispatch_async(dispatch_get_main_queue(), {
-                            self.loadingCompletion = {
-                                self.posts = posts
-                                self.heightCache.removeAll()
-                                self.tableView.reloadData()
+                    })
+                }
+            }
+        } else {
+            self.requestPosts(["reblog_info" : "true"]) { (response: AnyObject!, error: NSError!) in
+                if let e = error {
+                    println(e)
+                    self.loadingTop = false
+                } else {
+                    dispatch_async(self.postParseQueue, {
+                        let posts = self.postsFromJSON(JSON(response))
+                        dispatch_async(dispatch_get_main_queue()) {
+                            for post in posts {
+                                self.heightComputationQueue.addOperationWithBlock() {
+                                    if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
+                                        let webView = self.popWebView()
+                                        let htmlString = content
+                                        
+                                        self.bodyWebViewCache[post.id] = webView
+                                        
+                                        webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+                                    }
+                                }
+                                self.heightComputationQueue.addOperationWithBlock() {
+                                    if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.size.width) {
+                                        let webView = self.popWebView()
+                                        let htmlString = content
+                                        
+                                        self.secondaryBodyWebViewCache[post.id] = webView
+                                        
+                                        webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+                                    }
+                                }
                             }
-                            self.reloadTable()
-                        })
-                    }
-                })
+                            
+                            dispatch_async(dispatch_get_main_queue(), {
+                                self.loadingCompletion = {
+                                    self.posts = posts
+                                    self.heightCache.removeAll()
+                                    self.tableView.reloadData()
+                                }
+                                self.reloadTable()
+                            })
+                        }
+                    })
+                }
             }
         }
     }
@@ -315,7 +358,6 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                                         let indexSet = NSIndexSet(indexesInRange: NSMakeRange(self.posts.count, posts.count))
 
                                         self.posts.extend(posts)
-                                        self.bottomOffset += posts.count
                                         
                                         self.tableView.insertSections(indexSet, withRowAnimation: UITableViewRowAnimation.None)
                                     }
