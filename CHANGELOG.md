@@ -1,5 +1,9 @@
 # Highball changelog
 
+## 0.5.5
+
+* Follow and unfollow from blog page.
+
 ## 0.5.4
 
 * Give indication of failed image loads.
