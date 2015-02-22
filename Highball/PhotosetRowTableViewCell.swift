@@ -33,16 +33,22 @@ class PhotosetRowTableViewCell: WCFastCell {
             if let contentWidth = self.contentWidth {
                 self.clearImages()
 
-                let widthRatio: Float = 1.0 / Float(images.count)
+                let totalWidth = images.map { $0.widthToHeightRatio! }.reduce(0, combine: +)
                 let lastImageIndex = images.count - 1
                 var imageViews = Array<FLAnimatedImageView>()
                 var failedImageViews = Array<UIImageView>()
                 var downloadOperations = Array<SDWebImageOperation>()
                 var lastImageView: UIImageView?
                 for (index, image) in enumerate(images) {
+                    let widthPortion = image.widthToHeightRatio! / totalWidth
                     let imageView = FLAnimatedImageView()
                     let failedImageView = UIImageView()
                     let imageURL = image.urlWithWidth(contentWidth)
+
+                    imageView.image = nil
+                    imageView.backgroundColor = UIColor.lightGrayColor()
+                    imageView.userInteractionEnabled = true
+                    imageView.contentMode = UIViewContentMode.ScaleAspectFill
 
                     failedImageView.contentMode = UIViewContentMode.Center
                     failedImageView.hidden = true
@@ -67,7 +73,8 @@ class PhotosetRowTableViewCell: WCFastCell {
                             layout(imageView, leftImageView, self.contentView) { imageView, leftImageView, contentView in
                                 imageView.centerY == leftImageView.centerY
                                 imageView.left == leftImageView.right
-                                imageView.size == leftImageView.size
+                                imageView.height == leftImageView.height
+                                imageView.width == contentView.width * widthPortion
                             }
                         }
                     } else if images.count == 1 {
@@ -82,14 +89,9 @@ class PhotosetRowTableViewCell: WCFastCell {
                             imageView.left == contentView.left
                             imageView.top == contentView.top
                             imageView.bottom == contentView.bottom
-                            imageView.width == contentView.width * widthRatio
+                            imageView.width == contentView.width * widthPortion
                         }
                     }
-
-                    imageView.image = nil
-                    imageView.backgroundColor = UIColor.lightGrayColor()
-                    imageView.userInteractionEnabled = true
-                    imageView.contentMode = UIViewContentMode.ScaleAspectFill
 
                     let operation = imageView.setImageByTypeWithURL(imageURL) { imageExists in
                         failedImageView.hidden = imageExists; return
@@ -149,5 +151,4 @@ class PhotosetRowTableViewCell: WCFastCell {
     func cancelDownloads() {
         self.clearImages()
     }
-
 }

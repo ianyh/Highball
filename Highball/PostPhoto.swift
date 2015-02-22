@@ -13,6 +13,7 @@ class PostPhoto {
     let width: CGFloat
     let height: CGFloat
     let sizes: Array<JSON>
+    let widthToHeightRatio: Float?
 
     required init(json: JSON) {
         self.json = json
@@ -29,6 +30,11 @@ class PostPhoto {
         var sizes = [json["original_size"]]
         sizes.extend(json["alt_sizes"].arrayValue.sorted({ $0["width"].int! > $1["width"].int! }))
         self.sizes = sizes
+        if let width = json["original_size"]["width"].float {
+            if let height = json["original_size"]["height"].float {
+                self.widthToHeightRatio = width / height
+            }
+        }
     }
 
     func urlWithWidth(width: CGFloat) -> NSURL {
