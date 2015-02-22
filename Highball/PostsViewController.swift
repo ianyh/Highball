@@ -226,28 +226,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                     dispatch_async(self.postParseQueue, {
                         let posts = self.postsFromJSON(JSON(response))
                         dispatch_async(dispatch_get_main_queue()) {
-                            for post in posts {
-                                self.heightComputationQueue.addOperationWithBlock() {
-                                    if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
-                                        let webView = self.popWebView()
-                                        let htmlString = content
-                                        
-                                        self.bodyWebViewCache[post.id] = webView
-                                        
-                                        webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
-                                    }
-                                }
-                                self.heightComputationQueue.addOperationWithBlock() {
-                                    if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.size.width) {
-                                        let webView = self.popWebView()
-                                        let htmlString = content
-                                        
-                                        self.secondaryBodyWebViewCache[post.id] = webView
-                                        
-                                        webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
-                                    }
-                                }
-                            }
+                            self.processPosts(posts)
                             
                             dispatch_async(dispatch_get_main_queue(), {
                                 self.loadingCompletion = {
@@ -276,28 +255,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                     dispatch_async(self.postParseQueue, {
                         let posts = self.postsFromJSON(JSON(response))
                         dispatch_async(dispatch_get_main_queue()) {
-                            for post in posts {
-                                self.heightComputationQueue.addOperationWithBlock() {
-                                    if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
-                                        let webView = self.popWebView()
-                                        let htmlString = content
-                                        
-                                        self.bodyWebViewCache[post.id] = webView
-                                        
-                                        webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
-                                    }
-                                }
-                                self.heightComputationQueue.addOperationWithBlock() {
-                                    if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.size.width) {
-                                        let webView = self.popWebView()
-                                        let htmlString = content
-                                        
-                                        self.secondaryBodyWebViewCache[post.id] = webView
-                                        
-                                        webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
-                                    }
-                                }
-                            }
+                            self.processPosts(posts)
                             
                             dispatch_async(dispatch_get_main_queue(), {
                                 self.loadingCompletion = {
@@ -330,28 +288,7 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                         dispatch_async(self.postParseQueue, {
                             let posts = self.postsFromJSON(JSON(response))
                             dispatch_async(dispatch_get_main_queue()) {
-                                for post in posts {
-                                    self.heightComputationQueue.addOperationWithBlock() {
-                                        if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
-                                            let webView = self.popWebView()
-                                            let htmlString = content
-                                            
-                                            self.bodyWebViewCache[post.id] = webView
-                                            
-                                            webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
-                                        }
-                                    }
-                                    self.heightComputationQueue.addOperationWithBlock() {
-                                        if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.size.width) {
-                                            let webView = self.popWebView()
-                                            let htmlString = content
-                                            
-                                            self.secondaryBodyWebViewCache[post.id] = webView
-                                            
-                                            webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
-                                        }
-                                    }
-                                }
+                                self.processPosts(posts)
 
                                 dispatch_async(dispatch_get_main_queue(), {
                                     self.loadingCompletion = {
@@ -366,6 +303,31 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                             }
                         })
                     }
+                }
+            }
+        }
+    }
+
+    func processPosts(posts: Array<Post>) {
+        for post in posts {
+            self.heightComputationQueue.addOperationWithBlock() {
+                if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
+                    let webView = self.popWebView()
+                    let htmlString = content
+                    
+                    self.bodyWebViewCache[post.id] = webView
+                    
+                    webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+                }
+            }
+            self.heightComputationQueue.addOperationWithBlock() {
+                if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.size.width) {
+                    let webView = self.popWebView()
+                    let htmlString = content
+                    
+                    self.secondaryBodyWebViewCache[post.id] = webView
+                    
+                    webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
                 }
             }
         }
