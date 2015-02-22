@@ -50,7 +50,8 @@ let videoTableViewCellIdentifier = "videoTableViewCellIdentifier"
 let youtubeTableViewCellIdentifier = "youtubeTableViewCellIdentifier"
 let postTagsTableViewCellIdentifier = "postTagsTableViewCellIdentifier"
 
-class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate, WKNavigationDelegate, TagsTableViewCellDelegate {
+class PostsViewController: UIViewController, UICollectionViewDataSource, CHTCollectionViewDelegateWaterfallLayout, UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate, WKNavigationDelegate, TagsTableViewCellDelegate {
+    var collectionView: UICollectionView!
     var tableView: UITableView!
 
     private var heightComputationQueue: NSOperationQueue!
@@ -117,7 +118,14 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         self.secondaryBodyWebViewCache = Dictionary<Int, WKWebView>()
         self.secondaryBodyHeightCache = Dictionary<Int, CGFloat>()
         self.heightCache = Dictionary<NSIndexPath, CGFloat>()
-        
+
+        let waterfallLayout = CHTCollectionViewWaterfallLayout()
+
+        self.collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: waterfallLayout)
+        self.collectionView.dataSource = self
+        self.collectionView.showsHorizontalScrollIndicator = false
+        self.collectionView.showsVerticalScrollIndicator = false
+
         self.tableView = UITableView()
         self.tableView.dataSource = self
         self.tableView.delegate = self
@@ -140,11 +148,16 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         self.tableView.registerClass(YoutubeTableViewCell.classForCoder(), forCellReuseIdentifier: youtubeTableViewCellIdentifier)
         self.tableView.registerClass(PostHeaderView.classForCoder(), forHeaderFooterViewReuseIdentifier: postHeaderViewIdentifier)
         
-        self.view.addSubview(self.tableView)
-        
-        layout(self.tableView, self.view) { tableView, view in
-            tableView.edges == view.edges; return
+//        self.view.addSubview(self.tableView)
+        self.view.addSubview(self.collectionView)
+
+        layout(self.collectionView, self.view) { collectionView, view in
+            collectionView.edges == view.edges; return
         }
+
+//        layout(self.tableView, self.view) { tableView, view in
+//            tableView.edges == view.edges; return
+//        }
         
         self.longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: Selector("didLongPress:"))
         self.longPressGestureRecognizer.delegate = self
@@ -504,7 +517,30 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
             viewController.updateWithPoint(sender.locationInView(viewController.view))
         }
     }
-    
+
+    // MARK: UICollectionViewDataSource
+
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        if let posts = self.posts {
+            return posts.count
+        }
+        return 0
+    }
+
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 0
+    }
+
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        return UICollectionViewCell()
+    }
+
+    // MARK: CHTCollectionViewDelegateWaterfallLayout
+
+    func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, sizeForItemAtIndexPath indexPath: NSIndexPath!) -> CGSize {
+        return CGSizeZero
+    }
+
     // MARK: UITableViewDataSource
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
