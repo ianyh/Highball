@@ -218,7 +218,13 @@ class PostsViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         self.loadingTop = true
 
         if let topID = self.topID {
-            self.requestPosts(["since_id" : "\(topID)", "reblog_info" : "true"]) { (response: AnyObject!, error: NSError!) in
+            var sinceID = topID
+            if self.posts.count > 0 {
+                if let firstPost = self.posts.first {
+                    sinceID = firstPost.id
+                }
+            }
+            self.requestPosts(["since_id" : "\(sinceID)", "reblog_info" : "true"]) { (response: AnyObject!, error: NSError!) in
                 if let e = error {
                     println(e)
                     self.loadingTop = false
