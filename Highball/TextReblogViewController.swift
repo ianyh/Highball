@@ -159,112 +159,114 @@ class TextReblogViewController: SLKTextViewController {
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let rowCount = self.tableView(tableView, numberOfRowsInSection: indexPath.section)
-        let row = rowCount - indexPath.row - 1
-
-        switch self.post.type {
-        case "photo":
-            if row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 1 {
-                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
-                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
-                cell.transform = self.tableView.transform
-                return cell
-            }
-            
-            let cell = tableView.dequeueReusableCellWithIdentifier(photosetRowTableViewCellIdentifier) as PhotosetRowTableViewCell!
-            cell.transform = self.tableView.transform
-
-            let postPhotos = post.photos
-            if postPhotos.count == 1 {
-                cell.images = postPhotos
-            } else {
-                let photosetLayoutRows = post.layoutRows
-                var photosIndexStart = 0
-                for photosetLayoutRow in photosetLayoutRows[0..<row] {
-                    photosIndexStart += photosetLayoutRow
-                }
-                let photosetLayoutRow = photosetLayoutRows[row]
-                
-                cell.images = Array(postPhotos[(photosIndexStart)..<(photosIndexStart + photosetLayoutRow)])
-            }
-            cell.contentWidth = tableView.frame.size.width
-            
-            return cell
-        case "text":
-            let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
-            cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
-            cell.transform = self.tableView.transform
-            return cell
-        case "answer":
-            switch AnswerRow(rawValue: row)! {
-            case .Question:
-                let cell = tableView.dequeueReusableCellWithIdentifier(postQuestionTableViewCellIdentifier) as PostQuestionTableViewCell!
-                cell.post = post
-                cell.transform = self.tableView.transform
-                return cell
-            case .Answer:
-                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
-                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
-                cell.transform = self.tableView.transform
-                return cell
-            }
-        case "quote":
-            switch QuoteRow(rawValue: row)! {
-            case .Quote:
-                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
-                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
-                cell.transform = self.tableView.transform
-                return cell
-            case .Source:
-                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
-                cell.content = post.htmlSecondaryBodyWithWidth(tableView.frame.size.width)
-                cell.transform = self.tableView.transform
-                return cell
-            }
-        case "link":
-            switch LinkRow(rawValue: row)! {
-            case .Link:
-                let cell = tableView.dequeueReusableCellWithIdentifier(postLinkTableViewCellIdentifier) as PostLinkTableViewCell!
-                cell.post = post
-                cell.transform = self.tableView.transform
-                return cell
-            case .Description:
-                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
-                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
-                cell.transform = self.tableView.transform
-                return cell
-            }
-        case "chat":
-            let dialogueEntry = post.dialogueEntries[row]
-            let cell = tableView.dequeueReusableCellWithIdentifier(postDialogueEntryTableViewCellIdentifier) as PostDialogueEntryTableViewCell!
-            cell.dialogueEntry = dialogueEntry
-            cell.transform = self.tableView.transform
-            return cell
-        case "video":
-            let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
-            switch VideoRow(rawValue: row)! {
-            case .Player:
-                cell.content = post.htmlSecondaryBodyWithWidth(tableView.frame.size.width)
-            case .Caption:
-                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
-            }
-            cell.transform = self.tableView.transform
-            return cell
-        case "audio":
-            let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
-            switch AudioRow(rawValue: row)! {
-            case .Player:
-                cell.content = post.htmlSecondaryBodyWithWidth(tableView.frame.size.width)
-            case .Caption:
-                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
-            }
-            cell.transform = self.tableView.transform
-            return cell
-        default:
-            let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as UITableViewCell!
-            cell.transform = self.tableView.transform
-            return cell
-        }
+        return UITableViewCell()
+//
+//        let rowCount = self.tableView(tableView, numberOfRowsInSection: indexPath.section)
+//        let row = rowCount - indexPath.row - 1
+//
+//        switch self.post.type {
+//        case "photo":
+//            if row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 1 {
+//                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
+//                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
+//                cell.transform = self.tableView.transform
+//                return cell
+//            }
+//            
+//            let cell = tableView.dequeueReusableCellWithIdentifier(photosetRowTableViewCellIdentifier) as PhotosetRowTableViewCell!
+//            cell.transform = self.tableView.transform
+//
+//            let postPhotos = post.photos
+//            if postPhotos.count == 1 {
+//                cell.images = postPhotos
+//            } else {
+//                let photosetLayoutRows = post.layoutRows
+//                var photosIndexStart = 0
+//                for photosetLayoutRow in photosetLayoutRows[0..<row] {
+//                    photosIndexStart += photosetLayoutRow
+//                }
+//                let photosetLayoutRow = photosetLayoutRows[row]
+//                
+//                cell.images = Array(postPhotos[(photosIndexStart)..<(photosIndexStart + photosetLayoutRow)])
+//            }
+//            cell.contentWidth = tableView.frame.size.width
+//            
+//            return cell
+//        case "text":
+//            let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
+//            cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
+//            cell.transform = self.tableView.transform
+//            return cell
+//        case "answer":
+//            switch AnswerRow(rawValue: row)! {
+//            case .Question:
+//                let cell = tableView.dequeueReusableCellWithIdentifier(postQuestionTableViewCellIdentifier) as PostQuestionTableViewCell!
+//                cell.post = post
+//                cell.transform = self.tableView.transform
+//                return cell
+//            case .Answer:
+//                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
+//                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
+//                cell.transform = self.tableView.transform
+//                return cell
+//            }
+//        case "quote":
+//            switch QuoteRow(rawValue: row)! {
+//            case .Quote:
+//                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
+//                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
+//                cell.transform = self.tableView.transform
+//                return cell
+//            case .Source:
+//                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
+//                cell.content = post.htmlSecondaryBodyWithWidth(tableView.frame.size.width)
+//                cell.transform = self.tableView.transform
+//                return cell
+//            }
+//        case "link":
+//            switch LinkRow(rawValue: row)! {
+//            case .Link:
+//                let cell = tableView.dequeueReusableCellWithIdentifier(postLinkTableViewCellIdentifier) as PostLinkTableViewCell!
+//                cell.post = post
+//                cell.transform = self.tableView.transform
+//                return cell
+//            case .Description:
+//                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
+//                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
+//                cell.transform = self.tableView.transform
+//                return cell
+//            }
+//        case "chat":
+//            let dialogueEntry = post.dialogueEntries[row]
+//            let cell = tableView.dequeueReusableCellWithIdentifier(postDialogueEntryTableViewCellIdentifier) as PostDialogueEntryTableViewCell!
+//            cell.dialogueEntry = dialogueEntry
+//            cell.transform = self.tableView.transform
+//            return cell
+//        case "video":
+//            let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
+//            switch VideoRow(rawValue: row)! {
+//            case .Player:
+//                cell.content = post.htmlSecondaryBodyWithWidth(tableView.frame.size.width)
+//            case .Caption:
+//                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
+//            }
+//            cell.transform = self.tableView.transform
+//            return cell
+//        case "audio":
+//            let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
+//            switch AudioRow(rawValue: row)! {
+//            case .Player:
+//                cell.content = post.htmlSecondaryBodyWithWidth(tableView.frame.size.width)
+//            case .Caption:
+//                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
+//            }
+//            cell.transform = self.tableView.transform
+//            return cell
+//        default:
+//            let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as UITableViewCell!
+//            cell.transform = self.tableView.transform
+//            return cell
+//        }
     }
 
     override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {

@@ -32,6 +32,7 @@ class ContentTableViewCell: WCFastCell, WKNavigationDelegate {
     }
 
     func setUpCell() {
+        self.contentView.backgroundColor = UIColor.redColor()
         self.contentWebView = WKWebView(frame: self.contentView.frame)
         self.contentWebView.userInteractionEnabled = false
         self.contentWebView.scrollView.scrollEnabled = false
