@@ -56,6 +56,14 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
 //    var collectionView: UICollectionView!
 //    var tableView: UITableView!
 
+    private var columnCount: CGFloat {
+        get {
+            if let waterfallLayout = self.collectionView?.collectionViewLayout as? CHTCollectionViewWaterfallLayout {
+                return CGFloat(waterfallLayout.columnCount)
+            }
+            return 0.0
+        }
+    }
     private var heightComputationQueue: NSOperationQueue!
     private let requiredRefreshDistance: CGFloat = 60
     private let postParseQueue = dispatch_queue_create("postParseQueue", nil)
@@ -136,7 +144,6 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
         self.secondaryBodyHeightCache = Dictionary<Int, CGFloat>()
         self.heightCache = Dictionary<NSIndexPath, CGFloat>()
 
-        self.collectionView?.backgroundColor = UIColor.redColor()
         self.collectionView?.dataSource = self
         self.collectionView?.delegate = self
         self.collectionView?.showsHorizontalScrollIndicator = false
@@ -188,7 +195,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
     }
 
     func popWebView() -> WKWebView {
-        let frame = CGRect(x: 0, y: 0, width: self.collectionView!.frame.size.width, height: 1)
+        let frame = CGRect(x: 0, y: 0, width: self.collectionView!.frame.size.width / self.columnCount, height: 1)
 
         if countElements(self.webViewCache) > 0 {
             let webView = self.webViewCache.removeAtIndex(0)
@@ -247,7 +254,6 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
                                         self.topID = firstPost.id
                                     }
                                     self.collectionView!.reloadData()
-//                                    self.tableView.reloadData()
                                 }
                                 self.reloadTable()
                             })
@@ -271,7 +277,6 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
                                     self.posts = posts
                                     self.heightCache.removeAll()
                                     self.collectionView!.reloadData()
-//                                    self.tableView.reloadData()
                                 }
                                 self.reloadTable()
                             })
@@ -322,17 +327,17 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
     func processPosts(posts: Array<Post>) {
         for post in posts {
             self.heightComputationQueue.addOperationWithBlock() {
-                if let content = post.htmlBodyWithWidth(self.collectionView!.frame.size.width / 2) {
+                if let content = post.htmlBodyWithWidth(self.collectionView!.frame.size.width / self.columnCount) {
                     let webView = self.popWebView()
                     let htmlString = content
-                    
+
                     self.bodyWebViewCache[post.id] = webView
-                    
+
                     webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
                 }
             }
             self.heightComputationQueue.addOperationWithBlock() {
-                if let content = post.htmlSecondaryBodyWithWidth(self.collectionView!.frame.size.width / 2) {
+                if let content = post.htmlSecondaryBodyWithWidth(self.collectionView!.frame.size.width / self.columnCount) {
                     let webView = self.popWebView()
                     let htmlString = content
                     
@@ -395,7 +400,6 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
             return
         }
 
-//        self.tableView.infiniteScrollingView.stopAnimating()
         if self.loadingTop || self.loadingBottom {
             if let completion = self.loadingCompletion {
                 completion()
@@ -513,10 +517,6 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
 
     override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
-//        if let posts = self.posts {
-//            return posts.count
-//        }
-//        return 0
     }
 
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -524,14 +524,6 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
             return posts.count
         }
         return 0
-//        
-//        let post = self.posts![section]
-//        if post.type == "text" {
-//            if let body = post.body {
-//                return 1
-//            }
-//        }
-//        return 0
     }
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -539,14 +531,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(postCollectionViewCellIdentifier, forIndexPath: indexPath) as PostCollectionViewCell
 
         cell.bodyHeight = self.bodyHeightCache[post.id]
-//        if let bodyHeight = cell.bodyHeight {
-//            cell.bodyHeight = bodyHeight / 2
-//        }
         cell.secondaryBodyHeight = self.secondaryBodyHeightCache[post.id]
-//        if let secondaryBodyHeight = cell.secondaryBodyHeight {
-//            cell.secondaryBodyHeight = secondaryBodyHeight / 2
-//        }
-
         cell.post = post
 
         return cell
@@ -561,12 +546,12 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
             return CGSize(width: collectionView.frame.size.width, height: height)
         }
         
-        var height: CGFloat = 100.0
+        var height: CGFloat = 50.0 + self.columnCount
         
         switch post.type {
         case "photo":
             if let bodyHeight = self.bodyHeightCache[post.id] {
-                height += bodyHeight * 2
+                height += bodyHeight * self.columnCount
             }
             
             let postPhotos = post.photos
@@ -575,76 +560,73 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
             for layoutRow in post.layoutRows {
                 images = Array(postPhotos[(photosIndexStart)..<(photosIndexStart + layoutRow)])
 
-                let imageWidth = collectionView.frame.size.width / (2 * CGFloat(images.count))
+                let imageWidth = collectionView.frame.size.width / (self.columnCount * CGFloat(images.count))
                 let minHeight = floor(images.map { (image: PostPhoto) -> CGFloat in
                     let scale = image.height / image.width
                     return imageWidth * scale
                     }.reduce(CGFloat.max, combine: { min($0, $1) }))
 
-                height += minHeight * 2
+                height += minHeight * self.columnCount
 
                 photosIndexStart += layoutRow
             }
         case "text":
             if let title = post.title {
-                height += TitleTableViewCell.heightForTitle(title, width: collectionView.frame.size.width / 2) * 2
+                height += TitleTableViewCell.heightForTitle(title, width: collectionView.frame.size.width / self.columnCount) * self.columnCount
             }
             if let bodyHeight = self.bodyHeightCache[post.id] {
-                println("body size: \(bodyHeight)")
-                height += bodyHeight * 2
+                height += bodyHeight * self.columnCount
             }
         case "answer":
-            height += PostQuestionTableViewCell.heightForPost(post, width: collectionView.frame.size.width / 2) * 2
+            height += PostQuestionTableViewCell.heightForPost(post, width: collectionView.frame.size.width / self.columnCount) * self.columnCount
             if let bodyHeight = self.bodyHeightCache[post.id] {
-                height += bodyHeight * 2
+                height += bodyHeight * self.columnCount
             }
         case "quote":
             if let bodyHeight = self.bodyHeightCache[post.id] {
-                height += bodyHeight * 2
+                height += bodyHeight * self.columnCount
             }
             if let secondaryBodyHeight = self.secondaryBodyHeightCache[post.id] {
-                height += secondaryBodyHeight * 2
+                height += secondaryBodyHeight * self.columnCount
             }
         case "link":
-            height += PostLinkTableViewCell.heightForPost(post, width: collectionView.frame.size.width / 2) * 2
+            height += PostLinkTableViewCell.heightForPost(post, width: collectionView.frame.size.width / self.columnCount) * self.columnCount
             if let bodyHeight = self.bodyHeightCache[post.id] {
-                height += bodyHeight * 2
+                height += bodyHeight * self.columnCount
             }
         case "chat":
             if let title = post.title {
-                height += TitleTableViewCell.heightForTitle(title, width: collectionView.frame.size.width / 2) * 2
+                height += TitleTableViewCell.heightForTitle(title, width: collectionView.frame.size.width / self.columnCount) * self.columnCount
             }
             for dialogueEntry in post.dialogueEntries {
-                height += PostDialogueEntryTableViewCell.heightForPostDialogueEntry(dialogueEntry, width: collectionView.frame.size.width / 2) * 2
+                height += PostDialogueEntryTableViewCell.heightForPostDialogueEntry(dialogueEntry, width: collectionView.frame.size.width / self.columnCount) * self.columnCount
             }
         case "video":
-            if let playerHeight = post.videoHeightWidthWidth(collectionView.frame.size.width / 2) {
-                height += playerHeight * 2
+            if let playerHeight = post.videoHeightWidthWidth(collectionView.frame.size.width / self.columnCount) {
+                height += playerHeight * self.columnCount
             } else {
                 height += 320
             }
             
             if let bodyHeight = self.bodyHeightCache[post.id] {
-                height += bodyHeight * 2
+                height += bodyHeight * self.columnCount
             }
         case "video":
             if let secondaryBodyHeight = self.secondaryBodyHeightCache[post.id] {
-                height += secondaryBodyHeight * 2
+                height += secondaryBodyHeight * self.columnCount
             }
             if let bodyHeight = self.bodyHeightCache[post.id] {
-                height += bodyHeight * 2
+                height += bodyHeight * self.columnCount
             }
         default:
             height = 0
         }
 
         if post.tags.count > 0 {
-            height += 60
+            height += 30 * self.columnCount
         }
 
         self.heightCache[indexPath] = height
-
-//        println(height)
 
         return CGSize(width: collectionView.frame.size.width, height: height)
     }

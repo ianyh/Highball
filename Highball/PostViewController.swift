@@ -26,11 +26,7 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
-//    deinit {
-//        NSNotificationCenter.defaultCenter().removeObserver(self)
-//    }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -45,6 +41,7 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
         self.tableView.sectionFooterHeight = 50
         self.tableView.showsVerticalScrollIndicator = false
         self.tableView.showsHorizontalScrollIndicator = false
+        self.tableView.userInteractionEnabled = false
         
         self.tableView.registerClass(TitleTableViewCell.classForCoder(), forCellReuseIdentifier: titleTableViewCellIdentifier)
         self.tableView.registerClass(PhotosetRowTableViewCell.classForCoder(), forCellReuseIdentifier: photosetRowTableViewCellIdentifier)
@@ -67,9 +64,6 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.heightCache.removeAll()
-        println("height: \(self.view.frame.size.height)")
-        println(self.tableView)
-        println("table height: \(self.tableView.frame.size.height)")
     }
 
     // MARK: UITableViewDataSource
@@ -264,7 +258,6 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
         case "photo":
             if indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 2 {
                 if let height = self.bodyHeight {
-                    println(height)
                     return height
                 }
                 return 0
@@ -298,10 +291,8 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
                 }.reduce(CGFloat.max, combine: { min($0, $1) }))
             
             self.heightCache[indexPath] = minHeight
-            println(minHeight)
             return minHeight
         case "text":
-            println("cell height \(tableView)")
             switch TextRow(rawValue: indexPath.row)! {
             case .Title:
                 if let title = self.post.title {
@@ -310,14 +301,12 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
                     }
 
                     let height = TitleTableViewCell.heightForTitle(title, width: tableView.frame.size.width)
-                    println("title height \(height)")
                     self.heightCache[indexPath] = height
                     return height
                 }
                 return 0
             case .Body:
                 if let height = self.bodyHeight {
-                    println("body height \(height)")
                     return height
                 }
                 return 0
