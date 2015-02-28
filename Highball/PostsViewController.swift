@@ -154,14 +154,14 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
 
         self.collectionView?.registerClass(PostCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: postCollectionViewCellIdentifier)
         
-//        self.longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: Selector("didLongPress:"))
-//        self.longPressGestureRecognizer.delegate = self
-//        self.longPressGestureRecognizer.minimumPressDuration = 0.3
-//        self.view.addGestureRecognizer(self.longPressGestureRecognizer)
-//
-//        self.panGestureRecognizer = UIPanGestureRecognizer(target: self, action: Selector("didPan:"))
-//        self.panGestureRecognizer.delegate = self
-//        self.view.addGestureRecognizer(self.panGestureRecognizer)
+        self.longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: Selector("didLongPress:"))
+        self.longPressGestureRecognizer.delegate = self
+        self.longPressGestureRecognizer.minimumPressDuration = 0.3
+        self.view.addGestureRecognizer(self.longPressGestureRecognizer)
+
+        self.panGestureRecognizer = UIPanGestureRecognizer(target: self, action: Selector("didPan:"))
+        self.panGestureRecognizer.delegate = self
+        self.view.addGestureRecognizer(self.panGestureRecognizer)
 
         let menuIcon = FAKIonIcons.iosGearOutlineIconWithSize(30);
         let menuIconImage = menuIcon.imageWithSize(CGSize(width: 30, height: 30))
@@ -411,60 +411,60 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
         self.loadingBottom = false
     }
     
-//    func didLongPress(sender: UILongPressGestureRecognizer) {
-//        if sender.state == UIGestureRecognizerState.Began {
-//            self.tableView.scrollEnabled = false
-//            let point = sender.locationInView(self.navigationController!.view)
-//            let tableViewPoint = sender.locationInView(self.tableView)
-//            if let indexPath = self.tableView.indexPathForRowAtPoint(tableViewPoint) {
-//                if let cell = self.tableView.cellForRowAtIndexPath(indexPath) {
-//                    let post = self.posts[indexPath.section]
-//                    let viewController = QuickReblogViewController()
-//                    
-//                    viewController.startingPoint = point
-//                    viewController.post = post
-//                    viewController.transitioningDelegate = self
-//                    viewController.modalPresentationStyle = UIModalPresentationStyle.Custom
-//                    
-//                    viewController.view.bounds = self.navigationController!.view.bounds
-//                    
-//                    self.navigationController!.view.addSubview(viewController.view)
-//                    
-//                    viewController.view.layoutIfNeeded()
-//                    viewController.viewDidAppear(false)
-//                    
-//                    self.reblogViewController = viewController
-//                }
-//            }
-//        } else if sender.state == UIGestureRecognizerState.Ended {
-//            self.tableView.scrollEnabled = true
-//            if let viewController = self.reblogViewController {
-//                let point = viewController.startingPoint
-//                let tableViewPoint = tableView.convertPoint(point, fromView: self.navigationController!.view)
-//                if let indexPath = self.tableView.indexPathForRowAtPoint(tableViewPoint) {
-//                    if let cell = self.tableView.cellForRowAtIndexPath(indexPath) {
-//                        let post = self.posts[indexPath.section]
-//                        
-//                        if let quickReblogAction = viewController.reblogAction() {
-//                            switch quickReblogAction {
-//                            case .Reblog(let reblogType):
-//                                let reblogViewController = TextReblogViewController()
-//                                
-//                                reblogViewController.reblogType = reblogType
-//                                reblogViewController.post = post
-//                                reblogViewController.blogName = self.reblogBlogName()
-//                                reblogViewController.bodyHeightCache = self.bodyHeightCache
-//                                reblogViewController.secondaryBodyHeightCache = self.secondaryBodyHeightCache
-//                                reblogViewController.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
-//                                reblogViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-//                                
-//                                self.presentViewController(reblogViewController, animated: true, completion: nil)
-//                            case .Share:
-//                                let postItemProvider = PostItemProvider(placeholderItem: "")
-//                                
-//                                postItemProvider.post = post
-//                                
-//                                var activityItems: Array<UIActivityItemProvider> = [ postItemProvider ]
+    func didLongPress(sender: UILongPressGestureRecognizer) {
+        if sender.state == UIGestureRecognizerState.Began {
+            self.collectionView!.scrollEnabled = false
+            let point = sender.locationInView(self.navigationController!.view)
+            let tableViewPoint = sender.locationInView(self.collectionView!)
+            if let indexPath = self.collectionView?.indexPathForItemAtPoint(tableViewPoint) {
+                if let cell = self.collectionView?.cellForItemAtIndexPath(indexPath) {
+                    let post = self.posts[indexPath.row]
+                    let viewController = QuickReblogViewController()
+                    
+                    viewController.startingPoint = point
+                    viewController.post = post
+                    viewController.transitioningDelegate = self
+                    viewController.modalPresentationStyle = UIModalPresentationStyle.Custom
+                    
+                    viewController.view.bounds = self.navigationController!.view.bounds
+                    
+                    self.navigationController!.view.addSubview(viewController.view)
+                    
+                    viewController.view.layoutIfNeeded()
+                    viewController.viewDidAppear(false)
+                    
+                    self.reblogViewController = viewController
+                }
+            }
+        } else if sender.state == UIGestureRecognizerState.Ended {
+            self.collectionView!.scrollEnabled = true
+            if let viewController = self.reblogViewController {
+                let point = viewController.startingPoint
+                let tableViewPoint = self.collectionView!.convertPoint(point, fromView: self.navigationController!.view)
+                if let indexPath = self.collectionView!.indexPathForItemAtPoint(tableViewPoint) {
+                    if let cell = self.collectionView!.cellForItemAtIndexPath(indexPath) {
+                        let post = self.posts[indexPath.row]
+                        
+                        if let quickReblogAction = viewController.reblogAction() {
+                            switch quickReblogAction {
+                            case .Reblog(let reblogType):
+                                let reblogViewController = TextReblogViewController()
+                                
+                                reblogViewController.reblogType = reblogType
+                                reblogViewController.post = post
+                                reblogViewController.blogName = self.reblogBlogName()
+                                reblogViewController.bodyHeightCache = self.bodyHeightCache
+                                reblogViewController.secondaryBodyHeightCache = self.secondaryBodyHeightCache
+                                reblogViewController.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
+                                reblogViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
+                                
+                                self.presentViewController(reblogViewController, animated: true, completion: nil)
+                            case .Share:
+                                let postItemProvider = PostItemProvider(placeholderItem: "")
+                                
+                                postItemProvider.post = post
+                                
+                                var activityItems: Array<UIActivityItemProvider> = [ postItemProvider ]
 //                                if let photosetCell = cell as? PhotosetRowTableViewCell {
 //                                    if let image = photosetCell.imageAtPoint(self.view.convertPoint(point, toView: photosetCell)) {
 //                                        let imageItemProvider = ImageItemProvider(placeholderItem: image)
@@ -474,38 +474,38 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
 //                                        activityItems.append(imageItemProvider)
 //                                    }
 //                                }
-//                                
-//                                let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
-//                                self.presentViewController(activityViewController, animated: true, completion: nil)
-//                            case .Like:
-//                                if post.liked.boolValue {
-//                                    TMAPIClient.sharedInstance().unlike("\(post.id)", reblogKey: post.reblogKey, callback: { (response, error) -> Void in
-//                                        if let e = error {
-//                                            println(e)
-//                                        } else {
-//                                            post.liked = false
-//                                        }
-//                                    })
-//                                } else {
-//                                    TMAPIClient.sharedInstance().like("\(post.id)", reblogKey: post.reblogKey, callback: { (response, error) -> Void in
-//                                        if let e = error {
-//                                            println(e)
-//                                        } else {
-//                                            post.liked = true
-//                                        }
-//                                    })
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//                
-//                viewController.view.removeFromSuperview()
-//            }
-//            
-//            self.reblogViewController = nil
-//        }
-//    }
+                                
+                                let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+                                self.presentViewController(activityViewController, animated: true, completion: nil)
+                            case .Like:
+                                if post.liked.boolValue {
+                                    TMAPIClient.sharedInstance().unlike("\(post.id)", reblogKey: post.reblogKey, callback: { (response, error) -> Void in
+                                        if let e = error {
+                                            println(e)
+                                        } else {
+                                            post.liked = false
+                                        }
+                                    })
+                                } else {
+                                    TMAPIClient.sharedInstance().like("\(post.id)", reblogKey: post.reblogKey, callback: { (response, error) -> Void in
+                                        if let e = error {
+                                            println(e)
+                                        } else {
+                                            post.liked = true
+                                        }
+                                    })
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                viewController.view.removeFromSuperview()
+            }
+            
+            self.reblogViewController = nil
+        }
+    }
     
     func didPan(sender: UIPanGestureRecognizer) {
         if let viewController = self.reblogViewController {
