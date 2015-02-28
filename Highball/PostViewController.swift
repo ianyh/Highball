@@ -19,6 +19,10 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
         super.init()
     }
 
+    required override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -29,7 +33,9 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
+        self.heightCache = Dictionary<NSIndexPath, CGFloat>()
+
         self.tableView = UITableView()
         self.tableView.dataSource = self
         self.tableView.delegate = self
@@ -39,7 +45,6 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
         self.tableView.sectionFooterHeight = 50
         self.tableView.showsVerticalScrollIndicator = false
         self.tableView.showsHorizontalScrollIndicator = false
-        self.tableView.addInfiniteScrollingWithActionHandler {}
         
         self.tableView.registerClass(TitleTableViewCell.classForCoder(), forCellReuseIdentifier: titleTableViewCellIdentifier)
         self.tableView.registerClass(PhotosetRowTableViewCell.classForCoder(), forCellReuseIdentifier: photosetRowTableViewCellIdentifier)
@@ -57,6 +62,12 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
         layout(self.tableView, self.view) { tableView, view in
             tableView.edges == view.edges; return
         }
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        self.heightCache.removeAll()
     }
 
     // MARK: UITableViewDataSource
@@ -275,6 +286,8 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
                 return 0
             case .Body:
                 if let height = self.bodyHeight {
+                    println(height)
+                    println(post.body)
                     return height
                 }
                 return 0

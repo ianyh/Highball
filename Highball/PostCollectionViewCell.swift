@@ -9,13 +9,15 @@
 import UIKit
 
 class PostCollectionViewCell: UICollectionViewCell {
-    private var postViewController: PostViewController
+    private var postViewController: PostViewController!
     var bodyHeight: CGFloat? = 0.0
     var secondaryBodyHeight: CGFloat? = 0.0
     var post: Post? {
         didSet {
             if let post = self.post {
-                self.postViewController.view.removeFromSuperview()
+                if let postViewController = self.postViewController {
+                    postViewController.view.removeFromSuperview()
+                }
 
                 self.postViewController = PostViewController()
                 self.postViewController.post = post
@@ -31,7 +33,17 @@ class PostCollectionViewCell: UICollectionViewCell {
         }
     }
 
+    required override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        
     }
 }

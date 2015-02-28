@@ -54,7 +54,7 @@ let postTagsTableViewCellIdentifier = "postTagsTableViewCellIdentifier"
 
 class PostsViewController: UICollectionViewController, UICollectionViewDataSource, CHTCollectionViewDelegateWaterfallLayout, UIGestureRecognizerDelegate, UIViewControllerTransitioningDelegate, WKNavigationDelegate, TagsTableViewCellDelegate {
 //    var collectionView: UICollectionView!
-    var tableView: UITableView!
+//    var tableView: UITableView!
 
     private var heightComputationQueue: NSOperationQueue!
     private let requiredRefreshDistance: CGFloat = 60
@@ -99,6 +99,8 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
         let waterfallLayout = CHTCollectionViewWaterfallLayout()
         waterfallLayout.columnCount = 2
         waterfallLayout.sectionInset = UIEdgeInsetsZero
+        waterfallLayout.minimumInteritemSpacing = 0.0
+        waterfallLayout.minimumColumnSpacing = 0.0
         super.init(collectionViewLayout: waterfallLayout)
     }
     
@@ -130,9 +132,6 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
         self.secondaryBodyHeightCache = Dictionary<Int, CGFloat>()
         self.heightCache = Dictionary<NSIndexPath, CGFloat>()
 
-//        let waterfallLayout = CHTCollectionViewWaterfallLayout()
-
-//        self.collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: waterfallLayout)
         self.collectionView?.backgroundColor = UIColor.redColor()
         self.collectionView?.dataSource = self
         self.collectionView?.delegate = self
@@ -143,48 +142,15 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
         self.collectionView?.alwaysBounceVertical = true
 
         self.collectionView?.registerClass(PostCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: postCollectionViewCellIdentifier)
-
-//        self.tableView = UITableView()
-//        self.tableView.dataSource = self
-//        self.tableView.delegate = self
-//        self.tableView.allowsSelection = true
-//        self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
-//        self.tableView.sectionHeaderHeight = 50
-//        self.tableView.sectionFooterHeight = 50
-//        self.tableView.showsVerticalScrollIndicator = false
-//        self.tableView.showsHorizontalScrollIndicator = false
-//        self.tableView.addInfiniteScrollingWithActionHandler {}
+        
+//        self.longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: Selector("didLongPress:"))
+//        self.longPressGestureRecognizer.delegate = self
+//        self.longPressGestureRecognizer.minimumPressDuration = 0.3
+//        self.view.addGestureRecognizer(self.longPressGestureRecognizer)
 //
-        self.tableView.registerClass(TitleTableViewCell.classForCoder(), forCellReuseIdentifier: titleTableViewCellIdentifier)
-        self.tableView.registerClass(PhotosetRowTableViewCell.classForCoder(), forCellReuseIdentifier: photosetRowTableViewCellIdentifier)
-        self.tableView.registerClass(ContentTableViewCell.classForCoder(), forCellReuseIdentifier: contentTableViewCellIdentifier)
-        self.tableView.registerClass(PostQuestionTableViewCell.classForCoder(), forCellReuseIdentifier: postQuestionTableViewCellIdentifier)
-        self.tableView.registerClass(PostLinkTableViewCell.classForCoder(), forCellReuseIdentifier: postLinkTableViewCellIdentifier)
-        self.tableView.registerClass(PostDialogueEntryTableViewCell.classForCoder(), forCellReuseIdentifier: postDialogueEntryTableViewCellIdentifier)
-        self.tableView.registerClass(TagsTableViewCell.classForCoder(), forCellReuseIdentifier: postTagsTableViewCellIdentifier)
-        self.tableView.registerClass(VideoTableViewCell.classForCoder(), forCellReuseIdentifier: videoTableViewCellIdentifier)
-        self.tableView.registerClass(YoutubeTableViewCell.classForCoder(), forCellReuseIdentifier: youtubeTableViewCellIdentifier)
-        self.tableView.registerClass(PostHeaderView.classForCoder(), forHeaderFooterViewReuseIdentifier: postHeaderViewIdentifier)
-        
-//        self.view.addSubview(self.tableView)
-//        self.view.addSubview(self.collectionView!)
-
-//        layout(self.collectionView!, self.view) { collectionView, view in
-//            collectionView.edges == view.edges; return
-//        }
-
-//        layout(self.tableView, self.view) { tableView, view in
-//            tableView.edges == view.edges; return
-//        }
-        
-        self.longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: Selector("didLongPress:"))
-        self.longPressGestureRecognizer.delegate = self
-        self.longPressGestureRecognizer.minimumPressDuration = 0.3
-        self.view.addGestureRecognizer(self.longPressGestureRecognizer)
-
-        self.panGestureRecognizer = UIPanGestureRecognizer(target: self, action: Selector("didPan:"))
-        self.panGestureRecognizer.delegate = self
-        self.view.addGestureRecognizer(self.panGestureRecognizer)
+//        self.panGestureRecognizer = UIPanGestureRecognizer(target: self, action: Selector("didPan:"))
+//        self.panGestureRecognizer.delegate = self
+//        self.view.addGestureRecognizer(self.panGestureRecognizer)
 
         let menuIcon = FAKIonIcons.iosGearOutlineIconWithSize(30);
         let menuIconImage = menuIcon.imageWithSize(CGSize(width: 30, height: 30))
@@ -218,8 +184,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
     }
 
     func popWebView() -> WKWebView {
-//        let frame = CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1)
-        let frame = CGRect(x: 0, y: 0, width: self.collectionView!.frame.size.width / 2, height: 1)
+        let frame = CGRect(x: 0, y: 0, width: self.collectionView!.frame.size.width, height: 1)
 
         if countElements(self.webViewCache) > 0 {
             let webView = self.webViewCache.removeAtIndex(0)
@@ -353,7 +318,6 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
     func processPosts(posts: Array<Post>) {
         for post in posts {
             self.heightComputationQueue.addOperationWithBlock() {
-//                if let content = post.htmlBodyWithWidth(self.tableView.frame.size.width) {
                 if let content = post.htmlBodyWithWidth(self.collectionView!.frame.size.width) {
                     let webView = self.popWebView()
                     let htmlString = content
@@ -364,7 +328,6 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
                 }
             }
             self.heightComputationQueue.addOperationWithBlock() {
-//                if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.size.width) {
                 if let content = post.htmlSecondaryBodyWithWidth(self.collectionView!.frame.size.width) {
                     let webView = self.popWebView()
                     let htmlString = content
@@ -440,101 +403,101 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
         self.loadingBottom = false
     }
     
-    func didLongPress(sender: UILongPressGestureRecognizer) {
-        if sender.state == UIGestureRecognizerState.Began {
-            self.tableView.scrollEnabled = false
-            let point = sender.locationInView(self.navigationController!.view)
-            let tableViewPoint = sender.locationInView(self.tableView)
-            if let indexPath = self.tableView.indexPathForRowAtPoint(tableViewPoint) {
-                if let cell = self.tableView.cellForRowAtIndexPath(indexPath) {
-                    let post = self.posts[indexPath.section]
-                    let viewController = QuickReblogViewController()
-                    
-                    viewController.startingPoint = point
-                    viewController.post = post
-                    viewController.transitioningDelegate = self
-                    viewController.modalPresentationStyle = UIModalPresentationStyle.Custom
-                    
-                    viewController.view.bounds = self.navigationController!.view.bounds
-                    
-                    self.navigationController!.view.addSubview(viewController.view)
-                    
-                    viewController.view.layoutIfNeeded()
-                    viewController.viewDidAppear(false)
-                    
-                    self.reblogViewController = viewController
-                }
-            }
-        } else if sender.state == UIGestureRecognizerState.Ended {
-            self.tableView.scrollEnabled = true
-            if let viewController = self.reblogViewController {
-                let point = viewController.startingPoint
-                let tableViewPoint = tableView.convertPoint(point, fromView: self.navigationController!.view)
-                if let indexPath = self.tableView.indexPathForRowAtPoint(tableViewPoint) {
-                    if let cell = self.tableView.cellForRowAtIndexPath(indexPath) {
-                        let post = self.posts[indexPath.section]
-                        
-                        if let quickReblogAction = viewController.reblogAction() {
-                            switch quickReblogAction {
-                            case .Reblog(let reblogType):
-                                let reblogViewController = TextReblogViewController()
-                                
-                                reblogViewController.reblogType = reblogType
-                                reblogViewController.post = post
-                                reblogViewController.blogName = self.reblogBlogName()
-                                reblogViewController.bodyHeightCache = self.bodyHeightCache
-                                reblogViewController.secondaryBodyHeightCache = self.secondaryBodyHeightCache
-                                reblogViewController.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
-                                reblogViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-                                
-                                self.presentViewController(reblogViewController, animated: true, completion: nil)
-                            case .Share:
-                                let postItemProvider = PostItemProvider(placeholderItem: "")
-                                
-                                postItemProvider.post = post
-                                
-                                var activityItems: Array<UIActivityItemProvider> = [ postItemProvider ]
-                                if let photosetCell = cell as? PhotosetRowTableViewCell {
-                                    if let image = photosetCell.imageAtPoint(self.view.convertPoint(point, toView: photosetCell)) {
-                                        let imageItemProvider = ImageItemProvider(placeholderItem: image)
-                                        
-                                        imageItemProvider.image = image
-                                        
-                                        activityItems.append(imageItemProvider)
-                                    }
-                                }
-                                
-                                let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
-                                self.presentViewController(activityViewController, animated: true, completion: nil)
-                            case .Like:
-                                if post.liked.boolValue {
-                                    TMAPIClient.sharedInstance().unlike("\(post.id)", reblogKey: post.reblogKey, callback: { (response, error) -> Void in
-                                        if let e = error {
-                                            println(e)
-                                        } else {
-                                            post.liked = false
-                                        }
-                                    })
-                                } else {
-                                    TMAPIClient.sharedInstance().like("\(post.id)", reblogKey: post.reblogKey, callback: { (response, error) -> Void in
-                                        if let e = error {
-                                            println(e)
-                                        } else {
-                                            post.liked = true
-                                        }
-                                    })
-                                }
-                            }
-                        }
-                    }
-                }
-                
-                viewController.view.removeFromSuperview()
-            }
-            
-            self.reblogViewController = nil
-        }
-    }
+//    func didLongPress(sender: UILongPressGestureRecognizer) {
+//        if sender.state == UIGestureRecognizerState.Began {
+//            self.tableView.scrollEnabled = false
+//            let point = sender.locationInView(self.navigationController!.view)
+//            let tableViewPoint = sender.locationInView(self.tableView)
+//            if let indexPath = self.tableView.indexPathForRowAtPoint(tableViewPoint) {
+//                if let cell = self.tableView.cellForRowAtIndexPath(indexPath) {
+//                    let post = self.posts[indexPath.section]
+//                    let viewController = QuickReblogViewController()
+//                    
+//                    viewController.startingPoint = point
+//                    viewController.post = post
+//                    viewController.transitioningDelegate = self
+//                    viewController.modalPresentationStyle = UIModalPresentationStyle.Custom
+//                    
+//                    viewController.view.bounds = self.navigationController!.view.bounds
+//                    
+//                    self.navigationController!.view.addSubview(viewController.view)
+//                    
+//                    viewController.view.layoutIfNeeded()
+//                    viewController.viewDidAppear(false)
+//                    
+//                    self.reblogViewController = viewController
+//                }
+//            }
+//        } else if sender.state == UIGestureRecognizerState.Ended {
+//            self.tableView.scrollEnabled = true
+//            if let viewController = self.reblogViewController {
+//                let point = viewController.startingPoint
+//                let tableViewPoint = tableView.convertPoint(point, fromView: self.navigationController!.view)
+//                if let indexPath = self.tableView.indexPathForRowAtPoint(tableViewPoint) {
+//                    if let cell = self.tableView.cellForRowAtIndexPath(indexPath) {
+//                        let post = self.posts[indexPath.section]
+//                        
+//                        if let quickReblogAction = viewController.reblogAction() {
+//                            switch quickReblogAction {
+//                            case .Reblog(let reblogType):
+//                                let reblogViewController = TextReblogViewController()
+//                                
+//                                reblogViewController.reblogType = reblogType
+//                                reblogViewController.post = post
+//                                reblogViewController.blogName = self.reblogBlogName()
+//                                reblogViewController.bodyHeightCache = self.bodyHeightCache
+//                                reblogViewController.secondaryBodyHeightCache = self.secondaryBodyHeightCache
+//                                reblogViewController.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
+//                                reblogViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
+//                                
+//                                self.presentViewController(reblogViewController, animated: true, completion: nil)
+//                            case .Share:
+//                                let postItemProvider = PostItemProvider(placeholderItem: "")
+//                                
+//                                postItemProvider.post = post
+//                                
+//                                var activityItems: Array<UIActivityItemProvider> = [ postItemProvider ]
+//                                if let photosetCell = cell as? PhotosetRowTableViewCell {
+//                                    if let image = photosetCell.imageAtPoint(self.view.convertPoint(point, toView: photosetCell)) {
+//                                        let imageItemProvider = ImageItemProvider(placeholderItem: image)
+//                                        
+//                                        imageItemProvider.image = image
+//                                        
+//                                        activityItems.append(imageItemProvider)
+//                                    }
+//                                }
+//                                
+//                                let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+//                                self.presentViewController(activityViewController, animated: true, completion: nil)
+//                            case .Like:
+//                                if post.liked.boolValue {
+//                                    TMAPIClient.sharedInstance().unlike("\(post.id)", reblogKey: post.reblogKey, callback: { (response, error) -> Void in
+//                                        if let e = error {
+//                                            println(e)
+//                                        } else {
+//                                            post.liked = false
+//                                        }
+//                                    })
+//                                } else {
+//                                    TMAPIClient.sharedInstance().like("\(post.id)", reblogKey: post.reblogKey, callback: { (response, error) -> Void in
+//                                        if let e = error {
+//                                            println(e)
+//                                        } else {
+//                                            post.liked = true
+//                                        }
+//                                    })
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//                
+//                viewController.view.removeFromSuperview()
+//            }
+//            
+//            self.reblogViewController = nil
+//        }
+//    }
     
     func didPan(sender: UIPanGestureRecognizer) {
         if let viewController = self.reblogViewController {
@@ -545,29 +508,42 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
     // MARK: UICollectionViewDataSource
 
     override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return 1
+//        if let posts = self.posts {
+//            return posts.count
+//        }
+//        return 0
+    }
+
+    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if let posts = self.posts {
             return posts.count
         }
         return 0
-    }
-
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let post = self.posts![section]
-        if post.type == "text" {
-            if let body = post.body {
-                return 1
-            }
-        }
-        return 0
+//        
+//        let post = self.posts![section]
+//        if post.type == "text" {
+//            if let body = post.body {
+//                return 1
+//            }
+//        }
+//        return 0
     }
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let post = self.posts![indexPath.section]
+        let post = self.posts![indexPath.row]
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(postCollectionViewCellIdentifier, forIndexPath: indexPath) as PostCollectionViewCell
 
-        cell.post = post
         cell.bodyHeight = self.bodyHeightCache[post.id]
+//        if let bodyHeight = cell.bodyHeight {
+//            cell.bodyHeight = bodyHeight / 2
+//        }
         cell.secondaryBodyHeight = self.secondaryBodyHeightCache[post.id]
+//        if let secondaryBodyHeight = cell.secondaryBodyHeight {
+//            cell.secondaryBodyHeight = secondaryBodyHeight / 2
+//        }
+
+        cell.post = post
 
         return cell
     }
@@ -575,181 +551,99 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
     // MARK: CHTCollectionViewDelegateWaterfallLayout
 
     func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, sizeForItemAtIndexPath indexPath: NSIndexPath!) -> CGSize {
-        if let height = self.heightCache[self.posts![indexPath.section].id] {
+        let post = posts[indexPath.row]
+
+        if let height = self.heightCache[indexPath] {
             return CGSize(width: collectionView.frame.size.width, height: height)
         }
-        return CGSizeZero
+        
+        var height: CGFloat = 0
+        
+        switch post.type {
+        case "photo":
+            if let bodyHeight = self.bodyHeightCache[post.id] {
+                height += bodyHeight
+            }
+            
+            let postPhotos = post.photos
+            var images: Array<PostPhoto>!
+            var photosIndexStart = 0
+            for layoutRow in post.layoutRows {
+                images = Array(postPhotos[(photosIndexStart)..<(photosIndexStart + layoutRow)])
+
+                let imageWidth = collectionView.frame.size.width / CGFloat(images.count)
+                let minHeight = floor(images.map { (image: PostPhoto) -> CGFloat in
+                    let scale = image.height / image.width
+                    return imageWidth * scale
+                    }.reduce(CGFloat.max, combine: { min($0, $1) }))
+
+                height += minHeight
+
+                photosIndexStart += layoutRow
+            }
+        case "text":
+            if let title = post.title {
+                height += TitleTableViewCell.heightForTitle(title, width: collectionView.frame.size.width)
+            }
+            if let bodyHeight = self.bodyHeightCache[post.id] {
+                height += bodyHeight
+            }
+        case "answer":
+            height += PostQuestionTableViewCell.heightForPost(post, width: collectionView.frame.size.width)
+            if let bodyHeight = self.bodyHeightCache[post.id] {
+                height += bodyHeight
+            }
+        case "quote":
+            if let bodyHeight = self.bodyHeightCache[post.id] {
+                height += bodyHeight
+            }
+            if let secondaryBodyHeight = self.secondaryBodyHeightCache[post.id] {
+                height += secondaryBodyHeight
+            }
+        case "link":
+            height += PostLinkTableViewCell.heightForPost(post, width: collectionView.frame.size.width)
+            if let bodyHeight = self.bodyHeightCache[post.id] {
+                height += bodyHeight
+            }
+        case "chat":
+            if let title = post.title {
+                height += TitleTableViewCell.heightForTitle(title, width: collectionView.frame.size.width)
+            }
+            for dialogueEntry in post.dialogueEntries {
+                height += PostDialogueEntryTableViewCell.heightForPostDialogueEntry(dialogueEntry, width: collectionView.frame.size.width)
+            }
+        case "video":
+            if let playerHeight = post.videoHeightWidthWidth(collectionView.frame.size.width) {
+                height += playerHeight
+            } else {
+                height += 320
+            }
+            
+            if let bodyHeight = self.bodyHeightCache[post.id] {
+                height += bodyHeight
+            }
+        case "video":
+            if let secondaryBodyHeight = self.secondaryBodyHeightCache[post.id] {
+                height += secondaryBodyHeight
+            }
+            if let bodyHeight = self.bodyHeightCache[post.id] {
+                height += bodyHeight
+            }
+        default:
+            height = 0
+        }
+
+        if post.tags.count > 0 {
+            height += 30
+        }
+
+        self.heightCache[indexPath] = height
+
+        println(height)
+
+        return CGSize(width: collectionView.frame.size.width, height: height)
     }
 
-    // MARK: UITableViewDataSource
-    
-//    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-//        if let posts = self.posts {
-//            return posts.count
-//        }
-//        return 0
-//    }
-//    
-//    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        let post = self.posts[section]
-//        var rowCount = 0
-//        switch post.type {
-//        case "photo":
-//            let postPhotos = post.photos
-//            if postPhotos.count == 1 {
-//                rowCount = 2
-//            }
-//            rowCount = post.layoutRows.count + 1
-//        case "text":
-//            rowCount = 2
-//        case "answer":
-//            rowCount = 2
-//        case "quote":
-//            rowCount = 2
-//        case "link":
-//            rowCount = 2
-//        case "chat":
-//            rowCount = 1 + post.dialogueEntries.count
-//        case "video":
-//            rowCount = 2
-//        case "audio":
-//            rowCount = 2
-//        default:
-//            rowCount = 0
-//        }
-//
-//        return rowCount + 1
-//    }
-//
-//    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-//        let post = posts[indexPath.section]
-//        let cell = self.tableView(tableView, cellForRowAtIndexPath: indexPath, post: post)
-//
-//        cell.selectionStyle = UITableViewCellSelectionStyle.None
-//
-//        return cell
-//    }
-//
-//    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath, post: Post) -> UITableViewCell {
-//        if indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 1 {
-//            let cell = tableView.dequeueReusableCellWithIdentifier(postTagsTableViewCellIdentifier) as TagsTableViewCell!
-//            cell.delegate = self
-//            cell.tags = post.tags
-//            return cell
-//        }
-//
-//        switch post.type {
-//        case "photo":
-//            if indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 2 {
-//                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
-//                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
-//                return cell
-//            }
-//            let cell = tableView.dequeueReusableCellWithIdentifier(photosetRowTableViewCellIdentifier) as PhotosetRowTableViewCell!
-//            let postPhotos = post.photos
-//
-//            cell.contentWidth = tableView.frame.size.width
-//
-//            if postPhotos.count == 1 {
-//                cell.images = postPhotos
-//            } else {
-//                let photosetLayoutRows = post.layoutRows
-//                var photosIndexStart = 0
-//                for photosetLayoutRow in photosetLayoutRows[0..<indexPath.row] {
-//                    photosIndexStart += photosetLayoutRow
-//                }
-//                let photosetLayoutRow = photosetLayoutRows[indexPath.row]
-//                
-//                cell.images = Array(postPhotos[(photosIndexStart)..<(photosIndexStart + photosetLayoutRow)])
-//            }
-//            
-//            return cell
-//        case "text":
-//            switch TextRow(rawValue: indexPath.row)! {
-//            case .Title:
-//                let cell = tableView.dequeueReusableCellWithIdentifier(titleTableViewCellIdentifier) as TitleTableViewCell!
-//                cell.titleLabel.text = post.title
-//                return cell
-//            case .Body:
-//                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
-//                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
-//                return cell
-//            }
-//        case "answer":
-//            switch AnswerRow(rawValue: indexPath.row)! {
-//            case .Question:
-//                let cell = tableView.dequeueReusableCellWithIdentifier(postQuestionTableViewCellIdentifier) as PostQuestionTableViewCell!
-//                cell.post = post
-//                return cell
-//            case .Answer:
-//                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
-//                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
-//                return cell
-//            }
-//        case "quote":
-//            switch QuoteRow(rawValue: indexPath.row)! {
-//            case .Quote:
-//                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
-//                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
-//                return cell
-//            case .Source:
-//                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
-//                cell.content = post.htmlSecondaryBodyWithWidth(tableView.frame.size.width)
-//                return cell
-//            }
-//        case "link":
-//            switch LinkRow(rawValue: indexPath.row)! {
-//            case .Link:
-//                let cell = tableView.dequeueReusableCellWithIdentifier(postLinkTableViewCellIdentifier) as PostLinkTableViewCell!
-//                cell.post = post
-//                return cell
-//            case .Description:
-//                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
-//                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
-//                return cell
-//            }
-//        case "chat":
-//            if indexPath.row == 0 {
-//                let cell = tableView.dequeueReusableCellWithIdentifier(titleTableViewCellIdentifier) as TitleTableViewCell!
-//                cell.titleLabel.text = post.title
-//                return cell;
-//            }
-//            let dialogueEntry = post.dialogueEntries[indexPath.row - 1]
-//            let cell = tableView.dequeueReusableCellWithIdentifier(postDialogueEntryTableViewCellIdentifier) as PostDialogueEntryTableViewCell!
-//            cell.dialogueEntry = dialogueEntry
-//            return cell
-//        case "video":
-//            switch VideoRow(rawValue: indexPath.row)! {
-//            case .Player:
-//                switch post.videoType! {
-//                case "youtube":
-//                    let cell = tableView.dequeueReusableCellWithIdentifier(youtubeTableViewCellIdentifier) as YoutubeTableViewCell!
-//                    cell.post = post
-//                    return cell
-//                default:
-//                    let cell = tableView.dequeueReusableCellWithIdentifier(videoTableViewCellIdentifier) as VideoTableViewCell!
-//                    cell.post = post
-//                    return cell
-//                }
-//            case .Caption:
-//                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
-//                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
-//                return cell
-//            }
-//        case "audio":
-//            let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
-//            switch AudioRow(rawValue: indexPath.row)! {
-//            case .Player:
-//                cell.content = post.htmlSecondaryBodyWithWidth(tableView.frame.size.width)
-//            case .Caption:
-//                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
-//            }
-//            return cell
-//        default:
-//            return tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as UITableViewCell!
-//        }
-//    }
-//    
     // MARK: UITableViewDelegate
     
 //    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -776,176 +670,6 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
 //        view.post = post
 //        
 //        return view
-//    }
-
-//    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-//        let post = posts[indexPath.section]
-//
-//        if indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 1 {
-//            if post.tags.count > 0 {
-//                return 30
-//            }
-//            return 0
-//        }
-//
-//        switch post.type {
-//        case "photo":
-//            if indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 2 {
-//                if let height = self.bodyHeightCache[post.id] {
-//                    return height
-//                }
-//                return 0
-//            }
-//
-//            if let height = self.heightCache[indexPath] {
-//                return height
-//            }
-//
-//            let postPhotos = post.photos
-//            var images: Array<PostPhoto>!
-//            
-//            if postPhotos.count == 1 {
-//                images = postPhotos
-//            } else {
-//                let photosetLayoutRows = post.layoutRows
-//                var photosIndexStart = 0
-//                for photosetLayoutRow in photosetLayoutRows[0..<indexPath.row] {
-//                    photosIndexStart += photosetLayoutRow
-//                }
-//                let photosetLayoutRow = photosetLayoutRows[indexPath.row]
-//                
-//                images = Array(postPhotos[(photosIndexStart)..<(photosIndexStart + photosetLayoutRow)])
-//            }
-//            
-//            let imageCount = images.count
-//            let imageWidth = tableView.frame.size.width / CGFloat(images.count)
-//            let minHeight = floor(images.map { (image: PostPhoto) -> CGFloat in
-//                let scale = image.height / image.width
-//                return imageWidth * scale
-//                }.reduce(CGFloat.max, combine: { min($0, $1) }))
-//
-//            self.heightCache[indexPath] = minHeight
-//
-//            return minHeight
-//        case "text":
-//            switch TextRow(rawValue: indexPath.row)! {
-//            case .Title:
-//                if let title = post.title {
-//                    if let height = self.heightCache[indexPath] {
-//                        return height
-//                    }
-//
-//                    let height = TitleTableViewCell.heightForTitle(title, width: tableView.frame.size.width)
-//                    self.heightCache[indexPath] = height
-//                    return height
-//                }
-//                return 0
-//            case .Body:
-//                if let height = self.bodyHeightCache[post.id] {
-//                    return height
-//                }
-//                return 0
-//            }
-//        case "answer":
-//            switch AnswerRow(rawValue: indexPath.row)! {
-//            case .Question:
-//                if let height = self.heightCache[indexPath] {
-//                    return height
-//                }
-//
-//                let height = PostQuestionTableViewCell.heightForPost(post, width: tableView.frame.size.width)
-//                self.heightCache[indexPath] = height
-//                return height
-//            case .Answer:
-//                if let height = self.bodyHeightCache[post.id] {
-//                    return height
-//                }
-//                return 0
-//            }
-//        case "quote":
-//            switch QuoteRow(rawValue: indexPath.row)! {
-//            case .Quote:
-//                if let height = self.bodyHeightCache[post.id] {
-//                    return height
-//                }
-//                return 0
-//            case .Source:
-//                if let height = self.secondaryBodyHeightCache[post.id] {
-//                    return height
-//                }
-//                return 0
-//            }
-//        case "link":
-//            switch LinkRow(rawValue: indexPath.row)! {
-//            case .Link:
-//                if let height = self.heightCache[indexPath] {
-//                    return height
-//                }
-//
-//                let height = PostLinkTableViewCell.heightForPost(post, width: tableView.frame.size.width)
-//                self.heightCache[indexPath] = height
-//                return height
-//            case .Description:
-//                if let height = self.bodyHeightCache[post.id] {
-//                    return height
-//                }
-//                return 0
-//            }
-//        case "chat":
-//            if indexPath.row == 0 {
-//                if let title = post.title {
-//                    if let height = self.heightCache[indexPath] {
-//                        return height
-//                    }
-//
-//                    let height = TitleTableViewCell.heightForTitle(title, width: tableView.frame.size.width)
-//                    self.heightCache[indexPath] = height
-//                    return height
-//                }
-//                return 0
-//            }
-//            let dialogueEntry = post.dialogueEntries[indexPath.row - 1]
-//            if let height = self.heightCache[indexPath] {
-//                return height
-//            }
-//
-//            let height = PostDialogueEntryTableViewCell.heightForPostDialogueEntry(dialogueEntry, width: tableView.frame.size.width)
-//            self.heightCache[indexPath] = height
-//            return height
-//        case "video":
-//            switch VideoRow(rawValue: indexPath.row)! {
-//            case .Player:
-//                if let height = self.heightCache[indexPath] {
-//                    return height
-//                }
-//                if let height = post.videoHeightWidthWidth(tableView.frame.size.width) {
-//                    self.heightCache[indexPath] = height
-//                    return height
-//                }
-//                self.heightCache[indexPath] = 320
-//                return 320
-//            case .Caption:
-//                if let height = self.bodyHeightCache[post.id] {
-//                    return height
-//                }
-//                return 0
-//            }
-//        case "video":
-//            switch AudioRow(rawValue: indexPath.row)! {
-//            case .Player:
-//                if let height = self.secondaryBodyHeightCache[post.id] {
-//                    return height
-//                }
-//                return 0
-//            case .Caption:
-//                if let height = self.bodyHeightCache[post.id] {
-//                    return height
-//                }
-//                return 0
-//            }
-//        default:
-//            return 0
-//        }
 //    }
 //
 //    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
