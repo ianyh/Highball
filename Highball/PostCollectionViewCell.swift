@@ -15,26 +15,22 @@ class PostCollectionViewCell: UICollectionViewCell {
     var post: Post? {
         didSet {
             if let post = self.post {
-                if let postViewController = self.postViewController {
-                    postViewController.view.removeFromSuperview()
-                }
-
-                self.postViewController = PostViewController()
                 self.postViewController.post = post
                 self.postViewController.bodyHeight = self.bodyHeight
                 self.postViewController.secondaryBodyHeight = self.secondaryBodyHeight
-
-                self.contentView.addSubview(self.postViewController.view)
-
-                layout(self.postViewController.view, self.contentView) { singlePostView, contentView in
-                    singlePostView.edges == contentView.edges; return
-                }
             }
         }
     }
 
     required override init(frame: CGRect) {
         super.init(frame: frame)
+        self.postViewController = PostViewController()
+
+        self.contentView.addSubview(self.postViewController.view)
+        
+        layout(self.postViewController.view, self.contentView) { singlePostView, contentView in
+            singlePostView.edges == contentView.edges; return
+        }
     }
 
     required init(coder aDecoder: NSCoder) {

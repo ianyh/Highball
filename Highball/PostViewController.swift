@@ -10,7 +10,12 @@ import UIKit
 
 class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableViewDataSource, UITableViewDelegate {
     private var tableView: UITableView!
-    var post: Post!
+    var post: Post! {
+        didSet {
+            self.heightCache.removeAll()
+            self.tableView.reloadData()
+        }
+    }
     var heightCache: Dictionary<NSIndexPath, CGFloat>!
     var bodyHeight: CGFloat?
     var secondaryBodyHeight: CGFloat?
@@ -67,6 +72,13 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
 //    }
 
     // MARK: UITableViewDataSource
+
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        if let post = self.post {
+            return 1
+        }
+        return 0
+    }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var rowCount = 0
