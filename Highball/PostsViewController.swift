@@ -531,6 +531,24 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
         cell.secondaryBodyHeight = self.secondaryBodyHeightCache[post.id]
         cell.post = post
 
+        cell.headerTapHandler = { post in
+            if let navigationController = self.navigationController {
+                if let rebloggedBlogName = post.rebloggedBlogName {
+                    let alertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+                    alertController.addAction(UIAlertAction(title: post.blogName, style: UIAlertActionStyle.Default, handler: { alertAction in
+                        self.navigationController!.pushViewController(BlogViewController(blogName: post.blogName), animated: true)
+                    }))
+                    alertController.addAction(UIAlertAction(title: rebloggedBlogName, style: UIAlertActionStyle.Default, handler: { alertAction in
+                        self.navigationController!.pushViewController(BlogViewController(blogName: rebloggedBlogName), animated: true)
+                    }))
+                    alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: { _ in }))
+                    self.presentViewController(alertController, animated: true, completion: nil)
+                } else {
+                    self.navigationController!.pushViewController(BlogViewController(blogName: post.blogName), animated: true)
+                }
+            }
+        }
+
         return cell
     }
 
@@ -538,7 +556,6 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
 
     func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, sizeForItemAtIndexPath indexPath: NSIndexPath!) -> CGSize {
         let post = self.posts[indexPath.row]
-        var heights = Array<CGFloat>()
 
         if let height = self.heightCache[indexPath] {
             return CGSize(width: collectionView.frame.size.width, height: height)
@@ -549,7 +566,6 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
         switch post.type {
         case "photo":
             if let bodyHeight = self.bodyHeightCache[post.id] {
-//                heights.append(bodyHeight * self.columnCount)
                 height += bodyHeight * self.columnCount
             }
             
@@ -565,66 +581,52 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
                     return imageWidth * scale
                     }.reduce(CGFloat.max, combine: { min($0, $1) }))
 
-//                heights.append(minHeight * self.columnCount)
                 height += minHeight * self.columnCount
 
                 photosIndexStart += layoutRow
             }
         case "text":
             if let title = post.title {
-//                heights.append(TitleTableViewCell.heightForTitle(title, width: collectionView.frame.size.width / self.columnCount) * self.columnCount)
                 height += TitleTableViewCell.heightForTitle(title, width: collectionView.frame.size.width / self.columnCount) * self.columnCount
             }
             if let bodyHeight = self.bodyHeightCache[post.id] {
-//                heights.append(bodyHeight * self.columnCount)
                 height += bodyHeight * self.columnCount
             }
         case "answer":
-//            heights.append(PostQuestionTableViewCell.heightForPost(post, width: collectionView.frame.size.width / self.columnCount) * self.columnCount)
             height += PostQuestionTableViewCell.heightForPost(post, width: collectionView.frame.size.width / self.columnCount) * self.columnCount
             if let bodyHeight = self.bodyHeightCache[post.id] {
-//                heights.append(bodyHeight * self.columnCount)
                 height += bodyHeight * self.columnCount
             }
         case "quote":
             if let bodyHeight = self.bodyHeightCache[post.id] {
-//                heights.append(bodyHeight * self.columnCount)
                 height += bodyHeight * self.columnCount
             }
             if let secondaryBodyHeight = self.secondaryBodyHeightCache[post.id] {
-//                heights.append(secondaryBodyHeight * self.columnCount)
                 height += secondaryBodyHeight * self.columnCount
             }
         case "link":
             height += PostLinkTableViewCell.heightForPost(post, width: collectionView.frame.size.width / self.columnCount) * self.columnCount
             if let bodyHeight = self.bodyHeightCache[post.id] {
-//                heights.append(bodyHeight * self.columnCount)
                 height += bodyHeight * self.columnCount
             }
         case "chat":
             if let title = post.title {
-//                heights.append(TitleTableViewCell.heightForTitle(title, width: collectionView.frame.size.width / self.columnCount) * self.columnCount)
                 height += TitleTableViewCell.heightForTitle(title, width: collectionView.frame.size.width / self.columnCount) * self.columnCount
             }
             for dialogueEntry in post.dialogueEntries {
-//                heights.append(PostDialogueEntryTableViewCell.heightForPostDialogueEntry(dialogueEntry, width: collectionView.frame.size.width / self.columnCount) * self.columnCount)
                 height += PostDialogueEntryTableViewCell.heightForPostDialogueEntry(dialogueEntry, width: collectionView.frame.size.width / self.columnCount) * self.columnCount
             }
         case "video":
             if let playerHeight = post.videoHeightWidthWidth(collectionView.frame.size.width / self.columnCount) {
-//                heights.append(playerHeight * self.columnCount)
                 height += playerHeight * self.columnCount
             } else {
-//                heights.append(CGFloat(320))
                 height += 320
             }
             
             if let bodyHeight = self.bodyHeightCache[post.id] {
-//                heights.append(bodyHeight * self.columnCount)
                 height += bodyHeight * self.columnCount
             }
         default:
-//            heights.append(0)
             height = 0
         }
 
@@ -632,12 +634,13 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
             height += 30 * self.columnCount
         }
 
-//        height += heights.reduce(0, +)
-
-//        self.postHeightsCache[post.id] = heights
         self.heightCache[indexPath] = height
 
         return CGSize(width: collectionView.frame.size.width, height: height)
+    }
+
+    func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        
     }
 
     // MARK: UITableViewDelegate

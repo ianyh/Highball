@@ -22,9 +22,22 @@ class PostCollectionViewCell: UICollectionViewCell {
         }
     }
 
+    var headerTapHandler: ((Post) -> ())?
+    var bodyTapHandler: ((Post) -> ())?
+
     required override init(frame: CGRect) {
         super.init(frame: frame)
         self.postViewController = PostViewController()
+        self.postViewController.headerTapHandler = { post in
+            if let headerTapHandler = self.headerTapHandler {
+                headerTapHandler(post)
+            }
+        }
+        self.postViewController.bodyTapHandler = { post in
+            if let bodyTapHandler = self.bodyTapHandler {
+                bodyTapHandler(post)
+            }
+        }
 
         self.contentView.addSubview(self.postViewController.view)
         
@@ -37,9 +50,7 @@ class PostCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
+    func endDisplay() {
         
     }
 }

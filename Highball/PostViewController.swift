@@ -20,6 +20,9 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
     var bodyHeight: CGFloat?
     var secondaryBodyHeight: CGFloat?
 
+    var headerTapHandler: ((Post) -> ())?
+    var bodyTapHandler: ((Post) -> ())?
+
     required override init() {
         super.init()
     }
@@ -65,11 +68,6 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
             tableView.edges == view.edges; return
         }
     }
-
-//    override func viewDidLayoutSubviews() {
-//        super.viewDidLayoutSubviews()
-//        self.heightCache.removeAll()
-//    }
 
     // MARK: UITableViewDataSource
 
@@ -236,20 +234,8 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
         let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(postHeaderViewIdentifier) as PostHeaderView
         
         view.tapHandler = { post in
-            if let navigationController = self.navigationController {
-                if let rebloggedBlogName = post.rebloggedBlogName {
-                    let alertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
-                    alertController.addAction(UIAlertAction(title: post.blogName, style: UIAlertActionStyle.Default, handler: { alertAction in
-                        self.navigationController!.pushViewController(BlogViewController(blogName: post.blogName), animated: true)
-                    }))
-                    alertController.addAction(UIAlertAction(title: rebloggedBlogName, style: UIAlertActionStyle.Default, handler: { alertAction in
-                        self.navigationController!.pushViewController(BlogViewController(blogName: rebloggedBlogName), animated: true)
-                    }))
-                    alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: { _ in }))
-                    self.presentViewController(alertController, animated: true, completion: nil)
-                } else {
-                    self.navigationController!.pushViewController(BlogViewController(blogName: post.blogName), animated: true)
-                }
+            if let headerTapHandler = self.headerTapHandler {
+                headerTapHandler(post)
             }
         }
         view.post = self.post

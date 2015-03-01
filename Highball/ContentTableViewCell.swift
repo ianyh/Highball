@@ -36,7 +36,6 @@ class ContentTableViewCell: WCFastCell, WKNavigationDelegate {
         self.contentWebView.userInteractionEnabled = false
         self.contentWebView.scrollView.scrollEnabled = false
         self.contentWebView.navigationDelegate = self
-        self.contentWebView.backgroundColor = UIColor.redColor()
 
         self.contentView.addSubview(self.contentWebView)
 
