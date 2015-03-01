@@ -20,8 +20,8 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
     var bodyHeight: CGFloat?
     var secondaryBodyHeight: CGFloat?
 
-    var headerTapHandler: ((Post) -> ())?
-    var bodyTapHandler: ((Post) -> ())?
+    var headerTapHandler: ((Post, UIView) -> ())?
+    var bodyTapHandler: ((Post, UIView) -> ())?
 
     required override init() {
         super.init()
@@ -49,7 +49,7 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
         self.tableView.sectionFooterHeight = 50
         self.tableView.showsVerticalScrollIndicator = false
         self.tableView.showsHorizontalScrollIndicator = false
-        self.tableView.userInteractionEnabled = false
+        self.tableView.scrollEnabled = false
         
         self.tableView.registerClass(TitleTableViewCell.classForCoder(), forCellReuseIdentifier: titleTableViewCellIdentifier)
         self.tableView.registerClass(PhotosetRowTableViewCell.classForCoder(), forCellReuseIdentifier: photosetRowTableViewCellIdentifier)
@@ -233,9 +233,9 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(postHeaderViewIdentifier) as PostHeaderView
         
-        view.tapHandler = { post in
+        view.tapHandler = { post, view in
             if let headerTapHandler = self.headerTapHandler {
-                headerTapHandler(post)
+                headerTapHandler(post, view)
             }
         }
         view.post = self.post

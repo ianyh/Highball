@@ -531,10 +531,12 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
         cell.secondaryBodyHeight = self.secondaryBodyHeightCache[post.id]
         cell.post = post
 
-        cell.headerTapHandler = { post in
+        cell.headerTapHandler = { post, view in
             if let navigationController = self.navigationController {
                 if let rebloggedBlogName = post.rebloggedBlogName {
                     let alertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+                    alertController.popoverPresentationController?.sourceView = self.view
+                    alertController.popoverPresentationController?.sourceRect = self.view.convertRect(view.frame, fromView: view)
                     alertController.addAction(UIAlertAction(title: post.blogName, style: UIAlertActionStyle.Default, handler: { alertAction in
                         self.navigationController!.pushViewController(BlogViewController(blogName: post.blogName), animated: true)
                     }))
@@ -639,7 +641,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
         return CGSize(width: collectionView.frame.size.width, height: height)
     }
 
-    func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+    override func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
         
     }
 
