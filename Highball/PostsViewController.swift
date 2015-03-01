@@ -53,9 +53,6 @@ let youtubeTableViewCellIdentifier = "youtubeTableViewCellIdentifier"
 let postTagsTableViewCellIdentifier = "postTagsTableViewCellIdentifier"
 
 class PostsViewController: UICollectionViewController, UICollectionViewDataSource, CHTCollectionViewDelegateWaterfallLayout, UIGestureRecognizerDelegate, UIViewControllerTransitioningDelegate, WKNavigationDelegate, TagsTableViewCellDelegate {
-//    var collectionView: UICollectionView!
-//    var tableView: UITableView!
-
     private var columnCount: CGFloat {
         get {
             if let waterfallLayout = self.collectionView?.collectionViewLayout as? CHTCollectionViewWaterfallLayout {
@@ -540,17 +537,19 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
     // MARK: CHTCollectionViewDelegateWaterfallLayout
 
     func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, sizeForItemAtIndexPath indexPath: NSIndexPath!) -> CGSize {
-        let post = posts[indexPath.row]
+        let post = self.posts[indexPath.row]
+        var heights = Array<CGFloat>()
 
         if let height = self.heightCache[indexPath] {
             return CGSize(width: collectionView.frame.size.width, height: height)
         }
         
-        var height: CGFloat = 50.0 + self.columnCount
+        var height: CGFloat = 50.0 * self.columnCount
         
         switch post.type {
         case "photo":
             if let bodyHeight = self.bodyHeightCache[post.id] {
+//                heights.append(bodyHeight * self.columnCount)
                 height += bodyHeight * self.columnCount
             }
             
@@ -566,59 +565,66 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
                     return imageWidth * scale
                     }.reduce(CGFloat.max, combine: { min($0, $1) }))
 
+//                heights.append(minHeight * self.columnCount)
                 height += minHeight * self.columnCount
 
                 photosIndexStart += layoutRow
             }
         case "text":
             if let title = post.title {
+//                heights.append(TitleTableViewCell.heightForTitle(title, width: collectionView.frame.size.width / self.columnCount) * self.columnCount)
                 height += TitleTableViewCell.heightForTitle(title, width: collectionView.frame.size.width / self.columnCount) * self.columnCount
             }
             if let bodyHeight = self.bodyHeightCache[post.id] {
+//                heights.append(bodyHeight * self.columnCount)
                 height += bodyHeight * self.columnCount
             }
         case "answer":
+//            heights.append(PostQuestionTableViewCell.heightForPost(post, width: collectionView.frame.size.width / self.columnCount) * self.columnCount)
             height += PostQuestionTableViewCell.heightForPost(post, width: collectionView.frame.size.width / self.columnCount) * self.columnCount
             if let bodyHeight = self.bodyHeightCache[post.id] {
+//                heights.append(bodyHeight * self.columnCount)
                 height += bodyHeight * self.columnCount
             }
         case "quote":
             if let bodyHeight = self.bodyHeightCache[post.id] {
+//                heights.append(bodyHeight * self.columnCount)
                 height += bodyHeight * self.columnCount
             }
             if let secondaryBodyHeight = self.secondaryBodyHeightCache[post.id] {
+//                heights.append(secondaryBodyHeight * self.columnCount)
                 height += secondaryBodyHeight * self.columnCount
             }
         case "link":
             height += PostLinkTableViewCell.heightForPost(post, width: collectionView.frame.size.width / self.columnCount) * self.columnCount
             if let bodyHeight = self.bodyHeightCache[post.id] {
+//                heights.append(bodyHeight * self.columnCount)
                 height += bodyHeight * self.columnCount
             }
         case "chat":
             if let title = post.title {
+//                heights.append(TitleTableViewCell.heightForTitle(title, width: collectionView.frame.size.width / self.columnCount) * self.columnCount)
                 height += TitleTableViewCell.heightForTitle(title, width: collectionView.frame.size.width / self.columnCount) * self.columnCount
             }
             for dialogueEntry in post.dialogueEntries {
+//                heights.append(PostDialogueEntryTableViewCell.heightForPostDialogueEntry(dialogueEntry, width: collectionView.frame.size.width / self.columnCount) * self.columnCount)
                 height += PostDialogueEntryTableViewCell.heightForPostDialogueEntry(dialogueEntry, width: collectionView.frame.size.width / self.columnCount) * self.columnCount
             }
         case "video":
             if let playerHeight = post.videoHeightWidthWidth(collectionView.frame.size.width / self.columnCount) {
+//                heights.append(playerHeight * self.columnCount)
                 height += playerHeight * self.columnCount
             } else {
+//                heights.append(CGFloat(320))
                 height += 320
             }
             
             if let bodyHeight = self.bodyHeightCache[post.id] {
-                height += bodyHeight * self.columnCount
-            }
-        case "video":
-            if let secondaryBodyHeight = self.secondaryBodyHeightCache[post.id] {
-                height += secondaryBodyHeight * self.columnCount
-            }
-            if let bodyHeight = self.bodyHeightCache[post.id] {
+//                heights.append(bodyHeight * self.columnCount)
                 height += bodyHeight * self.columnCount
             }
         default:
+//            heights.append(0)
             height = 0
         }
 
@@ -626,6 +632,9 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
             height += 30 * self.columnCount
         }
 
+//        height += heights.reduce(0, +)
+
+//        self.postHeightsCache[post.id] = heights
         self.heightCache[indexPath] = height
 
         return CGSize(width: collectionView.frame.size.width, height: height)

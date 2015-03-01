@@ -61,10 +61,10 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
         }
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        self.heightCache.removeAll()
-    }
+//    override func viewDidLayoutSubviews() {
+//        super.viewDidLayoutSubviews()
+//        self.heightCache.removeAll()
+//    }
 
     // MARK: UITableViewDataSource
     
@@ -246,7 +246,6 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
     }
 
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        self.heightCache.removeAll()
         if indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 1 {
             if self.post.tags.count > 0 {
                 return 30
