@@ -149,6 +149,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
         self.collectionView?.alwaysBounceHorizontal = false
         self.collectionView?.alwaysBounceVertical = true
         self.collectionView?.allowsSelection = false
+        self.collectionView?.backgroundColor = UIColor.whiteColor()
 
         self.collectionView?.registerClass(PostCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: postCollectionViewCellIdentifier)
         
@@ -665,70 +666,10 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
     }
 
     override func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
-        
+        if let cell = cell as? PostCollectionViewCell {
+            cell.endDisplay()
+        }
     }
-
-    // MARK: UITableViewDelegate
-    
-//    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        let post = posts[section]
-//        let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(postHeaderViewIdentifier) as PostHeaderView
-//
-//        view.tapHandler = { post in
-//            if let navigationController = self.navigationController {
-//                if let rebloggedBlogName = post.rebloggedBlogName {
-//                    let alertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
-//                    alertController.addAction(UIAlertAction(title: post.blogName, style: UIAlertActionStyle.Default, handler: { alertAction in
-//                        self.navigationController!.pushViewController(BlogViewController(blogName: post.blogName), animated: true)
-//                    }))
-//                    alertController.addAction(UIAlertAction(title: rebloggedBlogName, style: UIAlertActionStyle.Default, handler: { alertAction in
-//                        self.navigationController!.pushViewController(BlogViewController(blogName: rebloggedBlogName), animated: true)
-//                    }))
-//                    alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: { _ in }))
-//                    self.presentViewController(alertController, animated: true, completion: nil)
-//                } else {
-//                    self.navigationController!.pushViewController(BlogViewController(blogName: post.blogName), animated: true)
-//                }
-//            }
-//        }
-//        view.post = post
-//        
-//        return view
-//    }
-//
-//    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        if let cell = tableView.cellForRowAtIndexPath(indexPath) {
-//            if let photosetRowCell = cell as? PhotosetRowTableViewCell {
-//                let post = self.posts[indexPath.section]
-//                let viewController = ImagesViewController()
-//
-//                viewController.post = post
-//
-//                self.presentViewController(viewController, animated: true, completion: nil)
-//            } else if let videoCell = cell as? VideoPlaybackCell {
-//                if videoCell.isPlaying() {
-//                    videoCell.stop()
-//                } else {
-//                    let viewController = VideoPlayController(completion: { play in
-//                        if play {
-//                            videoCell.play()
-//                        }
-//                    })
-//                    viewController.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
-//                    viewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-//                    self.presentViewController(viewController, animated: true, completion: nil)
-//                }
-//            }
-//        }
-//    }
-//
-//    func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-//        if let photosetRowCell = cell as? PhotosetRowTableViewCell {
-//            photosetRowCell.cancelDownloads()
-//        } else if let contentCell = cell as? ContentTableViewCell {
-//            contentCell.content = nil
-//        }
-//    }
 
     // MARK: UIScrollViewDelegate
     

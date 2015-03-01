@@ -55,6 +55,6 @@ class PostCollectionViewCell: UICollectionViewCell {
     }
 
     func endDisplay() {
-        
+        self.postViewController.endDisplay()
     }
 }

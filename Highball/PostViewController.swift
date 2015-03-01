@@ -69,6 +69,20 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
         }
     }
 
+    func endDisplay() {
+        if let indexPaths = self.tableView.indexPathsForVisibleRows() {
+            for indexPath in indexPaths {
+                if let cell = self.tableView.cellForRowAtIndexPath(indexPath as NSIndexPath) {
+                    if let cell = cell as? PhotosetRowTableViewCell {
+                        cell.cancelDownloads()
+                    } else if let cell = cell as? ContentTableViewCell {
+                        cell.content = nil
+                    }
+                }
+            }
+        }
+    }
+
     func imageAtPoint(point: CGPoint) -> UIImage? {
         if let indexPath = self.tableView.indexPathForRowAtPoint(self.view.convertPoint(point, toView: self.tableView)) {
             if let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? PhotosetRowTableViewCell {
@@ -419,21 +433,13 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
         }
     }
     
-        func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-            if let cell = tableView.cellForRowAtIndexPath(indexPath) {
-                if let bodyTapHandler = self.bodyTapHandler {
-                    bodyTapHandler(self.post, cell)
-                }
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if let cell = tableView.cellForRowAtIndexPath(indexPath) {
+            if let bodyTapHandler = self.bodyTapHandler {
+                bodyTapHandler(self.post, cell)
             }
         }
-    //
-    //    func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-    //        if let photosetRowCell = cell as? PhotosetRowTableViewCell {
-    //            photosetRowCell.cancelDownloads()
-    //        } else if let contentCell = cell as? ContentTableViewCell {
-    //            contentCell.content = nil
-    //        }
-    //    }
+    }
 
     // MARK: TagsTableViewCellDelegate
     
