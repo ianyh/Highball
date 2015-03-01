@@ -148,6 +148,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
         self.collectionView?.bounces = true
         self.collectionView?.alwaysBounceHorizontal = false
         self.collectionView?.alwaysBounceVertical = true
+        self.collectionView?.allowsSelection = false
 
         self.collectionView?.registerClass(PostCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: postCollectionViewCellIdentifier)
         
@@ -412,8 +413,8 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
         if sender.state == UIGestureRecognizerState.Began {
             self.collectionView!.scrollEnabled = false
             let point = sender.locationInView(self.navigationController!.view)
-            let tableViewPoint = sender.locationInView(self.collectionView!)
-            if let indexPath = self.collectionView?.indexPathForItemAtPoint(tableViewPoint) {
+            let collectionViewPoint = sender.locationInView(self.collectionView!)
+            if let indexPath = self.collectionView?.indexPathForItemAtPoint(collectionViewPoint) {
                 if let cell = self.collectionView?.cellForItemAtIndexPath(indexPath) {
                     let post = self.posts[indexPath.row]
                     let viewController = QuickReblogViewController()
@@ -437,9 +438,9 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
             self.collectionView!.scrollEnabled = true
             if let viewController = self.reblogViewController {
                 let point = viewController.startingPoint
-                let tableViewPoint = self.collectionView!.convertPoint(point, fromView: self.navigationController!.view)
-                if let indexPath = self.collectionView!.indexPathForItemAtPoint(tableViewPoint) {
-                    if let cell = self.collectionView!.cellForItemAtIndexPath(indexPath) {
+                let collectionViewPoint = self.collectionView!.convertPoint(point, fromView: self.navigationController!.view)
+                if let indexPath = self.collectionView!.indexPathForItemAtPoint(collectionViewPoint) {
+                    if let cell = self.collectionView!.cellForItemAtIndexPath(indexPath) as? PostCollectionViewCell {
                         let post = self.posts[indexPath.row]
                         
                         if let quickReblogAction = viewController.reblogAction() {
@@ -458,21 +459,22 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
                                 self.presentViewController(reblogViewController, animated: true, completion: nil)
                             case .Share:
                                 let postItemProvider = PostItemProvider(placeholderItem: "")
-                                
+
                                 postItemProvider.post = post
                                 
                                 var activityItems: Array<UIActivityItemProvider> = [ postItemProvider ]
-//                                if let photosetCell = cell as? PhotosetRowTableViewCell {
-//                                    if let image = photosetCell.imageAtPoint(self.view.convertPoint(point, toView: photosetCell)) {
-//                                        let imageItemProvider = ImageItemProvider(placeholderItem: image)
-//                                        
-//                                        imageItemProvider.image = image
-//                                        
-//                                        activityItems.append(imageItemProvider)
-//                                    }
-//                                }
-                                
+
+                                if let image = cell.imageAtPoint(self.view.convertPoint(point, toView: cell)) {
+                                    let imageItemProvider = ImageItemProvider(placeholderItem: image)
+
+                                    imageItemProvider.image = image
+
+                                    activityItems.append(imageItemProvider)
+                                }
+
                                 let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+                                activityViewController.popoverPresentationController?.sourceView = cell
+                                activityViewController.popoverPresentationController?.sourceRect = CGRect(origin: cell.center, size: CGSize(width: 1, height: 1))
                                 self.presentViewController(activityViewController, animated: true, completion: nil)
                             case .Like:
                                 if post.liked.boolValue {
@@ -547,6 +549,27 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
                     self.presentViewController(alertController, animated: true, completion: nil)
                 } else {
                     self.navigationController!.pushViewController(BlogViewController(blogName: post.blogName), animated: true)
+                }
+            }
+        }
+
+        cell.bodyTapHandler = { post, view in
+            if let photosetRowCell = view as? PhotosetRowTableViewCell {
+                let viewController = ImagesViewController()
+                viewController.post = post
+                self.presentViewController(viewController, animated: true, completion: nil)
+            } else if let videoCell = cell as? VideoPlaybackCell {
+                if videoCell.isPlaying() {
+                    videoCell.stop()
+                } else {
+                    let viewController = VideoPlayController(completion: { play in
+                        if play {
+                            videoCell.play()
+                        }
+                    })
+                    viewController.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+                    viewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
+                    self.presentViewController(viewController, animated: true, completion: nil)
                 }
             }
         }

@@ -50,6 +50,10 @@ class PostCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    func imageAtPoint(point: CGPoint) -> UIImage? {
+        return self.postViewController.imageAtPoint(self.convertPoint(point, toView: self.postViewController.view))
+    }
+
     func endDisplay() {
         
     }

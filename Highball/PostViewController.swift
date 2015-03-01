@@ -69,6 +69,15 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
         }
     }
 
+    func imageAtPoint(point: CGPoint) -> UIImage? {
+        if let indexPath = self.tableView.indexPathForRowAtPoint(self.view.convertPoint(point, toView: self.tableView)) {
+            if let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? PhotosetRowTableViewCell {
+                return cell.imageAtPoint(point)
+            }
+        }
+        return nil
+    }
+
     // MARK: UITableViewDataSource
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -409,32 +418,14 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
             return 0
         }
     }
-    //
-    //    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    //        if let cell = tableView.cellForRowAtIndexPath(indexPath) {
-    //            if let photosetRowCell = cell as? PhotosetRowTableViewCell {
-    //                let post = self.posts[indexPath.section]
-    //                let viewController = ImagesViewController()
-    //
-    //                viewController.post = post
-    //
-    //                self.presentViewController(viewController, animated: true, completion: nil)
-    //            } else if let videoCell = cell as? VideoPlaybackCell {
-    //                if videoCell.isPlaying() {
-    //                    videoCell.stop()
-    //                } else {
-    //                    let viewController = VideoPlayController(completion: { play in
-    //                        if play {
-    //                            videoCell.play()
-    //                        }
-    //                    })
-    //                    viewController.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
-    //                    viewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-    //                    self.presentViewController(viewController, animated: true, completion: nil)
-    //                }
-    //            }
-    //        }
-    //    }
+    
+        func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+            if let cell = tableView.cellForRowAtIndexPath(indexPath) {
+                if let bodyTapHandler = self.bodyTapHandler {
+                    bodyTapHandler(self.post, cell)
+                }
+            }
+        }
     //
     //    func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
     //        if let photosetRowCell = cell as? PhotosetRowTableViewCell {
