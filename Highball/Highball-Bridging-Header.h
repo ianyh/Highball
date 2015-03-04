@@ -19,6 +19,7 @@
 #import <FontAwesomeKit/FontAwesomeKit.h>
 #import <M13ProgressSuite/UINavigationController+M13ProgressViewBar.h>
 #import <pop/POP.h>
+#import <Reachability/Reachability.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "SLKTextViewController.h"
 #import "UIScrollView+SVInfiniteScrolling.h"

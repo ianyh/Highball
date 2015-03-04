@@ -41,6 +41,7 @@ PODS:
   - JXHTTP (1.0.4)
   - M13ProgressSuite (1.2.7)
   - pop (1.0.7)
+  - Reachability (3.2)
   - SDWebImage (3.7.1):
     - SDWebImage/Core (= 3.7.1)
   - SDWebImage/Core (3.7.1)
@@ -78,6 +79,7 @@ DEPENDENCIES:
   - FontAwesomeKit (from `https://github.com/PrideChung/FontAwesomeKit.git`)
   - M13ProgressSuite (from `https://github.com/ianyh/M13ProgressSuite.git`)
   - pop
+  - Reachability
   - SDWebImage
   - SlackTextViewController
   - SVPullToRefresh
@@ -110,6 +112,7 @@ SPEC CHECKSUMS:
   JXHTTP: 528be324dcd08afdd63bc0ac1b80c4df2cb2b5f0
   M13ProgressSuite: 03d194af6359da440641ba758aed5a18b0386a86
   pop: 2f14a1ea61339767af9e66741b418c831b3844df
+  Reachability: 1ef8adf5c4e3d362f96515d4278f68dad3c26930
   SDWebImage: 116e88633b5b416ea0ca4b334a4ac59cf72dd38d
   SlackTextViewController: 2dcf79adbfc49447e90256ce863c1de412199942
   SSKeychain: cc48bd3ad24fcd9125adb9e0d23dd50b8bbd08b9
@@ -120,4 +123,4 @@ SPEC CHECKSUMS:
   WCFastCell: 8a9c6507a2a9d3eae9959dd3458a11ba5560503e
   youtube-ios-player-helper: 53aecd0b4763a77e6890e9a7c55abb7b5c4bedea
 
-COCOAPODS: 0.36.0.beta.2
+COCOAPODS: 0.36.0.rc.1
