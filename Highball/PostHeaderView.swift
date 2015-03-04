@@ -9,7 +9,7 @@
 import UIKit
 
 class PostHeaderView: UITableViewHeaderFooterView {
-    var tapHandler: ((Post) -> ())?
+    var tapHandler: ((Post, UIView) -> ())?
 
     private let avatarLoadQueue = dispatch_queue_create("avatarLoadQueue", nil)
     private var avatarImageView: UIImageView!
@@ -139,7 +139,7 @@ class PostHeaderView: UITableViewHeaderFooterView {
     func tap(sender: UIButton) {
         if let tapHandler = self.tapHandler {
             if let post = self.post {
-                tapHandler(post)
+                tapHandler(post, self)
             }
         }
     }

@@ -21,6 +21,7 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - ChameleonFramework (1.1.2)
+  - CHTCollectionViewWaterfallLayout (0.8)
   - FLAnimatedImage (1.0.8)
   - FontAwesomeKit (2.1.9):
     - FontAwesomeKit/Core (= 2.1.9)
@@ -72,6 +73,7 @@ PODS:
 DEPENDENCIES:
   - AFNetworking
   - ChameleonFramework
+  - CHTCollectionViewWaterfallLayout
   - FLAnimatedImage
   - FontAwesomeKit (from `https://github.com/PrideChung/FontAwesomeKit.git`)
   - M13ProgressSuite (from `https://github.com/ianyh/M13ProgressSuite.git`)
@@ -102,6 +104,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   AFNetworking: 0f54cb5d16ce38c1b76948faffb8d5fb705021c7
   ChameleonFramework: 5d34a29b6db60594a9998f6dfdffa8ac5f05979a
+  CHTCollectionViewWaterfallLayout: 14b7950cbe45ae9297e7759148d69b022bac047d
   FLAnimatedImage: 8669ace2a531fc0bb7344a6326f48c3a4c3de84b
   FontAwesomeKit: 0cd610453ce270f34ad17378c68de98aad0e05ef
   JXHTTP: 528be324dcd08afdd63bc0ac1b80c4df2cb2b5f0
