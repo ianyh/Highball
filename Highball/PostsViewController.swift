@@ -457,8 +457,6 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
                                 reblogViewController.bodyHeight = self.bodyHeightCache[post.id]
                                 reblogViewController.secondaryBodyHeight = self.secondaryBodyHeightCache[post.id]
                                 reblogViewController.height = self.collectionView(self.collectionView!, layout: self.collectionView!.collectionViewLayout, sizeForItemAtIndexPath: indexPath).height
-                                reblogViewController.width = self.collectionView!.frame.size.width
-//                                reblogViewController.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
                                 if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
                                     reblogViewController.modalPresentationStyle = UIModalPresentationStyle.Popover
                                 } else {

@@ -14,11 +14,8 @@ class TextReblogViewController: SLKTextViewController {
     var blogName: String!
     var bodyHeight: CGFloat?
     var secondaryBodyHeight: CGFloat?
-    var bodyHeightCache: Dictionary<Int, CGFloat>!
-    var secondaryBodyHeightCache: Dictionary<Int, CGFloat>!
     var postViewController: PostViewController!
     var height: CGFloat!
-    var width: CGFloat!
 
     private var reblogging = false
 
@@ -70,7 +67,6 @@ class TextReblogViewController: SLKTextViewController {
         self.tableView.backgroundColor = UIColor.clearColor()
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 20, 0)
         self.tableView.backgroundColor = UIColor.clearColor()
-//        self.tableView.transform = CGAffineTransformIdentity
 
         self.tableView.registerClass(UITableViewCell.classForCoder(), forCellReuseIdentifier: postTableViewCellIdentifier)
         self.tableView.registerClass(PhotosetRowTableViewCell.classForCoder(), forCellReuseIdentifier: photosetRowTableViewCellIdentifier)
@@ -104,11 +100,6 @@ class TextReblogViewController: SLKTextViewController {
             lightBlurView.right == view.right
             lightBlurView.height == 20
         }
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        println("\(self.tableView)")
     }
 
     override func canPressRightButton() -> Bool {
