@@ -25,26 +25,42 @@ extension FLAnimatedImageView {
             } else if let data = TMCache.sharedCache().objectForKey(imageURL.absoluteString) as? NSData {
                 dispatch_async(imageLoadQueue, {
                     let animatedImage = FLAnimatedImage(animatedGIFData: data)
-                    AnimatedImageCache.setAnimatedImage(animatedImage, forKey: cacheKey)
-                    dispatch_async(dispatch_get_main_queue(), {
-                        self.animatedImage = animatedImage
-                        if let completion = completion {
-                            completion(true)
+                    if let animatedImage = animatedImage {
+                        AnimatedImageCache.setAnimatedImage(animatedImage, forKey: cacheKey)
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.animatedImage = animatedImage
+                            if let completion = completion {
+                                completion(true)
+                            }
+                        })
+                    } else {
+                        dispatch_async(dispatch_get_main_queue()) {
+                            if let completion = completion {
+                                completion(false)
+                            }
                         }
-                    })
+                    }
                 })
             } else {
                 return imageDownloader.downloadImageWithURL(imageURL, options: SDWebImageDownloaderOptions.UseNSURLCache, progress: nil, completed: { (image, data, error, finished) -> Void in
                     if finished && error == nil {
                         dispatch_async(imageLoadQueue, {
                             let animatedImage = FLAnimatedImage(animatedGIFData: data)
-                            AnimatedImageCache.setAnimatedImage(animatedImage, forKey: cacheKey)
-                            dispatch_async(dispatch_get_main_queue(), {
-                                if let completion = completion {
-                                    completion(true)
+                            if let animatedImage = animatedImage {
+                                AnimatedImageCache.setAnimatedImage(animatedImage, forKey: cacheKey)
+                                dispatch_async(dispatch_get_main_queue(), {
+                                    if let completion = completion {
+                                        completion(true)
+                                    }
+                                    self.animatedImage = animatedImage
+                                })
+                            } else {
+                                dispatch_async(dispatch_get_main_queue()) {
+                                    if let completion = completion {
+                                        completion(false)
+                                    }
                                 }
-                                self.animatedImage = animatedImage
-                            })
+                            }
                         })
                         TMCache.sharedCache().setObject(data, forKey: imageURL.absoluteString)
                     } else {
