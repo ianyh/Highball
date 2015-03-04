@@ -32,7 +32,7 @@ class PostHeaderView: UITableViewHeaderFooterView {
                         })
                     })
                 } else {
-                    TMAPIClient.sharedInstance().avatar(blogName, size: 40) { (response: AnyObject!, error: NSError!) in
+                    TMAPIClient.sharedInstance().avatar(blogName, size: 80) { (response: AnyObject!, error: NSError!) in
                         if let e = error {
                             println(e)
                         } else {
