@@ -306,12 +306,14 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
 
                                 dispatch_async(dispatch_get_main_queue(), {
                                     self.loadingCompletion = {
-                                        let indexSet = NSIndexSet(indexesInRange: NSMakeRange(self.posts.count, posts.count))
+                                        var indexPaths = Array<NSIndexPath>()
+                                        for row in self.posts.count..<(self.posts.count + posts.count) {
+                                            indexPaths.append(NSIndexPath(forRow: row, inSection: 0))
+                                        }
 
                                         self.posts.extend(posts)
                                         
-                                        self.collectionView!.reloadData()
-//                                        self.tableView.insertSections(indexSet, withRowAnimation: UITableViewRowAnimation.None)
+                                        self.collectionView!.insertItemsAtIndexPaths(indexPaths)
                                     }
                                     self.reloadTable()
                                 })
