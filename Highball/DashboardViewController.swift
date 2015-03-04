@@ -72,9 +72,9 @@ class DashboardViewController: PostsViewController {
     }
 
     func bookmark() {
-        if let indexPaths = self.tableView.indexPathsForVisibleRows() {
+        if let indexPaths = self.collectionView?.indexPathsForVisibleItems() {
             if let firstIndexPath = indexPaths.first as? NSIndexPath {
-                let post = self.posts[firstIndexPath.section]
+                let post = self.posts[firstIndexPath.row]
                 NSUserDefaults.standardUserDefaults().setObject(post.id, forKey: "HIBookmarkID:\(AccountsService.account.blog.url)")
             }
         }

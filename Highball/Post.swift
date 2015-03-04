@@ -129,21 +129,6 @@ class Post {
         switch self.type {
         case "quote":
             bodyString = self.json["source"].string
-        case "video":
-            if let players = self.json["player"].array {
-                let sortedPlayers = players.sorted({ $0["width"].int! > $1["width"].int! })
-                if countElements(sortedPlayers) > 0 {
-                    let screenWidth = UIScreen.mainScreen().bounds.size.width
-                    var finalPlayer: String? = sortedPlayers.first!["embed_code"].string!
-                    for player in sortedPlayers {
-                        if player["width"].int! < Int(screenWidth) {
-                            break
-                        }
-                        finalPlayer = player["embed_code"].string!
-                    }
-                    bodyString = finalPlayer
-                }
-            }
         case "audio":
             bodyString = self.json["player"].string
         default:
