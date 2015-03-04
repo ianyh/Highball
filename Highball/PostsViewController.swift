@@ -448,15 +448,25 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
                             switch quickReblogAction {
                             case .Reblog(let reblogType):
                                 let reblogViewController = TextReblogViewController()
-                                
+
                                 reblogViewController.reblogType = reblogType
                                 reblogViewController.post = post
                                 reblogViewController.blogName = self.reblogBlogName()
-                                reblogViewController.bodyHeightCache = self.bodyHeightCache
-                                reblogViewController.secondaryBodyHeightCache = self.secondaryBodyHeightCache
-                                reblogViewController.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
+                                reblogViewController.bodyHeight = self.bodyHeightCache[post.id]
+                                reblogViewController.secondaryBodyHeight = self.secondaryBodyHeightCache[post.id]
+                                reblogViewController.height = self.collectionView(self.collectionView!, layout: self.collectionView!.collectionViewLayout, sizeForItemAtIndexPath: indexPath).height
+                                reblogViewController.width = self.collectionView!.frame.size.width
+//                                reblogViewController.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
+                                if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+                                    reblogViewController.modalPresentationStyle = UIModalPresentationStyle.Popover
+                                } else {
+                                    reblogViewController.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
+                                }
                                 reblogViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-                                
+                                reblogViewController.popoverPresentationController?.sourceView = cell
+                                reblogViewController.popoverPresentationController?.sourceRect = cell.frame
+                                reblogViewController.popoverPresentationController?.backgroundColor = UIColor.clearColor()
+                                reblogViewController.preferredContentSize = CGSize(width: self.collectionView!.frame.size.width / self.columnCount, height: 480)
                                 self.presentViewController(reblogViewController, animated: true, completion: nil)
                             case .Share:
                                 let postItemProvider = PostItemProvider(placeholderItem: "")

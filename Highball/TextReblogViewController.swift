@@ -12,8 +12,13 @@ class TextReblogViewController: SLKTextViewController {
     var reblogType: ReblogType!
     var post: Post!
     var blogName: String!
+    var bodyHeight: CGFloat?
+    var secondaryBodyHeight: CGFloat?
     var bodyHeightCache: Dictionary<Int, CGFloat>!
     var secondaryBodyHeightCache: Dictionary<Int, CGFloat>!
+    var postViewController: PostViewController!
+    var height: CGFloat!
+    var width: CGFloat!
 
     private var reblogging = false
 
@@ -23,6 +28,8 @@ class TextReblogViewController: SLKTextViewController {
     private let postQuestionTableViewCellIdentifier = "postQuestionTableViewCellIdentifier"
     private let postLinkTableViewCellIdentifier = "postLinkTableViewCellIdentifier"
     private let postDialogueEntryTableViewCellIdentifier = "postDialogueEntryTableViewCellIdentifier"
+
+    private let postTableViewCellIdentifier = "postTableViewCellIdentifier"
 
     override init() {
         super.init(tableViewStyle: UITableViewStyle.Plain)
@@ -36,6 +43,11 @@ class TextReblogViewController: SLKTextViewController {
         super.viewDidLoad()
 
         self.view.backgroundColor = UIColor.clearColor()
+
+        self.postViewController = PostViewController()
+        self.postViewController.post = self.post
+        self.postViewController.bodyHeight = self.bodyHeight
+        self.postViewController.secondaryBodyHeight = self.secondaryBodyHeight
 
         var reblogTitle: String
         switch self.reblogType! {
@@ -57,7 +69,10 @@ class TextReblogViewController: SLKTextViewController {
         self.tableView.showsHorizontalScrollIndicator = false
         self.tableView.backgroundColor = UIColor.clearColor()
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 20, 0)
+        self.tableView.backgroundColor = UIColor.clearColor()
+//        self.tableView.transform = CGAffineTransformIdentity
 
+        self.tableView.registerClass(UITableViewCell.classForCoder(), forCellReuseIdentifier: postTableViewCellIdentifier)
         self.tableView.registerClass(PhotosetRowTableViewCell.classForCoder(), forCellReuseIdentifier: photosetRowTableViewCellIdentifier)
         self.tableView.registerClass(ContentTableViewCell.classForCoder(), forCellReuseIdentifier: contentTableViewCellIdentifier)
         self.tableView.registerClass(PostQuestionTableViewCell.classForCoder(), forCellReuseIdentifier: postQuestionTableViewCellIdentifier)
@@ -89,6 +104,11 @@ class TextReblogViewController: SLKTextViewController {
             lightBlurView.right == view.right
             lightBlurView.height == 20
         }
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        println("\(self.tableView)")
     }
 
     override func canPressRightButton() -> Bool {
@@ -128,262 +148,37 @@ class TextReblogViewController: SLKTextViewController {
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let post = self.post {
-            switch self.post.type {
-            case "photo":
-                let postPhotos = post.photos
-                if postPhotos.count == 1 {
-                    return 2
-                }
-                
-                return post.layoutRows.count + 1
-            case "text":
-                return 1
-            case "answer":
-                return 2
-            case "quote":
-                return 2
-            case "link":
-                return 2
-            case "chat":
-                return post.dialogueEntries.count
-            case "video":
-                return 2
-            case "audio":
-                return 2
-            default:
-                return 0
-            }
+            return 1
         }
-
         return 0
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        return UITableViewCell()
-//
-//        let rowCount = self.tableView(tableView, numberOfRowsInSection: indexPath.section)
-//        let row = rowCount - indexPath.row - 1
-//
-//        switch self.post.type {
-//        case "photo":
-//            if row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 1 {
-//                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
-//                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
-//                cell.transform = self.tableView.transform
-//                return cell
-//            }
-//            
-//            let cell = tableView.dequeueReusableCellWithIdentifier(photosetRowTableViewCellIdentifier) as PhotosetRowTableViewCell!
-//            cell.transform = self.tableView.transform
-//
-//            let postPhotos = post.photos
-//            if postPhotos.count == 1 {
-//                cell.images = postPhotos
-//            } else {
-//                let photosetLayoutRows = post.layoutRows
-//                var photosIndexStart = 0
-//                for photosetLayoutRow in photosetLayoutRows[0..<row] {
-//                    photosIndexStart += photosetLayoutRow
-//                }
-//                let photosetLayoutRow = photosetLayoutRows[row]
-//                
-//                cell.images = Array(postPhotos[(photosIndexStart)..<(photosIndexStart + photosetLayoutRow)])
-//            }
-//            cell.contentWidth = tableView.frame.size.width
-//            
-//            return cell
-//        case "text":
-//            let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
-//            cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
-//            cell.transform = self.tableView.transform
-//            return cell
-//        case "answer":
-//            switch AnswerRow(rawValue: row)! {
-//            case .Question:
-//                let cell = tableView.dequeueReusableCellWithIdentifier(postQuestionTableViewCellIdentifier) as PostQuestionTableViewCell!
-//                cell.post = post
-//                cell.transform = self.tableView.transform
-//                return cell
-//            case .Answer:
-//                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
-//                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
-//                cell.transform = self.tableView.transform
-//                return cell
-//            }
-//        case "quote":
-//            switch QuoteRow(rawValue: row)! {
-//            case .Quote:
-//                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
-//                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
-//                cell.transform = self.tableView.transform
-//                return cell
-//            case .Source:
-//                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
-//                cell.content = post.htmlSecondaryBodyWithWidth(tableView.frame.size.width)
-//                cell.transform = self.tableView.transform
-//                return cell
-//            }
-//        case "link":
-//            switch LinkRow(rawValue: row)! {
-//            case .Link:
-//                let cell = tableView.dequeueReusableCellWithIdentifier(postLinkTableViewCellIdentifier) as PostLinkTableViewCell!
-//                cell.post = post
-//                cell.transform = self.tableView.transform
-//                return cell
-//            case .Description:
-//                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
-//                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
-//                cell.transform = self.tableView.transform
-//                return cell
-//            }
-//        case "chat":
-//            let dialogueEntry = post.dialogueEntries[row]
-//            let cell = tableView.dequeueReusableCellWithIdentifier(postDialogueEntryTableViewCellIdentifier) as PostDialogueEntryTableViewCell!
-//            cell.dialogueEntry = dialogueEntry
-//            cell.transform = self.tableView.transform
-//            return cell
-//        case "video":
-//            let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
-//            switch VideoRow(rawValue: row)! {
-//            case .Player:
-//                cell.content = post.htmlSecondaryBodyWithWidth(tableView.frame.size.width)
-//            case .Caption:
-//                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
-//            }
-//            cell.transform = self.tableView.transform
-//            return cell
-//        case "audio":
-//            let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as ContentTableViewCell!
-//            switch AudioRow(rawValue: row)! {
-//            case .Player:
-//                cell.content = post.htmlSecondaryBodyWithWidth(tableView.frame.size.width)
-//            case .Caption:
-//                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
-//            }
-//            cell.transform = self.tableView.transform
-//            return cell
-//        default:
-//            let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as UITableViewCell!
-//            cell.transform = self.tableView.transform
-//            return cell
-//        }
+        let cell = tableView.dequeueReusableCellWithIdentifier(postTableViewCellIdentifier) as UITableViewCell
+
+        cell.transform = tableView.transform
+        cell.backgroundColor = UIColor.whiteColor()
+
+        self.postViewController.view.backgroundColor = UIColor.clearColor()
+        cell.contentView.addSubview(self.postViewController.view)
+
+        layout(self.postViewController.view, cell.contentView) { postView, contentView in
+            postView.edges == contentView.edges; return
+        }
+
+        return cell
     }
 
-    override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(postHeaderViewIdentifier) as PostHeaderView
-        
-        view.post = self.post
-        view.transform = self.tableView.transform
-        
-        return view
-    }
+//    override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+//        let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(postHeaderViewIdentifier) as PostHeaderView
+//        
+//        view.post = self.post
+//        view.transform = self.tableView.transform
+//        
+//        return view
+//    }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let rowCount = self.tableView(tableView, numberOfRowsInSection: indexPath.section)
-        let row = rowCount - indexPath.row - 1
-
-        switch self.post.type {
-        case "photo":
-            if row == rowCount - 1 {
-                if let height = self.bodyHeightCache[post.id] {
-                    return height
-                }
-                return 0
-            }
-            
-            let postPhotos = post.photos
-            var images: Array<PostPhoto>!
-            
-            if postPhotos.count == 1 {
-                images = postPhotos
-            } else {
-                let photosetLayoutRows = post.layoutRows
-                var photosIndexStart = 0
-                for photosetLayoutRow in photosetLayoutRows[0..<row] {
-                    photosIndexStart += photosetLayoutRow
-                }
-                let photosetLayoutRow = photosetLayoutRows[row]
-                
-                images = Array(postPhotos[(photosIndexStart)..<(photosIndexStart + photosetLayoutRow)])
-            }
-            
-            let imageCount = images.count
-            let imageWidth = tableView.frame.size.width / CGFloat(images.count)
-            let minHeight = images.map { (image: PostPhoto) -> CGFloat in
-                let scale = image.height / image.width
-                return imageWidth * scale
-                }.reduce(CGFloat.max, combine: { min($0, $1) })
-            
-            return minHeight
-        case "text":
-            if let height = self.bodyHeightCache[post.id] {
-                return height
-            }
-            return 0
-        case "answer":
-            switch AnswerRow(rawValue: row)! {
-            case .Question:
-                return PostQuestionTableViewCell.heightForPost(post, width: tableView.frame.size.width)
-            case .Answer:
-                if let height = self.bodyHeightCache[post.id] {
-                    return height
-                }
-                return 0
-            }
-        case "quote":
-            switch QuoteRow(rawValue: row)! {
-            case .Quote:
-                if let height = self.bodyHeightCache[post.id] {
-                    return height
-                }
-                return 0
-            case .Source:
-                if let height = self.secondaryBodyHeightCache[post.id] {
-                    return height
-                }
-                return 0
-            }
-        case "link":
-            switch LinkRow(rawValue: row)! {
-            case .Link:
-                return PostLinkTableViewCell.heightForPost(post, width: tableView.frame.size.width)
-            case .Description:
-                if let height = self.bodyHeightCache[post.id] {
-                    return height
-                }
-                return 0
-            }
-        case "chat":
-            let dialogueEntry = post.dialogueEntries[row]
-            return PostDialogueEntryTableViewCell.heightForPostDialogueEntry(dialogueEntry, width: tableView.frame.size.width)
-        case "video":
-            switch VideoRow(rawValue: row)! {
-            case .Player:
-                if let height = self.secondaryBodyHeightCache[post.id] {
-                    return height
-                }
-                return 0
-            case .Caption:
-                if let height = self.bodyHeightCache[post.id] {
-                    return height
-                }
-                return 0
-            }
-        case "video":
-            switch AudioRow(rawValue: row)! {
-            case .Player:
-                if let height = self.secondaryBodyHeightCache[post.id] {
-                    return height
-                }
-                return 0
-            case .Caption:
-                if let height = self.bodyHeightCache[post.id] {
-                    return height
-                }
-                return 0
-            }
-        default:
-            return 0
-        }
+        return self.height
     }
 }

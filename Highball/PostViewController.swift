@@ -12,8 +12,12 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
     private var tableView: UITableView!
     var post: Post! {
         didSet {
-            self.heightCache.removeAll()
-            self.tableView.reloadData()
+            if let heightCache = self.heightCache {
+                self.heightCache.removeAll()
+            }
+            if let tableView = self.tableView {
+                tableView.reloadData()
+            }
         }
     }
     var heightCache: Dictionary<NSIndexPath, CGFloat>!
@@ -67,6 +71,12 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
         layout(self.tableView, self.view) { tableView, view in
             tableView.edges == view.edges; return
         }
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        self.heightCache.removeAll()
+        self.tableView.reloadData()
     }
 
     func endDisplay() {
