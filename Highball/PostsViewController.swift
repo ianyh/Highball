@@ -585,6 +585,12 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
             }
         }
 
+        cell.tagTapHandler = { post, tag in
+            if let navigationController = self.navigationController {
+                self.navigationController!.pushViewController(TagViewController(tag: tag), animated: true)
+            }
+        }
+
         return cell
     }
 

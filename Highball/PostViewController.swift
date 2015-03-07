@@ -26,6 +26,7 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
 
     var headerTapHandler: ((Post, UIView) -> ())?
     var bodyTapHandler: ((Post, UIView) -> ())?
+    var tagTapHandler: ((Post, String) -> ())?
 
     required override init() {
         super.init()
@@ -460,8 +461,8 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
     // MARK: TagsTableViewCellDelegate
     
     func tagsTableViewCell(cell: TagsTableViewCell, didSelectTag tag: String) {
-        if let navigationController = self.navigationController {
-            navigationController.pushViewController(TagViewController(tag: tag), animated: true)
+        if let tagTapHandler = self.tagTapHandler {
+            tagTapHandler(self.post, tag)
         }
     }
 }
