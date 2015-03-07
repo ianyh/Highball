@@ -3,6 +3,7 @@
 ## 0.5.7
 
 * Fixed a bunch of regressions with waterfall layout.
+* Some better handling of reblog/queue errors.
 
 ## 0.5.6
 

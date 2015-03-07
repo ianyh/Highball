@@ -464,8 +464,8 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
                                     reblogViewController.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
                                 }
                                 reblogViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-                                reblogViewController.popoverPresentationController?.sourceView = cell
-                                reblogViewController.popoverPresentationController?.sourceRect = cell.frame
+                                reblogViewController.popoverPresentationController?.sourceView = self.view
+                                reblogViewController.popoverPresentationController?.sourceRect = self.view.convertRect(cell.bounds, fromView: cell)
                                 reblogViewController.popoverPresentationController?.backgroundColor = UIColor.clearColor()
                                 reblogViewController.preferredContentSize = CGSize(width: self.collectionView!.frame.size.width / self.columnCount, height: 480)
                                 self.presentViewController(reblogViewController, animated: true, completion: nil)
