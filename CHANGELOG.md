@@ -4,6 +4,7 @@
 
 * Make header tap work again.
 * Limit cache size.
+* Option for clearing cache when it's taking up too much disk space.
 
 ## 0.5.7
 

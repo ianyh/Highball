@@ -12,6 +12,7 @@ class SettingsViewController : UITableViewController {
     private enum SettingsSection: Int {
         case Accounts
         case Passcode
+        case Cache
     }
     private enum PasscodeRow: Int {
         case Set
@@ -39,7 +40,7 @@ class SettingsViewController : UITableViewController {
     }
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 2
+        return 3
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -51,6 +52,8 @@ class SettingsViewController : UITableViewController {
                 return 3
             }
             return 2
+        case .Cache:
+            return 1
         }
     }
 
@@ -80,6 +83,9 @@ class SettingsViewController : UITableViewController {
                     cell.accessoryType = UITableViewCellAccessoryType.None
                 }
             }
+        case .Cache:
+            cell.textLabel?.text = "Clear Cache"
+            cell.accessoryType = UITableViewCellAccessoryType.None
         }
 
         return cell
@@ -116,6 +122,14 @@ class SettingsViewController : UITableViewController {
                 }
                 tableView.reloadData()
             }
+        case .Cache:
+            let alertController = UIAlertController(title: "Are you sure?", message: "Are you sure that you want to clear your cache?", preferredStyle: UIAlertControllerStyle.Alert)
+            alertController.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.Destructive) { action in
+                TMCache.sharedCache().diskCache.removeAllObjects(nil)
+                SDImageCache.sharedImageCache().clearDisk()
+            })
+            alertController.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.Cancel) { _ in })
+            self.presentViewController(alertController, animated: true, completion: nil)
         }
     }
 }
