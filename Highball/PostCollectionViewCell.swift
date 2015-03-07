@@ -22,18 +22,12 @@ class PostCollectionViewCell: UICollectionViewCell {
         }
     }
 
-    var headerTapHandler: ((Post, UIView) -> ())?
     var bodyTapHandler: ((Post, UIView) -> ())?
     var tagTapHandler: ((Post, String) -> ())?
 
     required override init(frame: CGRect) {
         super.init(frame: frame)
         self.postViewController = PostViewController()
-        self.postViewController.headerTapHandler = { post, view in
-            if let headerTapHandler = self.headerTapHandler {
-                headerTapHandler(post, view)
-            }
-        }
         self.postViewController.bodyTapHandler = { post, view in
             if let bodyTapHandler = self.bodyTapHandler {
                 bodyTapHandler(post, view)

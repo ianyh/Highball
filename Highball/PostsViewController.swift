@@ -545,26 +545,6 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
         cell.secondaryBodyHeight = self.secondaryBodyHeightCache[post.id]
         cell.post = post
 
-        cell.headerTapHandler = { post, view in
-            if let navigationController = self.navigationController {
-                if let rebloggedBlogName = post.rebloggedBlogName {
-                    let alertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
-                    alertController.popoverPresentationController?.sourceView = self.view
-                    alertController.popoverPresentationController?.sourceRect = self.view.convertRect(view.frame, fromView: view)
-                    alertController.addAction(UIAlertAction(title: post.blogName, style: UIAlertActionStyle.Default, handler: { alertAction in
-                        self.navigationController!.pushViewController(BlogViewController(blogName: post.blogName), animated: true)
-                    }))
-                    alertController.addAction(UIAlertAction(title: rebloggedBlogName, style: UIAlertActionStyle.Default, handler: { alertAction in
-                        self.navigationController!.pushViewController(BlogViewController(blogName: rebloggedBlogName), animated: true)
-                    }))
-                    alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: { _ in }))
-                    self.presentViewController(alertController, animated: true, completion: nil)
-                } else {
-                    self.navigationController!.pushViewController(BlogViewController(blogName: post.blogName), animated: true)
-                }
-            }
-        }
-
         cell.bodyTapHandler = { post, view in
             if let photosetRowCell = view as? PhotosetRowTableViewCell {
                 let viewController = ImagesViewController()
@@ -597,7 +577,27 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
 
     override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
         let view = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: postCollectionViewCellIdentifier, forIndexPath: indexPath) as PostHeaderView
-        view.post = self.posts![indexPath.row] as Post
+        let post = self.posts![indexPath.row] as Post
+        view.post = post
+        view.tapHandler = { post, view in
+            if let navigationController = self.navigationController {
+                if let rebloggedBlogName = post.rebloggedBlogName {
+                    let alertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+                    alertController.popoverPresentationController?.sourceView = self.view
+                    alertController.popoverPresentationController?.sourceRect = self.view.convertRect(view.frame, fromView: view)
+                    alertController.addAction(UIAlertAction(title: post.blogName, style: UIAlertActionStyle.Default, handler: { alertAction in
+                        self.navigationController!.pushViewController(BlogViewController(blogName: post.blogName), animated: true)
+                    }))
+                    alertController.addAction(UIAlertAction(title: rebloggedBlogName, style: UIAlertActionStyle.Default, handler: { alertAction in
+                        self.navigationController!.pushViewController(BlogViewController(blogName: rebloggedBlogName), animated: true)
+                    }))
+                    alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: { _ in }))
+                    self.presentViewController(alertController, animated: true, completion: nil)
+                } else {
+                    self.navigationController!.pushViewController(BlogViewController(blogName: post.blogName), animated: true)
+                }
+            }
+        }
         return view
     }
 

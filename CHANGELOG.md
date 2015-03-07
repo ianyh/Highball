@@ -1,5 +1,9 @@
 # Highball changelog
 
+## 0.5.8
+
+* Make header tap work again.
+
 ## 0.5.7
 
 * Fixed a bunch of regressions with waterfall layout.

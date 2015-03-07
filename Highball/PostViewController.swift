@@ -24,7 +24,6 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
     var bodyHeight: CGFloat?
     var secondaryBodyHeight: CGFloat?
 
-    var headerTapHandler: ((Post, UIView) -> ())?
     var bodyTapHandler: ((Post, UIView) -> ())?
     var tagTapHandler: ((Post, String) -> ())?
 
