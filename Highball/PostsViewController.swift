@@ -584,7 +584,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
                 if let rebloggedBlogName = post.rebloggedBlogName {
                     let alertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
                     alertController.popoverPresentationController?.sourceView = self.view
-                    alertController.popoverPresentationController?.sourceRect = self.view.convertRect(view.frame, fromView: view)
+                    alertController.popoverPresentationController?.sourceRect = self.view.convertRect(view.bounds, fromView: view)
                     alertController.addAction(UIAlertAction(title: post.blogName, style: UIAlertActionStyle.Default, handler: { alertAction in
                         self.navigationController!.pushViewController(BlogViewController(blogName: post.blogName), animated: true)
                     }))
