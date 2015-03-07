@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PostHeaderView: UITableViewHeaderFooterView {
+class PostHeaderView: UICollectionReusableView {
     var tapHandler: ((Post, UIView) -> ())?
 
     private let avatarLoadQueue = dispatch_queue_create("avatarLoadQueue", nil)
@@ -66,11 +66,6 @@ class PostHeaderView: UITableViewHeaderFooterView {
         self.setUpCell()
     }
 
-    override init(reuseIdentifier: String!) {
-        super.init(reuseIdentifier: reuseIdentifier)
-        self.setUpCell()
-    }
-
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.setUpCell()
@@ -79,7 +74,10 @@ class PostHeaderView: UITableViewHeaderFooterView {
     func setUpCell() {
         let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Dark)
         let blurView = UIVisualEffectView(effect: blurEffect)
-        self.backgroundView = blurView
+        self.addSubview(blurView)
+        layout(blurView, self) { blurView, view in
+            blurView.edges == view.edges; return
+        }
 
         self.avatarImageView = UIImageView()
         self.avatarImageView.layer.cornerRadius = 20
@@ -100,38 +98,38 @@ class PostHeaderView: UITableViewHeaderFooterView {
         let button = UIButton.buttonWithType(UIButtonType.System) as UIButton
         button.addTarget(self, action: Selector("tap:"), forControlEvents: UIControlEvents.TouchUpInside)
 
-        self.contentView.addSubview(self.avatarImageView)
-        self.contentView.addSubview(self.usernameLabel)
-        self.contentView.addSubview(self.topUsernameLabel)
-        self.contentView.addSubview(self.bottomUsernameLabel)
-        self.contentView.addSubview(button)
+        self.addSubview(self.avatarImageView)
+        self.addSubview(self.usernameLabel)
+        self.addSubview(self.topUsernameLabel)
+        self.addSubview(self.bottomUsernameLabel)
+        self.addSubview(button)
 
-        layout(self.avatarImageView, self.contentView) { avatarImageView, contentView in
+        layout(self.avatarImageView, self) { avatarImageView, contentView in
             avatarImageView.centerY == contentView.centerY
             avatarImageView.left == contentView.left + 4
             avatarImageView.width == 40
             avatarImageView.height == 40
         }
 
-        layout(self.usernameLabel, self.avatarImageView, self.contentView) { usernameLabel, avatarImageView, contentView in
+        layout(self.usernameLabel, self.avatarImageView, self) { usernameLabel, avatarImageView, contentView in
             usernameLabel.centerY == contentView.centerY
             usernameLabel.left == avatarImageView.right + 4
             usernameLabel.height == 30
         }
 
-        layout(self.topUsernameLabel, self.avatarImageView, self.contentView) { usernameLabel, avatarImageView, contentView in
+        layout(self.topUsernameLabel, self.avatarImageView, self) { usernameLabel, avatarImageView, contentView in
             usernameLabel.centerY == contentView.centerY - 8
             usernameLabel.left == avatarImageView.right + 4
             usernameLabel.height == 20
         }
 
-        layout(self.bottomUsernameLabel, self.avatarImageView, self.contentView) { usernameLabel, avatarImageView, contentView in
+        layout(self.bottomUsernameLabel, self.avatarImageView, self) { usernameLabel, avatarImageView, contentView in
             usernameLabel.centerY == contentView.centerY + 8
             usernameLabel.left == avatarImageView.right + 4
             usernameLabel.height == 20
         }
 
-        layout(button, self.contentView) { button, contentView in
+        layout(button, self) { button, contentView in
             button.edges == contentView.edges; return
         }
     }

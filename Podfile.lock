@@ -100,7 +100,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   CHTCollectionViewWaterfallLayout:
-    :commit: 68fd337a24861002f119bba3f844374d97584c6b
+    :commit: 57750315963eec8844c583942192d207b5f298e6
     :git: https://github.com/ianyh/CHTCollectionViewWaterfallLayout.git
   FontAwesomeKit:
     :commit: 62066f604c164c2e1c5be704df368d55955a52ce

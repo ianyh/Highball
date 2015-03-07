@@ -65,7 +65,6 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
         self.tableView.registerClass(TagsTableViewCell.classForCoder(), forCellReuseIdentifier: postTagsTableViewCellIdentifier)
         self.tableView.registerClass(VideoTableViewCell.classForCoder(), forCellReuseIdentifier: videoTableViewCellIdentifier)
         self.tableView.registerClass(YoutubeTableViewCell.classForCoder(), forCellReuseIdentifier: youtubeTableViewCellIdentifier)
-        self.tableView.registerClass(PostHeaderView.classForCoder(), forHeaderFooterViewReuseIdentifier: postHeaderViewIdentifier)
         
         self.view.addSubview(self.tableView)
 
@@ -269,19 +268,6 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
     }
 
     // MARK: UITableViewDelegate
-
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(postHeaderViewIdentifier) as PostHeaderView
-        
-        view.tapHandler = { post, view in
-            if let headerTapHandler = self.headerTapHandler {
-                headerTapHandler(post, view)
-            }
-        }
-        view.post = self.post
-        
-        return view
-    }
 
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 1 {

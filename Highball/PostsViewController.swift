@@ -152,7 +152,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
         self.collectionView?.backgroundColor = UIColor.whiteColor()
 
         self.collectionView?.registerClass(PostCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: postCollectionViewCellIdentifier)
-        self.collectionView?.registerClass(UICollectionReusableView.classForCoder(), forSupplementaryViewOfKind: CHTCollectionElementKindCellHeader, withReuseIdentifier: postCollectionViewCellIdentifier)
+        self.collectionView?.registerClass(PostHeaderView.classForCoder(), forSupplementaryViewOfKind: CHTCollectionElementKindCellHeader, withReuseIdentifier: postCollectionViewCellIdentifier)
         
         self.longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: Selector("didLongPress:"))
         self.longPressGestureRecognizer.delegate = self
@@ -596,8 +596,8 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
     }
 
     override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-        let view = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: postCollectionViewCellIdentifier, forIndexPath: indexPath) as UICollectionReusableView
-        view.backgroundColor = UIColor.blackColor()
+        let view = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: postCollectionViewCellIdentifier, forIndexPath: indexPath) as PostHeaderView
+        view.post = self.posts![indexPath.row] as Post
         return view
     }
 
@@ -610,7 +610,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
             return CGSize(width: collectionView.frame.size.width, height: height)
         }
         
-        var height: CGFloat = 50.0 * self.columnCount
+        var height: CGFloat = 0.0
         
         switch post.type {
         case "photo":
