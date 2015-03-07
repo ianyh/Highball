@@ -25,6 +25,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Only keep cache for 12 hours
         TMCache.sharedCache().diskCache.ageLimit = 43200
+        // Only keep up to 500 mb cache
+        TMCache.sharedCache().diskCache.byteLimit = 524288000
 
         self.navigationController = UINavigationController()
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)

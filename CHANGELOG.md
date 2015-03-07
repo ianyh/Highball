@@ -3,6 +3,7 @@
 ## 0.5.8
 
 * Make header tap work again.
+* Limit cache size.
 
 ## 0.5.7
 
