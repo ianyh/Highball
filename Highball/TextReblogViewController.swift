@@ -108,7 +108,7 @@ class TextReblogViewController: SLKTextViewController {
 
     override func didPressRightButton(sender: AnyObject!) {
         var parameters = [ "id" : "\(self.post.id)", "reblog_key" : self.post.reblogKey ]
-        
+
         switch self.reblogType as ReblogType {
         case .Reblog:
             parameters["state"] = "published"
@@ -125,9 +125,12 @@ class TextReblogViewController: SLKTextViewController {
 
         TMAPIClient.sharedInstance().reblogPost(self.blogName, parameters: parameters) { response, error in
             if let e = error {
-                println(e)
+                let alertController = UIAlertController(title: "Error", message: e.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+                alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { _ in }))
+                self.presentViewController(alertController, animated: true, completion: nil)
+            } else {
+                self.dismissViewControllerAnimated(true, completion: nil)
             }
-            self.dismissViewControllerAnimated(true, completion: nil)
         }
 
         super.didPressRightButton(sender)
