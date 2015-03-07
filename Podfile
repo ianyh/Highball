@@ -2,7 +2,7 @@ platform :ios, '8.0'
 
 pod 'AFNetworking'
 pod 'ChameleonFramework'
-pod 'CHTCollectionViewWaterfallLayout'
+pod 'CHTCollectionViewWaterfallLayout', :git => 'https://github.com/ianyh/CHTCollectionViewWaterfallLayout.git', :branch => 'develop'
 pod 'FLAnimatedImage'
 pod 'FontAwesomeKit', :git => 'https://github.com/PrideChung/FontAwesomeKit.git'
 pod 'M13ProgressSuite', :git => 'https://github.com/ianyh/M13ProgressSuite.git'

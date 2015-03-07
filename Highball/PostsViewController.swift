@@ -152,6 +152,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
         self.collectionView?.backgroundColor = UIColor.whiteColor()
 
         self.collectionView?.registerClass(PostCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: postCollectionViewCellIdentifier)
+        self.collectionView?.registerClass(UICollectionReusableView.classForCoder(), forSupplementaryViewOfKind: CHTCollectionElementKindCellHeader, withReuseIdentifier: postCollectionViewCellIdentifier)
         
         self.longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: Selector("didLongPress:"))
         self.longPressGestureRecognizer.delegate = self
@@ -592,6 +593,12 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
         }
 
         return cell
+    }
+
+    override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+        let view = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: postCollectionViewCellIdentifier, forIndexPath: indexPath) as UICollectionReusableView
+        view.backgroundColor = UIColor.blackColor()
+        return view
     }
 
     // MARK: CHTCollectionViewDelegateWaterfallLayout

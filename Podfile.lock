@@ -74,7 +74,7 @@ PODS:
 DEPENDENCIES:
   - AFNetworking
   - ChameleonFramework
-  - CHTCollectionViewWaterfallLayout
+  - CHTCollectionViewWaterfallLayout (from `https://github.com/ianyh/CHTCollectionViewWaterfallLayout.git`, branch `develop`)
   - FLAnimatedImage
   - FontAwesomeKit (from `https://github.com/PrideChung/FontAwesomeKit.git`)
   - M13ProgressSuite (from `https://github.com/ianyh/M13ProgressSuite.git`)
@@ -90,12 +90,18 @@ DEPENDENCIES:
   - youtube-ios-player-helper
 
 EXTERNAL SOURCES:
+  CHTCollectionViewWaterfallLayout:
+    :branch: develop
+    :git: https://github.com/ianyh/CHTCollectionViewWaterfallLayout.git
   FontAwesomeKit:
     :git: https://github.com/PrideChung/FontAwesomeKit.git
   M13ProgressSuite:
     :git: https://github.com/ianyh/M13ProgressSuite.git
 
 CHECKOUT OPTIONS:
+  CHTCollectionViewWaterfallLayout:
+    :commit: 68fd337a24861002f119bba3f844374d97584c6b
+    :git: https://github.com/ianyh/CHTCollectionViewWaterfallLayout.git
   FontAwesomeKit:
     :commit: 62066f604c164c2e1c5be704df368d55955a52ce
     :git: https://github.com/PrideChung/FontAwesomeKit.git
@@ -106,7 +112,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   AFNetworking: 0f54cb5d16ce38c1b76948faffb8d5fb705021c7
   ChameleonFramework: 5d34a29b6db60594a9998f6dfdffa8ac5f05979a
-  CHTCollectionViewWaterfallLayout: 14b7950cbe45ae9297e7759148d69b022bac047d
+  CHTCollectionViewWaterfallLayout: 058823cc65c9d84e059b0a85eede517550da0334
   FLAnimatedImage: 8669ace2a531fc0bb7344a6326f48c3a4c3de84b
   FontAwesomeKit: 0cd610453ce270f34ad17378c68de98aad0e05ef
   JXHTTP: 528be324dcd08afdd63bc0ac1b80c4df2cb2b5f0
