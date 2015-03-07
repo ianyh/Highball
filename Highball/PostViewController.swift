@@ -142,6 +142,12 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = self.tableView(tableView, postCellForRowAtIndexPath: indexPath)
+        cell.selectionStyle = UITableViewCellSelectionStyle.None
+        return cell
+    }
+
+    func tableView(tableView: UITableView, postCellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 1 {
             let cell = tableView.dequeueReusableCellWithIdentifier(postTagsTableViewCellIdentifier) as TagsTableViewCell!
             cell.delegate = self
