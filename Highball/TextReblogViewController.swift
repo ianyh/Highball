@@ -74,7 +74,7 @@ class TextReblogViewController: SLKTextViewController {
         self.tableView.registerClass(PostQuestionTableViewCell.classForCoder(), forCellReuseIdentifier: postQuestionTableViewCellIdentifier)
         self.tableView.registerClass(PostLinkTableViewCell.classForCoder(), forCellReuseIdentifier: postLinkTableViewCellIdentifier)
         self.tableView.registerClass(PostDialogueEntryTableViewCell.classForCoder(), forCellReuseIdentifier: postDialogueEntryTableViewCellIdentifier)
-        self.tableView.registerClass(PostHeaderView.classForCoder(), forHeaderFooterViewReuseIdentifier: postHeaderViewIdentifier)
+        self.tableView.registerClass(PostTableHeaderView.classForCoder(), forHeaderFooterViewReuseIdentifier: postHeaderViewIdentifier)
 
         let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Light)
         let blurView = UIVisualEffectView(effect: blurEffect)
@@ -160,14 +160,14 @@ class TextReblogViewController: SLKTextViewController {
         return cell
     }
 
-//    override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-//        let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(postHeaderViewIdentifier) as PostHeaderView
-//        
-//        view.post = self.post
-//        view.transform = self.tableView.transform
-//        
-//        return view
-//    }
+    override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(postHeaderViewIdentifier) as PostTableHeaderView
+        
+        view.post = self.post
+        view.transform = self.tableView.transform
+        
+        return view
+    }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return self.height
