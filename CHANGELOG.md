@@ -1,5 +1,13 @@
 # Highball changelog
 
+## 0.5.7
+
+* Fixed a bunch of regressions with waterfall layout.
+
+## 0.5.6
+
+* Waterfall layout for iPad.
+
 ## 0.5.5
 
 * Follow and unfollow from blog page.
