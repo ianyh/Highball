@@ -295,7 +295,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
         if let posts = self.posts {
             if let lastPost = posts.last {
                 self.loadingBottom = true
-                self.requestPosts(["max_id" : "\(lastPost.id)", "reblog_info" : "true"]) { (response: AnyObject!, error: NSError!) -> Void in
+                self.requestPosts(["before_id" : "\(lastPost.id)", "reblog_info" : "true"]) { (response: AnyObject!, error: NSError!) -> Void in
                     if let e = error {
                         println(e)
                         self.loadingBottom = false
