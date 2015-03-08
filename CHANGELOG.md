@@ -4,6 +4,7 @@
 
 * Fix a bug in adding new accounts.
 * Give loading indication for load more.
+* Visual fix for reblogging/queueing on iPad
 
 ## 0.5.8
 

@@ -105,14 +105,14 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
         let waterfallLayout = CHTCollectionViewWaterfallLayout()
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
             waterfallLayout.columnCount = 2
-            waterfallLayout.footerHeight = 100.0
         } else {
             waterfallLayout.columnCount = 1
-            waterfallLayout.footerHeight = 50.0
+
         }
         waterfallLayout.sectionInset = UIEdgeInsetsZero
         waterfallLayout.minimumInteritemSpacing = 0.0
         waterfallLayout.minimumColumnSpacing = 0.0
+        waterfallLayout.footerHeight = 50.0
         super.init(collectionViewLayout: waterfallLayout)
     }
     
