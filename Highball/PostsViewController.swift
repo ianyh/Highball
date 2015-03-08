@@ -42,6 +42,7 @@ enum AudioRow: Int {
 let postCollectionViewCellIdentifier = "postCollectionViewCellIdentifier"
 
 let postHeaderViewIdentifier = "postHeaderViewIdentifier"
+let postFooterViewIdentifier = "postFooterViewIdentifier"
 let titleTableViewCellIdentifier = "titleTableViewCellIdentifier"
 let photosetRowTableViewCellIdentifier = "photosetRowTableViewCellIdentifier"
 let contentTableViewCellIdentifier = "contentTableViewCellIdentifier"
@@ -104,8 +105,10 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
         let waterfallLayout = CHTCollectionViewWaterfallLayout()
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
             waterfallLayout.columnCount = 2
+            waterfallLayout.footerHeight = 100.0
         } else {
             waterfallLayout.columnCount = 1
+            waterfallLayout.footerHeight = 50.0
         }
         waterfallLayout.sectionInset = UIEdgeInsetsZero
         waterfallLayout.minimumInteritemSpacing = 0.0
@@ -152,6 +155,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
         self.collectionView?.backgroundColor = UIColor.whiteColor()
 
         self.collectionView?.registerClass(PostCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: postCollectionViewCellIdentifier)
+        self.collectionView?.registerClass(UICollectionReusableView.classForCoder(), forSupplementaryViewOfKind: CHTCollectionElementKindSectionFooter, withReuseIdentifier: postFooterViewIdentifier)
         self.collectionView?.registerClass(PostHeaderView.classForCoder(), forSupplementaryViewOfKind: CHTCollectionElementKindCellHeader, withReuseIdentifier: postCollectionViewCellIdentifier)
         
         self.longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: Selector("didLongPress:"))
@@ -576,29 +580,46 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
     }
 
     override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-        let view = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: postCollectionViewCellIdentifier, forIndexPath: indexPath) as PostHeaderView
-        let post = self.posts![indexPath.row] as Post
-        view.post = post
-        view.tapHandler = { post, view in
-            if let navigationController = self.navigationController {
-                if let rebloggedBlogName = post.rebloggedBlogName {
-                    let alertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
-                    alertController.popoverPresentationController?.sourceView = self.view
-                    alertController.popoverPresentationController?.sourceRect = self.view.convertRect(view.bounds, fromView: view)
-                    alertController.addAction(UIAlertAction(title: post.blogName, style: UIAlertActionStyle.Default, handler: { alertAction in
+        switch kind {
+        case CHTCollectionElementKindCellHeader:
+            let view = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: postCollectionViewCellIdentifier, forIndexPath: indexPath) as PostHeaderView
+            let post = self.posts![indexPath.row] as Post
+            view.post = post
+            view.tapHandler = { post, view in
+                if let navigationController = self.navigationController {
+                    if let rebloggedBlogName = post.rebloggedBlogName {
+                        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+                        alertController.popoverPresentationController?.sourceView = self.view
+                        alertController.popoverPresentationController?.sourceRect = self.view.convertRect(view.bounds, fromView: view)
+                        alertController.addAction(UIAlertAction(title: post.blogName, style: UIAlertActionStyle.Default, handler: { alertAction in
+                            self.navigationController!.pushViewController(BlogViewController(blogName: post.blogName), animated: true)
+                        }))
+                        alertController.addAction(UIAlertAction(title: rebloggedBlogName, style: UIAlertActionStyle.Default, handler: { alertAction in
+                            self.navigationController!.pushViewController(BlogViewController(blogName: rebloggedBlogName), animated: true)
+                        }))
+                        alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: { _ in }))
+                        self.presentViewController(alertController, animated: true, completion: nil)
+                    } else {
                         self.navigationController!.pushViewController(BlogViewController(blogName: post.blogName), animated: true)
-                    }))
-                    alertController.addAction(UIAlertAction(title: rebloggedBlogName, style: UIAlertActionStyle.Default, handler: { alertAction in
-                        self.navigationController!.pushViewController(BlogViewController(blogName: rebloggedBlogName), animated: true)
-                    }))
-                    alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: { _ in }))
-                    self.presentViewController(alertController, animated: true, completion: nil)
-                } else {
-                    self.navigationController!.pushViewController(BlogViewController(blogName: post.blogName), animated: true)
+                    }
                 }
             }
+            return view
+        case CHTCollectionElementKindSectionFooter:
+            let view = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: postFooterViewIdentifier, forIndexPath: indexPath) as UICollectionReusableView
+            if view.subviews.count == 0 {
+                let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+                activityIndicator.startAnimating()
+                view.addSubview(activityIndicator)
+                layout(activityIndicator, view) { activityIndicator, view in
+                    activityIndicator.center == view.center; return
+                }
+            }
+            return view
+        default:
+            let view = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: postFooterViewIdentifier, forIndexPath: indexPath) as UICollectionReusableView
+            return view
         }
-        return view
     }
 
     // MARK: CHTCollectionViewDelegateWaterfallLayout

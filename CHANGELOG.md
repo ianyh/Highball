@@ -3,6 +3,7 @@
 ## 0.5.9
 
 * Fix a bug in adding new accounts.
+* Give loading indication for load more.
 
 ## 0.5.8
 
