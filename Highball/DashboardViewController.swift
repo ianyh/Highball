@@ -75,6 +75,9 @@ class DashboardViewController: PostsViewController {
         if let indexPaths = self.collectionView?.indexPathsForVisibleItems() {
             if let firstIndexPath = indexPaths.first as? NSIndexPath {
                 let post = self.posts[firstIndexPath.row]
+                if let account = AccountsService.account {} else {
+                    return
+                }
                 NSUserDefaults.standardUserDefaults().setObject(post.id, forKey: "HIBookmarkID:\(AccountsService.account.blog.url)")
             }
         }

@@ -1,5 +1,9 @@
 # Highball changelog
 
+## 0.5.9
+
+* Fix a bug in adding new accounts.
+
 ## 0.5.8
 
 * Make header tap work again.
