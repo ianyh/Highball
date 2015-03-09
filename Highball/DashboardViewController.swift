@@ -43,7 +43,7 @@ class DashboardViewController: PostsViewController {
             action: Selector("bookmarks:event:")
         )
 
-        self.navigationItem.title = AccountsService.account.blog.name
+        self.navigationItem.title = "Dashboard"
     }
 
     override func viewDidDisappear(animated: Bool) {
