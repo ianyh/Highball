@@ -554,7 +554,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
                 let viewController = ImagesViewController()
                 viewController.post = post
                 self.presentViewController(viewController, animated: true, completion: nil)
-            } else if let videoCell = cell as? VideoPlaybackCell {
+            } else if let videoCell = view as? VideoPlaybackCell {
                 if videoCell.isPlaying() {
                     videoCell.stop()
                 } else {
