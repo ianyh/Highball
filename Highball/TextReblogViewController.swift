@@ -173,6 +173,6 @@ class TextReblogViewController: SLKTextViewController {
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return self.height / 2.0
+        return self.height
     }
 }
