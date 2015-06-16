@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Cartography
 
 class LockSplashViewController: VENTouchLockSplashViewController, UITableViewDataSource, UITableViewDelegate {
     private let cellIdentifier = "cellIdentifier"
@@ -42,7 +43,7 @@ class LockSplashViewController: VENTouchLockSplashViewController, UITableViewDat
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let account = self.accounts[indexPath.row]
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) as UITableViewCell!
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) as! UITableViewCell!
 
         cell.textLabel?.text = account.blog.name
 

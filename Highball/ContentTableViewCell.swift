@@ -8,6 +8,7 @@
 
 import UIKit
 import WebKit
+import Cartography
 
 class ContentTableViewCell: WCFastCell, WKNavigationDelegate {
     var contentWebView: WKWebView!

@@ -8,6 +8,7 @@
 
 import Foundation
 import AVFoundation
+import SwiftyJSON
 
 enum ReblogType {
     case Reblog
@@ -119,11 +120,14 @@ class Post {
         default:
             bodyString = nil
         }
-        self.body = nil
         if let string = bodyString {
-            if countElements(string) > 0 {
+            if count(string) > 0 {
                 self.body = string
+            } else {
+                self.body = nil
             }
+        } else {
+            self.body = nil
         }
         bodyString = nil
         switch self.type {
@@ -134,11 +138,14 @@ class Post {
         default:
             bodyString = nil
         }
-        self.secondaryBody = nil
         if let string = bodyString {
-            if countElements(string) > 0 {
+            if count(string) > 0 {
                 self.secondaryBody = string
+            } else {
+                self.secondaryBody = nil
             }
+        } else {
+            self.secondaryBody = nil
         }
         self.asker = json["asking_name"].string
         self.question = json["question"].string

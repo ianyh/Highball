@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Cartography
 
 class PostDialogueEntryTableViewCell: WCFastCell {
 

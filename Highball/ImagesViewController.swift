@@ -47,7 +47,7 @@ class ImagesViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
 
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(imageCollectionViewCellIdentifier, forIndexPath: indexPath) as ImageCollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(imageCollectionViewCellIdentifier, forIndexPath: indexPath) as! ImageCollectionViewCell
         let postPhoto = self.post!.photos[indexPath.row]
 
         cell.contentWidth = collectionView.frame.size.width
@@ -61,7 +61,7 @@ class ImagesViewController: UIViewController, UICollectionViewDataSource, UIColl
         self.dismissViewControllerAnimated(true, completion: nil)
     }
 
-    func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, sizeForItemAtIndexPath indexPath: NSIndexPath!) -> CGSize {
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         return collectionView.frame.size
     }
 }

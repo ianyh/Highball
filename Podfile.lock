@@ -74,7 +74,8 @@ PODS:
 DEPENDENCIES:
   - AFNetworking
   - ChameleonFramework
-  - CHTCollectionViewWaterfallLayout (from `https://github.com/ianyh/CHTCollectionViewWaterfallLayout.git`, branch `develop`)
+  - CHTCollectionViewWaterfallLayout (from `https://github.com/ianyh/CHTCollectionViewWaterfallLayout.git`,
+    branch `develop`)
   - FLAnimatedImage
   - FontAwesomeKit (from `https://github.com/PrideChung/FontAwesomeKit.git`)
   - M13ProgressSuite (from `https://github.com/ianyh/M13ProgressSuite.git`)
@@ -110,23 +111,23 @@ CHECKOUT OPTIONS:
     :git: https://github.com/ianyh/M13ProgressSuite.git
 
 SPEC CHECKSUMS:
-  AFNetworking: 0f54cb5d16ce38c1b76948faffb8d5fb705021c7
-  ChameleonFramework: 5d34a29b6db60594a9998f6dfdffa8ac5f05979a
+  AFNetworking: 96ac9bf3eda33582701cb1fcc5b896aa1e20311e
+  ChameleonFramework: 1b4588efcae564886e1a176fa02fb0f4c81a69b3
   CHTCollectionViewWaterfallLayout: 058823cc65c9d84e059b0a85eede517550da0334
-  FLAnimatedImage: 8669ace2a531fc0bb7344a6326f48c3a4c3de84b
+  FLAnimatedImage: f9422f796135aff80d8c00b2afc48015bb746e24
   FontAwesomeKit: 0cd610453ce270f34ad17378c68de98aad0e05ef
-  JXHTTP: 528be324dcd08afdd63bc0ac1b80c4df2cb2b5f0
+  JXHTTP: beb9c0a64ba3d4c576c4f76049d525f283bb24dd
   M13ProgressSuite: 03d194af6359da440641ba758aed5a18b0386a86
-  pop: 2f14a1ea61339767af9e66741b418c831b3844df
-  Reachability: 1ef8adf5c4e3d362f96515d4278f68dad3c26930
-  SDWebImage: 116e88633b5b416ea0ca4b334a4ac59cf72dd38d
-  SlackTextViewController: 2dcf79adbfc49447e90256ce863c1de412199942
-  SSKeychain: cc48bd3ad24fcd9125adb9e0d23dd50b8bbd08b9
-  SVPullToRefresh: d5161ebc833a38b465364412e5e307ca80bbb190
-  TMCache: 11589ef8c40909114a5e60132711c9a559e01d97
-  TMTumblrSDK: ba29ee42aa153b7967944e003075563761c99c54
-  VENTouchLock: d6d65a8f502d46f8707e9cc9d0065456f248555f
-  WCFastCell: 8a9c6507a2a9d3eae9959dd3458a11ba5560503e
-  youtube-ios-player-helper: 53aecd0b4763a77e6890e9a7c55abb7b5c4bedea
+  pop: 628ffc631644601567ee8bfaaaea493ebd7d0923
+  Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
+  SDWebImage: ed3095af2ff88b436426037444979b917f6c5575
+  SlackTextViewController: 22142c06d574c7a679631c24b2bab1f9195d31d7
+  SSKeychain: 88767e903ee8d274ed380e364d96b7a101235286
+  SVPullToRefresh: ba2e718695a43253d8bea6852d2960097dc15d8c
+  TMCache: 5f68bc38d741aa8df4c63131b847522783665d81
+  TMTumblrSDK: 41fcf37af955860459e244cb78bcf865a299b4d6
+  VENTouchLock: d3b4f07229ca352a49057ed55bffe894d6701357
+  WCFastCell: 3e20a0c711d27307584bdbd359a44a714e991151
+  youtube-ios-player-helper: d7350b9f9070edf482e5d0bd5e8948c0ba1437f3
 
-COCOAPODS: 0.36.0.rc.1
+COCOAPODS: 0.37.2

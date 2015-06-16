@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Cartography
 
 class PostTableHeaderView: UITableViewHeaderFooterView {
     private let avatarLoadQueue = dispatch_queue_create("avatarLoadQueue", nil)
@@ -34,7 +35,7 @@ class PostTableHeaderView: UITableViewHeaderFooterView {
                         if let e = error {
                             println(e)
                         } else {
-                            let data = response as NSData!
+                            let data = response as! NSData!
                             TMCache.sharedCache().setObject(data, forKey: "avatar:\(blogName)")
                             dispatch_async(self.avatarLoadQueue, {
                                 let image = UIImage(data: data)

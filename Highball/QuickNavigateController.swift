@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Cartography
 
 enum QuickNavigationOption {
     case Dashboard
@@ -110,25 +111,25 @@ class QuickNavigateController: UIViewController {
         self.view.opaque = false
         self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.3)
         
-        self.backgroundButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        self.backgroundButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
         self.backgroundButton.addTarget(self, action: Selector("exit:"), forControlEvents: UIControlEvents.TouchUpInside)
         
-        self.startButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        self.startButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
         self.startButton.setImage(UIImage(named: "Reblog"), forState: UIControlState.Normal)
         self.startButton.tintColor = UIColor.grayColor()
         self.startButton.addTarget(self, action: Selector("exit:"), forControlEvents: UIControlEvents.TouchUpInside)
         self.startButton.sizeToFit()
         self.startButton.hidden = true
 
-        self.dashboardButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        self.dashboardButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
         self.dashboardButton.setTitle("D", forState: UIControlState.Normal)
         self.dashboardButton.addTarget(self, action: Selector("dashboard:"), forControlEvents: UIControlEvents.TouchUpInside)
         
-        self.likesButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        self.likesButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
         self.likesButton.setTitle("L", forState: UIControlState.Normal)
         self.likesButton.addTarget(self, action: Selector("likes:"), forControlEvents: UIControlEvents.TouchUpInside)
 
-        self.settingsButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        self.settingsButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
         self.settingsButton.setTitle("S", forState: UIControlState.Normal)
         self.settingsButton.addTarget(self, action: Selector("settings:"), forControlEvents: UIControlEvents.TouchUpInside)
 

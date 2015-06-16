@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 class PostDialogueEntry {
     private let json: JSON
@@ -24,8 +25,8 @@ class PostDialogueEntry {
         labelAttributes[NSFontAttributeName] = UIFont(name: "Courier-Bold", size: 14)
         phraseAttributes[NSFontAttributeName] = UIFont(name: "Courier", size: 14)
         
-        attributedString.setAttributes(labelAttributes, range: NSMakeRange(0, countElements(label)))
-        attributedString.setAttributes(phraseAttributes, range: NSMakeRange(countElements(label), countElements(phrase) + 1))
+        attributedString.setAttributes(labelAttributes, range: NSMakeRange(0, count(label)))
+        attributedString.setAttributes(phraseAttributes, range: NSMakeRange(count(label), count(phrase) + 1))
         
         self.formattedString = attributedString
     }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftyJSON
 
 class BlogViewController: PostsViewController {
     private let blogName: String!
@@ -25,7 +26,7 @@ class BlogViewController: PostsViewController {
         )
     }
 
-    required init() {
+    required override init() {
         fatalError("init() has not been implemented")
     }
 

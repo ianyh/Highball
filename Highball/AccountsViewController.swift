@@ -17,7 +17,7 @@ class AccountsViewController: UITableViewController {
 
     private var accounts: Array<Account>
 
-    required override init() {
+    required init() {
         self.accounts = []
         super.init(nibName: nil, bundle: nil)
     }
@@ -41,7 +41,7 @@ class AccountsViewController: UITableViewController {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch Section(rawValue: section)! {
         case .Accounts:
-            return countElements(self.accounts)
+            return count(self.accounts)
         case .AddAccount:
             return 1
         }
@@ -51,7 +51,7 @@ class AccountsViewController: UITableViewController {
         switch Section(rawValue: indexPath.section)! {
         case .Accounts:
             let account = self.accounts[indexPath.row]
-            let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) as UITableViewCell!
+            let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) as! UITableViewCell!
 
             cell.textLabel?.text = account.blog.name
 
@@ -65,7 +65,7 @@ class AccountsViewController: UITableViewController {
 
             return cell
         case .AddAccount:
-            let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) as UITableViewCell!
+            let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) as! UITableViewCell!
 
             cell.textLabel?.text = "Add account"
             cell.accessoryType = UITableViewCellAccessoryType.None

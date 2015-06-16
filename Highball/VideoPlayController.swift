@@ -8,12 +8,13 @@
 
 import UIKit
 import MediaPlayer
+import Cartography
 
 class VideoPlayController: UIViewController {
     private var completion: ((Bool) -> ())!
 
     required init(completion: (Bool) -> ()) {
-        super.init()
+        super.init(nibName: nil, bundle: nil)
         self.completion = completion
     }
 
@@ -26,8 +27,8 @@ class VideoPlayController: UIViewController {
     }
 
     override func viewDidLoad() {
-        let backgroundButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        let playButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        let backgroundButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+        let playButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
         let volumeView = MPVolumeView()
 
         backgroundButton.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.75)

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Cartography
 
 class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
     var scrollView: UIScrollView!
@@ -24,11 +25,6 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
         didSet {
             self.loadPhoto()
         }
-    }
-
-    override init() {
-        super.init()
-        self.setUpCell()
     }
 
     override init(frame: CGRect) {
@@ -101,11 +97,11 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
         }
     }
 
-    func scrollViewDidZoom(scrollView: UIScrollView!) {
+    func scrollViewDidZoom(scrollView: UIScrollView) {
         self.centerScrollViewContents()
     }
 
-    func viewForZoomingInScrollView(scrollView: UIScrollView!) -> UIView! {
+    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
         return self.imageView
     }
 

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Cartography
 
 enum QuickReblogAction {
     case Reblog(ReblogType)
@@ -139,28 +140,28 @@ class QuickReblogViewController: UIViewController {
         self.view.opaque = false
         self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.3)
 
-        self.backgroundButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        self.backgroundButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
         self.backgroundButton.addTarget(self, action: Selector("exit:"), forControlEvents: UIControlEvents.TouchUpInside)
         
-        self.startButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        self.startButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
         self.startButton.setImage(UIImage(named: "Reblog"), forState: UIControlState.Normal)
         self.startButton.tintColor = UIColor.grayColor()
         self.startButton.addTarget(self, action: Selector("exit:"), forControlEvents: UIControlEvents.TouchUpInside)
         self.startButton.sizeToFit()
 
-        self.reblogButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        self.reblogButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
         self.reblogButton.setImage(FAKIonIcons.iosLoopStrongIconWithSize(25).imageWithSize(CGSize(width: 25, height: 25)), forState: UIControlState.Normal)
         self.reblogButton.addTarget(self, action: Selector("reblog:"), forControlEvents: UIControlEvents.TouchUpInside)
 
-        self.queueButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        self.queueButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
         self.queueButton.setImage(FAKIonIcons.iosListOutlineIconWithSize(25).imageWithSize(CGSize(width: 25, height: 25)), forState: UIControlState.Normal)
         self.queueButton.addTarget(self, action: Selector("queue:"), forControlEvents: UIControlEvents.TouchUpInside)
 
-        self.shareButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        self.shareButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
         self.shareButton.setImage(FAKIonIcons.iosUploadOutlineIconWithSize(25).imageWithSize(CGSize(width: 25, height: 25)), forState: UIControlState.Normal)
         self.shareButton.addTarget(self, action: Selector("schedule:"), forControlEvents: UIControlEvents.TouchUpInside)
 
-        self.likeButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        self.likeButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
         self.likeButton.setImage(FAKIonIcons.iosHeartOutlineIconWithSize(25).imageWithSize(CGSize(width: 25, height: 25)), forState: UIControlState.Normal)
         self.likeButton.addTarget(self, action: Selector("like:"), forControlEvents: UIControlEvents.TouchUpInside)
 

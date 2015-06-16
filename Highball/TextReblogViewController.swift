@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Cartography
 
 class TextReblogViewController: SLKTextViewController {
     var reblogType: ReblogType!
@@ -28,7 +29,7 @@ class TextReblogViewController: SLKTextViewController {
 
     private let postTableViewCellIdentifier = "postTableViewCellIdentifier"
 
-    override init() {
+    init() {
         super.init(tableViewStyle: UITableViewStyle.Plain)
     }
 
@@ -117,7 +118,7 @@ class TextReblogViewController: SLKTextViewController {
         }
 
         let text = self.textView.text
-        if countElements(text) > 0 {
+        if count(text) > 0 {
             parameters["comment"] = text
         }
 
@@ -148,7 +149,7 @@ class TextReblogViewController: SLKTextViewController {
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(postTableViewCellIdentifier) as UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(postTableViewCellIdentifier) as! UITableViewCell
 
         cell.transform = tableView.transform
         cell.backgroundColor = UIColor.whiteColor()
@@ -164,7 +165,7 @@ class TextReblogViewController: SLKTextViewController {
     }
 
     override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(postHeaderViewIdentifier) as PostTableHeaderView
+        let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(postHeaderViewIdentifier) as! PostTableHeaderView
         
         view.post = self.post
         view.transform = self.tableView.transform

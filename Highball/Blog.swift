@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 class Blog: NSObject, NSCoding {
     private let jsonCodingKey = "jsonCodingKey"
@@ -27,7 +28,7 @@ class Blog: NSObject, NSCoding {
     }
 
     required init(coder aDecoder: NSCoder) {
-        let jsonData = aDecoder.decodeObjectForKey(jsonCodingKey) as NSData!
+        let jsonData = aDecoder.decodeObjectForKey(jsonCodingKey) as! NSData!
         let json = JSON(data: jsonData)
         self.json = json
         self.name = json["name"].string!

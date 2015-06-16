@@ -58,7 +58,7 @@ class SettingsViewController : UITableViewController {
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = self.tableView.dequeueReusableCellWithIdentifier(settingsCellIdentifier, forIndexPath: indexPath) as UITableViewCell
+        let cell = self.tableView.dequeueReusableCellWithIdentifier(settingsCellIdentifier, forIndexPath: indexPath) as! UITableViewCell
 
         switch SettingsSection(rawValue: indexPath.section)! {
         case .Accounts:

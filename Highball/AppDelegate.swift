@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var navigationController: UINavigationController?
     var reachability: Reachability!
 
-    func application(application: UIApplication!, didFinishLaunchingWithOptions launchOptions: NSDictionary!) -> Bool {
+    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
         self.reachability = Reachability.reachabilityForLocalWiFi()
         self.reachability.startNotifier()
 
@@ -38,7 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         if let bundleInfoDictionary = NSBundle.mainBundle().infoDictionary {
             if let key = bundleInfoDictionary["HBCrashlyticsAPIKey"] as? NSString {
-                Crashlytics.startWithAPIKey(key)
+                Crashlytics.startWithAPIKey(key as String)
             }
         }
 

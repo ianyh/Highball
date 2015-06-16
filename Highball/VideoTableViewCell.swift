@@ -9,6 +9,7 @@
 import Foundation
 import MediaPlayer
 import AVFoundation
+import Cartography
 
 @objc protocol VideoPlaybackCell {
     func isPlaying() -> Bool
@@ -24,7 +25,7 @@ class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
             if let post = self.post {
                 if let thumbnailURLString = post.thumbnailURLString {
                     if let thumbnailURL = NSURL(string: thumbnailURLString) {
-                        self.thumbnailImageView.setImageByTypeWithURL(thumbnailURL, nil)
+                        self.thumbnailImageView.setImageByTypeWithURL(thumbnailURL, completion: nil)
                     }
                 }
 
@@ -42,7 +43,7 @@ class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
     }
 
     required init(coder aDecoder: NSCoder) {
-        super.init()
+        super.init(coder: aDecoder)
         self.setUpCell()
     }
 

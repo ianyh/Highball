@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Cartography
 
 class PostCollectionViewCell: UICollectionViewCell {
     private var postViewController: PostViewController!

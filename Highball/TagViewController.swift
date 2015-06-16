@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftyJSON
 
 class TagViewController: PostsViewController {
     private let tag: String!
@@ -17,7 +18,7 @@ class TagViewController: PostsViewController {
         self.navigationItem.title = tag
     }
     
-    required init() {
+    required override init() {
         fatalError("init() has not been implemented")
     }
     

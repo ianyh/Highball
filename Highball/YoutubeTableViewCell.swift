@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Cartography
 
 let YoutubePlayerStartingNotification = "YoutubePlayerStartingNotification"
 
@@ -18,7 +19,7 @@ class YoutubeTableViewCell: UITableViewCell, YTPlayerViewDelegate, VideoPlayback
             if let post = self.post {
                 if let thumbnailURLString = post.thumbnailURLString {
                     if let thumbnailURL = NSURL(string: thumbnailURLString) {
-                        self.thumbnailImageView.setImageByTypeWithURL(thumbnailURL, nil)
+                        self.thumbnailImageView.setImageByTypeWithURL(thumbnailURL, completion: nil)
                     }
                 }
 
@@ -36,7 +37,7 @@ class YoutubeTableViewCell: UITableViewCell, YTPlayerViewDelegate, VideoPlayback
     }
 
     required init(coder aDecoder: NSCoder) {
-        super.init()
+        super.init(coder: aDecoder)
         self.setUpCell()
     }
 

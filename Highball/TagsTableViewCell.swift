@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Cartography
 
 protocol TagsTableViewCellDelegate {
     func tagsTableViewCell(cell: TagsTableViewCell, didSelectTag tag: String)
@@ -101,7 +102,7 @@ class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollecti
     }
 
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(tagCollectionViewCellIdentifier, forIndexPath: indexPath) as TagCollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(tagCollectionViewCellIdentifier, forIndexPath: indexPath) as! TagCollectionViewCell
         let tag = self.tags![indexPath.row]
 
         cell.tagLabel.text = tag

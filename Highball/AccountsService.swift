@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftyJSON
 
 struct Account {
     let blog: Blog
@@ -36,12 +37,12 @@ struct AccountsService {
 
     static func start(completion: () -> ()) {
         if let lastAccount = self.lastAccount() {
-            self.loginToAccount(lastAccount, completion)
+            self.loginToAccount(lastAccount, completion: completion)
             return
         }
 
         let accounts = self.accounts()
-        if countElements(accounts) > 0 {
+        if count(accounts) > 0 {
             self.loginToAccount(accounts.first!, completion: completion)
         } else {
             self.authenticateNewAccount({ (account) -> () in
@@ -56,24 +57,24 @@ struct AccountsService {
 
     static func accounts() -> Array<Account> {
         return map(self.accountDictionaries(), { (accountDictionary) -> Account in
-            let blogData = accountDictionary[self.accountBlogDataKey]! as NSData
-            let blog = NSKeyedUnarchiver.unarchiveObjectWithData(blogData) as Blog
+            let blogData = accountDictionary[self.accountBlogDataKey]! as! NSData
+            let blog = NSKeyedUnarchiver.unarchiveObjectWithData(blogData) as! Blog
             return Account(
                 blog: blog,
-                token: accountDictionary[self.accountOAuthTokenKey]! as String,
-                tokenSecret: accountDictionary[self.accountOAuthTokenSecretKey]! as String
+                token: accountDictionary[self.accountOAuthTokenKey]! as! String,
+                tokenSecret: accountDictionary[self.accountOAuthTokenSecretKey]! as! String
             )
         })
     }
 
     static func lastAccount() -> Account? {
         if let accountDictionary = NSUserDefaults.standardUserDefaults().dictionaryForKey(self.lastAccountDefaultsKey) as? Dictionary<String, AnyObject> {
-            let blogData = accountDictionary[self.accountBlogDataKey]! as NSData
-            let blog = NSKeyedUnarchiver.unarchiveObjectWithData(blogData) as Blog
+            let blogData = accountDictionary[self.accountBlogDataKey]! as! NSData
+            let blog = NSKeyedUnarchiver.unarchiveObjectWithData(blogData) as! Blog
             return Account(
                 blog: blog,
-                token: accountDictionary[self.accountOAuthTokenKey]! as String,
-                tokenSecret: accountDictionary[self.accountOAuthTokenSecretKey]! as String
+                token: accountDictionary[self.accountOAuthTokenKey]! as! String,
+                tokenSecret: accountDictionary[self.accountOAuthTokenSecretKey]! as! String
             )
         }
         return nil

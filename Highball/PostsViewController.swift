@@ -8,6 +8,8 @@
 
 import UIKit
 import WebKit
+import SwiftyJSON
+import Cartography
 
 enum TextRow: Int {
     case Title
@@ -97,11 +99,11 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
     var lastPoint: CGPoint?
     var loadingCompletion: (() -> ())?
 
-    override init(collectionViewLayout layout: UICollectionViewLayout!) {
+    override init(collectionViewLayout layout: UICollectionViewLayout) {
         fatalError("Not implemented")
     }
 
-    required override init() {
+    init() {
         let waterfallLayout = CHTCollectionViewWaterfallLayout()
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
             waterfallLayout.columnCount = 2
@@ -181,7 +183,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
         super.viewDidAppear(animated)
 
         if let posts = self.posts {
-            if countElements(posts) > 0 {
+            if count(posts) > 0 {
                 return
             }
         }
@@ -201,7 +203,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
     func popWebView() -> WKWebView {
         let frame = CGRect(x: 0, y: 0, width: self.collectionView!.frame.size.width / self.columnCount, height: 1)
 
-        if countElements(self.webViewCache) > 0 {
+        if count(self.webViewCache) > 0 {
             let webView = self.webViewCache.removeAtIndex(0)
             webView.frame = frame
             return webView
@@ -357,7 +359,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
 
     func navigate(sender: UIBarButtonItem, event: UIEvent) {
         if let touches = event.allTouches() {
-            if let touch = touches.anyObject() as? UITouch {
+            if let touch = touches.first as? UITouch {
                 if let navigationController = self.navigationController {
                     let viewController = QuickNavigateController()
                     
@@ -543,7 +545,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let post = self.posts![indexPath.row]
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(postCollectionViewCellIdentifier, forIndexPath: indexPath) as PostCollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(postCollectionViewCellIdentifier, forIndexPath: indexPath) as! PostCollectionViewCell
 
         cell.bodyHeight = self.bodyHeightCache[post.id]
         cell.secondaryBodyHeight = self.secondaryBodyHeightCache[post.id]
@@ -582,7 +584,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
     override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
         switch kind {
         case CHTCollectionElementKindCellHeader:
-            let view = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: postCollectionViewCellIdentifier, forIndexPath: indexPath) as PostHeaderView
+            let view = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: postCollectionViewCellIdentifier, forIndexPath: indexPath) as! PostHeaderView
             let post = self.posts![indexPath.row] as Post
             view.post = post
             view.tapHandler = { post, view in
@@ -606,7 +608,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
             }
             return view
         case CHTCollectionElementKindSectionFooter:
-            let view = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: postFooterViewIdentifier, forIndexPath: indexPath) as UICollectionReusableView
+            let view = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: postFooterViewIdentifier, forIndexPath: indexPath) as! UICollectionReusableView
             if view.subviews.count == 0 {
                 let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
                 activityIndicator.startAnimating()
@@ -617,7 +619,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
             }
             return view
         default:
-            let view = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: postFooterViewIdentifier, forIndexPath: indexPath) as UICollectionReusableView
+            let view = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: postFooterViewIdentifier, forIndexPath: indexPath) as! UICollectionReusableView
             return view
         }
     }

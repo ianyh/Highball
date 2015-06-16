@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Cartography
 
 class PostHeaderView: UICollectionReusableView {
     var tapHandler: ((Post, UIView) -> ())?
@@ -36,7 +37,7 @@ class PostHeaderView: UICollectionReusableView {
                         if let e = error {
                             println(e)
                         } else {
-                            let data = response as NSData!
+                            let data = response as! NSData!
                             TMCache.sharedCache().setObject(data, forKey: "avatar:\(blogName)")
                             dispatch_async(self.avatarLoadQueue, {
                                 let image = UIImage(data: data)
@@ -95,7 +96,7 @@ class PostHeaderView: UICollectionReusableView {
         self.bottomUsernameLabel.font = UIFont.systemFontOfSize(12)
         self.bottomUsernameLabel.textColor = UIColor.whiteColor()
 
-        let button = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        let button = UIButton.buttonWithType(UIButtonType.System) as! UIButton
         button.addTarget(self, action: Selector("tap:"), forControlEvents: UIControlEvents.TouchUpInside)
 
         self.addSubview(self.avatarImageView)

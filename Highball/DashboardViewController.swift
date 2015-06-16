@@ -7,9 +7,10 @@
 //
 
 import UIKit
+import SwiftyJSON
 
 class DashboardViewController: PostsViewController {
-    required init() {
+    required override init() {
         super.init()
         NSNotificationCenter.defaultCenter().addObserver(
             self,

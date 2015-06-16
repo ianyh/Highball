@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Cartography
 
 class PhotosetRowTableViewCell: WCFastCell {
     var imageViews: Array<FLAnimatedImageView>?

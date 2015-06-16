@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 class PostPhoto {
     private let json: JSON
@@ -30,10 +31,10 @@ class PostPhoto {
         var sizes = [json["original_size"]]
         sizes.extend(json["alt_sizes"].arrayValue.sorted({ $0["width"].int! > $1["width"].int! }))
         self.sizes = sizes
-        if let width = json["original_size"]["width"].float {
-            if let height = json["original_size"]["height"].float {
-                self.widthToHeightRatio = width / height
-            }
+        if let width = json["original_size"]["width"].float, let height = json["original_size"]["height"].float {
+            self.widthToHeightRatio = width / height
+        } else {
+            self.widthToHeightRatio = 1.0
         }
     }
 
