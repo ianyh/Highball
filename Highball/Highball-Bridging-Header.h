@@ -27,6 +27,7 @@
 #import <TMCache/TMCache.h>
 #import <VENTouchLock/VENTouchLock.h>
 #import <WCFastCell/WCFastCell.h>
+#import <WCFastCell/WCFastCollectionViewCell.h>
 #import <youtube-ios-player-helper/YTPlayerView.h>
 
 #endif

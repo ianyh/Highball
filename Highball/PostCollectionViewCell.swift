@@ -9,7 +9,7 @@
 import UIKit
 import Cartography
 
-class PostCollectionViewCell: UICollectionViewCell {
+class PostCollectionViewCell: WCFastCollectionViewCell {
     private var postViewController: PostViewController!
     var bodyHeight: CGFloat? = 0.0
     var secondaryBodyHeight: CGFloat? = 0.0
