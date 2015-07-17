@@ -48,7 +48,7 @@ class BlogViewController: PostsViewController {
         return []
     }
     
-    override func requestPosts(parameters: Dictionary<String, AnyObject>, callback: TMAPICallback) {
+    override func requestPosts(postCount: Int, parameters: Dictionary<String, AnyObject>, callback: TMAPICallback) {
         TMAPIClient.sharedInstance().posts(self.blogName, type: "", parameters: parameters, callback: callback)
     }
     

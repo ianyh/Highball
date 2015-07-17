@@ -40,7 +40,7 @@ class TagViewController: PostsViewController {
         return []
     }
     
-    override func requestPosts(parameters: Dictionary<String, AnyObject>, callback: TMAPICallback) {
+    override func requestPosts(postCount: Int, parameters: Dictionary<String, AnyObject>, callback: TMAPICallback) {
         var modifiedParameters = Dictionary<String, AnyObject>()
         for (key, value) in parameters {
             modifiedParameters[key] = value

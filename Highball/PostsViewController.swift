@@ -234,7 +234,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
     }
 
     func postsFromJSON(json: JSON) -> Array<Post> { return [] }
-    func requestPosts(parameters: Dictionary<String, AnyObject>, callback: TMAPICallback) { NSException().raise() }
+    func requestPosts(postCount: Int, parameters: Dictionary<String, AnyObject>, callback: TMAPICallback) { NSException().raise() }
 
     func loadTop() {
         if self.loadingTop {
@@ -250,7 +250,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
                     sinceID = firstPost.id
                 }
             }
-            self.requestPosts(["since_id" : "\(sinceID)", "reblog_info" : "true"]) { (response: AnyObject!, error: NSError!) in
+            self.requestPosts(0, parameters: ["since_id" : "\(sinceID)", "reblog_info" : "true"]) { (response: AnyObject!, error: NSError!) in
                 if let e = error {
                     println(e)
                     self.loadingTop = false
@@ -279,7 +279,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
                 }
             }
         } else {
-            self.requestPosts(["reblog_info" : "true"]) { (response: AnyObject!, error: NSError!) in
+            self.requestPosts(0, parameters: ["reblog_info" : "true"]) { (response: AnyObject!, error: NSError!) in
                 if let e = error {
                     println(e)
                     self.loadingTop = false
@@ -312,7 +312,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
         if let posts = self.posts {
             if let lastPost = posts.last {
                 self.loadingBottom = true
-                self.requestPosts(["before_id" : "\(lastPost.id)", "reblog_info" : "true"]) { (response: AnyObject!, error: NSError!) -> Void in
+                self.requestPosts(posts.count, parameters: ["before_id" : "\(lastPost.id)", "reblog_info" : "true"]) { (response: AnyObject!, error: NSError!) -> Void in
                     if let e = error {
                         println(e)
                         self.loadingBottom = false

@@ -60,7 +60,7 @@ class DashboardViewController: PostsViewController {
         return []
     }
 
-    override func requestPosts(parameters: Dictionary<String, AnyObject>, callback: TMAPICallback) {
+    override func requestPosts(postCount: Int, parameters: Dictionary<String, AnyObject>, callback: TMAPICallback) {
         TMAPIClient.sharedInstance().dashboard(parameters, callback: callback)
     }
 
