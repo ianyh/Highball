@@ -34,7 +34,6 @@ class ContentTableViewCell: WCFastCell, WKNavigationDelegate {
 
     func setUpCell() {
         self.contentWebView = WKWebView(frame: self.contentView.frame)
-        self.contentWebView.userInteractionEnabled = false
         self.contentWebView.scrollView.scrollEnabled = false
         self.contentWebView.navigationDelegate = self
 
@@ -50,7 +49,14 @@ class ContentTableViewCell: WCFastCell, WKNavigationDelegate {
             self.webViewShouldLoad = false
             decisionHandler(WKNavigationActionPolicy.Allow)
         } else {
+            if navigationAction.navigationType == WKNavigationType.LinkActivated, let url = navigationAction.request.URL {
+                UIApplication.sharedApplication().openURL(url)
+            }
             decisionHandler(WKNavigationActionPolicy.Cancel)
         }
+    }
+
+    func webView(webView: WKWebView, didFinishNavigation navigation: WKNavigation!) {
+        webView.evaluateJavaScript("document.body.style.webkitTouchCallout='none';", completionHandler: nil)
     }
 }
