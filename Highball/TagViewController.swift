@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftyJSON
+import TMTumblrSDK
 
 class TagViewController: PostsViewController {
     private let tag: String!

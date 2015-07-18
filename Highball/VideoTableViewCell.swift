@@ -7,9 +7,9 @@
 //
 
 import Foundation
-import MediaPlayer
 import AVFoundation
 import Cartography
+import Player
 
 @objc protocol VideoPlaybackCell {
     func isPlaying() -> Bool
@@ -18,21 +18,25 @@ import Cartography
 }
 
 class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
-    private var player: MPMoviePlayerController!
+    private var player: Player!
     private var thumbnailImageView: FLAnimatedImageView!
     var post: Post? {
         didSet {
             if let post = self.post {
                 if let thumbnailURLString = post.thumbnailURLString {
                     if let thumbnailURL = NSURL(string: thumbnailURLString) {
-                        self.thumbnailImageView.setImageByTypeWithURL(thumbnailURL, completion: nil)
+                        self.thumbnailImageView.pin_setImageFromURL(thumbnailURL)
                     }
                 }
 
-                if let url = post.videoURL() {
-                    self.player.contentURL = url
-                    self.player.prepareToPlay()
-                }
+                loadVideo()
+            }
+        }
+    }
+    var urlString: String? {
+        didSet {
+            if let urlString = urlString {
+                player.path = urlString
             }
         }
     }
@@ -54,9 +58,10 @@ class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
     }
 
     private func setUpCell() {
-        self.player = MPMoviePlayerController()
-        self.player.shouldAutoplay = false
-        self.player.controlStyle = MPMovieControlStyle.None
+        self.player = Player()
+        self.player.delegate = self
+        self.player.muted = true
+        self.player.playbackLoops = true
 
         self.thumbnailImageView = FLAnimatedImageView()
 
@@ -75,11 +80,20 @@ class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
         }
     }
 
+    func loadVideo() {
+        if let post = post {
+            if let url = post.videoURL()?.absoluteString {
+                self.urlString = url
+            }
+        }
+    }
+
     func isPlaying() -> Bool {
-        return self.player.playbackState == MPMoviePlaybackState.Playing
+        return self.player.playbackState == .Playing
     }
 
     func play() {
+        self.player.muted = false
         self.setPlayback(true)
     }
 
@@ -90,9 +104,31 @@ class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
     private func setPlayback(playback: Bool) {
         self.thumbnailImageView.hidden = true
         if playback {
-            self.player.play()
+            self.player.playFromCurrentTime()
         } else {
             self.player.pause()
         }
+    }
+}
+
+extension VideoTableViewCell: PlayerDelegate {
+    func playerReady(player: Player) {
+//        self.play()
+    }
+
+    func playerPlaybackStateDidChange(player: Player) {
+
+    }
+
+    func playerBufferingStateDidChange(player: Player) {
+
+    }
+
+    func playerPlaybackWillStartFromBeginning(player: Player) {
+
+    }
+
+    func playerPlaybackDidEnd(player: Player) {
+
     }
 }

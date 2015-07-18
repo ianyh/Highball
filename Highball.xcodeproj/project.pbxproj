@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		40080E8E1A0F042B00D883AE /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40080E8D1A0F042B00D883AE /* SettingsViewController.swift */; };
 		40080E901A0F11DD00D883AE /* LockSplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40080E8F1A0F11DD00D883AE /* LockSplashViewController.swift */; };
+		4008591B1B7EBA05009DF207 /* NSDate+Relative.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4008591A1B7EBA05009DF207 /* NSDate+Relative.swift */; };
+		400D556C1B5AA71D005A2E86 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 400D556B1B5AA71D005A2E86 /* Fabric.framework */; };
 		400FE01319B6A33200F72C3C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 400FE01219B6A33200F72C3C /* libPods.a */; };
 		4018C1861A9AA61E00B27D08 /* PostCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4018C1851A9AA61E00B27D08 /* PostCollectionViewCell.swift */; };
 		4018C18C1A9AAB7700B27D08 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4018C18B1A9AAB7700B27D08 /* PostViewController.swift */; };
@@ -37,6 +39,7 @@
 		408C7D2319B387A500EFC410 /* PostDialogueEntryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408C7D2219B387A500EFC410 /* PostDialogueEntryTableViewCell.swift */; };
 		408D393F19C12E550001981F /* ImageItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408D393E19C12E550001981F /* ImageItemProvider.swift */; };
 		408D394119C12EF00001981F /* PostItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408D394019C12EF00001981F /* PostItemProvider.swift */; };
+		408D5B6E1B7D6AA300C787FA /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 408D5B6D1B7D6AA300C787FA /* Launch Screen.xib */; };
 		409D00E91B28BF5F0097C2EC /* Cartography.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 409D00E51B27522E0097C2EC /* Cartography.framework */; };
 		409D00EA1B28BF5F0097C2EC /* Cartography.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 409D00E51B27522E0097C2EC /* Cartography.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		409D00EB1B28BF5F0097C2EC /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 409D00E61B27522E0097C2EC /* SwiftyJSON.framework */; };
@@ -46,7 +49,6 @@
 		40A11E6B19B51FF700B91843 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A11E6A19B51FF700B91843 /* ImageCollectionViewCell.swift */; };
 		40B609531A99234B0089E431 /* BlogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B609521A99234B0089E431 /* BlogViewController.swift */; };
 		40C78D1519BD29330002EB78 /* ReblogTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C78D1419BD29330002EB78 /* ReblogTransitionAnimator.swift */; };
-		40D015A11A753BCD00CE4511 /* FLAnimatedImageView+GIFs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D015A01A753BCD00CE4511 /* FLAnimatedImageView+GIFs.swift */; };
 		40D475F11AAB98010034CF16 /* PostTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D475F01AAB98010034CF16 /* PostTableHeaderView.swift */; };
 		40DF7DB21A7672E900CE3D4C /* VideoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40DF7DB11A7672E900CE3D4C /* VideoTableViewCell.swift */; };
 		40DF7DB41A79919900CE3D4C /* VideoPlayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40DF7DB31A79919900CE3D4C /* VideoPlayController.swift */; };
@@ -54,6 +56,7 @@
 		40F8CE9A1A41143000609ABF /* AccountsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F8CE991A41143000609ABF /* AccountsService.swift */; };
 		40FF6D4319B940C6008119A3 /* Blog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FF6D4219B940C6008119A3 /* Blog.swift */; };
 		40FF6D4519B9F656008119A3 /* QuickReblogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FF6D4419B9F656008119A3 /* QuickReblogViewController.swift */; };
+		E2A77F0CC51E5186CFC2B399 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 440C4C4D5E0A7451B7FA466E /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,6 +87,8 @@
 		13500F55524D7A285BCE2BD6 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		40080E8D1A0F042B00D883AE /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		40080E8F1A0F11DD00D883AE /* LockSplashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockSplashViewController.swift; sourceTree = "<group>"; };
+		4008591A1B7EBA05009DF207 /* NSDate+Relative.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+Relative.swift"; sourceTree = "<group>"; };
+		400D556B1B5AA71D005A2E86 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		400FE01219B6A33200F72C3C /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Debug-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		4018C1851A9AA61E00B27D08 /* PostCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCollectionViewCell.swift; sourceTree = "<group>"; };
 		4018C18B1A9AAB7700B27D08 /* PostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
@@ -117,6 +122,7 @@
 		408C7D2219B387A500EFC410 /* PostDialogueEntryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostDialogueEntryTableViewCell.swift; sourceTree = "<group>"; };
 		408D393E19C12E550001981F /* ImageItemProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageItemProvider.swift; sourceTree = "<group>"; };
 		408D394019C12EF00001981F /* PostItemProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostItemProvider.swift; sourceTree = "<group>"; };
+		408D5B6D1B7D6AA300C787FA /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "Launch Screen.xib"; path = "Highball/Launch Screen.xib"; sourceTree = "<group>"; };
 		409D00E51B27522E0097C2EC /* Cartography.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cartography.framework; path = Carthage/Build/iOS/Cartography.framework; sourceTree = "<group>"; };
 		409D00E61B27522E0097C2EC /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
 		40A11E5F19B4CBCB00B91843 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
@@ -124,7 +130,6 @@
 		40A11E6A19B51FF700B91843 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		40B609521A99234B0089E431 /* BlogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlogViewController.swift; sourceTree = "<group>"; };
 		40C78D1419BD29330002EB78 /* ReblogTransitionAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReblogTransitionAnimator.swift; sourceTree = "<group>"; };
-		40D015A01A753BCD00CE4511 /* FLAnimatedImageView+GIFs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FLAnimatedImageView+GIFs.swift"; sourceTree = "<group>"; };
 		40D475F01AAB98010034CF16 /* PostTableHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostTableHeaderView.swift; sourceTree = "<group>"; };
 		40DF7DB11A7672E900CE3D4C /* VideoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoTableViewCell.swift; sourceTree = "<group>"; };
 		40DF7DB31A79919900CE3D4C /* VideoPlayController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlayController.swift; sourceTree = "<group>"; };
@@ -132,6 +137,7 @@
 		40F8CE991A41143000609ABF /* AccountsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsService.swift; sourceTree = "<group>"; };
 		40FF6D4219B940C6008119A3 /* Blog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Blog.swift; sourceTree = "<group>"; };
 		40FF6D4419B9F656008119A3 /* QuickReblogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickReblogViewController.swift; sourceTree = "<group>"; };
+		440C4C4D5E0A7451B7FA466E /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B35C2FF3ECCE4C137A45D664 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -141,9 +147,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				400FE01319B6A33200F72C3C /* libPods.a in Frameworks */,
+				400D556C1B5AA71D005A2E86 /* Fabric.framework in Frameworks */,
 				409D00EB1B28BF5F0097C2EC /* SwiftyJSON.framework in Frameworks */,
 				409D00E91B28BF5F0097C2EC /* Cartography.framework in Frameworks */,
 				40A11E6019B4CBCB00B91843 /* Crashlytics.framework in Frameworks */,
+				E2A77F0CC51E5186CFC2B399 /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,6 +165,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		400859191B7EB9EB009DF207 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				4008591A1B7EBA05009DF207 /* NSDate+Relative.swift */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
 		4048DF7819AAB597000524F7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -181,6 +197,7 @@
 		4050697219AA76BD0066ECE3 = {
 			isa = PBXGroup;
 			children = (
+				408D5B6D1B7D6AA300C787FA /* Launch Screen.xib */,
 				4050697D19AA76BD0066ECE3 /* Highball */,
 				4050699319AA76BD0066ECE3 /* HighballTests */,
 				4050697C19AA76BD0066ECE3 /* Products */,
@@ -201,12 +218,12 @@
 		4050697D19AA76BD0066ECE3 /* Highball */ = {
 			isa = PBXGroup;
 			children = (
+				400859191B7EB9EB009DF207 /* Extensions */,
 				40A11E6619B518B500B91843 /* Controllers */,
 				40778B9A19B15F7D00F8EE13 /* Models */,
 				4048DF7819AAB597000524F7 /* Views */,
 				4050698019AA76BD0066ECE3 /* AppDelegate.swift */,
 				403F53DE19AFCEB800FF8F3B /* String+HTML.swift */,
-				40D015A01A753BCD00CE4511 /* FLAnimatedImageView+GIFs.swift */,
 				4050698A19AA76BD0066ECE3 /* Images.xcassets */,
 				4050697E19AA76BD0066ECE3 /* Supporting Files */,
 				405069A019AA77E80066ECE3 /* Highball-Bridging-Header.h */,
@@ -278,10 +295,12 @@
 		A3D296309A504A00AFFABE53 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				400D556B1B5AA71D005A2E86 /* Fabric.framework */,
 				409D00E51B27522E0097C2EC /* Cartography.framework */,
 				409D00E61B27522E0097C2EC /* SwiftyJSON.framework */,
 				400FE01219B6A33200F72C3C /* libPods.a */,
 				40A11E5F19B4CBCB00B91843 /* Crashlytics.framework */,
+				440C4C4D5E0A7451B7FA466E /* Pods.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -302,14 +321,15 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4050699A19AA76BD0066ECE3 /* Build configuration list for PBXNativeTarget "Highball" */;
 			buildPhases = (
-				40A11E5E19B4CBA500B91843 /* ShellScript */,
 				73E8195EFC37404C93E412AA /* Check Pods Manifest.lock */,
+				40A11E5E19B4CBA500B91843 /* ShellScript */,
 				4050697719AA76BD0066ECE3 /* Sources */,
 				4050697819AA76BD0066ECE3 /* Frameworks */,
 				4050697919AA76BD0066ECE3 /* Resources */,
 				1215D24837CC4FAF837E8A44 /* Copy Pods Resources */,
 				40778B9F19B20AC700F8EE13 /* CopyFiles */,
 				40A11E6519B4D97800B91843 /* ShellScript */,
+				32186D6E2958454A9F36E2BB /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -382,6 +402,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4050698B19AA76BD0066ECE3 /* Images.xcassets in Resources */,
+				408D5B6E1B7D6AA300C787FA /* Launch Screen.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -410,6 +431,21 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		32186D6E2958454A9F36E2BB /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		40A11E5E19B4CBA500B91843 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -421,7 +457,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "source ./bin/CrashlyticsKeys.sh\nif [ -n \"$CRASHLYTICS_API_KEY\" -a -n \"$CRASHLYTICS_APP_KEY\" ]; then\n    /usr/libexec/PlistBuddy -c \"Add :HBCrashlyticsAPIKey string '$CRASHLYTICS_API_KEY'\" Highball/Info.plist\n    /usr/libexec/PlistBuddy -c \"Add :HBCrashlyticsAppKey string '$CRASHLYTICS_APP_KEY'\" Highball/Info.plist\nfi\n";
+			shellScript = "source ./bin/CrashlyticsKeys.sh\nif [ -n \"$CRASHLYTICS_API_KEY\" -a -n \"$CRASHLYTICS_APP_KEY\" ]; then\n    /usr/libexec/PlistBuddy -c \"Add :HBCrashlyticsAPIKey string '$CRASHLYTICS_API_KEY'\" Highball/Info.plist\n    /usr/libexec/PlistBuddy -c \"Add :HBCrashlyticsAppKey string '$CRASHLYTICS_APP_KEY'\" Highball/Info.plist\n    /usr/libexec/PlistBuddy -c \"Add Fabric:APIKey string '$CRASHLYTCS_API_KEY'\" Highball/Info.plist\nfi\n";
 		};
 		40A11E6519B4D97800B91843 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -434,7 +470,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "source ./bin/CrashlyticsKeys.sh\nif [ -n \"$CRASHLYTICS_API_KEY\" -a -n \"$CRASHLYTICS_APP_KEY\" ]; then\n    ./Crashlytics.framework/run $CRASHLYTICS_API_KEY $CRASHLYTICS_APP_KEY\n    /usr/libexec/PlistBuddy -c \"Delete :HBCrashlyticsAPIKey\" Highball/Info.plist\n    /usr/libexec/PlistBuddy -c \"Delete :HBCrashlyticsAppKey\" Highball/Info.plist\nfi\n";
+			shellScript = "source ./bin/CrashlyticsKeys.sh\nif [ -n \"$CRASHLYTICS_API_KEY\" -a -n \"$CRASHLYTICS_APP_KEY\" ]; then\n    ./Crashlytics.framework/run $CRASHLYTICS_API_KEY $CRASHLYTICS_APP_KEY\n    /usr/libexec/PlistBuddy -c \"Delete :HBCrashlyticsAPIKey\" Highball/Info.plist\n    /usr/libexec/PlistBuddy -c \"Delete :HBCrashlyticsAppKey\" Highball/Info.plist\n    /usr/libexec/PlistBuddy -c \"Delete Fabric:APIKey\" Highball/Info.plist\nfi\n";
 		};
 		73E8195EFC37404C93E412AA /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -468,6 +504,7 @@
 				40FF6D4519B9F656008119A3 /* QuickReblogViewController.swift in Sources */,
 				403F53DB19AECFEF00FF8F3B /* PhotosetRowTableViewCell.swift in Sources */,
 				408C7D2119B384C800EFC410 /* PostDialogueEntry.swift in Sources */,
+				4008591B1B7EBA05009DF207 /* NSDate+Relative.swift in Sources */,
 				40B609531A99234B0089E431 /* BlogViewController.swift in Sources */,
 				40731BB819FDC38900F6978D /* PostsViewController.swift in Sources */,
 				4050698119AA76BD0066ECE3 /* AppDelegate.swift in Sources */,
@@ -486,7 +523,6 @@
 				40080E8E1A0F042B00D883AE /* SettingsViewController.swift in Sources */,
 				402D979919F1E442003DCD55 /* TextReblogViewController.swift in Sources */,
 				402A20961A3D2C510007CCFF /* TitleTableViewCell.swift in Sources */,
-				40D015A11A753BCD00CE4511 /* FLAnimatedImageView+GIFs.swift in Sources */,
 				4074B6611A99269C00774E00 /* TagViewController.swift in Sources */,
 				40778B9E19B160DD00F8EE13 /* PostPhoto.swift in Sources */,
 				40D475F11AAB98010034CF16 /* PostTableHeaderView.swift in Sources */,

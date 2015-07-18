@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftyJSON
+import TMTumblrSDK
 
 class LikesViewController: PostsViewController {
     override func viewDidLoad() {

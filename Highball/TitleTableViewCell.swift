@@ -9,6 +9,7 @@
 
 import UIKit
 import Cartography
+import WCFastCell
 
 class TitleTableViewCell: WCFastCell {
 

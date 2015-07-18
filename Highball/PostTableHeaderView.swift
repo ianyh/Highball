@@ -8,6 +8,8 @@
 
 import UIKit
 import Cartography
+import TMCache
+import TMTumblrSDK
 
 class PostTableHeaderView: UITableViewHeaderFooterView {
     private let avatarLoadQueue = dispatch_queue_create("avatarLoadQueue", nil)

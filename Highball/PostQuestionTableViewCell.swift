@@ -8,6 +8,7 @@
 
 import UIKit
 import Cartography
+import WCFastCell
 
 class PostQuestionTableViewCell: WCFastCell {
     var bubbleView: UIView!

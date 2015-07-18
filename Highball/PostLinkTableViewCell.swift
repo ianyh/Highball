@@ -8,6 +8,7 @@
 
 import UIKit
 import Cartography
+import WCFastCell
 
 class PostLinkTableViewCell: WCFastCell {
 

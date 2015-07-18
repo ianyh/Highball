@@ -10,6 +10,10 @@ import UIKit
 import WebKit
 import SwiftyJSON
 import Cartography
+import CHTCollectionViewWaterfallLayout
+import TMTumblrSDK
+import FontAwesomeKit
+import SVWebViewController
 
 enum TextRow: Int {
     case Title
@@ -576,12 +580,28 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
                     viewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
                     self.presentViewController(viewController, animated: true, completion: nil)
                 }
+            } else if let linkCell = view as? PostLinkTableViewCell {
+                if let navigationController = self.navigationController {
+                    navigationController.pushViewController(SVWebViewController(URL: NSURL(string: post.urlString!)), animated: true)
+                }
             }
         }
 
         cell.tagTapHandler = { post, tag in
             if let navigationController = self.navigationController {
-                self.navigationController!.pushViewController(TagViewController(tag: tag), animated: true)
+                navigationController.pushViewController(TagViewController(tag: tag), animated: true)
+            }
+        }
+
+        cell.linkTapHandler = { post, url in
+            if let navigationController = self.navigationController {
+                if let host = url.host {
+                    if let username = (split(host) { $0 == "." }).first{
+                        navigationController.pushViewController(BlogViewController(blogName: username), animated: true)
+                        return
+                    }
+                }
+                navigationController.pushViewController(SVWebViewController(URL: url), animated: true)
             }
         }
 

@@ -8,6 +8,8 @@
 
 import UIKit
 import Cartography
+import pop
+import FontAwesomeKit
 
 enum QuickReblogAction {
     case Reblog(ReblogType)

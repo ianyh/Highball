@@ -38,18 +38,40 @@ PODS:
     - FontAwesomeKit/Core
   - FontAwesomeKit/Zocial (2.1.9):
     - FontAwesomeKit/Core
+  - FormatterKit (1.8.0):
+    - FormatterKit/AddressFormatter (= 1.8.0)
+    - FormatterKit/ArrayFormatter (= 1.8.0)
+    - FormatterKit/ColorFormatter (= 1.8.0)
+    - FormatterKit/LocationFormatter (= 1.8.0)
+    - FormatterKit/NameFormatter (= 1.8.0)
+    - FormatterKit/OrdinalNumberFormatter (= 1.8.0)
+    - FormatterKit/TimeIntervalFormatter (= 1.8.0)
+    - FormatterKit/UnitOfInformationFormatter (= 1.8.0)
+    - FormatterKit/URLRequestFormatter (= 1.8.0)
+  - FormatterKit/AddressFormatter (1.8.0)
+  - FormatterKit/ArrayFormatter (1.8.0)
+  - FormatterKit/ColorFormatter (1.8.0)
+  - FormatterKit/LocationFormatter (1.8.0)
+  - FormatterKit/NameFormatter (1.8.0)
+  - FormatterKit/OrdinalNumberFormatter (1.8.0)
+  - FormatterKit/TimeIntervalFormatter (1.8.0)
+  - FormatterKit/UnitOfInformationFormatter (1.8.0)
+  - FormatterKit/URLRequestFormatter (1.8.0)
   - JXHTTP (1.0.4)
   - M13ProgressSuite (1.2.7)
+  - PINCache (2.0)
+  - PINRemoteImage (1.1.2):
+    - FLAnimatedImage (>= 1.0)
+    - PINCache (>= 2.0)
+  - Player (0.0.6)
   - pop (1.0.7)
   - Reachability (3.2)
-  - SDWebImage (3.7.1):
-    - SDWebImage/Core (= 3.7.1)
-  - SDWebImage/Core (3.7.1)
   - SlackTextViewController (1.4.1):
     - SlackTextViewController/Additions (= 1.4.1)
   - SlackTextViewController/Additions (1.4.1)
   - SSKeychain (1.2.2)
   - SVPullToRefresh (0.4.1)
+  - SVWebViewController (1.0)
   - TMCache (1.2.3)
   - TMTumblrSDK (1.1.1):
     - TMTumblrSDK/Activity (= 1.1.1)
@@ -69,26 +91,28 @@ PODS:
   - VENTouchLock (1.0.6):
     - SSKeychain (~> 1.0)
   - WCFastCell (1.1)
-  - youtube-ios-player-helper (0.1.1)
+  - XCDYouTubeKit (2.2.0)
 
 DEPENDENCIES:
-  - AFNetworking
-  - ChameleonFramework
+  - AFNetworking (~> 2.5)
+  - ChameleonFramework (~> 1.1)
   - CHTCollectionViewWaterfallLayout (from `https://github.com/ianyh/CHTCollectionViewWaterfallLayout.git`,
     branch `develop`)
-  - FLAnimatedImage
   - FontAwesomeKit (from `https://github.com/PrideChung/FontAwesomeKit.git`)
+  - FormatterKit (~> 1.8)
   - M13ProgressSuite (from `https://github.com/ianyh/M13ProgressSuite.git`)
-  - pop
-  - Reachability
-  - SDWebImage
-  - SlackTextViewController
-  - SVPullToRefresh
-  - TMCache
+  - PINRemoteImage (~> 1.0)
+  - Player
+  - pop (~> 1.0)
+  - Reachability (~> 3.2)
+  - SlackTextViewController (~> 1.4)
+  - SVPullToRefresh (~> 0.4)
+  - SVWebViewController (~> 1.0)
+  - TMCache (~> 1.2)
   - TMTumblrSDK (~> 1)
-  - VENTouchLock
-  - WCFastCell
-  - youtube-ios-player-helper
+  - VENTouchLock (~> 1.0)
+  - WCFastCell (~> 1.1)
+  - XCDYouTubeKit (~> 2.2)
 
 EXTERNAL SOURCES:
   CHTCollectionViewWaterfallLayout:
@@ -116,18 +140,22 @@ SPEC CHECKSUMS:
   CHTCollectionViewWaterfallLayout: 058823cc65c9d84e059b0a85eede517550da0334
   FLAnimatedImage: f9422f796135aff80d8c00b2afc48015bb746e24
   FontAwesomeKit: 0cd610453ce270f34ad17378c68de98aad0e05ef
+  FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4
   JXHTTP: b927cf0a0fdbf8906464917671e86887ee0e06be
   M13ProgressSuite: 03d194af6359da440641ba758aed5a18b0386a86
+  PINCache: ca953ba93ce1edde056fdd99121ee65b295a08c9
+  PINRemoteImage: 0696e5f679deabf2e2ddfb57085fb978ca51bfc3
+  Player: 865e43a22a7bd41441d8153ea2799815d9da77f1
   pop: 628ffc631644601567ee8bfaaaea493ebd7d0923
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
-  SDWebImage: ed3095af2ff88b436426037444979b917f6c5575
   SlackTextViewController: 22142c06d574c7a679631c24b2bab1f9195d31d7
   SSKeychain: 88767e903ee8d274ed380e364d96b7a101235286
   SVPullToRefresh: ba2e718695a43253d8bea6852d2960097dc15d8c
+  SVWebViewController: c36dda7326e81fcae0abf5d02bf7bbf7e41be901
   TMCache: 5f68bc38d741aa8df4c63131b847522783665d81
   TMTumblrSDK: 41fcf37af955860459e244cb78bcf865a299b4d6
   VENTouchLock: d3b4f07229ca352a49057ed55bffe894d6701357
   WCFastCell: 3e20a0c711d27307584bdbd359a44a714e991151
-  youtube-ios-player-helper: d7350b9f9070edf482e5d0bd5e8948c0ba1437f3
+  XCDYouTubeKit: 920ff5dfdf37f0f41b19610c5270b2ed23b05b13
 
-COCOAPODS: 0.37.2
+COCOAPODS: 0.38.2

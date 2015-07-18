@@ -8,6 +8,7 @@
 
 import UIKit
 import Cartography
+import WCFastCell
 
 class PostCollectionViewCell: WCFastCollectionViewCell {
     private var postViewController: PostViewController!
@@ -25,6 +26,7 @@ class PostCollectionViewCell: WCFastCollectionViewCell {
 
     var bodyTapHandler: ((Post, UIView) -> ())?
     var tagTapHandler: ((Post, String) -> ())?
+    var linkTapHandler: ((Post, NSURL) -> ())?
 
     required override init(frame: CGRect) {
         super.init(frame: frame)
@@ -37,6 +39,11 @@ class PostCollectionViewCell: WCFastCollectionViewCell {
         self.postViewController.tagTapHandler = { post, tag in
             if let tagTapHandler = self.tagTapHandler {
                 tagTapHandler(post, tag)
+            }
+        }
+        self.postViewController.linkTapHandler = { post, url in
+            if let linkTapHandler = self.linkTapHandler {
+                linkTapHandler(post, url)
             }
         }
 

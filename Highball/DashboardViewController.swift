@@ -8,6 +8,8 @@
 
 import UIKit
 import SwiftyJSON
+import FontAwesomeKit
+import TMTumblrSDK
 
 class DashboardViewController: PostsViewController {
     required override init() {

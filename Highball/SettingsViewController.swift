@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import VENTouchLock
+import TMCache
 
 class SettingsViewController : UITableViewController {
     private enum SettingsSection: Int {
@@ -126,7 +128,6 @@ class SettingsViewController : UITableViewController {
             let alertController = UIAlertController(title: "Are you sure?", message: "Are you sure that you want to clear your cache?", preferredStyle: UIAlertControllerStyle.Alert)
             alertController.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.Destructive) { action in
                 TMCache.sharedCache().diskCache.removeAllObjects(nil)
-                SDImageCache.sharedImageCache().clearDisk()
             })
             alertController.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.Cancel) { _ in })
             self.presentViewController(alertController, animated: true, completion: nil)

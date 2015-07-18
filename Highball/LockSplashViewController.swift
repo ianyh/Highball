@@ -8,6 +8,7 @@
 
 import UIKit
 import Cartography
+import VENTouchLock
 
 class LockSplashViewController: VENTouchLockSplashViewController, UITableViewDataSource, UITableViewDelegate {
     private let cellIdentifier = "cellIdentifier"

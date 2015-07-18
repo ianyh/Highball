@@ -8,12 +8,13 @@
 
 import UIKit
 import Cartography
+import WCFastCell
+import FontAwesomeKit
 
 class PhotosetRowTableViewCell: WCFastCell {
     var imageViews: Array<FLAnimatedImageView>?
     var failedImageViews: Array<UIImageView>?
     var shareHandler: ((UIImage) -> ())?
-    var imageDownloadOperations: Array<SDWebImageOperation>?
     
     var contentWidth: CGFloat! = 0
     var images: Array<PostPhoto>? {
@@ -38,7 +39,6 @@ class PhotosetRowTableViewCell: WCFastCell {
                 let lastImageIndex = images.count - 1
                 var imageViews = Array<FLAnimatedImageView>()
                 var failedImageViews = Array<UIImageView>()
-                var downloadOperations = Array<SDWebImageOperation>()
                 var lastImageView: UIImageView?
                 for (index, image) in enumerate(images) {
                     let widthPortion = image.widthToHeightRatio! / totalWidth
@@ -94,11 +94,8 @@ class PhotosetRowTableViewCell: WCFastCell {
                         }
                     }
 
-                    let operation = imageView.setImageByTypeWithURL(imageURL) { imageExists in
-                        failedImageView.hidden = imageExists; return
-                    }
-                    if let operation = operation {
-                        downloadOperations.append(operation)
+                    imageView.pin_setImageFromURL(imageURL) { result in
+                        failedImageView.hidden = result.error == nil; return
                     }
 
                     lastImageView = imageView
@@ -109,7 +106,6 @@ class PhotosetRowTableViewCell: WCFastCell {
                 
                 self.imageViews = imageViews
                 self.failedImageViews = failedImageViews
-                self.imageDownloadOperations = downloadOperations
             }
         }
     }
@@ -117,8 +113,6 @@ class PhotosetRowTableViewCell: WCFastCell {
     private func clearImages() {
         if let imageViews = self.imageViews {
             for imageView in imageViews {
-                imageView.sd_cancelCurrentAnimationImagesLoad()
-                imageView.sd_cancelCurrentImageLoad()
                 imageView.image = nil
                 imageView.animatedImage = nil
                 imageView.removeFromSuperview()
@@ -131,15 +125,8 @@ class PhotosetRowTableViewCell: WCFastCell {
             }
         }
 
-        if let operations = self.imageDownloadOperations {
-            for operation in operations {
-                operation.cancel()
-            }
-        }
-
         self.imageViews = nil
         self.failedImageViews = nil
-        self.imageDownloadOperations = nil
     }
 
     func imageAtPoint(point: CGPoint) -> UIImage? {

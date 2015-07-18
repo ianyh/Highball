@@ -8,6 +8,7 @@
 
 import UIKit
 import Cartography
+import FontAwesomeKit
 
 class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
     var scrollView: UIScrollView!
@@ -90,8 +91,8 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
         if let photo = self.photo {
             if let contentWidth = self.contentWidth {
                 let imageURL = photo.urlWithWidth(contentWidth)
-                self.imageView.setImageByTypeWithURL(imageURL) { imageExists in
-                    self.failedImageView.hidden = imageExists; return
+                self.imageView.pin_setImageFromURL(imageURL) { result in
+                    self.failedImageView.hidden = result.error == nil; return
                 }
             }
         }

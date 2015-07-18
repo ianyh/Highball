@@ -6,8 +6,9 @@
 //  Copyright (c) 2014 ianynda. All rights reserved.
 //
 
-import UIKit
 import Cartography
+import UIKit
+import WCFastCell
 
 class PostDialogueEntryTableViewCell: WCFastCell {
 

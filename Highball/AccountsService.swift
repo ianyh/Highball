@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftyJSON
+import TMTumblrSDK
 
 struct Account {
     let blog: Blog

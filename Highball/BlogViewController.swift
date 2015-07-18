@@ -8,6 +8,8 @@
 
 import UIKit
 import SwiftyJSON
+import FontAwesomeKit
+import TMTumblrSDK
 
 class BlogViewController: PostsViewController {
     private let blogName: String!

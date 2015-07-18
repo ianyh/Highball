@@ -27,6 +27,7 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
 
     var bodyTapHandler: ((Post, UIView) -> ())?
     var tagTapHandler: ((Post, String) -> ())?
+    var linkTapHandler: ((Post, NSURL) -> ())?
 
     required override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -156,6 +157,11 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
             if indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 2 {
                 let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as! ContentTableViewCell!
                 cell.content = self.post.htmlBodyWithWidth(tableView.frame.size.width)
+                cell.linkHandler = { url in
+                    if let handler = self.linkTapHandler {
+                        handler(self.post, url)
+                    }
+                }
                 return cell
             }
             let cell = tableView.dequeueReusableCellWithIdentifier(photosetRowTableViewCellIdentifier) as! PhotosetRowTableViewCell!
@@ -186,6 +192,11 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
             case .Body:
                 let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as! ContentTableViewCell!
                 cell.content = self.post.htmlBodyWithWidth(tableView.frame.size.width)
+                cell.linkHandler = { url in
+                    if let handler = self.linkTapHandler {
+                        handler(self.post, url)
+                    }
+                }
                 return cell
             }
         case "answer":
@@ -197,6 +208,11 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
             case .Answer:
                 let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as! ContentTableViewCell!
                 cell.content = self.post.htmlBodyWithWidth(tableView.frame.size.width)
+                cell.linkHandler = { url in
+                    if let handler = self.linkTapHandler {
+                        handler(self.post, url)
+                    }
+                }
                 return cell
             }
         case "quote":
@@ -204,10 +220,20 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
             case .Quote:
                 let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as! ContentTableViewCell!
                 cell.content = self.post.htmlBodyWithWidth(tableView.frame.size.width)
+                cell.linkHandler = { url in
+                    if let handler = self.linkTapHandler {
+                        handler(self.post, url)
+                    }
+                }
                 return cell
             case .Source:
                 let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as! ContentTableViewCell!
                 cell.content = self.post.htmlSecondaryBodyWithWidth(tableView.frame.size.width)
+                cell.linkHandler = { url in
+                    if let handler = self.linkTapHandler {
+                        handler(self.post, url)
+                    }
+                }
                 return cell
             }
         case "link":
@@ -219,6 +245,11 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
             case .Description:
                 let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as! ContentTableViewCell!
                 cell.content = self.post.htmlBodyWithWidth(tableView.frame.size.width)
+                cell.linkHandler = { url in
+                    if let handler = self.linkTapHandler {
+                        handler(self.post, url)
+                    }
+                }
                 return cell
             }
         case "chat":
@@ -247,6 +278,11 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
             case .Caption:
                 let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as! ContentTableViewCell!
                 cell.content = self.post.htmlBodyWithWidth(tableView.frame.size.width)
+                cell.linkHandler = { url in
+                    if let handler = self.linkTapHandler {
+                        handler(self.post, url)
+                    }
+                }
                 return cell
             }
         case "audio":
@@ -256,6 +292,11 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
                 cell.content = self.post.htmlSecondaryBodyWithWidth(tableView.frame.size.width)
             case .Caption:
                 cell.content = self.post.htmlBodyWithWidth(tableView.frame.size.width)
+            }
+            cell.linkHandler = { url in
+                if let handler = self.linkTapHandler {
+                    handler(self.post, url)
+                }
             }
             return cell
         default:

@@ -8,6 +8,9 @@
 
 import UIKit
 import Cartography
+import SlackTextViewController
+import FontAwesomeKit
+import TMTumblrSDK
 
 class TextReblogViewController: SLKTextViewController {
     var reblogType: ReblogType!

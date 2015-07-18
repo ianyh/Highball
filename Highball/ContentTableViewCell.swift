@@ -9,6 +9,7 @@
 import UIKit
 import WebKit
 import Cartography
+import WCFastCell
 
 class ContentTableViewCell: WCFastCell, WKNavigationDelegate {
     var contentWebView: WKWebView!
@@ -21,6 +22,8 @@ class ContentTableViewCell: WCFastCell, WKNavigationDelegate {
             }
         }
     }
+
+    var linkHandler: ((NSURL) -> ())?
 
     override required init(style: UITableViewCellStyle, reuseIdentifier: String!) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -50,7 +53,9 @@ class ContentTableViewCell: WCFastCell, WKNavigationDelegate {
             decisionHandler(WKNavigationActionPolicy.Allow)
         } else {
             if navigationAction.navigationType == WKNavigationType.LinkActivated, let url = navigationAction.request.URL {
-                UIApplication.sharedApplication().openURL(url)
+                if let handler = linkHandler {
+                    handler(url)
+                }
             }
             decisionHandler(WKNavigationActionPolicy.Cancel)
         }
