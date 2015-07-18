@@ -209,12 +209,8 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
             return webView
         }
 
-        let gestureRecognizer = UILongPressGestureRecognizer()
-        gestureRecognizer.delegate = self
-
         let webView = WKWebView(frame: frame)
         webView.navigationDelegate = self
-        webView.scrollView.addGestureRecognizer(gestureRecognizer)
         return webView
     }
 
@@ -227,7 +223,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
     }
 
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailByGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        if let gestureRecognizer = gestureRecognizer as? UILongPressGestureRecognizer {
+        if let gestureRecognizer = gestureRecognizer as? UILongPressGestureRecognizer, let otherGestureRecognizer = otherGestureRecognizer as? UILongPressGestureRecognizer {
             return true
         }
         return false
