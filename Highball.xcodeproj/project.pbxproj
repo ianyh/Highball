@@ -11,7 +11,6 @@
 		40080E901A0F11DD00D883AE /* LockSplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40080E8F1A0F11DD00D883AE /* LockSplashViewController.swift */; };
 		4008591B1B7EBA05009DF207 /* NSDate+Relative.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4008591A1B7EBA05009DF207 /* NSDate+Relative.swift */; };
 		400D556C1B5AA71D005A2E86 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 400D556B1B5AA71D005A2E86 /* Fabric.framework */; };
-		400FE01319B6A33200F72C3C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 400FE01219B6A33200F72C3C /* libPods.a */; };
 		4018C1861A9AA61E00B27D08 /* PostCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4018C1851A9AA61E00B27D08 /* PostCollectionViewCell.swift */; };
 		4018C18C1A9AAB7700B27D08 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4018C18B1A9AAB7700B27D08 /* PostViewController.swift */; };
 		402033591A6C785400BA136C /* AnimatedImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402033581A6C785400BA136C /* AnimatedImageCache.swift */; };
@@ -146,7 +145,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				400FE01319B6A33200F72C3C /* libPods.a in Frameworks */,
 				400D556C1B5AA71D005A2E86 /* Fabric.framework in Frameworks */,
 				409D00EB1B28BF5F0097C2EC /* SwiftyJSON.framework in Frameworks */,
 				409D00E91B28BF5F0097C2EC /* Cartography.framework in Frameworks */,
