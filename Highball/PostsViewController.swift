@@ -167,6 +167,15 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
         self.longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: Selector("didLongPress:"))
         self.longPressGestureRecognizer.delegate = self
         self.longPressGestureRecognizer.minimumPressDuration = 0.3
+
+        if let gestureRecognizers = self.view.gestureRecognizers {
+            for gestureRecognizer in gestureRecognizers {
+                if let gestureRecognizer = gestureRecognizer as? UILongPressGestureRecognizer {
+                    gestureRecognizer.requireGestureRecognizerToFail(self.longPressGestureRecognizer)
+                }
+            }
+        }
+
         self.view.addGestureRecognizer(self.longPressGestureRecognizer)
 
         self.panGestureRecognizer = UIPanGestureRecognizer(target: self, action: Selector("didPan:"))
@@ -224,13 +233,6 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
 
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
-    }
-
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailByGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        if let gestureRecognizer = gestureRecognizer as? UILongPressGestureRecognizer, let otherGestureRecognizer = otherGestureRecognizer as? UILongPressGestureRecognizer {
-            return true
-        }
-        return false
     }
 
     func postsFromJSON(json: JSON) -> Array<Post> { return [] }

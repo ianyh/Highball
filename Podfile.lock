@@ -1,26 +1,28 @@
 PODS:
-  - AFNetworking (2.5.0):
-    - AFNetworking/NSURLConnection (= 2.5.0)
-    - AFNetworking/NSURLSession (= 2.5.0)
-    - AFNetworking/Reachability (= 2.5.0)
-    - AFNetworking/Security (= 2.5.0)
-    - AFNetworking/Serialization (= 2.5.0)
-    - AFNetworking/UIKit (= 2.5.0)
-  - AFNetworking/NSURLConnection (2.5.0):
+  - AFNetworking (2.5.4):
+    - AFNetworking/NSURLConnection (= 2.5.4)
+    - AFNetworking/NSURLSession (= 2.5.4)
+    - AFNetworking/Reachability (= 2.5.4)
+    - AFNetworking/Security (= 2.5.4)
+    - AFNetworking/Serialization (= 2.5.4)
+    - AFNetworking/UIKit (= 2.5.4)
+  - AFNetworking/NSURLConnection (2.5.4):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.5.0):
+  - AFNetworking/NSURLSession (2.5.4):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.5.0)
-  - AFNetworking/Security (2.5.0)
-  - AFNetworking/Serialization (2.5.0)
-  - AFNetworking/UIKit (2.5.0):
+  - AFNetworking/Reachability (2.5.4)
+  - AFNetworking/Security (2.5.4)
+  - AFNetworking/Serialization (2.5.4)
+  - AFNetworking/UIKit (2.5.4):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - ChameleonFramework (1.1.2)
+  - ChameleonFramework (1.2.1):
+    - ChameleonFramework/Default (= 1.2.1)
+  - ChameleonFramework/Default (1.2.1)
   - CHTCollectionViewWaterfallLayout (0.8)
   - FLAnimatedImage (1.0.8)
   - FontAwesomeKit (2.1.9):
@@ -57,7 +59,7 @@ PODS:
   - FormatterKit/TimeIntervalFormatter (1.8.0)
   - FormatterKit/UnitOfInformationFormatter (1.8.0)
   - FormatterKit/URLRequestFormatter (1.8.0)
-  - JXHTTP (1.0.4)
+  - JXHTTP (1.0.7)
   - M13ProgressSuite (1.2.7)
   - PINCache (2.0)
   - PINRemoteImage (1.1.2):
@@ -66,13 +68,11 @@ PODS:
   - Player (0.0.6)
   - pop (1.0.7)
   - Reachability (3.2)
-  - SlackTextViewController (1.4.1):
-    - SlackTextViewController/Additions (= 1.4.1)
-  - SlackTextViewController/Additions (1.4.1)
-  - SSKeychain (1.2.2)
+  - SlackTextViewController (1.6)
+  - SSKeychain (1.2.3)
   - SVPullToRefresh (0.4.1)
   - SVWebViewController (1.0)
-  - TMCache (1.2.3)
+  - TMCache (1.2.4)
   - TMTumblrSDK (1.1.1):
     - TMTumblrSDK/Activity (= 1.1.1)
     - TMTumblrSDK/APIClient (= 1.1.1)
@@ -88,7 +88,7 @@ PODS:
   - TMTumblrSDK/AppClient (1.1.1):
     - TMTumblrSDK/Core
   - TMTumblrSDK/Core (1.1.1)
-  - VENTouchLock (1.0.6):
+  - VENTouchLock (1.11.0):
     - SSKeychain (~> 1.0)
   - WCFastCell (1.1)
   - XCDYouTubeKit (2.2.0)
@@ -128,33 +128,33 @@ CHECKOUT OPTIONS:
     :commit: 57750315963eec8844c583942192d207b5f298e6
     :git: https://github.com/ianyh/CHTCollectionViewWaterfallLayout.git
   FontAwesomeKit:
-    :commit: 62066f604c164c2e1c5be704df368d55955a52ce
+    :commit: 0c9d92aeef1fd148c11daed2ded9d0dcdb4b2c4f
     :git: https://github.com/PrideChung/FontAwesomeKit.git
   M13ProgressSuite:
     :commit: 57321a0f4aff566b459b8956b5f7ec889c5b8438
     :git: https://github.com/ianyh/M13ProgressSuite.git
 
 SPEC CHECKSUMS:
-  AFNetworking: 96ac9bf3eda33582701cb1fcc5b896aa1e20311e
-  ChameleonFramework: 1b4588efcae564886e1a176fa02fb0f4c81a69b3
+  AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
+  ChameleonFramework: 3476f813ac1615aef0a9a958f05520dfca47e09d
   CHTCollectionViewWaterfallLayout: 058823cc65c9d84e059b0a85eede517550da0334
   FLAnimatedImage: f9422f796135aff80d8c00b2afc48015bb746e24
   FontAwesomeKit: 0cd610453ce270f34ad17378c68de98aad0e05ef
   FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4
-  JXHTTP: b927cf0a0fdbf8906464917671e86887ee0e06be
-  M13ProgressSuite: 03d194af6359da440641ba758aed5a18b0386a86
+  JXHTTP: 156f18e8cd69161f9223e39a5783a5bcb1ecda7f
+  M13ProgressSuite: 4642db3df66a61f512ba2caded404637f9788eb6
   PINCache: ca953ba93ce1edde056fdd99121ee65b295a08c9
   PINRemoteImage: 0696e5f679deabf2e2ddfb57085fb978ca51bfc3
   Player: 865e43a22a7bd41441d8153ea2799815d9da77f1
   pop: 628ffc631644601567ee8bfaaaea493ebd7d0923
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
-  SlackTextViewController: 22142c06d574c7a679631c24b2bab1f9195d31d7
-  SSKeychain: 88767e903ee8d274ed380e364d96b7a101235286
+  SlackTextViewController: 84e1e4b7f12a8e3691cf97ca61c934b99058a2e8
+  SSKeychain: 3f42991739c6c60a9cf1bbd4dff6c0d3694bcf3d
   SVPullToRefresh: ba2e718695a43253d8bea6852d2960097dc15d8c
   SVWebViewController: c36dda7326e81fcae0abf5d02bf7bbf7e41be901
-  TMCache: 5f68bc38d741aa8df4c63131b847522783665d81
+  TMCache: a93984b045a5ee84bd8941bd5e0b54296059cc52
   TMTumblrSDK: 41fcf37af955860459e244cb78bcf865a299b4d6
-  VENTouchLock: d3b4f07229ca352a49057ed55bffe894d6701357
+  VENTouchLock: f3145d6fbff243d6692dfb1107b88db06dc216c9
   WCFastCell: 3e20a0c711d27307584bdbd359a44a714e991151
   XCDYouTubeKit: 920ff5dfdf37f0f41b19610c5270b2ed23b05b13
 
