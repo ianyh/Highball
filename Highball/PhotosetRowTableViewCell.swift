@@ -113,6 +113,7 @@ class PhotosetRowTableViewCell: WCFastCell {
     private func clearImages() {
         if let imageViews = self.imageViews {
             for imageView in imageViews {
+                imageView.pin_cancelImageDownload()
                 imageView.image = nil
                 imageView.animatedImage = nil
                 imageView.removeFromSuperview()
