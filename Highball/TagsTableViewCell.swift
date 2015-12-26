@@ -31,7 +31,7 @@ class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollecti
             self.setUpCell()
         }
 
-        required init(coder aDecoder: NSCoder) {
+        required init?(coder aDecoder: NSCoder) {
             super.init(coder: aDecoder)
             self.setUpCell()
         }
@@ -43,7 +43,7 @@ class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollecti
 
             self.contentView.addSubview(self.tagLabel)
 
-            layout(self.tagLabel, self.contentView) { tagLabel, contentView in
+            constrain(self.tagLabel, self.contentView) { tagLabel, contentView in
                 tagLabel.edges == contentView.edges; return
             }
         }
@@ -64,7 +64,7 @@ class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollecti
         self.setUpCell()
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.setUpCell()
     }
@@ -89,7 +89,7 @@ class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollecti
 
         self.contentView.addSubview(self.collectionView)
         
-        layout(self.collectionView, self.contentView) { collectionView, contentView in
+        constrain(self.collectionView, self.contentView) { collectionView, contentView in
             collectionView.edges == contentView.edges; return
         }
     }

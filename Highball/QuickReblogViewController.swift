@@ -70,7 +70,7 @@ class QuickReblogViewController: UIViewController {
 
             if self.showingOptions {
                 for button in [ self.reblogButton, self.queueButton, self.shareButton, self.likeButton ] {
-                    var opacityAnimation = POPSpringAnimation(propertyNamed: kPOPLayerOpacity)
+                    let opacityAnimation = POPSpringAnimation(propertyNamed: kPOPLayerOpacity)
                     opacityAnimation.toValue = 1
                     opacityAnimation.name = "opacity"
                     
@@ -97,7 +97,7 @@ class QuickReblogViewController: UIViewController {
                 let initialAngle = startAngle + (endAngle - startAngle) / 8
                 let angleInterval = (endAngle - startAngle) / 4
                 
-                for (index, button) in enumerate([ self.reblogButton, self.queueButton, self.shareButton, self.likeButton ]) {
+                for (index, button) in [ self.reblogButton, self.queueButton, self.shareButton, self.likeButton ].enumerate() {
                     let center = self.startButton.center
                     let angleOffset = angleInterval * CGFloat(index)
                     let angle = initialAngle + angleOffset
@@ -120,13 +120,13 @@ class QuickReblogViewController: UIViewController {
                 }
             } else {
                 for button in [ self.reblogButton, self.queueButton, self.shareButton, self.likeButton ] {
-                    var opacityAnimation = POPSpringAnimation(propertyNamed: kPOPLayerOpacity)
+                    let opacityAnimation = POPSpringAnimation(propertyNamed: kPOPLayerOpacity)
                     opacityAnimation.toValue = 0
                     opacityAnimation.name = "opacity"
                     
                     button.layer.pop_addAnimation(opacityAnimation, forKey: opacityAnimation.name)
                     
-                    var positionAnimation = POPSpringAnimation(propertyNamed: kPOPLayerPosition)
+                    let positionAnimation = POPSpringAnimation(propertyNamed: kPOPLayerPosition)
                     positionAnimation.toValue = NSValue(CGPoint: self.startButton.center)
                     positionAnimation.name = "moveReblog"
                     
@@ -142,28 +142,28 @@ class QuickReblogViewController: UIViewController {
         self.view.opaque = false
         self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.3)
 
-        self.backgroundButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+        self.backgroundButton = UIButton(type: .System)
         self.backgroundButton.addTarget(self, action: Selector("exit:"), forControlEvents: UIControlEvents.TouchUpInside)
         
-        self.startButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+        self.startButton = UIButton(type: .System)
         self.startButton.setImage(UIImage(named: "Reblog"), forState: UIControlState.Normal)
         self.startButton.tintColor = UIColor.grayColor()
         self.startButton.addTarget(self, action: Selector("exit:"), forControlEvents: UIControlEvents.TouchUpInside)
         self.startButton.sizeToFit()
 
-        self.reblogButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+        self.reblogButton = UIButton(type: .System)
         self.reblogButton.setImage(FAKIonIcons.iosLoopStrongIconWithSize(25).imageWithSize(CGSize(width: 25, height: 25)), forState: UIControlState.Normal)
         self.reblogButton.addTarget(self, action: Selector("reblog:"), forControlEvents: UIControlEvents.TouchUpInside)
 
-        self.queueButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+        self.queueButton = UIButton(type: .System)
         self.queueButton.setImage(FAKIonIcons.iosListOutlineIconWithSize(25).imageWithSize(CGSize(width: 25, height: 25)), forState: UIControlState.Normal)
         self.queueButton.addTarget(self, action: Selector("queue:"), forControlEvents: UIControlEvents.TouchUpInside)
 
-        self.shareButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+        self.shareButton = UIButton(type: .System)
         self.shareButton.setImage(FAKIonIcons.iosUploadOutlineIconWithSize(25).imageWithSize(CGSize(width: 25, height: 25)), forState: UIControlState.Normal)
         self.shareButton.addTarget(self, action: Selector("schedule:"), forControlEvents: UIControlEvents.TouchUpInside)
 
-        self.likeButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+        self.likeButton = UIButton(type: .System)
         self.likeButton.setImage(FAKIonIcons.iosHeartOutlineIconWithSize(25).imageWithSize(CGSize(width: 25, height: 25)), forState: UIControlState.Normal)
         self.likeButton.addTarget(self, action: Selector("like:"), forControlEvents: UIControlEvents.TouchUpInside)
 
@@ -174,13 +174,13 @@ class QuickReblogViewController: UIViewController {
         self.view.addSubview(self.shareButton)
         self.view.addSubview(self.likeButton)
 
-        layout(self.backgroundButton, self.view) { backgroundButton, view in
+        constrain(self.backgroundButton, self.view) { backgroundButton, view in
             backgroundButton.edges == view.edges; return
         }
 
-        layout(self.startButton, self.view) { startButton, view in
-            startButton.centerX == view.left + Float(self.startingPoint.x)
-            startButton.centerY == view.top + Float(self.startingPoint.y)
+        constrain(self.startButton, self.view) { startButton, view in
+            startButton.centerX == view.left + self.startingPoint.x
+            startButton.centerY == view.top + self.startingPoint.y
             startButton.height == 40
             startButton.width == 40
         }
@@ -193,7 +193,7 @@ class QuickReblogViewController: UIViewController {
             button.layer.cornerRadius = 30
             button.layer.opacity = 0
             button.sizeToFit()
-            layout(button, self.startButton) { button, startButton in
+            constrain(button, self.startButton) { button, startButton in
                 button.center == startButton.center
                 button.height == 60
                 button.width == 60

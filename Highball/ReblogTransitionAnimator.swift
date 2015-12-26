@@ -11,7 +11,7 @@ import Foundation
 class ReblogTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     var presenting = true
 
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
+    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return 0.2
     }
 
@@ -23,7 +23,7 @@ class ReblogTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning 
             toViewController.view.alpha = 0
             toViewController.view.frame = fromViewController.view.frame
 
-            transitionContext.containerView().addSubview(toViewController.view)
+            transitionContext.containerView()!.addSubview(toViewController.view)
 
             toViewController.viewWillAppear(true)
             fromViewController.viewWillDisappear(true)

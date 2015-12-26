@@ -49,12 +49,12 @@ class PostCollectionViewCell: WCFastCollectionViewCell {
 
         self.contentView.addSubview(self.postViewController.view)
         
-        layout(self.postViewController.view, self.contentView) { singlePostView, contentView in
+        constrain(self.postViewController.view, self.contentView) { singlePostView, contentView in
             singlePostView.edges == contentView.edges; return
         }
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 

@@ -27,7 +27,7 @@ class PostDialogueEntryTableViewCell: WCFastCell {
         self.setUpCell()
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.setUpCell()
     }
@@ -39,7 +39,7 @@ class PostDialogueEntryTableViewCell: WCFastCell {
 
         self.contentView.addSubview(self.contentLabel)
 
-        layout(self.contentLabel, self.contentView) { contentLabel, contentView in
+        constrain(self.contentLabel, self.contentView) { contentLabel, contentView in
             contentLabel.left == contentView.left + 10
             contentLabel.right == contentView.right - 10
             contentLabel.top == contentView.top + 4

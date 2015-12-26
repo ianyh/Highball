@@ -32,7 +32,7 @@ class SettingsViewController : UITableViewController {
     }
 
     override func viewDidAppear(animated: Bool) {
-        if let selectedInexPath = self.tableView.indexPathForSelectedRow() {
+        if let selectedInexPath = self.tableView.indexPathForSelectedRow {
             self.tableView.deselectRowAtIndexPath(selectedInexPath, animated: animated)
         }
     }
@@ -60,7 +60,7 @@ class SettingsViewController : UITableViewController {
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = self.tableView.dequeueReusableCellWithIdentifier(settingsCellIdentifier, forIndexPath: indexPath) as! UITableViewCell
+        let cell = self.tableView.dequeueReusableCellWithIdentifier(settingsCellIdentifier, forIndexPath: indexPath)
 
         switch SettingsSection(rawValue: indexPath.section)! {
         case .Accounts:

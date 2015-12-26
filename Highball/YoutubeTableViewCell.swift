@@ -14,19 +14,17 @@ class YoutubeTableViewCell: VideoTableViewCell {
     override func loadVideo() {
         if let post = post {
             if let videoURL = post.videoURL() {
-                if let identifier = videoURL.absoluteString?.componentsSeparatedByString("?v=")[1] {
-                    XCDYouTubeClient.defaultClient().getVideoWithIdentifier(identifier) { video, error in
-                        if let urlString = video.streamURLs?[XCDYouTubeVideoQuality.HD720.rawValue] as? NSURL {
-                            self.urlString = urlString.absoluteString
-                        } else if let urlString = video.streamURLs?[XCDYouTubeVideoQuality.Medium360.rawValue] as? NSURL {
-                            self.urlString = urlString.absoluteString
-                        } else if let urlString = video.streamURLs?[XCDYouTubeVideoQuality.Small240.rawValue] as? NSURL {
-                            self.urlString = urlString.absoluteString
-                        }
+                let identifier = videoURL.absoluteString.componentsSeparatedByString("?v=")[1]
+                XCDYouTubeClient.defaultClient().getVideoWithIdentifier(identifier) { video, error in
+                    if let urlString = video.streamURLs?[XCDYouTubeVideoQuality.HD720.rawValue] as? NSURL {
+                        self.urlString = urlString.absoluteString
+                    } else if let urlString = video.streamURLs?[XCDYouTubeVideoQuality.Medium360.rawValue] as? NSURL {
+                        self.urlString = urlString.absoluteString
+                    } else if let urlString = video.streamURLs?[XCDYouTubeVideoQuality.Small240.rawValue] as? NSURL {
+                        self.urlString = urlString.absoluteString
                     }
                 }
             }
         }
     }
-
 }

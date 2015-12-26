@@ -59,7 +59,7 @@ let videoTableViewCellIdentifier = "videoTableViewCellIdentifier"
 let youtubeTableViewCellIdentifier = "youtubeTableViewCellIdentifier"
 let postTagsTableViewCellIdentifier = "postTagsTableViewCellIdentifier"
 
-class PostsViewController: UICollectionViewController, UICollectionViewDataSource, CHTCollectionViewDelegateWaterfallLayout, UIGestureRecognizerDelegate, UIViewControllerTransitioningDelegate, WKNavigationDelegate, TagsTableViewCellDelegate {
+class PostsViewController: UICollectionViewController, CHTCollectionViewDelegateWaterfallLayout, UIGestureRecognizerDelegate, UIViewControllerTransitioningDelegate, WKNavigationDelegate, TagsTableViewCellDelegate {
     private var columnCount: CGFloat {
         get {
             if let waterfallLayout = self.collectionView?.collectionViewLayout as? CHTCollectionViewWaterfallLayout {
@@ -122,7 +122,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
         super.init(collectionViewLayout: waterfallLayout)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
 
@@ -196,7 +196,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
         super.viewDidAppear(animated)
 
         if let posts = self.posts {
-            if count(posts) > 0 {
+            if posts.count > 0 {
                 return
             }
         }
@@ -216,7 +216,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
     func popWebView() -> WKWebView {
         let frame = CGRect(x: 0, y: 0, width: self.collectionView!.frame.size.width / self.columnCount, height: 1)
 
-        if count(self.webViewCache) > 0 {
+        if self.webViewCache.count > 0 {
             let webView = self.webViewCache.removeAtIndex(0)
             webView.frame = frame
             return webView
@@ -254,7 +254,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
             }
             self.requestPosts(0, parameters: ["since_id" : "\(sinceID)", "reblog_info" : "true"]) { (response: AnyObject!, error: NSError!) in
                 if let e = error {
-                    println(e)
+                    print(e)
                     self.loadingTop = false
                 } else {
                     dispatch_async(self.postParseQueue, {
@@ -283,7 +283,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
         } else {
             self.requestPosts(0, parameters: ["reblog_info" : "true"]) { (response: AnyObject!, error: NSError!) in
                 if let e = error {
-                    println(e)
+                    print(e)
                     self.loadingTop = false
                 } else {
                     dispatch_async(self.postParseQueue, {
@@ -316,7 +316,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
                 self.loadingBottom = true
                 self.requestPosts(posts.count, parameters: ["before_id" : "\(lastPost.id)", "reblog_info" : "true"]) { (response: AnyObject!, error: NSError!) -> Void in
                     if let e = error {
-                        println(e)
+                        print(e)
                         self.loadingBottom = false
                     } else {
                         dispatch_async(self.postParseQueue, {
@@ -331,7 +331,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
                                             indexPaths.append(NSIndexPath(forRow: row, inSection: 0))
                                         }
 
-                                        self.posts.extend(posts)
+                                        self.posts.appendContentsOf(posts)
                                         
                                         self.collectionView!.insertItemsAtIndexPaths(indexPaths)
                                     }
@@ -372,7 +372,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
 
     func navigate(sender: UIBarButtonItem, event: UIEvent) {
         if let touches = event.allTouches() {
-            if let touch = touches.first as? UITouch {
+            if let touch = touches.first {
                 if let navigationController = self.navigationController {
                     let viewController = QuickNavigateController()
                     
@@ -438,7 +438,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
             let point = sender.locationInView(self.navigationController!.view)
             let collectionViewPoint = sender.locationInView(self.collectionView!)
             if let indexPath = self.collectionView?.indexPathForItemAtPoint(collectionViewPoint) {
-                if let cell = self.collectionView?.cellForItemAtIndexPath(indexPath) {
+                if let _ = self.collectionView?.cellForItemAtIndexPath(indexPath) {
                     let post = self.posts[indexPath.row]
                     let viewController = QuickReblogViewController()
                     
@@ -511,7 +511,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
                                 if post.liked.boolValue {
                                     TMAPIClient.sharedInstance().unlike("\(post.id)", reblogKey: post.reblogKey, callback: { (response, error) -> Void in
                                         if let e = error {
-                                            println(e)
+                                            print(e)
                                         } else {
                                             post.liked = false
                                         }
@@ -519,7 +519,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
                                 } else {
                                     TMAPIClient.sharedInstance().like("\(post.id)", reblogKey: post.reblogKey, callback: { (response, error) -> Void in
                                         if let e = error {
-                                            println(e)
+                                            print(e)
                                         } else {
                                             post.liked = true
                                         }
@@ -565,7 +565,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
         cell.post = post
 
         cell.bodyTapHandler = { post, view in
-            if let photosetRowCell = view as? PhotosetRowTableViewCell {
+            if let _ = view as? PhotosetRowTableViewCell {
                 let viewController = ImagesViewController()
                 viewController.post = post
                 self.presentViewController(viewController, animated: true, completion: nil)
@@ -582,7 +582,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
                     viewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
                     self.presentViewController(viewController, animated: true, completion: nil)
                 }
-            } else if let linkCell = view as? PostLinkTableViewCell {
+            } else if let _ = view as? PostLinkTableViewCell {
                 if let navigationController = self.navigationController {
                     navigationController.pushViewController(SVWebViewController(URL: NSURL(string: post.urlString!)), animated: true)
                 }
@@ -598,8 +598,8 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
         cell.linkTapHandler = { post, url in
             if let navigationController = self.navigationController {
                 if let host = url.host {
-                    if let username = (split(host) { $0 == "." }).first{
-                        navigationController.pushViewController(BlogViewController(blogName: username), animated: true)
+                    if let username = (host.characters.split { $0 == "." }).first {
+                        navigationController.pushViewController(BlogViewController(blogName: String(username)), animated: true)
                         return
                     }
                 }
@@ -617,7 +617,7 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
             let post = self.posts![indexPath.row] as Post
             view.post = post
             view.tapHandler = { post, view in
-                if let navigationController = self.navigationController {
+                if let _ = self.navigationController {
                     if let rebloggedBlogName = post.rebloggedBlogName {
                         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
                         alertController.popoverPresentationController?.sourceView = self.view
@@ -637,18 +637,18 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
             }
             return view
         case CHTCollectionElementKindSectionFooter:
-            let view = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: postFooterViewIdentifier, forIndexPath: indexPath) as! UICollectionReusableView
+            let view = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: postFooterViewIdentifier, forIndexPath: indexPath)
             if view.subviews.count == 0 {
                 let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
                 activityIndicator.startAnimating()
                 view.addSubview(activityIndicator)
-                layout(activityIndicator, view) { activityIndicator, view in
+                constrain(activityIndicator, view) { activityIndicator, view in
                     activityIndicator.center == view.center; return
                 }
             }
             return view
         default:
-            let view = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: postFooterViewIdentifier, forIndexPath: indexPath) as! UICollectionReusableView
+            let view = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: postFooterViewIdentifier, forIndexPath: indexPath)
             return view
         }
     }
@@ -836,9 +836,9 @@ class PostsViewController: UICollectionViewController, UICollectionViewDataSourc
 extension WKWebView {
     func getDocumentHeight(completion: (CGFloat) -> ()) {
         self.evaluateJavaScript("var body = document.body, html = document.documentElement;Math.max( body.scrollHeight, body.offsetHeight,html.clientHeight, html.scrollHeight, html.offsetHeight );", completionHandler: { result, error in
-            if let e = error {
+            if let _ = error {
                 completion(0)
-            } else if let height = JSON(result).int {
+            } else if let height = JSON(result!).int {
                 completion(CGFloat(height))
             } else {
                 completion(0)

@@ -40,7 +40,7 @@ class PhotosetRowTableViewCell: WCFastCell {
                 var imageViews = Array<FLAnimatedImageView>()
                 var failedImageViews = Array<UIImageView>()
                 var lastImageView: UIImageView?
-                for (index, image) in enumerate(images) {
+                for (index, image) in images.enumerate() {
                     let widthPortion = image.widthToHeightRatio! / totalWidth
                     let imageView = FLAnimatedImageView()
                     let failedImageView = UIImageView()
@@ -58,39 +58,39 @@ class PhotosetRowTableViewCell: WCFastCell {
                     self.contentView.addSubview(imageView)
                     self.contentView.addSubview(failedImageView)
 
-                    layout(failedImageView, imageView) { failedImageView, imageView in
+                    constrain(failedImageView, imageView) { failedImageView, imageView in
                         failedImageView.edges == imageView.edges; return
                     }
 
                     if let leftImageView = lastImageView {
                         if index == lastImageIndex {
-                            layout(imageView, leftImageView, self.contentView) { imageView, leftImageView, contentView in
+                            constrain(imageView, leftImageView, self.contentView) { imageView, leftImageView, contentView in
                                 imageView.centerY == leftImageView.centerY
                                 imageView.left == leftImageView.right
                                 imageView.right == contentView.right
                                 imageView.height == leftImageView.height
                             }
                         } else {
-                            layout(imageView, leftImageView, self.contentView) { imageView, leftImageView, contentView in
+                            constrain(imageView, leftImageView, self.contentView) { imageView, leftImageView, contentView in
                                 imageView.centerY == leftImageView.centerY
                                 imageView.left == leftImageView.right
                                 imageView.height == leftImageView.height
-                                imageView.width == contentView.width * widthPortion
+                                imageView.width == contentView.width * CGFloat(widthPortion)
                             }
                         }
                     } else if images.count == 1 {
-                        layout(imageView, self.contentView) { imageView, contentView in
+                        constrain(imageView, self.contentView) { imageView, contentView in
                             imageView.left == contentView.left
                             imageView.top == contentView.top
                             imageView.bottom == contentView.bottom
                             imageView.right == contentView.right
                         }
                     } else {
-                        layout(imageView, self.contentView) { imageView, contentView in
+                        constrain(imageView, self.contentView) { imageView, contentView in
                             imageView.left == contentView.left
                             imageView.top == contentView.top
                             imageView.bottom == contentView.bottom
-                            imageView.width == contentView.width * widthPortion
+                            imageView.width == contentView.width * CGFloat(widthPortion)
                         }
                     }
 

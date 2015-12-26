@@ -43,7 +43,7 @@ struct AccountsService {
         }
 
         let accounts = self.accounts()
-        if count(accounts) > 0 {
+        if accounts.count > 0 {
             self.loginToAccount(accounts.first!, completion: completion)
         } else {
             self.authenticateNewAccount({ (account) -> () in
@@ -57,7 +57,7 @@ struct AccountsService {
     }
 
     static func accounts() -> Array<Account> {
-        return map(self.accountDictionaries(), { (accountDictionary) -> Account in
+        return self.accountDictionaries().map { (accountDictionary) -> Account in
             let blogData = accountDictionary[self.accountBlogDataKey]! as! NSData
             let blog = NSKeyedUnarchiver.unarchiveObjectWithData(blogData) as! Blog
             return Account(
@@ -65,11 +65,11 @@ struct AccountsService {
                 token: accountDictionary[self.accountOAuthTokenKey]! as! String,
                 tokenSecret: accountDictionary[self.accountOAuthTokenSecretKey]! as! String
             )
-        })
+        }
     }
 
     static func lastAccount() -> Account? {
-        if let accountDictionary = NSUserDefaults.standardUserDefaults().dictionaryForKey(self.lastAccountDefaultsKey) as? Dictionary<String, AnyObject> {
+        if let accountDictionary = NSUserDefaults.standardUserDefaults().dictionaryForKey(self.lastAccountDefaultsKey) {
             let blogData = accountDictionary[self.accountBlogDataKey]! as! NSData
             let blog = NSKeyedUnarchiver.unarchiveObjectWithData(blogData) as! Blog
             return Account(
@@ -106,13 +106,13 @@ struct AccountsService {
         TMAPIClient.sharedInstance().OAuthTokenSecret = nil
 
         TMAPIClient.sharedInstance().authenticate("highballtumblr", callback: { (error) -> Void in
-            if let error = error {
+            if let _ = error {
                 completion(account: nil)
                 return
             }
 
             TMAPIClient.sharedInstance().userInfo { response, error in
-                if let e = error {
+                if let _ = error {
                     completion(account: nil)
                     return
                 }

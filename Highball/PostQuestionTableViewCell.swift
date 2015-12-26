@@ -31,7 +31,7 @@ class PostQuestionTableViewCell: WCFastCell {
         self.setUpCell()
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.setUpCell()
     }
@@ -56,18 +56,18 @@ class PostQuestionTableViewCell: WCFastCell {
         self.contentView.addSubview(self.askerLabel)
         self.contentView.addSubview(self.contentLabel)
 
-        layout(self.bubbleView, self.contentView) { bubbleView, contentView in
+        constrain(self.bubbleView, self.contentView) { bubbleView, contentView in
             bubbleView.edges == inset(contentView.edges, 1, 0); return
         }
 
-        layout(self.askerLabel, self.bubbleView) { askerLabel, bubbleView in
+        constrain(self.askerLabel, self.bubbleView) { askerLabel, bubbleView in
             askerLabel.left == bubbleView.left + 10
             askerLabel.right == bubbleView.right - 10
             askerLabel.top == bubbleView.top + 12
             askerLabel.height == 20
         }
 
-        layout(self.contentLabel, self.askerLabel, self.bubbleView) { contentLabel, askerLabel, bubbleView in
+        constrain(self.contentLabel, self.askerLabel, self.bubbleView) { contentLabel, askerLabel, bubbleView in
             contentLabel.top == askerLabel.top + 14
             contentLabel.left == bubbleView.left + 14
             contentLabel.right == bubbleView.right - 14

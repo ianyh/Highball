@@ -29,7 +29,7 @@ class PostPhoto {
             self.height = 0
         }
         var sizes = [json["original_size"]]
-        sizes.extend(json["alt_sizes"].arrayValue.sorted({ $0["width"].int! > $1["width"].int! }))
+        sizes.appendContentsOf(json["alt_sizes"].arrayValue.sort { $0["width"].int! > $1["width"].int! })
         self.sizes = sizes
         if let width = json["original_size"]["width"].float, let height = json["original_size"]["height"].float {
             self.widthToHeightRatio = width / height

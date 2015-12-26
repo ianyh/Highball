@@ -13,7 +13,7 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
     private var tableView: UITableView!
     var post: Post! {
         didSet {
-            if let heightCache = self.heightCache {
+            if let _ = self.heightCache {
                 self.heightCache.removeAll()
             }
             if let tableView = self.tableView {
@@ -33,7 +33,7 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
 
@@ -65,7 +65,7 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
         
         self.view.addSubview(self.tableView)
 
-        layout(self.tableView, self.view) { tableView, view in
+        constrain(self.tableView, self.view) { tableView, view in
             tableView.edges == view.edges; return
         }
     }
@@ -77,9 +77,9 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
     }
 
     func endDisplay() {
-        if let indexPaths = self.tableView.indexPathsForVisibleRows() {
+        if let indexPaths = self.tableView.indexPathsForVisibleRows {
             for indexPath in indexPaths {
-                if let cell = self.tableView.cellForRowAtIndexPath(indexPath as! NSIndexPath) {
+                if let cell = self.tableView.cellForRowAtIndexPath(indexPath) {
                     if let cell = cell as? PhotosetRowTableViewCell {
                         cell.cancelDownloads()
                     } else if let cell = cell as? ContentTableViewCell {
@@ -102,7 +102,7 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
     // MARK: UITableViewDataSource
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        if let post = self.post {
+        if let _ = self.post {
             return 1
         }
         return 0
@@ -300,7 +300,7 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
             }
             return cell
         default:
-            return tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as! UITableViewCell!
+            return tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier)!
         }
     }
 
@@ -343,7 +343,6 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
                 images = Array(postPhotos[(photosIndexStart)..<(photosIndexStart + photosetLayoutRow)])
             }
             
-            let imageCount = images.count
             let imageWidth = tableView.frame.size.width / CGFloat(images.count)
             let minHeight = floor(images.map { (image: PostPhoto) -> CGFloat in
                 let scale = image.height / image.width

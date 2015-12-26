@@ -35,7 +35,7 @@ class PostTableHeaderView: UITableViewHeaderFooterView {
                 } else {
                     TMAPIClient.sharedInstance().avatar(blogName, size: 80) { (response: AnyObject!, error: NSError!) in
                         if let e = error {
-                            println(e)
+                            print(e)
                         } else {
                             let data = response as! NSData!
                             TMCache.sharedCache().setObject(data, forKey: "avatar:\(blogName)")
@@ -62,17 +62,12 @@ class PostTableHeaderView: UITableViewHeaderFooterView {
         }
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.setUpCell()
-    }
-
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         self.setUpCell()
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.setUpCell()
     }
@@ -81,7 +76,7 @@ class PostTableHeaderView: UITableViewHeaderFooterView {
         let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Dark)
         let blurView = UIVisualEffectView(effect: blurEffect)
         self.addSubview(blurView)
-        layout(blurView, self) { blurView, view in
+        constrain(blurView, self) { blurView, view in
             blurView.edges == view.edges; return
         }
         
@@ -106,26 +101,26 @@ class PostTableHeaderView: UITableViewHeaderFooterView {
         self.addSubview(self.topUsernameLabel)
         self.addSubview(self.bottomUsernameLabel)
         
-        layout(self.avatarImageView, self) { avatarImageView, contentView in
+        constrain(self.avatarImageView, self) { avatarImageView, contentView in
             avatarImageView.centerY == contentView.centerY
             avatarImageView.left == contentView.left + 4
             avatarImageView.width == 40
             avatarImageView.height == 40
         }
         
-        layout(self.usernameLabel, self.avatarImageView, self) { usernameLabel, avatarImageView, contentView in
+        constrain(self.usernameLabel, self.avatarImageView, self) { usernameLabel, avatarImageView, contentView in
             usernameLabel.centerY == contentView.centerY
             usernameLabel.left == avatarImageView.right + 4
             usernameLabel.height == 30
         }
         
-        layout(self.topUsernameLabel, self.avatarImageView, self) { usernameLabel, avatarImageView, contentView in
+        constrain(self.topUsernameLabel, self.avatarImageView, self) { usernameLabel, avatarImageView, contentView in
             usernameLabel.centerY == contentView.centerY - 8
             usernameLabel.left == avatarImageView.right + 4
             usernameLabel.height == 20
         }
         
-        layout(self.bottomUsernameLabel, self.avatarImageView, self) { usernameLabel, avatarImageView, contentView in
+        constrain(self.bottomUsernameLabel, self.avatarImageView, self) { usernameLabel, avatarImageView, contentView in
             usernameLabel.centerY == contentView.centerY + 8
             usernameLabel.left == avatarImageView.right + 4
             usernameLabel.height == 20

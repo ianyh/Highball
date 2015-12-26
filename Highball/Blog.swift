@@ -27,7 +27,7 @@ class Blog: NSObject, NSCoding {
         self.primary = json["primary"].bool!
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         let jsonData = aDecoder.decodeObjectForKey(jsonCodingKey) as! NSData!
         let json = JSON(data: jsonData)
         self.json = json
@@ -38,6 +38,6 @@ class Blog: NSObject, NSCoding {
     }
 
     func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(self.json.rawData(), forKey: self.jsonCodingKey)
+        aCoder.encodeObject(try! self.json.rawData(), forKey: self.jsonCodingKey)
     }
 }

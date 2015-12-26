@@ -20,7 +20,7 @@ class TitleTableViewCell: WCFastCell {
         self.setUpCell()
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.setUpCell()
     }
@@ -33,7 +33,7 @@ class TitleTableViewCell: WCFastCell {
 
         self.contentView.addSubview(self.titleLabel)
 
-        layout(self.titleLabel, self.contentView) { titleLabel, contentView in
+        constrain(self.titleLabel, self.contentView) { titleLabel, contentView in
             titleLabel.left == contentView.left + 10
             titleLabel.right == contentView.right - 10
             titleLabel.top == contentView.top + 4

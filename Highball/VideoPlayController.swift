@@ -22,13 +22,13 @@ class VideoPlayController: UIViewController {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
-        let backgroundButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
-        let playButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+        let backgroundButton = UIButton(type: .System)
+        let playButton = UIButton(type: .System)
         let volumeView = MPVolumeView()
 
         backgroundButton.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.75)
@@ -44,18 +44,18 @@ class VideoPlayController: UIViewController {
         self.view.addSubview(playButton)
         self.view.addSubview(volumeView)
 
-        layout(backgroundButton, self.view) { backgroundButton, view in
+        constrain(backgroundButton, self.view) { backgroundButton, view in
             backgroundButton.edges == view.edges; return
         }
 
-        layout(playButton, self.view) { playButton, view in
+        constrain(playButton, self.view) { playButton, view in
             playButton.centerX == view.centerX
             playButton.bottom == view.centerY - 5
             playButton.width == 60
             playButton.height == 50
         }
 
-        layout(volumeView, self.view) { volumeView, view in
+        constrain(volumeView, self.view) { volumeView, view in
             volumeView.left == view.left + 30
             volumeView.right == view.right - 30
             volumeView.top == view.centerY + 5

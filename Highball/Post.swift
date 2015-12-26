@@ -69,27 +69,27 @@ class Post {
         }
         if let layoutString = self.json["photoset_layout"].string {
             var photosetLayoutRows = Array<Int>()
-            for character in layoutString {
-                photosetLayoutRows.append("\(character)".toInt()!)
+            for character in layoutString.characters {
+                photosetLayoutRows.append(Int("\(character)")!)
             }
             self.layoutRows = photosetLayoutRows
         } else if self.photos.count == 0 {
             self.layoutRows = []
         } else if self.photos.count % 2 == 0 {
             var layoutRows = Array<Int>()
-            for i in 0...self.photos.count/2-1 {
+            for _ in 0...self.photos.count/2-1 {
                 layoutRows.append(2)
             }
             self.layoutRows = layoutRows
         } else if self.photos.count % 3 == 0 {
             var layoutRows = Array<Int>()
-            for i in 0...self.photos.count/3-1 {
+            for _ in 0...self.photos.count/3-1 {
                 layoutRows.append(3)
             }
             self.layoutRows = layoutRows
         } else {
             var layoutRows = Array<Int>()
-            for i in 0...self.photos.count-1 {
+            for _ in 0...self.photos.count-1 {
                 layoutRows.append(1)
             }
             self.layoutRows = layoutRows
@@ -121,7 +121,7 @@ class Post {
             bodyString = nil
         }
         if let string = bodyString {
-            if count(string) > 0 {
+            if string.characters.count > 0 {
                 self.body = string
             } else {
                 self.body = nil
@@ -139,7 +139,7 @@ class Post {
             bodyString = nil
         }
         if let string = bodyString {
-            if count(string) > 0 {
+            if string.characters.count > 0 {
                 self.secondaryBody = string
             } else {
                 self.secondaryBody = nil

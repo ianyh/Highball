@@ -36,7 +36,7 @@ class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
     var urlString: String? {
         didSet {
             if let urlString = urlString {
-                player.path = urlString
+                player.setUrl(NSURL(string: urlString)!)
             }
         }
     }
@@ -46,7 +46,7 @@ class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
         self.setUpCell()
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.setUpCell()
     }
@@ -71,11 +71,11 @@ class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
         self.contentView.addSubview(self.player.view)
         self.contentView.addSubview(self.thumbnailImageView)
 
-        layout(self.player.view, self.contentView) { playerView, contentView in
+        constrain(self.player.view, self.contentView) { playerView, contentView in
             playerView.edges == contentView.edges; return
         }
 
-        layout(self.thumbnailImageView, self.contentView) { imageView, contentView in
+        constrain(self.thumbnailImageView, self.contentView) { imageView, contentView in
             imageView.edges == contentView.edges; return
         }
     }

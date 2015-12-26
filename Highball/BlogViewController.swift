@@ -32,7 +32,7 @@ class BlogViewController: PostsViewController {
         fatalError("init() has not been implemented")
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -65,7 +65,7 @@ class BlogViewController: PostsViewController {
             TMAPIClient.sharedInstance().follow(self.blogName) { result, error in
                 let alertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.Alert)
 
-                if let error = error {
+                if let _ = error {
                     alertController.title = "Follow Failed"
                     alertController.message = "Tried to follow \(self.blogName), but failed."
                 } else {
@@ -83,7 +83,7 @@ class BlogViewController: PostsViewController {
             TMAPIClient.sharedInstance().unfollow(self.blogName) { result, error in
                 let alertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.Alert)
                 
-                if let error = error {
+                if let _ = error {
                     alertController.title = "Unfollow Failed"
                     alertController.message = "Tried to unfollow \(self.blogName), but failed."
                 } else {

@@ -36,7 +36,7 @@ class TextReblogViewController: SLKTextViewController {
         super.init(tableViewStyle: UITableViewStyle.Plain)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
 
@@ -87,10 +87,10 @@ class TextReblogViewController: SLKTextViewController {
         self.view.insertSubview(vibrancyView, atIndex: 0)
         self.view.insertSubview(blurView, atIndex: 0)
         
-        layout(blurView, self.view) { blurView, view in
+        constrain(blurView, self.view) { blurView, view in
             blurView.edges == view.edges; return
         }
-        layout(vibrancyView, self.view) { vibrancyView, view in
+        constrain(vibrancyView, self.view) { vibrancyView, view in
             vibrancyView.edges == view.edges; return
         }
 
@@ -98,7 +98,7 @@ class TextReblogViewController: SLKTextViewController {
         let lightBlurView = UIVisualEffectView(effect: lightBlurEffect)
         self.view.addSubview(lightBlurView)
 
-        layout(lightBlurView, self.view) { lightBlurView, view in
+        constrain(lightBlurView, self.view) { lightBlurView, view in
             lightBlurView.top == view.top
             lightBlurView.left == view.left
             lightBlurView.right == view.right
@@ -121,7 +121,7 @@ class TextReblogViewController: SLKTextViewController {
         }
 
         let text = self.textView.text
-        if count(text) > 0 {
+        if text.characters.count > 0 {
             parameters["comment"] = text
         }
 
@@ -145,14 +145,14 @@ class TextReblogViewController: SLKTextViewController {
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let post = self.post {
+        if let _ = self.post {
             return 1
         }
         return 0
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(postTableViewCellIdentifier) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(postTableViewCellIdentifier)!
 
         cell.transform = tableView.transform
         cell.backgroundColor = UIColor.whiteColor()
@@ -160,7 +160,7 @@ class TextReblogViewController: SLKTextViewController {
         self.postViewController.view.backgroundColor = UIColor.clearColor()
         cell.contentView.addSubview(self.postViewController.view)
 
-        layout(self.postViewController.view, cell.contentView) { postView, contentView in
+        constrain(self.postViewController.view, cell.contentView) { postView, contentView in
             postView.edges == contentView.edges; return
         }
 

@@ -22,7 +22,7 @@ class DashboardViewController: PostsViewController {
         )
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -76,9 +76,9 @@ class DashboardViewController: PostsViewController {
 
     func bookmark() {
         if let indexPaths = self.collectionView?.indexPathsForVisibleItems() {
-            if let firstIndexPath = indexPaths.first as? NSIndexPath {
+            if let firstIndexPath = indexPaths.first {
                 let post = self.posts[firstIndexPath.row]
-                if let account = AccountsService.account {} else {
+                if let _ = AccountsService.account {} else {
                     return
                 }
                 NSUserDefaults.standardUserDefaults().setObject(post.id, forKey: "HIBookmarkID:\(AccountsService.account.blog.url)")
@@ -87,7 +87,7 @@ class DashboardViewController: PostsViewController {
     }
 
     func bookmarks(sender: UIButton, event: UIEvent) {
-        if let topID = self.topID {
+        if let _ = self.topID {
             let alertController = UIAlertController(title: "", message: "Go to top of your feed?", preferredStyle: UIAlertControllerStyle.Alert)
             alertController.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default, handler: { action -> Void in
                 self.topID = nil

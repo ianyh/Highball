@@ -38,7 +38,7 @@ class PostHeaderView: UICollectionReusableView {
                 } else {
                     TMAPIClient.sharedInstance().avatar(blogName, size: 80) { (response: AnyObject!, error: NSError!) in
                         if let e = error {
-                            println(e)
+                            print(e)
                         } else {
                             let data = response as! NSData!
                             TMCache.sharedCache().setObject(data, forKey: "avatar:\(blogName)")
@@ -72,7 +72,7 @@ class PostHeaderView: UICollectionReusableView {
         self.setUpCell()
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.setUpCell()
     }
@@ -81,7 +81,7 @@ class PostHeaderView: UICollectionReusableView {
         let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Dark)
         let blurView = UIVisualEffectView(effect: blurEffect)
         addSubview(blurView)
-        layout(blurView, self) { blurView, view in
+        constrain(blurView, self) { blurView, view in
             blurView.edges == view.edges; return
         }
 
@@ -105,7 +105,7 @@ class PostHeaderView: UICollectionReusableView {
         timeLabel.font = UIFont.systemFontOfSize(14)
         timeLabel.textColor = UIColor.whiteColor()
 
-        let button = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+        let button = UIButton(type: .System)
         button.addTarget(self, action: Selector("tap:"), forControlEvents: UIControlEvents.TouchUpInside)
 
         addSubview(avatarImageView)

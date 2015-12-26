@@ -31,7 +31,7 @@ class PostLinkTableViewCell: WCFastCell {
         self.setUpCell()
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.setUpCell()
     }
@@ -58,17 +58,17 @@ class PostLinkTableViewCell: WCFastCell {
         self.contentView.addSubview(self.titleLabel)
         self.contentView.addSubview(self.urlLabel)
 
-        layout(self.bubbleView, self.contentView) { bubbleView, contentView in
+        constrain(self.bubbleView, self.contentView) { bubbleView, contentView in
             bubbleView.edges == contentView.edges; return
         }
 
-        layout(self.titleLabel, self.bubbleView) { titleLabel, bubbleView in
+        constrain(self.titleLabel, self.bubbleView) { titleLabel, bubbleView in
             titleLabel.left == bubbleView.left + 10
             titleLabel.right == bubbleView.right - 10
             titleLabel.top == bubbleView.top + 14
         }
 
-        layout(self.urlLabel, self.titleLabel, self.bubbleView) { urlLabel, titleLabel, bubbleView in
+        constrain(self.urlLabel, self.titleLabel, self.bubbleView) { urlLabel, titleLabel, bubbleView in
             urlLabel.left == bubbleView.left + 20
             urlLabel.right == bubbleView.right - 20
             urlLabel.top == titleLabel.bottom + 4

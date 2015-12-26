@@ -14,7 +14,7 @@ class TagViewController: PostsViewController {
     private let tag: String!
     
     required init(tag: String) {
-        self.tag = tag.substringFromIndex(advance(tag.startIndex, 1))
+        self.tag = tag.substringFromIndex(tag.startIndex.advancedBy(1))
         super.init()
         self.navigationItem.title = tag
     }
@@ -23,7 +23,7 @@ class TagViewController: PostsViewController {
         fatalError("init() has not been implemented")
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 

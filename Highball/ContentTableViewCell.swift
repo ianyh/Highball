@@ -30,7 +30,7 @@ class ContentTableViewCell: WCFastCell, WKNavigationDelegate {
         self.setUpCell()
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.setUpCell()
     }
@@ -42,7 +42,7 @@ class ContentTableViewCell: WCFastCell, WKNavigationDelegate {
 
         self.contentView.addSubview(self.contentWebView)
 
-        layout(self.contentWebView, self.contentView) { contentWebView, contentView in
+        constrain(self.contentWebView, self.contentView) { contentWebView, contentView in
             contentWebView.edges == contentView.edges; return
         }
     }

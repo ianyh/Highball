@@ -55,7 +55,7 @@
 		40F8CE9A1A41143000609ABF /* AccountsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F8CE991A41143000609ABF /* AccountsService.swift */; };
 		40FF6D4319B940C6008119A3 /* Blog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FF6D4219B940C6008119A3 /* Blog.swift */; };
 		40FF6D4519B9F656008119A3 /* QuickReblogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FF6D4419B9F656008119A3 /* QuickReblogViewController.swift */; };
-		E2A77F0CC51E5186CFC2B399 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 440C4C4D5E0A7451B7FA466E /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		E2A77F0CC51E5186CFC2B399 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 440C4C4D5E0A7451B7FA466E /* Pods.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -362,6 +362,7 @@
 		4050697319AA76BD0066ECE3 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0720;
 				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = ianynda;
 				TargetAttributes = {

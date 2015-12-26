@@ -65,7 +65,7 @@ PODS:
   - PINRemoteImage (1.1.2):
     - FLAnimatedImage (>= 1.0)
     - PINCache (>= 2.0)
-  - Player (0.0.6)
+  - Player (0.1.0)
   - pop (1.0.7)
   - Reachability (3.2)
   - SlackTextViewController (1.6)
@@ -145,7 +145,7 @@ SPEC CHECKSUMS:
   M13ProgressSuite: 4642db3df66a61f512ba2caded404637f9788eb6
   PINCache: ca953ba93ce1edde056fdd99121ee65b295a08c9
   PINRemoteImage: 0696e5f679deabf2e2ddfb57085fb978ca51bfc3
-  Player: 865e43a22a7bd41441d8153ea2799815d9da77f1
+  Player: e05be4073ea64fce1981869898ad9796c27cdd2b
   pop: 628ffc631644601567ee8bfaaaea493ebd7d0923
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SlackTextViewController: 84e1e4b7f12a8e3691cf97ca61c934b99058a2e8
@@ -158,4 +158,4 @@ SPEC CHECKSUMS:
   WCFastCell: 3e20a0c711d27307584bdbd359a44a714e991151
   XCDYouTubeKit: 920ff5dfdf37f0f41b19610c5270b2ed23b05b13
 
-COCOAPODS: 0.38.2
+COCOAPODS: 0.39.0

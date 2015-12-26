@@ -33,7 +33,7 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
         self.setUpCell()
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.setUpCell()
     }
@@ -56,11 +56,11 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
         self.scrollView.addSubview(self.imageView)
         self.scrollView.addSubview(self.failedImageView)
 
-        layout(self.scrollView, self.contentView) { scrollView, contentView in
+        constrain(self.scrollView, self.contentView) { scrollView, contentView in
             scrollView.edges == contentView.edges; return
         }
 
-        layout(self.failedImageView, self.imageView) { failedImageView, imageView in
+        constrain(self.failedImageView, self.imageView) { failedImageView, imageView in
             failedImageView.edges == imageView.edges; return
         }
 
@@ -107,7 +107,7 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
     }
 
     func centerScrollViewContents() {
-        var boundsSize = self.scrollView.bounds.size;
+        let boundsSize = self.scrollView.bounds.size;
         var contentsFrame = self.imageView.frame;
         
         if (contentsFrame.size.width < boundsSize.width) {

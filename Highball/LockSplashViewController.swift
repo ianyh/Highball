@@ -33,7 +33,7 @@ class LockSplashViewController: VENTouchLockSplashViewController, UITableViewDat
 
         self.view.addSubview(self.tableView)
 
-        layout(self.tableView, self.view) { tableView, view in
+        constrain(self.tableView, self.view) { tableView, view in
             tableView.edges == view.edges; return
         }
     }
@@ -44,7 +44,7 @@ class LockSplashViewController: VENTouchLockSplashViewController, UITableViewDat
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let account = self.accounts[indexPath.row]
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) as! UITableViewCell!
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier)!
 
         cell.textLabel?.text = account.blog.name
 

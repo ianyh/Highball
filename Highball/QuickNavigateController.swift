@@ -40,7 +40,7 @@ class QuickNavigateController: UIViewController {
             
             if self.showingOptions {
                 for button in [ self.dashboardButton, self.likesButton, self.settingsButton ] {
-                    var opacityAnimation = POPSpringAnimation(propertyNamed: kPOPLayerOpacity)
+                    let opacityAnimation = POPSpringAnimation(propertyNamed: kPOPLayerOpacity)
                     opacityAnimation.toValue = 1
                     opacityAnimation.name = "opacity"
 
@@ -67,7 +67,7 @@ class QuickNavigateController: UIViewController {
                 let initialAngle = startAngle + (endAngle - startAngle) / 5
                 let angleInterval = (endAngle - startAngle) / 3
                 
-                for (index, button) in enumerate([ self.dashboardButton, self.likesButton, self.settingsButton ]) {
+                for (index, button) in [ self.dashboardButton, self.likesButton, self.settingsButton ].enumerate() {
                     let center = self.startButton.center
                     let angleOffset = angleInterval * CGFloat(index)
                     let angle = initialAngle + angleOffset
@@ -90,13 +90,13 @@ class QuickNavigateController: UIViewController {
                 }
             } else {
                 for button in [ self.dashboardButton, self.likesButton, self.settingsButton ] {
-                    var opacityAnimation = POPSpringAnimation(propertyNamed: kPOPLayerOpacity)
+                    let opacityAnimation = POPSpringAnimation(propertyNamed: kPOPLayerOpacity)
                     opacityAnimation.toValue = 0
                     opacityAnimation.name = "opacity"
                     
                     button.layer.pop_addAnimation(opacityAnimation, forKey: opacityAnimation.name)
                     
-                    var positionAnimation = POPSpringAnimation(propertyNamed: kPOPLayerPosition)
+                    let positionAnimation = POPSpringAnimation(propertyNamed: kPOPLayerPosition)
                     positionAnimation.toValue = NSValue(CGPoint: self.startButton.center)
                     positionAnimation.name = "moveReblog"
                     
@@ -112,25 +112,25 @@ class QuickNavigateController: UIViewController {
         self.view.opaque = false
         self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.3)
         
-        self.backgroundButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+        self.backgroundButton = UIButton(type: .System)
         self.backgroundButton.addTarget(self, action: Selector("exit:"), forControlEvents: UIControlEvents.TouchUpInside)
         
-        self.startButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+        self.startButton = UIButton(type: .System)
         self.startButton.setImage(UIImage(named: "Reblog"), forState: UIControlState.Normal)
         self.startButton.tintColor = UIColor.grayColor()
         self.startButton.addTarget(self, action: Selector("exit:"), forControlEvents: UIControlEvents.TouchUpInside)
         self.startButton.sizeToFit()
         self.startButton.hidden = true
 
-        self.dashboardButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+        self.dashboardButton = UIButton(type: .System)
         self.dashboardButton.setTitle("D", forState: UIControlState.Normal)
         self.dashboardButton.addTarget(self, action: Selector("dashboard:"), forControlEvents: UIControlEvents.TouchUpInside)
         
-        self.likesButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+        self.likesButton = UIButton(type: .System)
         self.likesButton.setTitle("L", forState: UIControlState.Normal)
         self.likesButton.addTarget(self, action: Selector("likes:"), forControlEvents: UIControlEvents.TouchUpInside)
 
-        self.settingsButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+        self.settingsButton = UIButton(type: .System)
         self.settingsButton.setTitle("S", forState: UIControlState.Normal)
         self.settingsButton.addTarget(self, action: Selector("settings:"), forControlEvents: UIControlEvents.TouchUpInside)
 
@@ -140,13 +140,13 @@ class QuickNavigateController: UIViewController {
         self.view.addSubview(self.likesButton)
         self.view.addSubview(self.settingsButton)
         
-        layout(self.backgroundButton, self.view) { backgroundButton, view in
+        constrain(self.backgroundButton, self.view) { backgroundButton, view in
             backgroundButton.edges == view.edges; return
         }
         
-        layout(self.startButton, self.view) { startButton, view in
-            startButton.centerX == view.left + Float(self.startingPoint.x)
-            startButton.centerY == view.top + Float(self.startingPoint.y)
+        constrain(self.startButton, self.view) { startButton, view in
+            startButton.centerX == view.left + self.startingPoint.x
+            startButton.centerY == view.top + self.startingPoint.y
             startButton.height == 40
             startButton.width == 40
         }
@@ -159,7 +159,7 @@ class QuickNavigateController: UIViewController {
             button.layer.cornerRadius = 30
             button.layer.opacity = 0
             button.sizeToFit()
-            layout(button, self.startButton) { button, startButton in
+            constrain(button, self.startButton) { button, startButton in
                 button.center == startButton.center
                 button.height == 60
                 button.width == 60
