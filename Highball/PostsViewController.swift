@@ -10,7 +10,6 @@ import UIKit
 import WebKit
 import SwiftyJSON
 import Cartography
-import CHTCollectionViewWaterfallLayout
 import TMTumblrSDK
 import FontAwesomeKit
 import SafariServices
@@ -59,15 +58,7 @@ let videoTableViewCellIdentifier = "videoTableViewCellIdentifier"
 let youtubeTableViewCellIdentifier = "youtubeTableViewCellIdentifier"
 let postTagsTableViewCellIdentifier = "postTagsTableViewCellIdentifier"
 
-class PostsViewController: UICollectionViewController, CHTCollectionViewDelegateWaterfallLayout, UIGestureRecognizerDelegate, UIViewControllerTransitioningDelegate, WKNavigationDelegate, TagsTableViewCellDelegate {
-    private var columnCount: CGFloat {
-        get {
-            if let waterfallLayout = self.collectionView?.collectionViewLayout as? CHTCollectionViewWaterfallLayout {
-                return CGFloat(waterfallLayout.columnCount)
-            }
-            return 0.0
-        }
-    }
+class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, UIViewControllerTransitioningDelegate, WKNavigationDelegate, TagsTableViewCellDelegate {
     private var heightComputationQueue: NSOperationQueue!
     private let requiredRefreshDistance: CGFloat = 60
     private let postParseQueue = dispatch_queue_create("postParseQueue", nil)
@@ -103,23 +94,12 @@ class PostsViewController: UICollectionViewController, CHTCollectionViewDelegate
     var lastPoint: CGPoint?
     var loadingCompletion: (() -> ())?
 
-    override init(collectionViewLayout layout: UICollectionViewLayout) {
+    override init(style: UITableViewStyle) {
         fatalError("Not implemented")
     }
 
     init() {
-        let waterfallLayout = CHTCollectionViewWaterfallLayout()
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-            waterfallLayout.columnCount = 2
-        } else {
-            waterfallLayout.columnCount = 1
-
-        }
-        waterfallLayout.sectionInset = UIEdgeInsetsZero
-        waterfallLayout.minimumInteritemSpacing = 0.0
-        waterfallLayout.minimumColumnSpacing = 0.0
-        waterfallLayout.footerHeight = 50.0
-        super.init(collectionViewLayout: waterfallLayout)
+        super.init(style: .Plain)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -133,58 +113,62 @@ class PostsViewController: UICollectionViewController, CHTCollectionViewDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.automaticallyAdjustsScrollViewInsets = true
+        automaticallyAdjustsScrollViewInsets = true
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("resignActive:"), name: UIApplicationWillResignActiveNotification, object: nil)
 
-        self.heightComputationQueue = NSOperationQueue()
-        self.heightComputationQueue.underlyingQueue = dispatch_get_main_queue()
+        heightComputationQueue = NSOperationQueue()
+        heightComputationQueue.underlyingQueue = dispatch_get_main_queue()
 
-        self.loadingTop = false
-        self.loadingBottom = false
+        loadingTop = false
+        loadingBottom = false
 
-        self.webViewCache = Array<WKWebView>()
-        self.bodyWebViewCache = Dictionary<Int, WKWebView>()
-        self.bodyHeightCache = Dictionary<Int, CGFloat>()
-        self.secondaryBodyWebViewCache = Dictionary<Int, WKWebView>()
-        self.secondaryBodyHeightCache = Dictionary<Int, CGFloat>()
-        self.heightCache = Dictionary<NSIndexPath, CGFloat>()
+        webViewCache = Array<WKWebView>()
+        bodyWebViewCache = Dictionary<Int, WKWebView>()
+        bodyHeightCache = Dictionary<Int, CGFloat>()
+        secondaryBodyWebViewCache = Dictionary<Int, WKWebView>()
+        secondaryBodyHeightCache = Dictionary<Int, CGFloat>()
+        heightCache = Dictionary<NSIndexPath, CGFloat>()
 
-        self.collectionView?.dataSource = self
-        self.collectionView?.delegate = self
-        self.collectionView?.showsHorizontalScrollIndicator = false
-        self.collectionView?.showsVerticalScrollIndicator = false
-        self.collectionView?.bounces = true
-        self.collectionView?.alwaysBounceHorizontal = false
-        self.collectionView?.alwaysBounceVertical = true
-        self.collectionView?.allowsSelection = false
-        self.collectionView?.backgroundColor = UIColor.whiteColor()
+        let loadingView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 50))
+        let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
 
-        self.collectionView?.registerClass(PostCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: postCollectionViewCellIdentifier)
-        self.collectionView?.registerClass(UICollectionReusableView.classForCoder(), forSupplementaryViewOfKind: CHTCollectionElementKindSectionFooter, withReuseIdentifier: postFooterViewIdentifier)
-        self.collectionView?.registerClass(PostHeaderView.classForCoder(), forSupplementaryViewOfKind: CHTCollectionElementKindCellHeader, withReuseIdentifier: postCollectionViewCellIdentifier)
+        loadingView.addSubview(activityIndicatorView)
+
+        activityIndicatorView.startAnimating()
+        activityIndicatorView.center = loadingView.center
+
+        tableView.allowsSelection = false
+        tableView.sectionHeaderHeight = 50
+        tableView.separatorStyle = .None
+        tableView.showsHorizontalScrollIndicator = false
+        tableView.showsVerticalScrollIndicator = false
+        tableView.tableFooterView = loadingView
+
+        tableView.registerClass(PostTableViewCell.self, forCellReuseIdentifier: postCollectionViewCellIdentifier)
+        tableView.registerClass(PostHeaderView.self, forHeaderFooterViewReuseIdentifier: postCollectionViewCellIdentifier)
         
-        self.longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: Selector("didLongPress:"))
-        self.longPressGestureRecognizer.delegate = self
-        self.longPressGestureRecognizer.minimumPressDuration = 0.3
+        longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: Selector("didLongPress:"))
+        longPressGestureRecognizer.delegate = self
+        longPressGestureRecognizer.minimumPressDuration = 0.3
 
-        if let gestureRecognizers = self.view.gestureRecognizers {
+        if let gestureRecognizers = view.gestureRecognizers {
             for gestureRecognizer in gestureRecognizers {
                 if let gestureRecognizer = gestureRecognizer as? UILongPressGestureRecognizer {
-                    gestureRecognizer.requireGestureRecognizerToFail(self.longPressGestureRecognizer)
+                    gestureRecognizer.requireGestureRecognizerToFail(longPressGestureRecognizer)
                 }
             }
         }
 
-        self.view.addGestureRecognizer(self.longPressGestureRecognizer)
+        view.addGestureRecognizer(longPressGestureRecognizer)
 
-        self.panGestureRecognizer = UIPanGestureRecognizer(target: self, action: Selector("didPan:"))
-        self.panGestureRecognizer.delegate = self
-        self.view.addGestureRecognizer(self.panGestureRecognizer)
+        panGestureRecognizer = UIPanGestureRecognizer(target: self, action: Selector("didPan:"))
+        panGestureRecognizer.delegate = self
+        view.addGestureRecognizer(self.panGestureRecognizer)
 
         let menuIcon = FAKIonIcons.iosGearOutlineIconWithSize(30);
         let menuIconImage = menuIcon.imageWithSize(CGSize(width: 30, height: 30))
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: menuIconImage,
             style: UIBarButtonItemStyle.Plain,
             target: self,
@@ -201,23 +185,23 @@ class PostsViewController: UICollectionViewController, CHTCollectionViewDelegate
             }
         }
 
-        self.loadTop()
+        loadTop()
     }
 
     override func didReceiveMemoryWarning() {
-        self.webViewCache.removeAll()
+        webViewCache.removeAll()
         super.didReceiveMemoryWarning()
     }
 
     func resignActive(notification: NSNotification) {
-        self.webViewCache.removeAll()
+        webViewCache.removeAll()
     }
 
     func popWebView() -> WKWebView {
-        let frame = CGRect(x: 0, y: 0, width: self.collectionView!.frame.size.width / self.columnCount, height: 1)
+        let frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 1)
 
-        if self.webViewCache.count > 0 {
-            let webView = self.webViewCache.removeAtIndex(0)
+        if webViewCache.count > 0 {
+            let webView = webViewCache.removeAtIndex(0)
             webView.frame = frame
             return webView
         }
@@ -228,7 +212,7 @@ class PostsViewController: UICollectionViewController, CHTCollectionViewDelegate
     }
 
     func pushWebView(webView: WKWebView) {
-        self.webViewCache.append(webView)
+        webViewCache.append(webView)
     }
 
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -239,20 +223,20 @@ class PostsViewController: UICollectionViewController, CHTCollectionViewDelegate
     func requestPosts(postCount: Int, parameters: Dictionary<String, AnyObject>, callback: TMAPICallback) { NSException().raise() }
 
     func loadTop() {
-        if self.loadingTop {
+        if loadingTop {
             return
         }
 
-        self.loadingTop = true
+        loadingTop = true
 
-        if let topID = self.topID {
+        if let topID = topID {
             var sinceID = topID
-            if self.posts.count > 0 {
-                if let firstPost = self.posts.first {
+            if posts.count > 0 {
+                if let firstPost = posts.first {
                     sinceID = firstPost.id
                 }
             }
-            self.requestPosts(0, parameters: ["since_id" : "\(sinceID)", "reblog_info" : "true"]) { (response: AnyObject!, error: NSError!) in
+            requestPosts(0, parameters: ["since_id" : "\(sinceID)", "reblog_info" : "true"]) { (response: AnyObject!, error: NSError!) in
                 if let e = error {
                     print(e)
                     self.loadingTop = false
@@ -272,7 +256,7 @@ class PostsViewController: UICollectionViewController, CHTCollectionViewDelegate
                                     if let firstPost = posts.first {
                                         self.topID = firstPost.id
                                     }
-                                    self.collectionView!.reloadData()
+                                    self.tableView.reloadData()
                                 }
                                 self.reloadTable()
                             })
@@ -281,7 +265,7 @@ class PostsViewController: UICollectionViewController, CHTCollectionViewDelegate
                 }
             }
         } else {
-            self.requestPosts(0, parameters: ["reblog_info" : "true"]) { (response: AnyObject!, error: NSError!) in
+            requestPosts(0, parameters: ["reblog_info" : "true"]) { (response: AnyObject!, error: NSError!) in
                 if let e = error {
                     print(e)
                     self.loadingTop = false
@@ -295,7 +279,7 @@ class PostsViewController: UICollectionViewController, CHTCollectionViewDelegate
                                 self.loadingCompletion = {
                                     self.posts = posts
                                     self.heightCache.removeAll()
-                                    self.collectionView!.reloadData()
+                                    self.tableView.reloadData()
                                 }
                                 self.reloadTable()
                             })
@@ -307,14 +291,14 @@ class PostsViewController: UICollectionViewController, CHTCollectionViewDelegate
     }
     
     func loadMore() {
-        if self.loadingTop || self.loadingBottom {
+        if loadingTop || loadingBottom {
             return
         }
 
-        if let posts = self.posts {
+        if let posts = posts {
             if let lastPost = posts.last {
-                self.loadingBottom = true
-                self.requestPosts(posts.count, parameters: ["before_id" : "\(lastPost.id)", "reblog_info" : "true"]) { (response: AnyObject!, error: NSError!) -> Void in
+                loadingBottom = true
+                requestPosts(posts.count, parameters: ["before_id" : "\(lastPost.id)", "reblog_info" : "true"]) { (response: AnyObject!, error: NSError!) -> Void in
                     if let e = error {
                         print(e)
                         self.loadingBottom = false
@@ -333,7 +317,7 @@ class PostsViewController: UICollectionViewController, CHTCollectionViewDelegate
 
                                         self.posts.appendContentsOf(posts)
                                         
-                                        self.collectionView!.insertItemsAtIndexPaths(indexPaths)
+                                        self.tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .None)
                                     }
                                     self.reloadTable()
                                 })
@@ -347,8 +331,8 @@ class PostsViewController: UICollectionViewController, CHTCollectionViewDelegate
 
     func processPosts(posts: Array<Post>) {
         for post in posts {
-            self.heightComputationQueue.addOperationWithBlock() {
-                if let content = post.htmlBodyWithWidth(self.collectionView!.frame.size.width / self.columnCount) {
+            heightComputationQueue.addOperationWithBlock() {
+                if let content = post.htmlBodyWithWidth(self.tableView.frame.width) {
                     let webView = self.popWebView()
                     let htmlString = content
 
@@ -357,8 +341,8 @@ class PostsViewController: UICollectionViewController, CHTCollectionViewDelegate
                     webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
                 }
             }
-            self.heightComputationQueue.addOperationWithBlock() {
-                if let content = post.htmlSecondaryBodyWithWidth(self.collectionView!.frame.size.width / self.columnCount) {
+            heightComputationQueue.addOperationWithBlock() {
+                if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.size.width) {
                     let webView = self.popWebView()
                     let htmlString = content
                     
@@ -373,10 +357,10 @@ class PostsViewController: UICollectionViewController, CHTCollectionViewDelegate
     func navigate(sender: UIBarButtonItem, event: UIEvent) {
         if let touches = event.allTouches() {
             if let touch = touches.first {
-                if let navigationController = self.navigationController {
+                if let navigationController = navigationController {
                     let viewController = QuickNavigateController()
                     
-                    viewController.startingPoint = touch.locationInView(self.view)
+                    viewController.startingPoint = touch.locationInView(view)
                     viewController.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
                     viewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
                     viewController.view.bounds = navigationController.view.bounds
@@ -411,35 +395,33 @@ class PostsViewController: UICollectionViewController, CHTCollectionViewDelegate
     }
 
     func reloadTable() {
-        if self.heightComputationQueue.operationCount > 0 {
+        if heightComputationQueue.operationCount > 0 {
             return
         }
 
-        if self.bodyWebViewCache.count > 0 {
+        if bodyWebViewCache.count > 0 {
             return
-        } else if self.secondaryBodyWebViewCache.count > 0 {
+        } else if secondaryBodyWebViewCache.count > 0 {
             return
         }
 
-        if self.loadingTop || self.loadingBottom {
-            if let completion = self.loadingCompletion {
-                completion()
-            }
+        if loadingTop || loadingBottom {
+            loadingCompletion?()
         }
 
-        self.loadingCompletion = nil
-        self.loadingTop = false
-        self.loadingBottom = false
+        loadingCompletion = nil
+        loadingTop = false
+        loadingBottom = false
     }
     
     func didLongPress(sender: UILongPressGestureRecognizer) {
         if sender.state == UIGestureRecognizerState.Began {
-            self.collectionView!.scrollEnabled = false
-            let point = sender.locationInView(self.navigationController!.view)
-            let collectionViewPoint = sender.locationInView(self.collectionView!)
-            if let indexPath = self.collectionView?.indexPathForItemAtPoint(collectionViewPoint) {
-                if let _ = self.collectionView?.cellForItemAtIndexPath(indexPath) {
-                    let post = self.posts[indexPath.row]
+            tableView.scrollEnabled = false
+            let point = sender.locationInView(navigationController!.view)
+            let collectionViewPoint = sender.locationInView(tableView)
+            if let indexPath = tableView.indexPathForRowAtPoint(collectionViewPoint) {
+                if let _ = tableView.cellForRowAtIndexPath(indexPath) {
+                    let post = posts[indexPath.row]
                     let viewController = QuickReblogViewController()
                     
                     viewController.startingPoint = point
@@ -447,24 +429,24 @@ class PostsViewController: UICollectionViewController, CHTCollectionViewDelegate
                     viewController.transitioningDelegate = self
                     viewController.modalPresentationStyle = UIModalPresentationStyle.Custom
                     
-                    viewController.view.bounds = self.navigationController!.view.bounds
+                    viewController.view.bounds = navigationController!.view.bounds
                     
-                    self.navigationController!.view.addSubview(viewController.view)
+                    navigationController!.view.addSubview(viewController.view)
                     
                     viewController.view.layoutIfNeeded()
                     viewController.viewDidAppear(false)
                     
-                    self.reblogViewController = viewController
+                    reblogViewController = viewController
                 }
             }
         } else if sender.state == UIGestureRecognizerState.Ended {
-            self.collectionView!.scrollEnabled = true
-            if let viewController = self.reblogViewController {
+            tableView.scrollEnabled = true
+            if let viewController = reblogViewController {
                 let point = viewController.startingPoint
-                let collectionViewPoint = self.collectionView!.convertPoint(point, fromView: self.navigationController!.view)
-                if let indexPath = self.collectionView!.indexPathForItemAtPoint(collectionViewPoint) {
-                    if let cell = self.collectionView!.cellForItemAtIndexPath(indexPath) as? PostCollectionViewCell {
-                        let post = self.posts[indexPath.row]
+                let collectionViewPoint = tableView.convertPoint(point, fromView: navigationController!.view)
+                if let indexPath = tableView.indexPathForRowAtPoint(collectionViewPoint) {
+                    if let cell = tableView.cellForRowAtIndexPath(indexPath) as? PostTableViewCell {
+                        let post = posts[indexPath.row]
                         
                         if let quickReblogAction = viewController.reblogAction() {
                             switch quickReblogAction {
@@ -473,20 +455,20 @@ class PostsViewController: UICollectionViewController, CHTCollectionViewDelegate
 
                                 reblogViewController.reblogType = reblogType
                                 reblogViewController.post = post
-                                reblogViewController.blogName = self.reblogBlogName()
-                                reblogViewController.bodyHeight = self.bodyHeightCache[post.id]
-                                reblogViewController.secondaryBodyHeight = self.secondaryBodyHeightCache[post.id]
-                                reblogViewController.height = self.collectionView(self.collectionView!, layout: self.collectionView!.collectionViewLayout, sizeForItemAtIndexPath: indexPath).height / self.columnCount
+                                reblogViewController.blogName = reblogBlogName()
+                                reblogViewController.bodyHeight = bodyHeightCache[post.id]
+                                reblogViewController.secondaryBodyHeight = secondaryBodyHeightCache[post.id]
+                                reblogViewController.height = tableView(tableView, heightForRowAtIndexPath: indexPath)
                                 if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
                                     reblogViewController.modalPresentationStyle = UIModalPresentationStyle.Popover
                                 } else {
                                     reblogViewController.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
                                 }
                                 reblogViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-                                reblogViewController.popoverPresentationController?.sourceView = self.view
-                                reblogViewController.popoverPresentationController?.sourceRect = self.view.convertRect(cell.bounds, fromView: cell)
+                                reblogViewController.popoverPresentationController?.sourceView = view
+                                reblogViewController.popoverPresentationController?.sourceRect = view.convertRect(cell.bounds, fromView: cell)
                                 reblogViewController.popoverPresentationController?.backgroundColor = UIColor.clearColor()
-                                reblogViewController.preferredContentSize = CGSize(width: self.collectionView!.frame.size.width / self.columnCount, height: 480)
+                                reblogViewController.preferredContentSize = CGSize(width: tableView.frame.width, height: 480)
                                 self.presentViewController(reblogViewController, animated: true, completion: nil)
                             case .Share:
                                 let postItemProvider = PostItemProvider(placeholderItem: "")
@@ -495,7 +477,7 @@ class PostsViewController: UICollectionViewController, CHTCollectionViewDelegate
                                 
                                 var activityItems: Array<UIActivityItemProvider> = [ postItemProvider ]
 
-                                if let image = cell.imageAtPoint(self.view.convertPoint(point, toView: cell)) {
+                                if let image = cell.imageAtPoint(view.convertPoint(point, toView: cell)) {
                                     let imageItemProvider = ImageItemProvider(placeholderItem: image)
 
                                     imageItemProvider.image = image
@@ -509,21 +491,21 @@ class PostsViewController: UICollectionViewController, CHTCollectionViewDelegate
                                 self.presentViewController(activityViewController, animated: true, completion: nil)
                             case .Like:
                                 if post.liked.boolValue {
-                                    TMAPIClient.sharedInstance().unlike("\(post.id)", reblogKey: post.reblogKey, callback: { (response, error) -> Void in
+                                    TMAPIClient.sharedInstance().unlike("\(post.id)", reblogKey: post.reblogKey) { (response, error) in
                                         if let e = error {
                                             print(e)
                                         } else {
                                             post.liked = false
                                         }
-                                    })
+                                    }
                                 } else {
-                                    TMAPIClient.sharedInstance().like("\(post.id)", reblogKey: post.reblogKey, callback: { (response, error) -> Void in
+                                    TMAPIClient.sharedInstance().like("\(post.id)", reblogKey: post.reblogKey) { (response, error) in
                                         if let e = error {
                                             print(e)
                                         } else {
                                             post.liked = true
                                         }
-                                    })
+                                    }
                                 }
                             }
                         }
@@ -533,37 +515,32 @@ class PostsViewController: UICollectionViewController, CHTCollectionViewDelegate
                 viewController.view.removeFromSuperview()
             }
             
-            self.reblogViewController = nil
+            reblogViewController = nil
         }
     }
     
     func didPan(sender: UIPanGestureRecognizer) {
-        if let viewController = self.reblogViewController {
+        if let viewController = reblogViewController {
             viewController.updateWithPoint(sender.locationInView(viewController.view))
         }
     }
 
-    // MARK: UICollectionViewDataSource
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return posts?.count ?? 0
+    }
 
-    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
 
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let posts = self.posts {
-            return posts.count
-        }
-        return 0
-    }
-
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let post = self.posts![indexPath.row]
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(postCollectionViewCellIdentifier, forIndexPath: indexPath) as! PostCollectionViewCell
-
-        cell.bodyHeight = self.bodyHeightCache[post.id]
-        cell.secondaryBodyHeight = self.secondaryBodyHeightCache[post.id]
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let post = posts![indexPath.section]
+        let cell = tableView.dequeueReusableCellWithIdentifier(postCollectionViewCellIdentifier, forIndexPath: indexPath) as! PostTableViewCell
+        
+        cell.bodyHeight = bodyHeightCache[post.id]
+        cell.secondaryBodyHeight = secondaryBodyHeightCache[post.id]
         cell.post = post
-
+        
         cell.bodyTapHandler = { post, view in
             if let _ = view as? PhotosetRowTableViewCell {
                 let viewController = ImagesViewController()
@@ -588,13 +565,13 @@ class PostsViewController: UICollectionViewController, CHTCollectionViewDelegate
                 }
             }
         }
-
+        
         cell.tagTapHandler = { post, tag in
             if let navigationController = self.navigationController {
                 navigationController.pushViewController(TagViewController(tag: tag), animated: true)
             }
         }
-
+        
         cell.linkTapHandler = { post, url in
             if let navigationController = self.navigationController {
                 if let host = url.host {
@@ -606,68 +583,23 @@ class PostsViewController: UICollectionViewController, CHTCollectionViewDelegate
                 navigationController.pushViewController(SFSafariViewController(URL: url), animated: true)
             }
         }
-
+        
         return cell
     }
 
-    override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-        switch kind {
-        case CHTCollectionElementKindCellHeader:
-            let view = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: postCollectionViewCellIdentifier, forIndexPath: indexPath) as! PostHeaderView
-            let post = self.posts![indexPath.row] as Post
-            view.post = post
-            view.tapHandler = { post, view in
-                if let _ = self.navigationController {
-                    if let rebloggedBlogName = post.rebloggedBlogName {
-                        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
-                        alertController.popoverPresentationController?.sourceView = self.view
-                        alertController.popoverPresentationController?.sourceRect = self.view.convertRect(view.bounds, fromView: view)
-                        alertController.addAction(UIAlertAction(title: post.blogName, style: UIAlertActionStyle.Default, handler: { alertAction in
-                            self.navigationController!.pushViewController(BlogViewController(blogName: post.blogName), animated: true)
-                        }))
-                        alertController.addAction(UIAlertAction(title: rebloggedBlogName, style: UIAlertActionStyle.Default, handler: { alertAction in
-                            self.navigationController!.pushViewController(BlogViewController(blogName: rebloggedBlogName), animated: true)
-                        }))
-                        alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: { _ in }))
-                        self.presentViewController(alertController, animated: true, completion: nil)
-                    } else {
-                        self.navigationController!.pushViewController(BlogViewController(blogName: post.blogName), animated: true)
-                    }
-                }
-            }
-            return view
-        case CHTCollectionElementKindSectionFooter:
-            let view = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: postFooterViewIdentifier, forIndexPath: indexPath)
-            if view.subviews.count == 0 {
-                let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
-                activityIndicator.startAnimating()
-                view.addSubview(activityIndicator)
-                constrain(activityIndicator, view) { activityIndicator, view in
-                    activityIndicator.center == view.center; return
-                }
-            }
-            return view
-        default:
-            let view = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: postFooterViewIdentifier, forIndexPath: indexPath)
-            return view
-        }
-    }
-
-    // MARK: CHTCollectionViewDelegateWaterfallLayout
-
-    func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, sizeForItemAtIndexPath indexPath: NSIndexPath!) -> CGSize {
-        let post = self.posts[indexPath.row]
-
-        if let height = self.heightCache[indexPath] {
-            return CGSize(width: collectionView.frame.size.width, height: height)
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        let post = posts[indexPath.section]
+        
+        if let height = heightCache[indexPath] {
+            return height
         }
         
         var height: CGFloat = 0.0
         
         switch post.type {
         case "photo":
-            if let bodyHeight = self.bodyHeightCache[post.id] {
-                height += bodyHeight * self.columnCount
+            if let bodyHeight = bodyHeightCache[post.id] {
+                height += bodyHeight
             }
             
             let postPhotos = post.photos
@@ -675,75 +607,103 @@ class PostsViewController: UICollectionViewController, CHTCollectionViewDelegate
             var photosIndexStart = 0
             for layoutRow in post.layoutRows {
                 images = Array(postPhotos[(photosIndexStart)..<(photosIndexStart + layoutRow)])
-
-                let imageWidth = collectionView.frame.size.width / (self.columnCount * CGFloat(images.count))
+                
+                let imageWidth = tableView.frame.width / CGFloat(images.count)
                 let minHeight = floor(images.map { (image: PostPhoto) -> CGFloat in
                     let scale = image.height / image.width
                     return imageWidth * scale
                     }.reduce(CGFloat.max, combine: { min($0, $1) }))
-
-                height += minHeight * self.columnCount
-
+                
+                height += minHeight
+                
                 photosIndexStart += layoutRow
             }
         case "text":
             if let title = post.title {
-                height += TitleTableViewCell.heightForTitle(title, width: collectionView.frame.size.width / self.columnCount) * self.columnCount
+                height += TitleTableViewCell.heightForTitle(title, width: tableView.frame.width)
             }
-            if let bodyHeight = self.bodyHeightCache[post.id] {
-                height += bodyHeight * self.columnCount
+            if let bodyHeight = bodyHeightCache[post.id] {
+                height += bodyHeight
             }
         case "answer":
-            height += PostQuestionTableViewCell.heightForPost(post, width: collectionView.frame.size.width / self.columnCount) * self.columnCount
-            if let bodyHeight = self.bodyHeightCache[post.id] {
-                height += bodyHeight * self.columnCount
+            height += PostQuestionTableViewCell.heightForPost(post, width: tableView.frame.width)
+            if let bodyHeight = bodyHeightCache[post.id] {
+                height += bodyHeight
             }
         case "quote":
-            if let bodyHeight = self.bodyHeightCache[post.id] {
-                height += bodyHeight * self.columnCount
+            if let bodyHeight = bodyHeightCache[post.id] {
+                height += bodyHeight
             }
-            if let secondaryBodyHeight = self.secondaryBodyHeightCache[post.id] {
-                height += secondaryBodyHeight * self.columnCount
+            if let secondaryBodyHeight = secondaryBodyHeightCache[post.id] {
+                height += secondaryBodyHeight
             }
         case "link":
-            height += PostLinkTableViewCell.heightForPost(post, width: collectionView.frame.size.width / self.columnCount) * self.columnCount
-            if let bodyHeight = self.bodyHeightCache[post.id] {
-                height += bodyHeight * self.columnCount
+            height += PostLinkTableViewCell.heightForPost(post, width: tableView.frame.width)
+            if let bodyHeight = bodyHeightCache[post.id] {
+                height += bodyHeight
             }
         case "chat":
             if let title = post.title {
-                height += TitleTableViewCell.heightForTitle(title, width: collectionView.frame.size.width / self.columnCount) * self.columnCount
+                height += TitleTableViewCell.heightForTitle(title, width: tableView.frame.width)
             }
             for dialogueEntry in post.dialogueEntries {
-                height += PostDialogueEntryTableViewCell.heightForPostDialogueEntry(dialogueEntry, width: collectionView.frame.size.width / self.columnCount) * self.columnCount
+                height += PostDialogueEntryTableViewCell.heightForPostDialogueEntry(dialogueEntry, width: tableView.frame.width)
             }
         case "video":
-            if let playerHeight = post.videoHeightWidthWidth(collectionView.frame.size.width / self.columnCount) {
-                height += playerHeight * self.columnCount
+            if let playerHeight = post.videoHeightWidthWidth(tableView.frame.width) {
+                height += playerHeight
             } else {
                 height += 320
             }
             
-            if let bodyHeight = self.bodyHeightCache[post.id] {
-                height += bodyHeight * self.columnCount
+            if let bodyHeight = bodyHeightCache[post.id] {
+                height += bodyHeight
             }
         default:
             height = 0
         }
-
+        
         if post.tags.count > 0 {
-            height += 30 * self.columnCount
+            height += 30
         }
-
-        self.heightCache[indexPath] = height
-
-        return CGSize(width: collectionView.frame.size.width, height: height)
+        
+        heightCache[indexPath] = height
+        
+        return height
     }
 
-    override func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
-        if let cell = cell as? PostCollectionViewCell {
-            cell.endDisplay()
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(postCollectionViewCellIdentifier) as! PostHeaderView
+        let post = posts![section] as Post
+        view.post = post
+        view.tapHandler = { post, view in
+            if let _ = self.navigationController {
+                if let rebloggedBlogName = post.rebloggedBlogName {
+                    let alertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+                    alertController.popoverPresentationController?.sourceView = self.view
+                    alertController.popoverPresentationController?.sourceRect = self.view.convertRect(view.bounds, fromView: view)
+                    alertController.addAction(UIAlertAction(title: post.blogName, style: UIAlertActionStyle.Default, handler: { alertAction in
+                        self.navigationController!.pushViewController(BlogViewController(blogName: post.blogName), animated: true)
+                    }))
+                    alertController.addAction(UIAlertAction(title: rebloggedBlogName, style: UIAlertActionStyle.Default, handler: { alertAction in
+                        self.navigationController!.pushViewController(BlogViewController(blogName: rebloggedBlogName), animated: true)
+                    }))
+                    alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: { _ in }))
+                    self.presentViewController(alertController, animated: true, completion: nil)
+                } else {
+                    self.navigationController!.pushViewController(BlogViewController(blogName: post.blogName), animated: true)
+                }
+            }
         }
+        return view
+    }
+
+    override func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        guard let cell = cell as? PostTableViewCell else {
+            return
+        }
+
+        cell.endDisplay()
     }
 
     // MARK: UIScrollViewDelegate
@@ -755,8 +715,8 @@ class PostsViewController: UICollectionViewController, CHTCollectionViewDelegate
             self.loadMore()
         }
 
-        if !self.loadingTop {
-            if let navigationController = self.navigationController {
+        if !loadingTop {
+            if let navigationController = navigationController {
                 if !navigationController.getIndeterminate() {
                     if scrollView.contentOffset.y < 0 {
                         let distanceFromTop = scrollView.contentOffset.y + scrollView.contentInset.top + requiredRefreshDistance
@@ -773,7 +733,7 @@ class PostsViewController: UICollectionViewController, CHTCollectionViewDelegate
     
     override func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         let distanceFromTop = scrollView.contentOffset.y + scrollView.contentInset.top
-        if -distanceFromTop > self.requiredRefreshDistance {
+        if -distanceFromTop > requiredRefreshDistance {
             self.loadTop()
         }
     }
@@ -797,17 +757,17 @@ class PostsViewController: UICollectionViewController, CHTCollectionViewDelegate
     }
 
     func webView(webView: WKWebView, didFailNavigation navigation: WKNavigation!, withError error: NSError) {
-        if let postId = self.bodyWebViewCache.keyForObject(webView, isEqual: ==) {
+        if let postId = bodyWebViewCache.keyForObject(webView, isEqual: ==) {
             self.bodyHeightCache[postId] = 0
             self.bodyWebViewCache[postId] = nil
             self.reloadTable()
-        } else if let postId = self.secondaryBodyWebViewCache.keyForObject(webView, isEqual: ==) {
+        } else if let postId = secondaryBodyWebViewCache.keyForObject(webView, isEqual: ==) {
             self.secondaryBodyHeightCache[postId] = 0
             self.secondaryBodyWebViewCache[postId] = nil
             self.reloadTable()
         }
         
-        self.pushWebView(webView)
+        pushWebView(webView)
     }
     
     // MARK: UIViewControllerTransitioningDelegate
@@ -827,15 +787,13 @@ class PostsViewController: UICollectionViewController, CHTCollectionViewDelegate
     // MARK: TagsTableViewCellDelegate
 
     func tagsTableViewCell(cell: TagsTableViewCell, didSelectTag tag: String) {
-        if let navigationController = self.navigationController {
-            navigationController.pushViewController(TagViewController(tag: tag), animated: true)
-        }
+        navigationController?.pushViewController(TagViewController(tag: tag), animated: true)
     }
 }
 
 extension WKWebView {
     func getDocumentHeight(completion: (CGFloat) -> ()) {
-        self.evaluateJavaScript("var body = document.body, html = document.documentElement;Math.max( body.scrollHeight, body.offsetHeight,html.clientHeight, html.scrollHeight, html.offsetHeight );", completionHandler: { result, error in
+        evaluateJavaScript("var body = document.body, html = document.documentElement;Math.max( body.scrollHeight, body.offsetHeight,html.clientHeight, html.scrollHeight, html.offsetHeight );", completionHandler: { result, error in
             if let _ = error {
                 completion(0)
             } else if let height = JSON(result!).int {

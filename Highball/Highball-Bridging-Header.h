@@ -11,7 +11,6 @@
 
 @import Foundation;
 #import <ChameleonFramework/Chameleon.h>
-#import <CHTCollectionViewWaterfallLayout/CHTCollectionViewWaterfallLayout.h>
 #import <Crashlytics/Crashlytics.h>
 #import <FLAnimatedImage/FLAnimatedImage.h>
 #import <FLAnimatedImage/FLAnimatedImageView.h>

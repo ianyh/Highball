@@ -5,7 +5,6 @@ platform :ios, '9.0'
 use_frameworks!
 
 pod 'ChameleonFramework', '~> 1.1'
-pod 'CHTCollectionViewWaterfallLayout', :git => 'https://github.com/ianyh/CHTCollectionViewWaterfallLayout.git', :branch => 'develop'
 pod 'FontAwesomeKit', :git => 'https://github.com/PrideChung/FontAwesomeKit.git'
 pod 'FormatterKit', '~> 1.8'
 pod 'M13ProgressSuite', :git => 'https://github.com/ianyh/M13ProgressSuite.git'

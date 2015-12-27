@@ -2,7 +2,6 @@ PODS:
   - ChameleonFramework (1.2.1):
     - ChameleonFramework/Default (= 1.2.1)
   - ChameleonFramework/Default (1.2.1)
-  - CHTCollectionViewWaterfallLayout (0.8)
   - FLAnimatedImage (1.0.10)
   - FontAwesomeKit (2.1.9):
     - FontAwesomeKit/Core (= 2.1.9)
@@ -80,8 +79,6 @@ PODS:
 
 DEPENDENCIES:
   - ChameleonFramework (~> 1.1)
-  - CHTCollectionViewWaterfallLayout (from `https://github.com/ianyh/CHTCollectionViewWaterfallLayout.git`,
-    branch `develop`)
   - FontAwesomeKit (from `https://github.com/PrideChung/FontAwesomeKit.git`)
   - FormatterKit (~> 1.8)
   - M13ProgressSuite (from `https://github.com/ianyh/M13ProgressSuite.git`)
@@ -99,18 +96,12 @@ DEPENDENCIES:
   - XCDYouTubeKit (~> 2.2)
 
 EXTERNAL SOURCES:
-  CHTCollectionViewWaterfallLayout:
-    :branch: develop
-    :git: https://github.com/ianyh/CHTCollectionViewWaterfallLayout.git
   FontAwesomeKit:
     :git: https://github.com/PrideChung/FontAwesomeKit.git
   M13ProgressSuite:
     :git: https://github.com/ianyh/M13ProgressSuite.git
 
 CHECKOUT OPTIONS:
-  CHTCollectionViewWaterfallLayout:
-    :commit: 57750315963eec8844c583942192d207b5f298e6
-    :git: https://github.com/ianyh/CHTCollectionViewWaterfallLayout.git
   FontAwesomeKit:
     :commit: 0c9d92aeef1fd148c11daed2ded9d0dcdb4b2c4f
     :git: https://github.com/PrideChung/FontAwesomeKit.git
@@ -120,7 +111,6 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   ChameleonFramework: 3476f813ac1615aef0a9a958f05520dfca47e09d
-  CHTCollectionViewWaterfallLayout: 058823cc65c9d84e059b0a85eede517550da0334
   FLAnimatedImage: e16a1e1cef08e4c509b47e4acbe3923f65c16135
   FontAwesomeKit: 0cd610453ce270f34ad17378c68de98aad0e05ef
   FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4

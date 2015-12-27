@@ -11,7 +11,7 @@ import Cartography
 import TMCache
 import TMTumblrSDK
 
-class PostHeaderView: UICollectionReusableView {
+class PostHeaderView: UITableViewHeaderFooterView {
     var tapHandler: ((Post, UIView) -> ())?
 
     private let avatarLoadQueue = dispatch_queue_create("avatarLoadQueue", nil)
@@ -29,12 +29,12 @@ class PostHeaderView: UICollectionReusableView {
                 avatarImageView.image = UIImage(named: "Placeholder")
 
                 if let data = TMCache.sharedCache().objectForKey("avatar:\(blogName)") as? NSData {
-                    dispatch_async(self.avatarLoadQueue, {
+                    dispatch_async(self.avatarLoadQueue) {
                         let image = UIImage(data: data)
-                        dispatch_async(dispatch_get_main_queue(), {
+                        dispatch_async(dispatch_get_main_queue()) {
                             self.avatarImageView.image = image
-                        })
-                    })
+                        }
+                    }
                 } else {
                     TMAPIClient.sharedInstance().avatar(blogName, size: 80) { (response: AnyObject!, error: NSError!) in
                         if let e = error {
@@ -42,12 +42,12 @@ class PostHeaderView: UICollectionReusableView {
                         } else {
                             let data = response as! NSData!
                             TMCache.sharedCache().setObject(data, forKey: "avatar:\(blogName)")
-                            dispatch_async(self.avatarLoadQueue, {
+                            dispatch_async(self.avatarLoadQueue) {
                                 let image = UIImage(data: data)
-                                dispatch_async(dispatch_get_main_queue(), {
+                                dispatch_async(dispatch_get_main_queue()) {
                                     self.avatarImageView.image = image
-                                })
-                            })
+                                }
+                            }
                         }
                     }
                 }
@@ -67,23 +67,21 @@ class PostHeaderView: UICollectionReusableView {
         }
     }
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.setUpCell()
+    override init(reuseIdentifier: String?) {
+        super.init(reuseIdentifier: reuseIdentifier)
+        setUpCell()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.setUpCell()
+        setUpCell()
     }
 
     private func setUpCell() {
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Dark)
+        let blurEffect = UIBlurEffect(style: .ExtraLight)
         let blurView = UIVisualEffectView(effect: blurEffect)
-        addSubview(blurView)
-        constrain(blurView, self) { blurView, view in
-            blurView.edges == view.edges; return
-        }
+
+        backgroundView = blurView
 
         avatarImageView = UIImageView()
         avatarImageView.layer.cornerRadius = 20
@@ -91,63 +89,71 @@ class PostHeaderView: UICollectionReusableView {
 
         usernameLabel = UILabel()
         usernameLabel.font = UIFont.boldSystemFontOfSize(16)
-        usernameLabel.textColor = UIColor.whiteColor()
 
         topUsernameLabel = UILabel()
         topUsernameLabel.font = UIFont.boldSystemFontOfSize(16)
-        topUsernameLabel.textColor = UIColor.whiteColor()
 
         bottomUsernameLabel = UILabel()
         bottomUsernameLabel.font = UIFont.systemFontOfSize(12)
-        bottomUsernameLabel.textColor = UIColor.whiteColor()
 
         timeLabel = UILabel()
         timeLabel.font = UIFont.systemFontOfSize(14)
-        timeLabel.textColor = UIColor.whiteColor()
 
         let button = UIButton(type: .System)
         button.addTarget(self, action: Selector("tap:"), forControlEvents: UIControlEvents.TouchUpInside)
 
-        addSubview(avatarImageView)
-        addSubview(usernameLabel)
-        addSubview(topUsernameLabel)
-        addSubview(bottomUsernameLabel)
-        addSubview(timeLabel)
-        addSubview(button)
+        let borderView = UIView()
+        borderView.backgroundColor = UIColor.grayColor()
+        borderView.alpha = 0.5
 
-        constrain(avatarImageView, self) { avatarImageView, contentView in
+        contentView.addSubview(avatarImageView)
+        contentView.addSubview(usernameLabel)
+        contentView.addSubview(topUsernameLabel)
+        contentView.addSubview(bottomUsernameLabel)
+        contentView.addSubview(timeLabel)
+        contentView.addSubview(button)
+        contentView.addSubview(borderView)
+
+        constrain(avatarImageView, contentView) { avatarImageView, contentView in
             avatarImageView.centerY == contentView.centerY
             avatarImageView.left == contentView.left + 4
             avatarImageView.width == 40
             avatarImageView.height == 40
         }
 
-        constrain(usernameLabel, avatarImageView, self) { usernameLabel, avatarImageView, contentView in
+        constrain(usernameLabel, avatarImageView, contentView) { usernameLabel, avatarImageView, contentView in
             usernameLabel.centerY == contentView.centerY
             usernameLabel.left == avatarImageView.right + 4
             usernameLabel.height == 30
         }
 
-        constrain(topUsernameLabel, avatarImageView, self) { usernameLabel, avatarImageView, contentView in
+        constrain(topUsernameLabel, avatarImageView, contentView) { usernameLabel, avatarImageView, contentView in
             usernameLabel.centerY == contentView.centerY - 8
             usernameLabel.left == avatarImageView.right + 4
             usernameLabel.height == 20
         }
 
-        constrain(bottomUsernameLabel, avatarImageView, self) { usernameLabel, avatarImageView, contentView in
+        constrain(bottomUsernameLabel, avatarImageView, contentView) { usernameLabel, avatarImageView, contentView in
             usernameLabel.centerY == contentView.centerY + 8
             usernameLabel.left == avatarImageView.right + 4
             usernameLabel.height == 20
         }
 
-        constrain(timeLabel, usernameLabel, self) { timeLabel, usernameLabel, contentView in
+        constrain(timeLabel, usernameLabel, contentView) { timeLabel, usernameLabel, contentView in
             timeLabel.centerY == contentView.centerY
             timeLabel.right == contentView.right - 8.0
             timeLabel.height == 30
         }
 
-        constrain(button, self) { button, contentView in
+        constrain(button, contentView) { button, contentView in
             button.edges == contentView.edges; return
+        }
+
+        constrain(borderView, contentView) { borderView, contentView in
+            borderView.height == 1
+            borderView.right == contentView.right
+            borderView.bottom == contentView.bottom
+            borderView.left == contentView.left
         }
     }
 
