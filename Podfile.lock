@@ -24,7 +24,7 @@ PODS:
     - ChameleonFramework/Default (= 1.2.1)
   - ChameleonFramework/Default (1.2.1)
   - CHTCollectionViewWaterfallLayout (0.8)
-  - FLAnimatedImage (1.0.8)
+  - FLAnimatedImage (1.0.10)
   - FontAwesomeKit (2.1.9):
     - FontAwesomeKit/Core (= 2.1.9)
     - FontAwesomeKit/FontAwesome (= 2.1.9)
@@ -62,10 +62,14 @@ PODS:
   - JXHTTP (2.0.2)
   - M13ProgressSuite (1.2.7)
   - OAuthSwift (0.5.0)
-  - PINCache (2.0)
-  - PINRemoteImage (1.1.2):
+  - PINCache (2.1.2)
+  - PINRemoteImage (1.2.2):
+    - PINRemoteImage/FLAnimatedImage (= 1.2.2)
+  - PINRemoteImage/Core (1.2.2):
+    - PINCache (>= 2.1)
+  - PINRemoteImage/FLAnimatedImage (1.2.2):
     - FLAnimatedImage (>= 1.0)
-    - PINCache (>= 2.0)
+    - PINRemoteImage/Core
   - Player (0.1.0)
   - pop (1.0.7)
   - Reachability (3.2)
@@ -104,8 +108,8 @@ DEPENDENCIES:
   - FormatterKit (~> 1.8)
   - M13ProgressSuite (from `https://github.com/ianyh/M13ProgressSuite.git`)
   - OAuthSwift (~> 0.5)
-  - PINRemoteImage (~> 1.0)
-  - Player
+  - PINRemoteImage (~> 1.2)
+  - Player (~> 0.1)
   - pop (~> 1.0)
   - Reachability (~> 3.2)
   - SlackTextViewController (~> 1.4)
@@ -140,14 +144,14 @@ SPEC CHECKSUMS:
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
   ChameleonFramework: 3476f813ac1615aef0a9a958f05520dfca47e09d
   CHTCollectionViewWaterfallLayout: 058823cc65c9d84e059b0a85eede517550da0334
-  FLAnimatedImage: f9422f796135aff80d8c00b2afc48015bb746e24
+  FLAnimatedImage: e16a1e1cef08e4c509b47e4acbe3923f65c16135
   FontAwesomeKit: 0cd610453ce270f34ad17378c68de98aad0e05ef
   FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4
   JXHTTP: 7e3fde3d226e865531703b0e4ea4b6e1c22d9b16
   M13ProgressSuite: 4642db3df66a61f512ba2caded404637f9788eb6
   OAuthSwift: f2e0de083739da5697be095c9af2671242a4ed8b
-  PINCache: ca953ba93ce1edde056fdd99121ee65b295a08c9
-  PINRemoteImage: 0696e5f679deabf2e2ddfb57085fb978ca51bfc3
+  PINCache: 9e70271f1bdd60c0465b7208adcc4b6acc1fc376
+  PINRemoteImage: 9f6f484bbceee15e2df5aee0beeac2e261e4ac81
   Player: e05be4073ea64fce1981869898ad9796c27cdd2b
   pop: 628ffc631644601567ee8bfaaaea493ebd7d0923
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
