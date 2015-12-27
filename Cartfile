@@ -1,2 +1,2 @@
 github "robb/Cartography" ~> 0.6
-github "SwiftyJSON/SwiftyJSON"
+github "SwiftyJSON/SwiftyJSON" ~> 2.3

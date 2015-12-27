@@ -422,7 +422,7 @@ class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, U
             let collectionViewPoint = sender.locationInView(tableView)
             if let indexPath = tableView.indexPathForRowAtPoint(collectionViewPoint) {
                 if let _ = tableView.cellForRowAtIndexPath(indexPath) {
-                    let post = posts[indexPath.row]
+                    let post = posts[indexPath.section]
                     let viewController = QuickReblogViewController()
                     
                     viewController.startingPoint = point
@@ -447,7 +447,7 @@ class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, U
                 let collectionViewPoint = tableView.convertPoint(point, fromView: navigationController!.view)
                 if let indexPath = tableView.indexPathForRowAtPoint(collectionViewPoint) {
                     if let cell = tableView.cellForRowAtIndexPath(indexPath) as? PostTableViewCell {
-                        let post = posts[indexPath.row]
+                        let post = posts[indexPath.section]
                         
                         if let quickReblogAction = viewController.reblogAction() {
                             switch quickReblogAction {

@@ -77,7 +77,7 @@ class DashboardViewController: PostsViewController {
     func bookmark() {
         if let indexPaths = tableView.indexPathsForVisibleRows {
             if let firstIndexPath = indexPaths.first {
-                let post = self.posts[firstIndexPath.row]
+                let post = self.posts[firstIndexPath.section]
                 if let _ = AccountsService.account {} else {
                     return
                 }
