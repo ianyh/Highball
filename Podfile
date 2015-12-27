@@ -4,7 +4,6 @@ platform :ios, '9.0'
 
 use_frameworks!
 
-pod 'AFNetworking', '~> 2.5'
 pod 'ChameleonFramework', '~> 1.1'
 pod 'CHTCollectionViewWaterfallLayout', :git => 'https://github.com/ianyh/CHTCollectionViewWaterfallLayout.git', :branch => 'develop'
 pod 'FontAwesomeKit', :git => 'https://github.com/PrideChung/FontAwesomeKit.git'

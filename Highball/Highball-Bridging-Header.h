@@ -10,7 +10,6 @@
 #define Highball_Highball_Bridging_Header_h
 
 @import Foundation;
-#import <AFNetworking/AFNetworking.h>
 #import <ChameleonFramework/Chameleon.h>
 #import <CHTCollectionViewWaterfallLayout/CHTCollectionViewWaterfallLayout.h>
 #import <Crashlytics/Crashlytics.h>
