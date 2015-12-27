@@ -39,7 +39,6 @@ PODS:
   - SlackTextViewController (1.8)
   - Spectacles (1.0.1)
   - SSKeychain (1.3.1)
-  - SVPullToRefresh (0.4.1)
   - TMTumblrSDK (4.0.1):
     - TMTumblrSDK/Activity (= 4.0.1)
     - TMTumblrSDK/APIClient (= 4.0.1)
@@ -75,7 +74,6 @@ DEPENDENCIES:
   - pop (~> 1.0)
   - Reachability (~> 3.2)
   - SlackTextViewController (~> 1.4)
-  - SVPullToRefresh (~> 0.4)
   - TMTumblrSDK (~> 4.0)
   - VENTouchLock (~> 1.0)
   - WCFastCell (~> 1.1)
@@ -113,7 +111,6 @@ SPEC CHECKSUMS:
   SlackTextViewController: 0300adee2931fdbe72488990336f0937dbed048e
   Spectacles: 8dc60711140320653724560e2d6bbb8a8f0940e4
   SSKeychain: 04c4ec40f4c3deda524e269bc76e5f30e638a174
-  SVPullToRefresh: ba2e718695a43253d8bea6852d2960097dc15d8c
   TMTumblrSDK: fec72b7eed921db0b2ec472b2c851d472ab41f3a
   VENTouchLock: f3145d6fbff243d6692dfb1107b88db06dc216c9
   WCFastCell: 3e20a0c711d27307584bdbd359a44a714e991151
