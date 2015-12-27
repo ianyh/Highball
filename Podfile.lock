@@ -59,7 +59,7 @@ PODS:
   - VENTouchLock (1.11.0):
     - SSKeychain (~> 1.0)
   - WCFastCell (1.1)
-  - XCDYouTubeKit (2.2.0)
+  - XCDYouTubeKit (2.4.3)
 
 DEPENDENCIES:
   - ChameleonFramework (~> 1.1)
@@ -79,7 +79,7 @@ DEPENDENCIES:
   - TMTumblrSDK (~> 4.0)
   - VENTouchLock (~> 1.0)
   - WCFastCell (~> 1.1)
-  - XCDYouTubeKit (~> 2.2)
+  - XCDYouTubeKit (~> 2.4)
 
 EXTERNAL SOURCES:
   FontAwesomeKit:
@@ -117,6 +117,6 @@ SPEC CHECKSUMS:
   TMTumblrSDK: fec72b7eed921db0b2ec472b2c851d472ab41f3a
   VENTouchLock: f3145d6fbff243d6692dfb1107b88db06dc216c9
   WCFastCell: 3e20a0c711d27307584bdbd359a44a714e991151
-  XCDYouTubeKit: 920ff5dfdf37f0f41b19610c5270b2ed23b05b13
+  XCDYouTubeKit: a4a1a60faa7bc97744a1184501e82ef10ca15897
 
 COCOAPODS: 0.39.0
