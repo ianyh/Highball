@@ -7,7 +7,7 @@ use_frameworks!
 pod 'Fabric'
 pod 'Crashlytics'
 
-pod 'ChameleonFramework', '~> 1.1'
+pod 'ChameleonFramework', '~> 2.0'
 pod 'FontAwesomeKit', git: 'https://github.com/PrideChung/FontAwesomeKit.git'
 pod 'FormatterKit/TimeIntervalFormatter', '~> 1.8'
 pod 'M13ProgressSuite', git: 'https://github.com/Marxon13/M13ProgressSuite.git'

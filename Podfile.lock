@@ -1,7 +1,7 @@
 PODS:
-  - ChameleonFramework (1.2.1):
-    - ChameleonFramework/Default (= 1.2.1)
-  - ChameleonFramework/Default (1.2.1)
+  - ChameleonFramework (2.0.6):
+    - ChameleonFramework/Default (= 2.0.6)
+  - ChameleonFramework/Default (2.0.6)
   - Crashlytics (3.4.1):
     - Fabric (~> 1.6.0)
   - Fabric (1.6.1)
@@ -62,7 +62,7 @@ PODS:
   - XCDYouTubeKit (2.4.3)
 
 DEPENDENCIES:
-  - ChameleonFramework (~> 1.1)
+  - ChameleonFramework (~> 2.0)
   - Crashlytics
   - Fabric
   - FontAwesomeKit (from `https://github.com/PrideChung/FontAwesomeKit.git`)
@@ -96,7 +96,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Marxon13/M13ProgressSuite.git
 
 SPEC CHECKSUMS:
-  ChameleonFramework: 3476f813ac1615aef0a9a958f05520dfca47e09d
+  ChameleonFramework: a6b466873ff9a4ce3a5196c20bccf1a97ad9f446
   Crashlytics: 41574a245bc6ae10c55d57f385ebd2004e5bee05
   Fabric: bf0ceb04e7c924090efc5f8c55e4fbcca189e0a0
   FLAnimatedImage: e16a1e1cef08e4c509b47e4acbe3923f65c16135
