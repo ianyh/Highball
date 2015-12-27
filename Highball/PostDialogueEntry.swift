@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftyJSON
+import UIKit
 
 class PostDialogueEntry {
     private let json: JSON

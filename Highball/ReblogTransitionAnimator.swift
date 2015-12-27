@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 ianynda. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class ReblogTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     var presenting = true

@@ -13,6 +13,7 @@ import Cartography
 import TMTumblrSDK
 import FontAwesomeKit
 import SafariServices
+import M13ProgressSuite
 
 enum TextRow: Int {
     case Title

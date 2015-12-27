@@ -8,6 +8,7 @@
 
 import UIKit
 import Cartography
+import ChameleonFramework
 import pop
 import FontAwesomeKit
 

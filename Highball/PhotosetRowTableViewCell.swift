@@ -6,10 +6,11 @@
 //  Copyright (c) 2014 ianynda. All rights reserved.
 //
 
-import UIKit
 import Cartography
-import WCFastCell
+import FLAnimatedImage
 import FontAwesomeKit
+import UIKit
+import WCFastCell
 
 class PhotosetRowTableViewCell: WCFastCell {
     var imageViews: Array<FLAnimatedImageView>?

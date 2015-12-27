@@ -6,9 +6,11 @@
 //  Copyright (c) 2014 ianynda. All rights reserved.
 //
 
-import UIKit
 import Cartography
+import FLAnimatedImage
 import FontAwesomeKit
+import PINRemoteImage
+import UIKit
 
 class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
     var scrollView: UIScrollView!

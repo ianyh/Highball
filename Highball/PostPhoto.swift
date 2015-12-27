@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 ianynda. All rights reserved.
 //
 
-import Foundation
 import SwiftyJSON
+import UIKit
 
 class PostPhoto {
     private let json: JSON

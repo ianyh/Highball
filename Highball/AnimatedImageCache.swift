@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 ianynda. All rights reserved.
 //
 
+import FLAnimatedImage
 import Foundation
 
 struct AnimatedImageCache {
