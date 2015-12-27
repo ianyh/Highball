@@ -8,7 +8,7 @@
 
 import UIKit
 import Cartography
-import TMCache
+import PINCache
 import TMTumblrSDK
 
 class PostTableHeaderView: UITableViewHeaderFooterView {
@@ -25,7 +25,7 @@ class PostTableHeaderView: UITableViewHeaderFooterView {
                 
                 self.avatarImageView.image = UIImage(named: "Placeholder")
                 
-                if let data = TMCache.sharedCache().objectForKey("avatar:\(blogName)") as? NSData {
+                if let data = PINCache.sharedCache().objectForKey("avatar:\(blogName)") as? NSData {
                     dispatch_async(self.avatarLoadQueue, {
                         let image = UIImage(data: data)
                         dispatch_async(dispatch_get_main_queue(), {
@@ -38,7 +38,7 @@ class PostTableHeaderView: UITableViewHeaderFooterView {
                             print(e)
                         } else {
                             let data = response as! NSData!
-                            TMCache.sharedCache().setObject(data, forKey: "avatar:\(blogName)")
+                            PINCache.sharedCache().setObject(data, forKey: "avatar:\(blogName)")
                             dispatch_async(self.avatarLoadQueue, {
                                 let image = UIImage(data: data)
                                 dispatch_async(dispatch_get_main_queue(), {

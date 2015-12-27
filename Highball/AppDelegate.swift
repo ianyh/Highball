@@ -12,14 +12,13 @@ import Crashlytics
 import UIKit
 import WebKit
 import TMTumblrSDK
+import PINCache
 import Reachability
-import TMCache
 import VENTouchLock
 import OAuthSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
     var window: UIWindow?
     var navigationController: UINavigationController?
     var reachability: Reachability!
@@ -32,9 +31,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         TMAPIClient.sharedInstance().OAuthConsumerSecret = "ONVNS5UCfZMMhrekfjBknUXgjQ5I2J1a0aVDCfso2mfRcC4nEF"
 
         // Only keep cache for 12 hours
-        TMCache.sharedCache().diskCache.ageLimit = 43200
+        PINCache.sharedCache().diskCache.ageLimit = 43200
         // Only keep up to 500 mb cache
-        TMCache.sharedCache().diskCache.byteLimit = 524288000
+        PINCache.sharedCache().diskCache.byteLimit = 524288000
 
         self.navigationController = window?.rootViewController as? UINavigationController
 
