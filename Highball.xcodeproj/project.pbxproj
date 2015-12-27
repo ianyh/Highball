@@ -39,6 +39,7 @@
 		408D393F19C12E550001981F /* ImageItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408D393E19C12E550001981F /* ImageItemProvider.swift */; };
 		408D394119C12EF00001981F /* PostItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408D394019C12EF00001981F /* PostItemProvider.swift */; };
 		408D5B6E1B7D6AA300C787FA /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 408D5B6D1B7D6AA300C787FA /* Launch Screen.xib */; };
+		409030C81C306C42008E786F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 409030C71C306C42008E786F /* Main.storyboard */; };
 		409D00E91B28BF5F0097C2EC /* Cartography.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 409D00E51B27522E0097C2EC /* Cartography.framework */; };
 		409D00EA1B28BF5F0097C2EC /* Cartography.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 409D00E51B27522E0097C2EC /* Cartography.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		409D00EB1B28BF5F0097C2EC /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 409D00E61B27522E0097C2EC /* SwiftyJSON.framework */; };
@@ -122,6 +123,7 @@
 		408D393E19C12E550001981F /* ImageItemProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageItemProvider.swift; sourceTree = "<group>"; };
 		408D394019C12EF00001981F /* PostItemProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostItemProvider.swift; sourceTree = "<group>"; };
 		408D5B6D1B7D6AA300C787FA /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "Launch Screen.xib"; path = "Highball/Launch Screen.xib"; sourceTree = "<group>"; };
+		409030C71C306C42008E786F /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		409D00E51B27522E0097C2EC /* Cartography.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cartography.framework; path = Carthage/Build/iOS/Cartography.framework; sourceTree = "<group>"; };
 		409D00E61B27522E0097C2EC /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
 		40A11E5F19B4CBCB00B91843 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
@@ -188,6 +190,7 @@
 				40381A0A1A79A6FA005A2EEE /* YoutubeTableViewCell.swift */,
 				4018C1851A9AA61E00B27D08 /* PostCollectionViewCell.swift */,
 				40D475F01AAB98010034CF16 /* PostTableHeaderView.swift */,
+				409030C71C306C42008E786F /* Main.storyboard */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -400,6 +403,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				409030C81C306C42008E786F /* Main.storyboard in Resources */,
 				4050698B19AA76BD0066ECE3 /* Images.xcassets in Resources */,
 				408D5B6E1B7D6AA300C787FA /* Launch Screen.xib in Resources */,
 			);
@@ -648,7 +652,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = Highball/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -675,7 +679,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = Highball/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

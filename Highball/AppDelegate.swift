@@ -12,6 +12,7 @@ import TMTumblrSDK
 import Reachability
 import TMCache
 import VENTouchLock
+import OAuthSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -32,13 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Only keep up to 500 mb cache
         TMCache.sharedCache().diskCache.byteLimit = 524288000
 
-        self.navigationController = UINavigationController()
-        self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
-        self.window?.rootViewController = self.navigationController
-
-        AccountsService.start { () -> () in
-            self.navigationController?.viewControllers = [DashboardViewController()]; return
-        }
+        self.navigationController = window?.rootViewController as? UINavigationController
 
         if let bundleInfoDictionary = NSBundle.mainBundle().infoDictionary {
             if let key = bundleInfoDictionary["HBCrashlyticsAPIKey"] as? NSString {
@@ -57,11 +52,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         self.window?.makeKeyAndVisible()
 
+        AccountsService.start(fromViewController: navigationController!) {
+            self.navigationController?.viewControllers = [DashboardViewController()]; return
+        }
+
         return true
     }
 
     func application(application: UIApplication, handleOpenURL url: NSURL) -> Bool {
-        return TMAPIClient.sharedInstance().handleOpenURL(url)
+        if url.host == "oauth-callback" {
+            OAuthSwift.handleOpenURL(url)
+        }
+        return true
     }
 
     func applicationDidReceiveMemoryWarning(application: UIApplication) {

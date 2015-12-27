@@ -85,7 +85,7 @@ class AccountsViewController: UITableViewController {
                 self.tableView.reloadData()
             })
         case .AddAccount:
-            AccountsService.authenticateNewAccount { (account) -> () in
+            AccountsService.authenticateNewAccount(fromViewController: self) { (account) -> () in
                 self.accounts = AccountsService.accounts()
                 self.tableView.reloadData()
             }
@@ -99,10 +99,10 @@ class AccountsViewController: UITableViewController {
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if Section(rawValue: indexPath.section) == Section.Accounts {
             let account = self.accounts[indexPath.row]
-            AccountsService.deleteAccount(account, completion: { () -> () in
+            AccountsService.deleteAccount(account, fromViewController: self) {
                 self.accounts = AccountsService.accounts()
                 self.tableView.reloadData()
-            })
+            }
         }
     }
 }

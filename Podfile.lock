@@ -59,8 +59,9 @@ PODS:
   - FormatterKit/TimeIntervalFormatter (1.8.0)
   - FormatterKit/UnitOfInformationFormatter (1.8.0)
   - FormatterKit/URLRequestFormatter (1.8.0)
-  - JXHTTP (1.0.7)
+  - JXHTTP (2.0.2)
   - M13ProgressSuite (1.2.7)
+  - OAuthSwift (0.5.0)
   - PINCache (2.0)
   - PINRemoteImage (1.1.2):
     - FLAnimatedImage (>= 1.0)
@@ -69,25 +70,27 @@ PODS:
   - pop (1.0.7)
   - Reachability (3.2)
   - SlackTextViewController (1.6)
+  - Spectacles (1.0.1)
   - SSKeychain (1.2.3)
   - SVPullToRefresh (0.4.1)
   - SVWebViewController (1.0)
   - TMCache (1.2.4)
-  - TMTumblrSDK (1.1.1):
-    - TMTumblrSDK/Activity (= 1.1.1)
-    - TMTumblrSDK/APIClient (= 1.1.1)
-    - TMTumblrSDK/AppClient (= 1.1.1)
-    - TMTumblrSDK/Core (= 1.1.1)
-  - TMTumblrSDK/Activity (1.1.1)
-  - TMTumblrSDK/APIClient (1.1.1):
-    - JXHTTP (~> 1.0)
-    - TMTumblrSDK/APIClient/Authentication (= 1.1.1)
-  - TMTumblrSDK/APIClient/Authentication (1.1.1):
-    - JXHTTP (~> 1.0)
+  - TMTumblrSDK (4.0.1):
+    - TMTumblrSDK/Activity (= 4.0.1)
+    - TMTumblrSDK/APIClient (= 4.0.1)
+    - TMTumblrSDK/AppClient (= 4.0.1)
+    - TMTumblrSDK/Core (= 4.0.1)
+  - TMTumblrSDK/Activity (4.0.1)
+  - TMTumblrSDK/APIClient (4.0.1):
+    - JXHTTP (~> 2.0.1)
+    - TMTumblrSDK/APIClient/Authentication (= 4.0.1)
+  - TMTumblrSDK/APIClient/Authentication (4.0.1):
+    - JXHTTP (~> 2.0.1)
     - TMTumblrSDK/Core
-  - TMTumblrSDK/AppClient (1.1.1):
+  - TMTumblrSDK/AppClient (4.0.1):
     - TMTumblrSDK/Core
-  - TMTumblrSDK/Core (1.1.1)
+  - TMTumblrSDK/Core (4.0.1):
+    - Spectacles (~> 1.0)
   - VENTouchLock (1.11.0):
     - SSKeychain (~> 1.0)
   - WCFastCell (1.1)
@@ -101,6 +104,7 @@ DEPENDENCIES:
   - FontAwesomeKit (from `https://github.com/PrideChung/FontAwesomeKit.git`)
   - FormatterKit (~> 1.8)
   - M13ProgressSuite (from `https://github.com/ianyh/M13ProgressSuite.git`)
+  - OAuthSwift (~> 0.5)
   - PINRemoteImage (~> 1.0)
   - Player
   - pop (~> 1.0)
@@ -109,7 +113,7 @@ DEPENDENCIES:
   - SVPullToRefresh (~> 0.4)
   - SVWebViewController (~> 1.0)
   - TMCache (~> 1.2)
-  - TMTumblrSDK (~> 1)
+  - TMTumblrSDK (~> 4.0)
   - VENTouchLock (~> 1.0)
   - WCFastCell (~> 1.1)
   - XCDYouTubeKit (~> 2.2)
@@ -141,19 +145,21 @@ SPEC CHECKSUMS:
   FLAnimatedImage: f9422f796135aff80d8c00b2afc48015bb746e24
   FontAwesomeKit: 0cd610453ce270f34ad17378c68de98aad0e05ef
   FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4
-  JXHTTP: 156f18e8cd69161f9223e39a5783a5bcb1ecda7f
+  JXHTTP: 7e3fde3d226e865531703b0e4ea4b6e1c22d9b16
   M13ProgressSuite: 4642db3df66a61f512ba2caded404637f9788eb6
+  OAuthSwift: f2e0de083739da5697be095c9af2671242a4ed8b
   PINCache: ca953ba93ce1edde056fdd99121ee65b295a08c9
   PINRemoteImage: 0696e5f679deabf2e2ddfb57085fb978ca51bfc3
   Player: e05be4073ea64fce1981869898ad9796c27cdd2b
   pop: 628ffc631644601567ee8bfaaaea493ebd7d0923
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SlackTextViewController: 84e1e4b7f12a8e3691cf97ca61c934b99058a2e8
+  Spectacles: 8dc60711140320653724560e2d6bbb8a8f0940e4
   SSKeychain: 3f42991739c6c60a9cf1bbd4dff6c0d3694bcf3d
   SVPullToRefresh: ba2e718695a43253d8bea6852d2960097dc15d8c
   SVWebViewController: c36dda7326e81fcae0abf5d02bf7bbf7e41be901
   TMCache: a93984b045a5ee84bd8941bd5e0b54296059cc52
-  TMTumblrSDK: 41fcf37af955860459e244cb78bcf865a299b4d6
+  TMTumblrSDK: fec72b7eed921db0b2ec472b2c851d472ab41f3a
   VENTouchLock: f3145d6fbff243d6692dfb1107b88db06dc216c9
   WCFastCell: 3e20a0c711d27307584bdbd359a44a714e991151
   XCDYouTubeKit: 920ff5dfdf37f0f41b19610c5270b2ed23b05b13
