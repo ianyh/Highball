@@ -9,7 +9,7 @@ pod 'Crashlytics'
 
 pod 'ChameleonFramework', '~> 1.1'
 pod 'FontAwesomeKit', :git => 'https://github.com/PrideChung/FontAwesomeKit.git'
-pod 'FormatterKit', '~> 1.8'
+pod 'FormatterKit/TimeIntervalFormatter', '~> 1.8'
 pod 'M13ProgressSuite', :git => 'https://github.com/ianyh/M13ProgressSuite.git'
 pod 'OAuthSwift', '~> 0.5'
 pod 'PINCache', '~> 2.1'
