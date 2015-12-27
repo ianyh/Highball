@@ -6,6 +6,9 @@
 //  Copyright (c) 2014 ianynda. All rights reserved.
 //
 
+import Fabric
+import Crashlytics
+
 import UIKit
 import WebKit
 import TMTumblrSDK
@@ -36,8 +39,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.navigationController = window?.rootViewController as? UINavigationController
 
         if let bundleInfoDictionary = NSBundle.mainBundle().infoDictionary {
-            if let key = bundleInfoDictionary["HBCrashlyticsAPIKey"] as? NSString {
-                Crashlytics.startWithAPIKey(key as String)
+            if bundleInfoDictionary["HBCrashlyticsAPIKey"] != nil {
+                Fabric.with([Crashlytics.self])
             }
         }
 

@@ -4,6 +4,9 @@ platform :ios, '9.0'
 
 use_frameworks!
 
+pod 'Fabric'
+pod 'Crashlytics'
+
 pod 'ChameleonFramework', '~> 1.1'
 pod 'FontAwesomeKit', :git => 'https://github.com/PrideChung/FontAwesomeKit.git'
 pod 'FormatterKit', '~> 1.8'
