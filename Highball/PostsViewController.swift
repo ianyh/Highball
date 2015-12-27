@@ -13,7 +13,7 @@ import Cartography
 import CHTCollectionViewWaterfallLayout
 import TMTumblrSDK
 import FontAwesomeKit
-import SVWebViewController
+import SafariServices
 
 enum TextRow: Int {
     case Title
@@ -584,7 +584,7 @@ class PostsViewController: UICollectionViewController, CHTCollectionViewDelegate
                 }
             } else if let _ = view as? PostLinkTableViewCell {
                 if let navigationController = self.navigationController {
-                    navigationController.pushViewController(SVWebViewController(URL: NSURL(string: post.urlString!)), animated: true)
+                    navigationController.pushViewController(SFSafariViewController(URL: NSURL(string: post.urlString!)!), animated: true)
                 }
             }
         }
@@ -603,7 +603,7 @@ class PostsViewController: UICollectionViewController, CHTCollectionViewDelegate
                         return
                     }
                 }
-                navigationController.pushViewController(SVWebViewController(URL: url), animated: true)
+                navigationController.pushViewController(SFSafariViewController(URL: url), animated: true)
             }
         }
 

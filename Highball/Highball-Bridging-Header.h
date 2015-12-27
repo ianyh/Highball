@@ -24,7 +24,6 @@
 #import <pop/POP.h>
 #import <Reachability/Reachability.h>
 #import <SlackTextViewController/SLKTextViewController.h>
-#import <SVWebViewController/SVWebViewController.h>
 #import <SVPullToRefresh/UIScrollView+SVInfiniteScrolling.h>
 #import <TMTumblrSDK/TMAPIClient.h>
 #import <TMCache/TMCache.h>
