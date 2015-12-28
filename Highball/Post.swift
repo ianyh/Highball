@@ -150,7 +150,7 @@ class Post {
         self.asker = json["asking_name"].string
         self.question = json["question"].string
         self.title = json["title"].string
-        self.urlString = json["url"].string
+        self.urlString = json["post_url"].string
         self.thumbnailURLString = json["thumbnail_url"].string
         self.permalinkURLString = json["permalink_url"].string
         self.videoType = json["video_type"].string
