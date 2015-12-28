@@ -342,7 +342,7 @@ class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, U
                 }
             }
             heightComputationQueue.addOperationWithBlock() {
-                if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.size.width) {
+                if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.width) {
                     let webView = self.popWebView()
                     let htmlString = content
                     
@@ -793,7 +793,7 @@ class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, U
 
 extension WKWebView {
     func getDocumentHeight(completion: (CGFloat) -> ()) {
-        evaluateJavaScript("var body = document.body, html = document.documentElement;Math.max( body.scrollHeight, body.offsetHeight,html.clientHeight, html.scrollHeight, html.offsetHeight );", completionHandler: { result, error in
+        evaluateJavaScript("var body = document.body, html = document.documentElement; Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);", completionHandler: { result, error in
             if let _ = error {
                 completion(0)
             } else if let height = JSON(result!).int {

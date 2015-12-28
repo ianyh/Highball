@@ -110,6 +110,7 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var rowCount = 0
+
         switch self.post.type {
         case "photo":
             let postPhotos = self.post.photos

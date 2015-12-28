@@ -13,19 +13,19 @@ import WCFastCell
 
 class ContentTableViewCell: WCFastCell, WKNavigationDelegate {
     var contentWebView: WKWebView!
-    var webViewShouldLoad = false
     var content: String? {
         didSet {
             if let content = content {
-                self.webViewShouldLoad = true
-                self.contentWebView.loadHTMLString(content, baseURL: NSURL(string: ""))
+                self.contentWebView.loadHTMLString(content, baseURL: nil)
+            } else {
+                contentWebView.loadHTMLString("", baseURL: nil)
             }
         }
     }
 
     var linkHandler: ((NSURL) -> ())?
 
-    override required init(style: UITableViewCellStyle, reuseIdentifier: String!) {
+    override init(style: UITableViewCellStyle, reuseIdentifier: String!) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.setUpCell()
     }
@@ -36,28 +36,27 @@ class ContentTableViewCell: WCFastCell, WKNavigationDelegate {
     }
 
     func setUpCell() {
-        self.contentWebView = WKWebView(frame: self.contentView.frame)
-        self.contentWebView.scrollView.scrollEnabled = false
-        self.contentWebView.navigationDelegate = self
+        contentWebView = WKWebView(frame: contentView.frame)
+        contentWebView.scrollView.scrollEnabled = false
+        contentWebView.navigationDelegate = self
 
-        self.contentView.addSubview(self.contentWebView)
+        contentView.addSubview(contentWebView)
 
-        constrain(self.contentWebView, self.contentView) { contentWebView, contentView in
-            contentWebView.edges == contentView.edges; return
+        constrain(contentWebView, contentView) { contentWebView, contentView in
+            contentWebView.edges == contentView.edges
         }
     }
 
     func webView(webView: WKWebView, decidePolicyForNavigationAction navigationAction: WKNavigationAction, decisionHandler: (WKNavigationActionPolicy) -> Void) {
-        if self.webViewShouldLoad {
-            self.webViewShouldLoad = false
-            decisionHandler(WKNavigationActionPolicy.Allow)
+        if navigationAction.request.URL?.absoluteString == "about:blank" {
+            decisionHandler(.Allow)
         } else {
-            if navigationAction.navigationType == WKNavigationType.LinkActivated, let url = navigationAction.request.URL {
+            if navigationAction.navigationType == .LinkActivated, let url = navigationAction.request.URL {
                 if let handler = linkHandler {
                     handler(url)
                 }
             }
-            decisionHandler(WKNavigationActionPolicy.Cancel)
+            decisionHandler(.Cancel)
         }
     }
 
