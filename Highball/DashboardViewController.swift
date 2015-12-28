@@ -6,14 +6,17 @@
 //  Copyright (c) 2014 ianynda. All rights reserved.
 //
 
-import UIKit
-import SwiftyJSON
 import FontAwesomeKit
+import SwiftyJSON
 import TMTumblrSDK
+import UIKit
 
 class DashboardViewController: PostsViewController {
-    required override init() {
+    override init() {
         super.init()
+
+        navigationItem.title = "Dashboard"
+
         NSNotificationCenter.defaultCenter().addObserver(
             self,
             selector: Selector("applicationWillResignActive:"),
@@ -45,8 +48,6 @@ class DashboardViewController: PostsViewController {
             target: self,
             action: Selector("bookmarks:event:")
         )
-
-        self.navigationItem.title = "Dashboard"
     }
 
     override func viewDidDisappear(animated: Bool) {
@@ -75,58 +76,64 @@ class DashboardViewController: PostsViewController {
     }
 
     func bookmark() {
-        if let indexPaths = tableView.indexPathsForVisibleRows {
-            if let firstIndexPath = indexPaths.first {
-                let post = self.posts[firstIndexPath.section]
-                if let _ = AccountsService.account {} else {
-                    return
-                }
-                NSUserDefaults.standardUserDefaults().setObject(post.id, forKey: "HIBookmarkID:\(AccountsService.account.blog.url)")
-            }
+        guard
+            let indexPaths = tableView.indexPathsForVisibleRows,
+            let firstIndexPath = indexPaths.first,
+            let account = AccountsService.account
+        else {
+                return
         }
+
+        let post = self.posts[firstIndexPath.section]
+
+        NSUserDefaults.standardUserDefaults().setObject(post.id, forKey: "HIBookmarkID:\(account.blog.url)")
     }
 
     func bookmarks(sender: UIButton, event: UIEvent) {
         if let _ = self.topID {
-            let alertController = UIAlertController(title: "", message: "Go to top of your feed?", preferredStyle: UIAlertControllerStyle.Alert)
-            alertController.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default, handler: { action -> Void in
+            let alertController = UIAlertController(title: "", message: "Go to top of your feed?", preferredStyle: .Alert)
+            alertController.addAction(UIAlertAction(title: "Yes", style: .Default) { action  in
                 self.topID = nil
                 self.loadTop()
                 let downArrow = FAKIonIcons.iosArrowDownIconWithSize(30);
                 let downArrowImage = downArrow.imageWithSize(CGSize(width: 30, height: 30))
                 self.navigationItem.rightBarButtonItem = UIBarButtonItem(
                     image: downArrowImage,
-                    style: UIBarButtonItemStyle.Plain,
+                    style: .Plain,
                     target: self,
                     action: Selector("bookmarks:event:")
                 )
-            }))
-            alertController.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.Cancel, handler: nil))
-            self.presentViewController(alertController, animated: true, completion: nil)
+            })
+            alertController.addAction(UIAlertAction(title: "No", style: .Cancel, handler: nil))
+            presentViewController(alertController, animated: true, completion: nil)
         } else {
-            let alertController = UIAlertController(title: "", message: "Go to your last dashboard position?", preferredStyle: UIAlertControllerStyle.Alert)
-            alertController.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default, handler: { action -> Void in
+            let alertController = UIAlertController(title: "", message: "Go to your last dashboard position?", preferredStyle: .Alert)
+            alertController.addAction(UIAlertAction(title: "Yes", style: .Default) { action in
                 self.gotoBookmark()
                 let upArrow = FAKIonIcons.iosArrowUpIconWithSize(30);
                 let upArrowImage = upArrow.imageWithSize(CGSize(width: 30, height: 30))
                 self.navigationItem.rightBarButtonItem = UIBarButtonItem(
                     image: upArrowImage,
-                    style: UIBarButtonItemStyle.Plain,
+                    style: .Plain,
                     target: self,
                     action: Selector("bookmarks:event:")
                 )
-            }))
+            })
             alertController.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.Cancel, handler: nil))
-            self.presentViewController(alertController, animated: true, completion: nil)
+            presentViewController(alertController, animated: true, completion: nil)
         }
     }
 
     func gotoBookmark() {
-        if let bookmarkID = NSUserDefaults.standardUserDefaults().objectForKey("HIBookmarkID:\(AccountsService.account.blog.url)") as? Int {
-            self.topID = bookmarkID
-            self.posts = []
-            self.heightCache.removeAll()
-            self.loadTop()
+        guard
+            let bookmarkID = NSUserDefaults.standardUserDefaults().objectForKey("HIBookmarkID:\(AccountsService.account.blog.url)") as? Int
+        else {
+            return
         }
+        
+        topID = bookmarkID
+        posts = []
+        heightCache.removeAll()
+        loadTop()
     }
 }

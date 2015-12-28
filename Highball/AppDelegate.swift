@@ -20,7 +20,7 @@ import OAuthSwift
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
-    var navigationController: UINavigationController?
+    var tabBarController: UITabBarController?
     var reachability: Reachability!
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
@@ -35,7 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Only keep up to 500 mb cache
         PINCache.sharedCache().diskCache.byteLimit = 524288000
 
-        self.navigationController = window?.rootViewController as? UINavigationController
+        self.tabBarController = window?.rootViewController as? UITabBarController
 
         if let bundleInfoDictionary = NSBundle.mainBundle().infoDictionary {
             if bundleInfoDictionary["HBCrashlyticsAPIKey"] != nil {
@@ -54,8 +54,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         self.window?.makeKeyAndVisible()
 
-        AccountsService.start(fromViewController: navigationController!) {
-            self.navigationController?.viewControllers = [DashboardViewController()]; return
+        AccountsService.start(fromViewController: tabBarController!) {
+//            self.tabBarController?.viewControllers = [
+//                UINavigationController(rootViewController: DashboardViewController()),
+//                UINavigationController(rootViewController: SettingsViewController())
+//            ]
         }
 
         return true

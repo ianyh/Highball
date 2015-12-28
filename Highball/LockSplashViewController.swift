@@ -19,40 +19,40 @@ class LockSplashViewController: VENTouchLockSplashViewController, UITableViewDat
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.accounts = AccountsService.accounts()
+        accounts = AccountsService.accounts()
 
-        self.view.backgroundColor = UIColor.whiteColor()
+        view.backgroundColor = UIColor.whiteColor()
 
-        self.tableView = UITableView()
-        self.tableView.dataSource = self
-        self.tableView.delegate = self
-        self.tableView.allowsSelection = true
-        self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0)
+        tableView = UITableView()
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.allowsSelection = true
+        tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0)
 
-        self.tableView.registerClass(UITableViewCell.classForCoder(), forCellReuseIdentifier: cellIdentifier)
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
 
-        self.view.addSubview(self.tableView)
+        view.addSubview(tableView)
 
-        constrain(self.tableView, self.view) { tableView, view in
-            tableView.edges == view.edges; return
+        constrain(tableView, view) { tableView, view in
+            tableView.edges == view.edges
         }
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.accounts.count
+        return accounts.count
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let account = self.accounts[indexPath.row]
+        let account = accounts[indexPath.row]
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier)!
 
         cell.textLabel?.text = account.blog.name
 
         if let currentAccount = AccountsService.account {
             if account == currentAccount {
-                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+                cell.accessoryType = .Checkmark
             } else {
-                cell.accessoryType = UITableViewCellAccessoryType.None
+                cell.accessoryType = .None
             }
         }
 
@@ -60,10 +60,17 @@ class LockSplashViewController: VENTouchLockSplashViewController, UITableViewDat
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let account = self.accounts[indexPath.row]
+        let account = accounts[indexPath.row]
+
+        if let currentAccount = AccountsService.account {
+            if account == currentAccount {
+                showPasscodeAnimated(true)
+            }
+        }
+
         AccountsService.loginToAccount(account) {
-            if let navigationController = self.presentingViewController as? UINavigationController {
-                navigationController.viewControllers = [DashboardViewController()]
+            if let mainViewController = self.presentingViewController as? MainViewController {
+                mainViewController.reset()
             }
             self.tableView.reloadData()
             self.showPasscodeAnimated(true)

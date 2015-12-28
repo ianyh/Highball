@@ -23,7 +23,6 @@ PODS:
     - FontAwesomeKit/Core
   - FormatterKit/TimeIntervalFormatter (1.8.0)
   - JXHTTP (2.0.2)
-  - M13ProgressSuite (1.2.7)
   - OAuthSwift (0.5.0)
   - PINCache (2.1.2)
   - PINRemoteImage (1.2.2):
@@ -66,7 +65,6 @@ DEPENDENCIES:
   - Fabric
   - FontAwesomeKit (from `https://github.com/PrideChung/FontAwesomeKit.git`)
   - FormatterKit/TimeIntervalFormatter (~> 1.8)
-  - M13ProgressSuite (from `https://github.com/Marxon13/M13ProgressSuite.git`)
   - OAuthSwift (~> 0.5)
   - PINCache (~> 2.1)
   - PINRemoteImage (~> 1.2)
@@ -82,16 +80,11 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   FontAwesomeKit:
     :git: https://github.com/PrideChung/FontAwesomeKit.git
-  M13ProgressSuite:
-    :git: https://github.com/Marxon13/M13ProgressSuite.git
 
 CHECKOUT OPTIONS:
   FontAwesomeKit:
     :commit: 0c9d92aeef1fd148c11daed2ded9d0dcdb4b2c4f
     :git: https://github.com/PrideChung/FontAwesomeKit.git
-  M13ProgressSuite:
-    :commit: 71c237eec66e726d4b0fe45053193931a9010f1d
-    :git: https://github.com/Marxon13/M13ProgressSuite.git
 
 SPEC CHECKSUMS:
   ChameleonFramework: a6b466873ff9a4ce3a5196c20bccf1a97ad9f446
@@ -101,7 +94,6 @@ SPEC CHECKSUMS:
   FontAwesomeKit: 0cd610453ce270f34ad17378c68de98aad0e05ef
   FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4
   JXHTTP: 7e3fde3d226e865531703b0e4ea4b6e1c22d9b16
-  M13ProgressSuite: 4642db3df66a61f512ba2caded404637f9788eb6
   OAuthSwift: f2e0de083739da5697be095c9af2671242a4ed8b
   PINCache: 9e70271f1bdd60c0465b7208adcc4b6acc1fc376
   PINRemoteImage: 9f6f484bbceee15e2df5aee0beeac2e261e4ac81

@@ -16,16 +16,17 @@ class BlogViewController: PostsViewController {
 
     required init(blogName: String) {
         self.blogName = blogName
+
         super.init()
-        self.navigationItem.title = self.blogName
 
         let followIcon = FAKIonIcons.iosPersonaddOutlineIconWithSize(30)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: followIcon.imageWithSize(CGSize(width: 30, height: 30)),
             style: UIBarButtonItemStyle.Plain,
             target: self,
             action: Selector("follow:")
         )
+        navigationItem.title = blogName
     }
 
     required override init() {
@@ -34,11 +35,6 @@ class BlogViewController: PostsViewController {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.navigationItem.leftBarButtonItem = nil
     }
 
     override func postsFromJSON(json: JSON) -> Array<Post> {

@@ -6,17 +6,11 @@
 //  Copyright (c) 2014 ianynda. All rights reserved.
 //
 
-import UIKit
 import SwiftyJSON
 import TMTumblrSDK
+import UIKit
 
 class LikesViewController: PostsViewController {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        self.navigationItem.title = "Likes"
-    }
-
     override func postsFromJSON(json: JSON) -> Array<Post> {
         if let postsJSON = json["liked_posts"].array {
             return postsJSON.map { (post) -> (Post) in
@@ -26,13 +20,12 @@ class LikesViewController: PostsViewController {
         return []
     }
 
-    override func requestPosts(postCount: Int, parameters: Dictionary<String, AnyObject>, callback: TMAPICallback) {
-        var mutableDictionary = parameters
-        mutableDictionary["offset"] = postCount
-        TMAPIClient.sharedInstance().likes(mutableDictionary, callback: callback)
+    override func requestPosts(postCount: Int, var parameters: Dictionary<String, AnyObject>, callback: TMAPICallback) {
+        parameters["offset"] = postCount
+        TMAPIClient.sharedInstance().likes(parameters, callback: callback)
     }
 
-    override func reblogBlogName() -> (String) {
+    override func reblogBlogName() -> String {
         return AccountsService.account.blog.name
     }
 }

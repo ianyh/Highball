@@ -6,13 +6,14 @@
 //  Copyright (c) 2014 ianynda. All rights reserved.
 //
 
-import UIKit
 import PINCache
+import UIKit
 import VENTouchLock
 
 class SettingsViewController : UITableViewController {
     private enum SettingsSection: Int {
         case Accounts
+        case Likes
         case Passcode
         case Cache
     }
@@ -23,22 +24,28 @@ class SettingsViewController : UITableViewController {
     }
     let settingsCellIdentifier = "settingsCellIdentifier"
 
+    init() {
+        super.init(style: .Grouped)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: Selector("done:"))
-
-        self.tableView.registerClass(UITableViewCell.classForCoder(), forCellReuseIdentifier: settingsCellIdentifier)
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: settingsCellIdentifier)
     }
 
     override func viewDidAppear(animated: Bool) {
-        if let selectedInexPath = self.tableView.indexPathForSelectedRow {
-            self.tableView.deselectRowAtIndexPath(selectedInexPath, animated: animated)
+        if let selectedInexPath = tableView.indexPathForSelectedRow {
+            tableView.deselectRowAtIndexPath(selectedInexPath, animated: animated)
         }
     }
 
     func done(sender: UIBarButtonItem) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        dismissViewControllerAnimated(true, completion: nil)
     }
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -48,6 +55,8 @@ class SettingsViewController : UITableViewController {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch SettingsSection(rawValue: section)! {
         case .Accounts:
+            return 1
+        case .Likes:
             return 1
         case .Passcode:
             if VENTouchLock.canUseTouchID() {
@@ -60,12 +69,15 @@ class SettingsViewController : UITableViewController {
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = self.tableView.dequeueReusableCellWithIdentifier(settingsCellIdentifier, forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCellWithIdentifier(settingsCellIdentifier, forIndexPath: indexPath)
 
         switch SettingsSection(rawValue: indexPath.section)! {
         case .Accounts:
             cell.textLabel?.text = "Accounts"
-            cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+            cell.accessoryType = .DisclosureIndicator
+        case .Likes:
+            cell.textLabel?.text = "Likes"
+            cell.accessoryType = .DisclosureIndicator
         case .Passcode:
             switch PasscodeRow(rawValue: indexPath.row)! {
             case .Set:
@@ -74,15 +86,15 @@ class SettingsViewController : UITableViewController {
                 } else {
                     cell.textLabel?.text = "Set Passcode"
                 }
-                cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                cell.accessoryType = .DisclosureIndicator
             case .ClearPasscode:
                 cell.textLabel?.text = "Clear Passcode"
             case .UseTouch:
                 cell.textLabel?.text = "Use Touch ID"
                 if VENTouchLock.shouldUseTouchID() {
-                    cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+                    cell.accessoryType = .Checkmark
                 } else {
-                    cell.accessoryType = UITableViewCellAccessoryType.None
+                    cell.accessoryType = .None
                 }
             }
         case .Cache:
@@ -98,9 +110,9 @@ class SettingsViewController : UITableViewController {
 
         switch SettingsSection(rawValue: indexPath.section)! {
         case .Accounts:
-            if let navigationController = self.navigationController {
-                navigationController.pushViewController(AccountsViewController(), animated: true)
-            }
+            navigationController?.pushViewController(AccountsViewController(), animated: true)
+        case .Likes:
+            navigationController?.pushViewController(LikesViewController(), animated: true)
         case .Passcode:
             switch PasscodeRow(rawValue: indexPath.row)! {
             case .Set:
@@ -130,7 +142,7 @@ class SettingsViewController : UITableViewController {
                 PINCache.sharedCache().diskCache.removeAllObjects(nil)
             })
             alertController.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.Cancel) { _ in })
-            self.presentViewController(alertController, animated: true, completion: nil)
+            presentViewController(alertController, animated: true, completion: nil)
         }
     }
 }

@@ -16,7 +16,7 @@ class TagViewController: PostsViewController {
     required init(tag: String) {
         self.tag = tag.substringFromIndex(tag.startIndex.advancedBy(1))
         super.init()
-        self.navigationItem.title = tag
+        navigationItem.title = tag
     }
     
     required override init() {

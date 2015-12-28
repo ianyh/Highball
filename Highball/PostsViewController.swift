@@ -6,14 +6,13 @@
 //  Copyright (c) 2014 ianynda. All rights reserved.
 //
 
-import UIKit
-import WebKit
-import SwiftyJSON
 import Cartography
-import TMTumblrSDK
 import FontAwesomeKit
 import SafariServices
-import M13ProgressSuite
+import SwiftyJSON
+import TMTumblrSDK
+import UIKit
+import WebKit
 
 enum TextRow: Int {
     case Title
@@ -66,6 +65,7 @@ class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, U
     
     private var longPressGestureRecognizer: UILongPressGestureRecognizer!
     private var panGestureRecognizer: UIPanGestureRecognizer!
+    private var refreshControler: UIRefreshControl!
     private var reblogViewController: QuickReblogViewController?
 
     var webViewCache: Array<WKWebView>!
@@ -80,14 +80,8 @@ class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, U
 
     var loadingTop: Bool = false {
         didSet {
-            if let navigationController = self.navigationController {
-                if self.loadingTop {
-                    navigationController.setIndeterminate(true)
-                    navigationController.showProgress()
-                } else {
-                    navigationController.setIndeterminate(false)
-                    navigationController.cancelProgress()
-                }
+            if !loadingTop {
+                refreshControl?.endRefreshing()
             }
         }
     }
@@ -167,14 +161,8 @@ class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, U
         panGestureRecognizer.delegate = self
         view.addGestureRecognizer(self.panGestureRecognizer)
 
-        let menuIcon = FAKIonIcons.iosGearOutlineIconWithSize(30);
-        let menuIconImage = menuIcon.imageWithSize(CGSize(width: 30, height: 30))
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: menuIconImage,
-            style: UIBarButtonItemStyle.Plain,
-            target: self,
-            action: Selector("navigate:event:")
-        )
+        refreshControl = UIRefreshControl()
+        refreshControl?.addTarget(self, action: "refresh:", forControlEvents: .ValueChanged)
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -196,6 +184,10 @@ class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, U
 
     func resignActive(notification: NSNotification) {
         webViewCache.removeAll()
+    }
+
+    func refresh(sender: UIRefreshControl) {
+        loadTop()
     }
 
     func popWebView() -> WKWebView {
@@ -349,42 +341,6 @@ class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, U
                     self.secondaryBodyWebViewCache[post.id] = webView
                     
                     webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
-                }
-            }
-        }
-    }
-
-    func navigate(sender: UIBarButtonItem, event: UIEvent) {
-        if let touches = event.allTouches() {
-            if let touch = touches.first {
-                if let navigationController = navigationController {
-                    let viewController = QuickNavigateController()
-                    
-                    viewController.startingPoint = touch.locationInView(view)
-                    viewController.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
-                    viewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-                    viewController.view.bounds = navigationController.view.bounds
-
-                    viewController.completion = { navigateOption in
-                        if let option = navigateOption {
-                            switch(option) {
-                            case .Dashboard:
-                                navigationController.setViewControllers([DashboardViewController()], animated: false)
-                            case .Likes:
-                                navigationController.setViewControllers([LikesViewController()], animated: false)
-                            case .Settings:
-                                navigationController.dismissViewControllerAnimated(true, completion: { () -> Void in
-                                    let settingsViewController = SettingsViewController(style: UITableViewStyle.Grouped)
-                                    let settingsNavigationViewController = UINavigationController(rootViewController: settingsViewController)
-                                    navigationController.presentViewController(settingsNavigationViewController, animated: true, completion: nil)
-                                })
-                                return
-                            }
-                        }
-                        navigationController.dismissViewControllerAnimated(true, completion: nil)
-                    }
-                    
-                    navigationController.presentViewController(viewController, animated: true, completion: nil)
                 }
             }
         }
@@ -712,32 +668,10 @@ class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, U
         let distanceFromBottom = scrollView.contentSize.height - scrollView.frame.size.height - scrollView.contentOffset.y
 
         if distanceFromBottom < 2000 {
-            self.loadMore()
+            loadMore()
         }
+    }
 
-        if !loadingTop {
-            if let navigationController = navigationController {
-                if !navigationController.getIndeterminate() {
-                    if scrollView.contentOffset.y < 0 {
-                        let distanceFromTop = scrollView.contentOffset.y + scrollView.contentInset.top + requiredRefreshDistance
-                        let progress = 1 - max(min(distanceFromTop / requiredRefreshDistance, 1), 0)
-                        navigationController.showProgress()
-                        navigationController.setProgress(progress, animated: false)
-                    } else {
-                        navigationController.cancelProgress()
-                    }
-                }
-            }
-        }
-    }
-    
-    override func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        let distanceFromTop = scrollView.contentOffset.y + scrollView.contentInset.top
-        if -distanceFromTop > requiredRefreshDistance {
-            self.loadTop()
-        }
-    }
-    
     // MARK: WKNavigationDelegate
 
     func webView(webView: WKWebView, didFinishNavigation navigation: WKNavigation!) {
