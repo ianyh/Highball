@@ -85,8 +85,11 @@ class DashboardViewController: PostsViewController {
         }
 
         let post = self.posts[firstIndexPath.section]
+        var bookmarks: [[String: AnyObject]] = NSUserDefaults.standardUserDefaults().arrayForKey("HIBookmarks:\(account.blog.url)") as? [[String: AnyObject]] ?? []
 
-        NSUserDefaults.standardUserDefaults().setObject(post.id, forKey: "HIBookmarkID:\(account.blog.url)")
+        bookmarks.insert(["date": NSDate(), "id": post.id], atIndex: 0)
+
+        NSUserDefaults.standardUserDefaults().setObject(bookmarks, forKey: "HIBookmarks:\(account.blog.url)")
     }
 
     func bookmarks(sender: UIButton, event: UIEvent) {
