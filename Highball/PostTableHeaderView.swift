@@ -73,54 +73,48 @@ class PostTableHeaderView: UITableViewHeaderFooterView {
     }
     
     func setUpCell() {
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Dark)
+        let blurEffect = UIBlurEffect(style: .ExtraLight)
         let blurView = UIVisualEffectView(effect: blurEffect)
-        self.addSubview(blurView)
-        constrain(blurView, self) { blurView, view in
-            blurView.edges == view.edges; return
-        }
-        
-        self.avatarImageView = UIImageView()
-        self.avatarImageView.layer.cornerRadius = 20
-        self.avatarImageView.clipsToBounds = true
-        
-        self.usernameLabel = UILabel()
-        self.usernameLabel.font = UIFont.boldSystemFontOfSize(16)
-        self.usernameLabel.textColor = UIColor.whiteColor()
-        
-        self.topUsernameLabel = UILabel()
-        self.topUsernameLabel.font = UIFont.boldSystemFontOfSize(16)
-        self.topUsernameLabel.textColor = UIColor.whiteColor()
-        
-        self.bottomUsernameLabel = UILabel()
-        self.bottomUsernameLabel.font = UIFont.systemFontOfSize(12)
-        self.bottomUsernameLabel.textColor = UIColor.whiteColor()
 
-        self.addSubview(self.avatarImageView)
-        self.addSubview(self.usernameLabel)
-        self.addSubview(self.topUsernameLabel)
-        self.addSubview(self.bottomUsernameLabel)
+        backgroundView = blurView
         
-        constrain(self.avatarImageView, self) { avatarImageView, contentView in
+        avatarImageView = UIImageView()
+        avatarImageView.layer.cornerRadius = 20
+        
+        usernameLabel = UILabel()
+        usernameLabel.font = UIFont.boldSystemFontOfSize(16)
+        
+        topUsernameLabel = UILabel()
+        topUsernameLabel.font = UIFont.boldSystemFontOfSize(16)
+
+        bottomUsernameLabel = UILabel()
+        bottomUsernameLabel.font = UIFont.systemFontOfSize(12)
+
+        contentView.addSubview(avatarImageView)
+        contentView.addSubview(usernameLabel)
+        contentView.addSubview(topUsernameLabel)
+        contentView.addSubview(bottomUsernameLabel)
+        
+        constrain(avatarImageView, contentView) { avatarImageView, contentView in
             avatarImageView.centerY == contentView.centerY
             avatarImageView.left == contentView.left + 4
             avatarImageView.width == 40
             avatarImageView.height == 40
         }
         
-        constrain(self.usernameLabel, self.avatarImageView, self) { usernameLabel, avatarImageView, contentView in
+        constrain(usernameLabel, avatarImageView, contentView) { usernameLabel, avatarImageView, contentView in
             usernameLabel.centerY == contentView.centerY
             usernameLabel.left == avatarImageView.right + 4
             usernameLabel.height == 30
         }
         
-        constrain(self.topUsernameLabel, self.avatarImageView, self) { usernameLabel, avatarImageView, contentView in
+        constrain(topUsernameLabel, avatarImageView, contentView) { usernameLabel, avatarImageView, contentView in
             usernameLabel.centerY == contentView.centerY - 8
             usernameLabel.left == avatarImageView.right + 4
             usernameLabel.height == 20
         }
         
-        constrain(self.bottomUsernameLabel, self.avatarImageView, self) { usernameLabel, avatarImageView, contentView in
+        constrain(bottomUsernameLabel, avatarImageView, contentView) { usernameLabel, avatarImageView, contentView in
             usernameLabel.centerY == contentView.centerY + 8
             usernameLabel.left == avatarImageView.right + 4
             usernameLabel.height == 20
