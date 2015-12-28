@@ -13,6 +13,7 @@ import SwiftyJSON
 import TMTumblrSDK
 import UIKit
 import WebKit
+import XExtensionItem
 
 enum TextRow: Int {
     case Title
@@ -447,24 +448,20 @@ class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, U
 
                                 self.presentViewController(navigationController, animated: true, completion: nil)
                             case .Share:
-                                let postItemProvider = PostItemProvider(placeholderItem: "")
-
-                                postItemProvider.post = post
-                                
-                                var activityItems: Array<UIActivityItemProvider> = [ postItemProvider ]
+                                let extensionItemSource = XExtensionItemSource(URL: NSURL(string: post.urlString!)!)
+                                var additionalAttachments: [AnyObject] = post.photos.map { $0.urlWithWidth(CGFloat.max) }
 
                                 if let image = cell.imageAtPoint(view.convertPoint(point, toView: cell)) {
-                                    let imageItemProvider = ImageItemProvider(placeholderItem: image)
-
-                                    imageItemProvider.image = image
-
-                                    activityItems.append(imageItemProvider)
+                                    additionalAttachments.append(image)
                                 }
 
-                                let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+                                extensionItemSource.additionalAttachments = additionalAttachments
+
+                                let activityViewController = UIActivityViewController(activityItems: [extensionItemSource], applicationActivities: nil)
                                 activityViewController.popoverPresentationController?.sourceView = cell
                                 activityViewController.popoverPresentationController?.sourceRect = CGRect(origin: cell.center, size: CGSize(width: 1, height: 1))
-                                self.presentViewController(activityViewController, animated: true, completion: nil)
+
+                                presentViewController(activityViewController, animated: true, completion: nil)
                             case .Like:
                                 if post.liked.boolValue {
                                     TMAPIClient.sharedInstance().unlike("\(post.id)", reblogKey: post.reblogKey) { (response, error) in

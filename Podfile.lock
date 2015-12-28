@@ -58,6 +58,12 @@ PODS:
     - SSKeychain (~> 1.0)
   - WCFastCell (1.1)
   - XCDYouTubeKit (2.4.3)
+  - XExtensionItem (0.9.3):
+    - XExtensionItem/Core (= 0.9.3)
+    - XExtensionItem/Tumblr (= 0.9.3)
+  - XExtensionItem/Core (0.9.3)
+  - XExtensionItem/Tumblr (0.9.3):
+    - XExtensionItem/Core
 
 DEPENDENCIES:
   - ChameleonFramework (~> 2.0)
@@ -76,6 +82,7 @@ DEPENDENCIES:
   - VENTouchLock (~> 1.0)
   - WCFastCell (~> 1.1)
   - XCDYouTubeKit (~> 2.4)
+  - XExtensionItem (~> 0.9)
 
 EXTERNAL SOURCES:
   FontAwesomeKit:
@@ -107,5 +114,6 @@ SPEC CHECKSUMS:
   VENTouchLock: f3145d6fbff243d6692dfb1107b88db06dc216c9
   WCFastCell: 3e20a0c711d27307584bdbd359a44a714e991151
   XCDYouTubeKit: a4a1a60faa7bc97744a1184501e82ef10ca15897
+  XExtensionItem: ce626520bbca225930b9c8e2283b226df431af3f
 
 COCOAPODS: 0.39.0
