@@ -230,16 +230,18 @@ class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, U
                 }
             }
             requestPosts(0, parameters: ["since_id" : "\(sinceID)", "reblog_info" : "true"]) { (response: AnyObject!, error: NSError!) in
-                if let e = error {
-                    print(e)
-                    self.loadingTop = false
+                if let error = error {
+                    dispatch_async(dispatch_get_main_queue()) {
+                        self.presentError(error)
+                        self.loadingTop = false
+                    }
                 } else {
-                    dispatch_async(self.postParseQueue, {
+                    dispatch_async(self.postParseQueue) {
                         let posts = self.postsFromJSON(JSON(response))
                         dispatch_async(dispatch_get_main_queue()) {
                             self.processPosts(posts)
                             
-                            dispatch_async(dispatch_get_main_queue(), {
+                            dispatch_async(dispatch_get_main_queue()) {
                                 self.loadingCompletion = {
                                     if self.posts.count > 0 {
                                         self.posts = posts + self.posts
@@ -252,32 +254,34 @@ class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, U
                                     self.tableView.reloadData()
                                 }
                                 self.reloadTable()
-                            })
+                            }
                         }
-                    })
+                    }
                 }
             }
         } else {
             requestPosts(0, parameters: ["reblog_info" : "true"]) { (response: AnyObject!, error: NSError!) in
-                if let e = error {
-                    print(e)
-                    self.loadingTop = false
+                if let error = error {
+                    dispatch_async(dispatch_get_main_queue()) {
+                        self.presentError(error)
+                        self.loadingTop = false
+                    }
                 } else {
-                    dispatch_async(self.postParseQueue, {
+                    dispatch_async(self.postParseQueue) {
                         let posts = self.postsFromJSON(JSON(response))
                         dispatch_async(dispatch_get_main_queue()) {
                             self.processPosts(posts)
                             
-                            dispatch_async(dispatch_get_main_queue(), {
+                            dispatch_async(dispatch_get_main_queue()) {
                                 self.loadingCompletion = {
                                     self.posts = posts
                                     self.heightCache.removeAll()
                                     self.tableView.reloadData()
                                 }
                                 self.reloadTable()
-                            })
+                            }
                         }
-                    })
+                    }
                 }
             }
         }
@@ -292,16 +296,18 @@ class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, U
             if let lastPost = posts.last {
                 loadingBottom = true
                 requestPosts(posts.count, parameters: ["before_id" : "\(lastPost.id)", "reblog_info" : "true"]) { (response: AnyObject!, error: NSError!) -> Void in
-                    if let e = error {
-                        print(e)
-                        self.loadingBottom = false
+                    if let error = error {
+                        dispatch_async(dispatch_get_main_queue()) {
+                            self.presentError(error)
+                            self.loadingBottom = false
+                        }
                     } else {
-                        dispatch_async(self.postParseQueue, {
+                        dispatch_async(self.postParseQueue) {
                             let posts = self.postsFromJSON(JSON(response))
                             dispatch_async(dispatch_get_main_queue()) {
                                 self.processPosts(posts)
 
-                                dispatch_async(dispatch_get_main_queue(), {
+                                dispatch_async(dispatch_get_main_queue()) {
                                     self.loadingCompletion = {
                                         let indexSet = NSMutableIndexSet()
                                         for row in self.posts.count..<(self.posts.count + posts.count) {
@@ -312,13 +318,24 @@ class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, U
                                         self.tableView.insertSections(indexSet, withRowAnimation: .None)
                                     }
                                     self.reloadTable()
-                                })
+                                }
                             }
-                        })
+                        }
                     }
                 }
             }
         }
+    }
+
+    func presentError(error: NSError) {
+        let alertController = UIAlertController(title: "Error", message: "Hit an error trying to load posts. \(error.localizedDescription)", preferredStyle: .Alert)
+        let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+
+        alertController.addAction(action)
+
+        presentViewController(alertController, animated: true, completion: nil)
+
+        print(error)
     }
 
     func processPosts(posts: Array<Post>) {
