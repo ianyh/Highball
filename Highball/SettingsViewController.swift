@@ -13,7 +13,6 @@ import VENTouchLock
 class SettingsViewController : UITableViewController {
     private enum SettingsSection: Int {
         case Accounts
-        case Likes
         case Passcode
         case Cache
     }
@@ -56,8 +55,6 @@ class SettingsViewController : UITableViewController {
         switch SettingsSection(rawValue: section)! {
         case .Accounts:
             return 1
-        case .Likes:
-            return 1
         case .Passcode:
             if VENTouchLock.canUseTouchID() {
                 return 3
@@ -74,9 +71,6 @@ class SettingsViewController : UITableViewController {
         switch SettingsSection(rawValue: indexPath.section)! {
         case .Accounts:
             cell.textLabel?.text = "Accounts"
-            cell.accessoryType = .DisclosureIndicator
-        case .Likes:
-            cell.textLabel?.text = "Likes"
             cell.accessoryType = .DisclosureIndicator
         case .Passcode:
             switch PasscodeRow(rawValue: indexPath.row)! {
@@ -111,8 +105,6 @@ class SettingsViewController : UITableViewController {
         switch SettingsSection(rawValue: indexPath.section)! {
         case .Accounts:
             navigationController?.pushViewController(AccountsViewController(), animated: true)
-        case .Likes:
-            navigationController?.pushViewController(LikesViewController(), animated: true)
         case .Passcode:
             switch PasscodeRow(rawValue: indexPath.row)! {
             case .Set:

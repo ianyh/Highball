@@ -16,11 +16,13 @@ class MainViewController: UITabBarController {
 
     func reset() {
         let dashboardViewController = UINavigationController(rootViewController: DashboardViewController())
+        let likesViewController = UINavigationController(rootViewController: LikesViewController())
         let settingsViewController = UINavigationController(rootViewController: SettingsViewController())
         
         dashboardViewController.tabBarItem.title = "Dashboard"
+        likesViewController.tabBarItem.title = "Likes"
         settingsViewController.tabBarItem.title = "Account"
         
-        viewControllers = [dashboardViewController, settingsViewController]
+        viewControllers = [dashboardViewController, likesViewController, settingsViewController]
     }
 }
