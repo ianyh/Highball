@@ -17,7 +17,7 @@ class MainViewController: UITabBarController {
     func reset() {
         let dashboardViewController = UINavigationController(rootViewController: DashboardViewController())
         let likesViewController = UINavigationController(rootViewController: LikesViewController())
-        let historyViewController = UINavigationController(rootViewController: HistoryViewController())
+        let historyViewController = UINavigationController(rootViewController: HistoryViewController(delegate: self))
         let settingsViewController = UINavigationController(rootViewController: SettingsViewController())
         
         dashboardViewController.tabBarItem.title = "Dashboard"
@@ -31,5 +31,16 @@ class MainViewController: UITabBarController {
             historyViewController,
             settingsViewController
         ]
+    }
+}
+
+extension MainViewController: HistoryViewControllerDelegate {
+    func historyViewController(historyViewController: HistoryViewController, selectedId: Int) {
+        let dashboardViewController = viewControllers![0] as! UINavigationController
+
+        dashboardViewController.popToRootViewControllerAnimated(false)
+        (dashboardViewController.topViewController as! DashboardViewController).gotoBookmark(selectedId)
+
+        selectedIndex = 0
     }
 }

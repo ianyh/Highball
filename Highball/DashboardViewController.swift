@@ -37,19 +37,6 @@ class DashboardViewController: PostsViewController {
         )
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        let downArrow =  FAKIonIcons.iosArrowDownIconWithSize(30);
-        let downArrowImage = downArrow.imageWithSize(CGSize(width: 30, height: 30))
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
-            image: downArrowImage,
-            style: UIBarButtonItemStyle.Plain,
-            target: self,
-            action: Selector("bookmarks:event:")
-        )
-    }
-
     override func viewDidDisappear(animated: Bool) {
         self.bookmark()
     }
@@ -81,13 +68,17 @@ class DashboardViewController: PostsViewController {
             let firstIndexPath = indexPaths.first,
             let account = AccountsService.account
         else {
-                return
+            return
         }
 
         let post = self.posts[firstIndexPath.section]
         var bookmarks: [[String: AnyObject]] = NSUserDefaults.standardUserDefaults().arrayForKey("HIBookmarks:\(account.blog.url)") as? [[String: AnyObject]] ?? []
 
         bookmarks.insert(["date": NSDate(), "id": post.id], atIndex: 0)
+
+        if bookmarks.count > 20 {
+            _ = bookmarks.dropLast(bookmarks.count - 20)
+        }
 
         NSUserDefaults.standardUserDefaults().setObject(bookmarks, forKey: "HIBookmarks:\(account.blog.url)")
     }
@@ -96,47 +87,33 @@ class DashboardViewController: PostsViewController {
         if let _ = self.topID {
             let alertController = UIAlertController(title: "", message: "Go to top of your feed?", preferredStyle: .Alert)
             alertController.addAction(UIAlertAction(title: "Yes", style: .Default) { action  in
+                self.navigationItem.rightBarButtonItem = nil
                 self.topID = nil
+                self.posts = []
+                self.heightCache.removeAll()
+                self.tableView.reloadData()
                 self.loadTop()
-                let downArrow = FAKIonIcons.iosArrowDownIconWithSize(30);
-                let downArrowImage = downArrow.imageWithSize(CGSize(width: 30, height: 30))
-                self.navigationItem.rightBarButtonItem = UIBarButtonItem(
-                    image: downArrowImage,
-                    style: .Plain,
-                    target: self,
-                    action: Selector("bookmarks:event:")
-                )
             })
             alertController.addAction(UIAlertAction(title: "No", style: .Cancel, handler: nil))
-            presentViewController(alertController, animated: true, completion: nil)
-        } else {
-            let alertController = UIAlertController(title: "", message: "Go to your last dashboard position?", preferredStyle: .Alert)
-            alertController.addAction(UIAlertAction(title: "Yes", style: .Default) { action in
-                self.gotoBookmark()
-                let upArrow = FAKIonIcons.iosArrowUpIconWithSize(30);
-                let upArrowImage = upArrow.imageWithSize(CGSize(width: 30, height: 30))
-                self.navigationItem.rightBarButtonItem = UIBarButtonItem(
-                    image: upArrowImage,
-                    style: .Plain,
-                    target: self,
-                    action: Selector("bookmarks:event:")
-                )
-            })
-            alertController.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.Cancel, handler: nil))
             presentViewController(alertController, animated: true, completion: nil)
         }
     }
 
-    func gotoBookmark() {
-        guard
-            let bookmarkID = NSUserDefaults.standardUserDefaults().objectForKey("HIBookmarkID:\(AccountsService.account.blog.url)") as? Int
-        else {
-            return
-        }
-        
-        topID = bookmarkID
+    func gotoBookmark(id: Int) {
+        let upArrow = FAKIonIcons.iosArrowUpIconWithSize(30);
+        let upArrowImage = upArrow.imageWithSize(CGSize(width: 30, height: 30))
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: upArrowImage,
+            style: .Plain,
+            target: self,
+            action: Selector("bookmarks:event:")
+        )
+
+        topID = id
         posts = []
         heightCache.removeAll()
+        tableView.reloadData()
         loadTop()
     }
 }
