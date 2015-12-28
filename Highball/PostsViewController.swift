@@ -311,14 +311,13 @@ class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, U
 
                                 dispatch_async(dispatch_get_main_queue(), {
                                     self.loadingCompletion = {
-                                        var indexPaths = Array<NSIndexPath>()
+                                        let indexSet = NSMutableIndexSet()
                                         for row in self.posts.count..<(self.posts.count + posts.count) {
-                                            indexPaths.append(NSIndexPath(forRow: row, inSection: 0))
+                                            indexSet.addIndex(row)
                                         }
 
                                         self.posts.appendContentsOf(posts)
-                                        
-                                        self.tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .None)
+                                        self.tableView.insertSections(indexSet, withRowAnimation: .None)
                                     }
                                     self.reloadTable()
                                 })
