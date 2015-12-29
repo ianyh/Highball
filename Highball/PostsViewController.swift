@@ -425,6 +425,7 @@ class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, U
                             switch quickReblogAction {
                             case .Reblog(let reblogType):
                                 let reblogViewController = TextReblogViewController()
+                                let navigationController = UINavigationController(rootViewController: reblogViewController)
 
                                 reblogViewController.reblogType = reblogType
                                 reblogViewController.post = post
@@ -432,17 +433,19 @@ class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, U
                                 reblogViewController.bodyHeight = bodyHeightCache[post.id]
                                 reblogViewController.secondaryBodyHeight = secondaryBodyHeightCache[post.id]
                                 reblogViewController.height = tableView(tableView, heightForRowAtIndexPath: indexPath)
+
                                 if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-                                    reblogViewController.modalPresentationStyle = UIModalPresentationStyle.Popover
+                                    navigationController.modalPresentationStyle = .Popover
                                 } else {
-                                    reblogViewController.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
+                                    navigationController.modalPresentationStyle = .OverFullScreen
                                 }
-                                reblogViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-                                reblogViewController.popoverPresentationController?.sourceView = view
-                                reblogViewController.popoverPresentationController?.sourceRect = view.convertRect(cell.bounds, fromView: cell)
-                                reblogViewController.popoverPresentationController?.backgroundColor = UIColor.clearColor()
-                                reblogViewController.preferredContentSize = CGSize(width: tableView.frame.width, height: 480)
-                                self.presentViewController(reblogViewController, animated: true, completion: nil)
+                                navigationController.modalTransitionStyle = .CrossDissolve
+                                navigationController.popoverPresentationController?.sourceView = view
+                                navigationController.popoverPresentationController?.sourceRect = view.convertRect(cell.bounds, fromView: cell)
+                                navigationController.popoverPresentationController?.backgroundColor = UIColor.clearColor()
+                                navigationController.preferredContentSize = CGSize(width: tableView.frame.width, height: 480)
+
+                                self.presentViewController(navigationController, animated: true, completion: nil)
                             case .Share:
                                 let postItemProvider = PostItemProvider(placeholderItem: "")
 
