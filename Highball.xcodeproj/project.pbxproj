@@ -471,7 +471,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "source ./bin/CrashlyticsKeys.sh\nif [ -n \"$CRASHLYTICS_API_KEY\" -a -n \"$CRASHLYTICS_APP_KEY\" ]; then\n    \"${PODS_ROOT}/Fabric/Fabric.framework/run\" $CRASHLYTICS_API_KEY $CRASHLYTICS_APP_KEY\n    /usr/libexec/PlistBuddy -c \"Delete :HBCrashlyticsAPIKey\" Highball/Info.plist\n    /usr/libexec/PlistBuddy -c \"Delete :HBCrashlyticsAppKey\" Highball/Info.plist\n    /usr/libexec/PlistBuddy -c \"Delete Fabric:APIKey\" Highball/Info.plist\nfi\n";
+			shellScript = "source ./bin/CrashlyticsKeys.sh\nif [ -n \"$CRASHLYTICS_API_KEY\" -a -n \"$CRASHLYTICS_APP_KEY\" ]; then\n    \"${PODS_ROOT}/Fabric/run\" $CRASHLYTICS_API_KEY $CRASHLYTICS_APP_KEY\n    /usr/libexec/PlistBuddy -c \"Delete :HBCrashlyticsAPIKey\" Highball/Info.plist\n    /usr/libexec/PlistBuddy -c \"Delete :HBCrashlyticsAppKey\" Highball/Info.plist\n    /usr/libexec/PlistBuddy -c \"Delete Fabric:APIKey\" Highball/Info.plist\nfi\n";
 		};
 		73E8195EFC37404C93E412AA /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -645,7 +645,6 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Cartography/build/Debug-iphoneos",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Highball-guawcsogumubtccebjzcnecuotxo/Build/Products/Debug-iphoneos",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -653,10 +652,7 @@
 				INFOPLIST_FILE = Highball/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Highball/Highball-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -671,7 +667,6 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Cartography/build/Debug-iphoneos",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Highball-guawcsogumubtccebjzcnecuotxo/Build/Products/Debug-iphoneos",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -679,10 +674,7 @@
 				INFOPLIST_FILE = Highball/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Highball/Highball-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
