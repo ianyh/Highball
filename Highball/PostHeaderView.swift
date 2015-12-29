@@ -28,25 +28,27 @@ class PostHeaderView: UITableViewHeaderFooterView {
 
                 avatarImageView.image = UIImage(named: "Placeholder")
 
-                if let data = PINCache.sharedCache().objectForKey("avatar:\(blogName)") as? NSData {
-                    dispatch_async(self.avatarLoadQueue) {
-                        let image = UIImage(data: data)
-                        dispatch_async(dispatch_get_main_queue()) {
-                            self.avatarImageView.image = image
-                        }
-                    }
-                } else {
-                    TMAPIClient.sharedInstance().avatar(blogName, size: 80) { (response: AnyObject!, error: NSError!) in
-                        if let e = error {
-                            print(e)
-                        } else {
-                            let data = response as! NSData!
-                            PINCache.sharedCache().setObject(data, forKey: "avatar:\(blogName)")
-                            dispatch_async(self.avatarLoadQueue) {
-                                let image = UIImage(data: data)
-                                dispatch_async(dispatch_get_main_queue()) {
-                                    self.avatarImageView.image = image
-                                }
+                PINCache.sharedCache().objectForKey("avatar:\(blogName)") { cache, key, object in
+                    if let data = object as? NSData {
+                        dispatch_async(self.avatarLoadQueue, {
+                            let image = UIImage(data: data)
+                            dispatch_async(dispatch_get_main_queue(), {
+                                self.avatarImageView.image = image
+                            })
+                        })
+                    } else {
+                        TMAPIClient.sharedInstance().avatar(blogName, size: 80) { (response: AnyObject!, error: NSError!) in
+                            if let e = error {
+                                print(e)
+                            } else {
+                                let data = response as! NSData!
+                                PINCache.sharedCache().setObject(data, forKey: "avatar:\(blogName)", block: nil)
+                                dispatch_async(self.avatarLoadQueue, {
+                                    let image = UIImage(data: data)
+                                    dispatch_async(dispatch_get_main_queue(), {
+                                        self.avatarImageView.image = image
+                                    })
+                                })
                             }
                         }
                     }
