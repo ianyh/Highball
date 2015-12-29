@@ -13,6 +13,7 @@ import UIKit
 import WebKit
 import TMTumblrSDK
 import PINCache
+import PINRemoteImage
 import Reachability
 import VENTouchLock
 import OAuthSwift
@@ -30,10 +31,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         TMAPIClient.sharedInstance().OAuthConsumerKey = "YhlYiD2dAUE6UH01ugPKQafm2XESBWsaOYPz7xV0q53SDn3ChU"
         TMAPIClient.sharedInstance().OAuthConsumerSecret = "ONVNS5UCfZMMhrekfjBknUXgjQ5I2J1a0aVDCfso2mfRcC4nEF"
 
+        let imageCache = PINRemoteImageManager.sharedImageManager().cache.diskCache
+        let cache = PINCache.sharedCache().diskCache
+
         // Only keep cache for 12 hours
-        PINCache.sharedCache().diskCache.ageLimit = 43200
+        imageCache.ageLimit = 43200
+        cache.ageLimit = 43200
         // Only keep up to 500 mb cache
-        PINCache.sharedCache().diskCache.byteLimit = 524288000
+        imageCache.byteLimit = 524288000
+        cache.byteLimit = 524288000
 
         self.tabBarController = window?.rootViewController as? UITabBarController
 

@@ -7,6 +7,7 @@
 //
 
 import PINCache
+import PINRemoteImage
 import UIKit
 import VENTouchLock
 
@@ -131,6 +132,7 @@ class SettingsViewController : UITableViewController {
         case .Cache:
             let alertController = UIAlertController(title: "Are you sure?", message: "Are you sure that you want to clear your cache?", preferredStyle: UIAlertControllerStyle.Alert)
             alertController.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.Destructive) { action in
+                PINRemoteImageManager.sharedImageManager().cache.diskCache.removeAllObjects(nil)
                 PINCache.sharedCache().diskCache.removeAllObjects(nil)
             })
             alertController.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.Cancel) { _ in })
