@@ -9,6 +9,8 @@
 import UIKit
 
 class MainViewController: UITabBarController {
+    private var statusBarBackgroundView: UIView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         reset()
@@ -21,9 +23,16 @@ class MainViewController: UITabBarController {
         let settingsViewController = UINavigationController(rootViewController: SettingsViewController())
         
         dashboardViewController.tabBarItem.title = "Dashboard"
+//        dashboardViewController.setNavigationBarHidden(true, animated: false)
+
         likesViewController.tabBarItem.title = "Likes"
+//        likesViewController.setNavigationBarHidden(true, animated: false)
+
         historyViewController.tabBarItem.title = "History"
+//        historyViewController.setNavigationBarHidden(true, animated: false)
+
         settingsViewController.tabBarItem.title = "Account"
+//        settingsViewController.setNavigationBarHidden(true, animated: false)
         
         viewControllers = [
             dashboardViewController,
@@ -31,6 +40,25 @@ class MainViewController: UITabBarController {
             historyViewController,
             settingsViewController
         ]
+
+        statusBarBackgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .ExtraLight))
+
+//        view.addSubview(statusBarBackgroundView)
+
+        NSNotificationCenter.defaultCenter().addObserverForName(
+            UIApplicationWillChangeStatusBarFrameNotification,
+            object:
+            self,
+            queue: nil
+        ) { [unowned self] _ in
+            self.resetStatusBarFrame()
+        }
+
+        resetStatusBarFrame()
+    }
+
+    private func resetStatusBarFrame() {
+        statusBarBackgroundView.frame = UIApplication.sharedApplication().statusBarFrame
     }
 }
 
