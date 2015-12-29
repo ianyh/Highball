@@ -77,7 +77,7 @@ class DashboardViewController: PostsViewController {
         bookmarks.insert(["date": NSDate(), "id": post.id], atIndex: 0)
 
         if bookmarks.count > 20 {
-            _ = bookmarks.dropLast(bookmarks.count - 20)
+            bookmarks = [[String: AnyObject]](bookmarks.prefix(20))
         }
 
         NSUserDefaults.standardUserDefaults().setObject(bookmarks, forKey: "HIBookmarks:\(account.blog.url)")
