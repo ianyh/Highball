@@ -461,7 +461,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "source ./bin/CrashlyticsKeys.sh\nif [ -n \"$CRASHLYTICS_API_KEY\" -a -n \"$CRASHLYTICS_APP_KEY\" ]; then\n    /usr/libexec/PlistBuddy -c \"Add :HBCrashlyticsAPIKey string '$CRASHLYTICS_API_KEY'\" Highball/Info.plist\n    /usr/libexec/PlistBuddy -c \"Add :HBCrashlyticsAppKey string '$CRASHLYTICS_APP_KEY'\" Highball/Info.plist\n    /usr/libexec/PlistBuddy -c \"Add Fabric:APIKey string '$CRASHLYTCS_API_KEY'\" Highball/Info.plist\nfi\n";
+			shellScript = "source ./bin/CrashlyticsKeys.sh\nif [ -n \"$CRASHLYTICS_API_KEY\" -a -n \"$CRASHLYTICS_APP_KEY\" ]; then\n    /usr/libexec/PlistBuddy -c \"Add :HBCrashlyticsAPIKey string '$CRASHLYTICS_API_KEY'\" Highball/Info.plist\n    /usr/libexec/PlistBuddy -c \"Add :HBCrashlyticsAppKey string '$CRASHLYTICS_APP_KEY'\" Highball/Info.plist\n    /usr/libexec/PlistBuddy -c \"Add :Fabric:APIKey string '$CRASHLYTICS_API_KEY'\" Highball/Info.plist\nfi\n";
 		};
 		40A11E6519B4D97800B91843 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -474,7 +474,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "source ./bin/CrashlyticsKeys.sh\nif [ -n \"$CRASHLYTICS_API_KEY\" -a -n \"$CRASHLYTICS_APP_KEY\" ]; then\n    \"${PODS_ROOT}/Fabric/run\" $CRASHLYTICS_API_KEY $CRASHLYTICS_APP_KEY\n    /usr/libexec/PlistBuddy -c \"Delete :HBCrashlyticsAPIKey\" Highball/Info.plist\n    /usr/libexec/PlistBuddy -c \"Delete :HBCrashlyticsAppKey\" Highball/Info.plist\n    /usr/libexec/PlistBuddy -c \"Delete Fabric:APIKey\" Highball/Info.plist\nfi\n";
+			shellScript = "source ./bin/CrashlyticsKeys.sh\nif [ -n \"$CRASHLYTICS_API_KEY\" -a -n \"$CRASHLYTICS_APP_KEY\" ]; then\n    \"${PODS_ROOT}/Fabric/run\" $CRASHLYTICS_API_KEY $CRASHLYTICS_APP_KEY\n    /usr/libexec/PlistBuddy -c \"Delete :HBCrashlyticsAPIKey\" Highball/Info.plist\n    /usr/libexec/PlistBuddy -c \"Delete :HBCrashlyticsAppKey\" Highball/Info.plist\n    /usr/libexec/PlistBuddy -c \"Delete :Fabric:APIKey\" Highball/Info.plist\nfi\n";
 		};
 		73E8195EFC37404C93E412AA /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
