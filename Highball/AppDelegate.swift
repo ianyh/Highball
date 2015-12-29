@@ -25,8 +25,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var reachability: Reachability!
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
-        self.reachability = Reachability.reachabilityForLocalWiFi()
-        self.reachability.startNotifier()
+        reachability = Reachability.reachabilityForLocalWiFi()
+        reachability.startNotifier()
 
         TMAPIClient.sharedInstance().OAuthConsumerKey = "YhlYiD2dAUE6UH01ugPKQafm2XESBWsaOYPz7xV0q53SDn3ChU"
         TMAPIClient.sharedInstance().OAuthConsumerSecret = "ONVNS5UCfZMMhrekfjBknUXgjQ5I2J1a0aVDCfso2mfRcC4nEF"
@@ -41,7 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         imageCache.byteLimit = 524288000
         cache.byteLimit = 524288000
 
-        self.tabBarController = window?.rootViewController as? UITabBarController
+        tabBarController = window?.rootViewController as? UITabBarController
 
         if let bundleInfoDictionary = NSBundle.mainBundle().infoDictionary {
             if bundleInfoDictionary["HBCrashlyticsAPIKey"] != nil {
@@ -58,7 +58,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             splashViewControllerClass: LockSplashViewController.classForCoder()
         )
 
-        self.window?.makeKeyAndVisible()
+        UIApplication.sharedApplication().statusBarStyle = .LightContent
+
+        window?.rootViewController?.setStatusBarStyle(.LightContent)
+        window?.tintColor = UIColor.flatSkyBlueColorDark().lightenByPercentage(0.5)
+        window?.makeKeyAndVisible()
 
         AccountsService.start(fromViewController: tabBarController!) {
 //            self.tabBarController?.viewControllers = [

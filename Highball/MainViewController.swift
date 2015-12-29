@@ -6,6 +6,7 @@
 //  Copyright © 2015 ianynda. All rights reserved.
 //
 
+import ChameleonFramework
 import FontAwesomeKit
 import UIKit
 
@@ -25,19 +26,15 @@ class MainViewController: UITabBarController {
         
         dashboardViewController.tabBarItem.title = "Dashboard"
         dashboardViewController.tabBarItem.image = FAKFontAwesome.homeIconWithSize(28.0).imageWithSize(CGSize(width: 28, height: 28))
-//        dashboardViewController.setNavigationBarHidden(true, animated: false)
 
         likesViewController.tabBarItem.title = "Likes"
         likesViewController.tabBarItem.image = FAKFontAwesome.heartIconWithSize(22.0).imageWithSize(CGSize(width: 24, height: 24))
-//        likesViewController.setNavigationBarHidden(true, animated: false)
 
         historyViewController.tabBarItem.title = "History"
         historyViewController.tabBarItem.image = FAKFontAwesome.historyIconWithSize(22.0).imageWithSize(CGSize(width: 24, height: 24))
-//        historyViewController.setNavigationBarHidden(true, animated: false)
 
         settingsViewController.tabBarItem.title = "Settings"
         settingsViewController.tabBarItem.image = FAKFontAwesome.cogsIconWithSize(22.0).imageWithSize(CGSize(width: 24, height: 24))
-//        settingsViewController.setNavigationBarHidden(true, animated: false)
         
         viewControllers = [
             dashboardViewController,
@@ -45,6 +42,20 @@ class MainViewController: UITabBarController {
             historyViewController,
             settingsViewController
         ]
+
+        let backgroundColor = UIColor.flatSkyBlueColorDark().lightenByPercentage(0.5)
+
+        (viewControllers as? [UINavigationController])?.forEach { navigationController in
+            navigationController.navigationBar.barTintColor = backgroundColor
+            navigationController.navigationBar.tintColor = UIColor.whiteColor()
+            navigationController.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+//            navigationController.navigationBar.translucent = false
+//            navigationController.hidesNavigationBarHairline = true
+//            navigationController.setNavigationBarHidden(true, animated: false)
+        }
+
+        tabBar.tintColor = backgroundColor
+//        tabBar.barTintColor = backgroundColor
 
         statusBarBackgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .ExtraLight))
 

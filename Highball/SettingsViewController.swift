@@ -26,6 +26,7 @@ class SettingsViewController : UITableViewController {
 
     init() {
         super.init(style: .Grouped)
+        navigationItem.title = "Settings"
     }
 
     required init?(coder aDecoder: NSCoder) {

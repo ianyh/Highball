@@ -19,6 +19,7 @@ class HistoryViewController: UITableViewController {
     init(delegate: HistoryViewControllerDelegate) {
         self.delegate = delegate
         super.init(style: .Plain)
+        navigationItem.title = "History"
     }
 
     required init?(coder aDecoder: NSCoder) {

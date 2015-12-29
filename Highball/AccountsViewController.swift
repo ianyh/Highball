@@ -20,11 +20,11 @@ class AccountsViewController: UITableViewController {
     required init() {
         self.accounts = []
         super.init(nibName: nil, bundle: nil)
+        navigationItem.title = "Accounts"
     }
 
     required init?(coder aDecoder: NSCoder) {
-        self.accounts = []
-        super.init(coder: aDecoder)
+        fatalError("")
     }
 
     override func viewDidLoad() {

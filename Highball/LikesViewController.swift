@@ -11,6 +11,16 @@ import TMTumblrSDK
 import UIKit
 
 class LikesViewController: PostsViewController {
+    override init() {
+        super.init()
+
+        navigationItem.title = "Likes"
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func postsFromJSON(json: JSON) -> Array<Post> {
         if let postsJSON = json["liked_posts"].array {
             return postsJSON.map { (post) -> (Post) in
