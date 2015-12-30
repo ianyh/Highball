@@ -178,12 +178,12 @@ class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, U
     }
 
     override func didReceiveMemoryWarning() {
-        webViewCache.removeAll()
+        webViewCache?.removeAll()
         super.didReceiveMemoryWarning()
     }
 
     func resignActive(notification: NSNotification) {
-        webViewCache.removeAll()
+        webViewCache?.removeAll()
     }
 
     func refresh(sender: UIRefreshControl) {
