@@ -56,6 +56,11 @@ class TextReblogViewController: SLKTextViewController {
             reblogTitle = "Queue"
         }
 
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .Cancel,
+            target: self,
+            action: "cancel"
+        )
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: reblogTitle,
             style: .Done,
@@ -71,18 +76,18 @@ class TextReblogViewController: SLKTextViewController {
         postViewController.bodyHeight = bodyHeight
         postViewController.secondaryBodyHeight = secondaryBodyHeight
 
-        textInputbar.leftButton.setImage(FAKIonIcons.androidCloseIconWithSize(30).imageWithSize(CGSize(width: 30, height: 30)), forState: .Normal)
         textInputbar.rightButton.setTitle("Add", forState: .Normal)
         textInputbar.autoHideRightButton = false
 
         tableView.allowsSelection = false
-        tableView.separatorStyle = .None
+        tableView.backgroundColor = UIColor.clearColor()
+        tableView.estimatedRowHeight = 30
+        tableView.rowHeight = UITableViewAutomaticDimension
         tableView.sectionHeaderHeight = 50
         tableView.sectionFooterHeight = 50
-        tableView.showsVerticalScrollIndicator = false
+        tableView.separatorStyle = .None
         tableView.showsHorizontalScrollIndicator = false
-        tableView.backgroundColor = UIColor.clearColor()
-        tableView.contentInset = UIEdgeInsetsMake(0, 0, 20, 0)
+        tableView.showsVerticalScrollIndicator = false
 
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: postTableViewCellIdentifier)
         tableView.registerClass(ReblogCommentCell.self, forCellReuseIdentifier: "Cell")
@@ -112,6 +117,10 @@ class TextReblogViewController: SLKTextViewController {
             lightBlurView.right == view.right
             lightBlurView.height == 20
         }
+    }
+
+    func cancel() {
+        dismissViewControllerAnimated(true, completion: nil)
     }
 
     func reblog() {
@@ -162,10 +171,6 @@ class TextReblogViewController: SLKTextViewController {
 
         tags.append(textView.text)
         tableView.reloadData()
-    }
-
-    override func didPressLeftButton(sender: AnyObject!) {
-        dismissViewControllerAnimated(true, completion: nil)
     }
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {

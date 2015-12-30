@@ -20,125 +20,128 @@ class PhotosetRowTableViewCell: WCFastCell {
     var contentWidth: CGFloat! = 0
     var images: Array<PostPhoto>? {
         didSet {
-            dispatch_async(dispatch_get_main_queue(), {
+            dispatch_async(dispatch_get_main_queue()) {
                 self.updateImages()
-            })
+            }
         }
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        self.clearImages()
+        clearImages()
     }
 
     private func updateImages() {
-        if let images = self.images {
-            if let contentWidth = self.contentWidth {
-                self.clearImages()
-
-                let totalWidth = images.map { $0.widthToHeightRatio! }.reduce(0, combine: +)
-                let lastImageIndex = images.count - 1
-                var imageViews = Array<FLAnimatedImageView>()
-                var failedImageViews = Array<UIImageView>()
-                var lastImageView: UIImageView?
-                for (index, image) in images.enumerate() {
-                    let widthPortion = image.widthToHeightRatio! / totalWidth
-                    let imageView = FLAnimatedImageView()
-                    let failedImageView = UIImageView()
-                    let imageURL = image.urlWithWidth(contentWidth)
-
-                    imageView.image = nil
-                    imageView.backgroundColor = UIColor.lightGrayColor()
-                    imageView.userInteractionEnabled = true
-                    imageView.contentMode = UIViewContentMode.ScaleAspectFill
-
-                    failedImageView.contentMode = UIViewContentMode.Center
-                    failedImageView.hidden = true
-                    failedImageView.image = FAKIonIcons.iosCameraOutlineIconWithSize(50).imageWithSize(CGSize(width: 50, height: 50))
-
-                    self.contentView.addSubview(imageView)
-                    self.contentView.addSubview(failedImageView)
-
-                    constrain(failedImageView, imageView) { failedImageView, imageView in
-                        failedImageView.edges == imageView.edges; return
-                    }
-
-                    if let leftImageView = lastImageView {
-                        if index == lastImageIndex {
-                            constrain(imageView, leftImageView, self.contentView) { imageView, leftImageView, contentView in
-                                imageView.centerY == leftImageView.centerY
-                                imageView.left == leftImageView.right
-                                imageView.right == contentView.right
-                                imageView.height == leftImageView.height
-                            }
-                        } else {
-                            constrain(imageView, leftImageView, self.contentView) { imageView, leftImageView, contentView in
-                                imageView.centerY == leftImageView.centerY
-                                imageView.left == leftImageView.right
-                                imageView.height == leftImageView.height
-                                imageView.width == contentView.width * CGFloat(widthPortion)
-                            }
-                        }
-                    } else if images.count == 1 {
-                        constrain(imageView, self.contentView) { imageView, contentView in
-                            imageView.left == contentView.left
-                            imageView.top == contentView.top
-                            imageView.bottom == contentView.bottom
-                            imageView.right == contentView.right
-                        }
-                    } else {
-                        constrain(imageView, self.contentView) { imageView, contentView in
-                            imageView.left == contentView.left
-                            imageView.top == contentView.top
-                            imageView.bottom == contentView.bottom
-                            imageView.width == contentView.width * CGFloat(widthPortion)
-                        }
-                    }
-
-                    imageView.pin_setImageFromURL(imageURL) { result in
-                        failedImageView.hidden = result.error == nil; return
-                    }
-
-                    lastImageView = imageView
-
-                    imageViews.append(imageView)
-                    failedImageViews.append(failedImageView)
-                }
-                
-                self.imageViews = imageViews
-                self.failedImageViews = failedImageViews
-            }
+        guard
+            let images = images,
+            let contentWidth = contentWidth
+        else {
+            return
         }
+
+        clearImages()
+        
+        let totalWidth = images.map { $0.widthToHeightRatio! }.reduce(0, combine: +)
+        let lastImageIndex = images.count - 1
+        var imageViews = Array<FLAnimatedImageView>()
+        var failedImageViews = Array<UIImageView>()
+        var lastImageView: UIImageView?
+        for (index, image) in images.enumerate() {
+            let widthPortion = image.widthToHeightRatio! / totalWidth
+            let imageView = FLAnimatedImageView()
+            let failedImageView = UIImageView()
+            let imageURL = image.urlWithWidth(contentWidth)
+            
+            imageView.image = nil
+            imageView.backgroundColor = UIColor.lightGrayColor()
+            imageView.userInteractionEnabled = true
+            imageView.contentMode = .ScaleAspectFill
+            
+            failedImageView.contentMode = .Center
+            failedImageView.hidden = true
+            failedImageView.image = FAKIonIcons.iosCameraOutlineIconWithSize(50).imageWithSize(CGSize(width: 50, height: 50))
+            
+            contentView.addSubview(imageView)
+            contentView.addSubview(failedImageView)
+            
+            constrain(failedImageView, imageView) { failedImageView, imageView in
+                failedImageView.edges == imageView.edges
+            }
+            
+            if let leftImageView = lastImageView {
+                if index == lastImageIndex {
+                    constrain(imageView, leftImageView, contentView) { imageView, leftImageView, contentView in
+                        imageView.centerY == leftImageView.centerY
+                        imageView.left == leftImageView.right
+                        imageView.right == contentView.right
+                        imageView.height == leftImageView.height
+                    }
+                } else {
+                    constrain(imageView, leftImageView, contentView) { imageView, leftImageView, contentView in
+                        imageView.centerY == leftImageView.centerY
+                        imageView.left == leftImageView.right
+                        imageView.height == leftImageView.height
+                        imageView.width == contentView.width * CGFloat(widthPortion)
+                    }
+                }
+            } else if images.count == 1 {
+                constrain(imageView, contentView) { imageView, contentView in
+                    imageView.left == contentView.left
+                    imageView.top == contentView.top
+                    imageView.bottom == contentView.bottom
+                    imageView.right == contentView.right
+                }
+            } else {
+                constrain(imageView, contentView) { imageView, contentView in
+                    imageView.left == contentView.left
+                    imageView.top == contentView.top
+                    imageView.bottom == contentView.bottom
+                    imageView.width == contentView.width * CGFloat(widthPortion)
+                }
+            }
+            
+            imageView.pin_setImageFromURL(imageURL) { result in
+                failedImageView.hidden = result.error == nil
+            }
+            
+            lastImageView = imageView
+            
+            imageViews.append(imageView)
+            failedImageViews.append(failedImageView)
+        }
+        
+        self.imageViews = imageViews
+        self.failedImageViews = failedImageViews
     }
 
     private func clearImages() {
-        if let imageViews = self.imageViews {
-            for imageView in imageViews {
-                imageView.pin_cancelImageDownload()
-                imageView.image = nil
-                imageView.animatedImage = nil
-                imageView.removeFromSuperview()
-            }
+        imageViews?.forEach {
+            $0.pin_cancelImageDownload()
+            $0.image = nil
+            $0.animatedImage = nil
+            $0.removeFromSuperview()
         }
 
-        if let failedImageViews = self.failedImageViews {
-            for imageView in failedImageViews {
-                imageView.removeFromSuperview()
-            }
+        failedImageViews?.forEach {
+            $0.removeFromSuperview()
         }
 
-        self.imageViews = nil
-        self.failedImageViews = nil
+        imageViews = nil
+        failedImageViews = nil
     }
 
     func imageAtPoint(point: CGPoint) -> UIImage? {
-        if let imageView = self.hitTest(point, withEvent: nil) as? UIImageView {
-            return imageView.image
+        guard
+            let view = self.hitTest(point, withEvent: nil),
+            let imageView = view as? UIImageView
+        else {
+            return nil
         }
-        return nil
+
+        return imageView.image
     }
 
     func cancelDownloads() {
-        self.clearImages()
+        clearImages()
     }
 }

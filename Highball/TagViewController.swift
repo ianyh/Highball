@@ -13,48 +13,34 @@ import TMTumblrSDK
 class TagViewController: PostsViewController {
     private let tag: String!
     
-    required init(tag: String) {
+    init(tag: String) {
         self.tag = tag.substringFromIndex(tag.startIndex.advancedBy(1))
         super.init()
         navigationItem.title = tag
     }
-    
-    required override init() {
-        fatalError("init() has not been implemented")
-    }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.navigationItem.leftBarButtonItem = nil
-    }
-
     override func postsFromJSON(json: JSON) -> Array<Post> {
-        if let postsJSON = json.array {
-            return postsJSON.map { (post) -> (Post) in
-                return Post(json: post)
-            }
+        guard let postsJSON = json.array else {
+            return []
         }
-        return []
+
+        return postsJSON.map { (post) -> (Post) in
+            return Post(json: post)
+        }
     }
     
-    override func requestPosts(postCount: Int, parameters: Dictionary<String, AnyObject>, callback: TMAPICallback) {
-        var modifiedParameters = Dictionary<String, AnyObject>()
-        for (key, value) in parameters {
-            modifiedParameters[key] = value
+    override func requestPosts(postCount: Int, var parameters: Dictionary<String, AnyObject>, callback: TMAPICallback) {
+        if let lastPost = posts?.last {
+            parameters["before"] = "\(lastPost.timestamp)"
         }
-        if let posts = self.posts {
-            if let lastPost = posts.last {
-                modifiedParameters["before"] = "\(lastPost.timestamp)"
-            }
-        }
-        TMAPIClient.sharedInstance().tagged(self.tag, parameters: modifiedParameters, callback: callback)
+        TMAPIClient.sharedInstance().tagged(self.tag, parameters: parameters, callback: callback)
     }
     
-    override func reblogBlogName() -> (String) {
+    override func reblogBlogName() -> String {
         return AccountsService.account.blog.name
     }
 }

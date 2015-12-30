@@ -9,19 +9,15 @@
 import UIKit
 import Cartography
 
-class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableViewDataSource, UITableViewDelegate {
+class PostViewController: UIViewController {
     private var tableView: UITableView!
     var post: Post! {
         didSet {
-            if let _ = self.heightCache {
-                self.heightCache.removeAll()
-            }
-            if let tableView = self.tableView {
-                tableView.reloadData()
-            }
+            heightCache.removeAll()
+            tableView?.reloadData()
         }
     }
-    var heightCache: Dictionary<NSIndexPath, CGFloat>!
+    var heightCache = Dictionary<NSIndexPath, CGFloat>()
     var bodyHeight: CGFloat?
     var secondaryBodyHeight: CGFloat?
 
@@ -29,95 +25,89 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
     var tagTapHandler: ((Post, String) -> ())?
     var linkTapHandler: ((Post, NSURL) -> ())?
 
-    required override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.heightCache = Dictionary<NSIndexPath, CGFloat>()
-
-        self.tableView = UITableView()
-        self.tableView.dataSource = self
-        self.tableView.delegate = self
-        self.tableView.allowsSelection = true
-        self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
-        self.tableView.sectionHeaderHeight = 50
-        self.tableView.sectionFooterHeight = 50
-        self.tableView.showsVerticalScrollIndicator = false
-        self.tableView.showsHorizontalScrollIndicator = false
-        self.tableView.scrollEnabled = false
+        tableView = UITableView()
+        tableView.allowsSelection = true
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.scrollEnabled = false
+        tableView.sectionHeaderHeight = 50
+        tableView.sectionFooterHeight = 50
+        tableView.separatorStyle = .None
+        tableView.showsHorizontalScrollIndicator = false
+        tableView.showsVerticalScrollIndicator = false
         
-        self.tableView.registerClass(TitleTableViewCell.classForCoder(), forCellReuseIdentifier: titleTableViewCellIdentifier)
-        self.tableView.registerClass(PhotosetRowTableViewCell.classForCoder(), forCellReuseIdentifier: photosetRowTableViewCellIdentifier)
-        self.tableView.registerClass(ContentTableViewCell.classForCoder(), forCellReuseIdentifier: contentTableViewCellIdentifier)
-        self.tableView.registerClass(PostQuestionTableViewCell.classForCoder(), forCellReuseIdentifier: postQuestionTableViewCellIdentifier)
-        self.tableView.registerClass(PostLinkTableViewCell.classForCoder(), forCellReuseIdentifier: postLinkTableViewCellIdentifier)
-        self.tableView.registerClass(PostDialogueEntryTableViewCell.classForCoder(), forCellReuseIdentifier: postDialogueEntryTableViewCellIdentifier)
-        self.tableView.registerClass(TagsTableViewCell.classForCoder(), forCellReuseIdentifier: postTagsTableViewCellIdentifier)
-        self.tableView.registerClass(VideoTableViewCell.classForCoder(), forCellReuseIdentifier: videoTableViewCellIdentifier)
-        self.tableView.registerClass(YoutubeTableViewCell.classForCoder(), forCellReuseIdentifier: youtubeTableViewCellIdentifier)
+        tableView.registerClass(TitleTableViewCell.self, forCellReuseIdentifier: titleTableViewCellIdentifier)
+        tableView.registerClass(PhotosetRowTableViewCell.self, forCellReuseIdentifier: photosetRowTableViewCellIdentifier)
+        tableView.registerClass(ContentTableViewCell.self, forCellReuseIdentifier: contentTableViewCellIdentifier)
+        tableView.registerClass(PostQuestionTableViewCell.self, forCellReuseIdentifier: postQuestionTableViewCellIdentifier)
+        tableView.registerClass(PostLinkTableViewCell.self, forCellReuseIdentifier: postLinkTableViewCellIdentifier)
+        tableView.registerClass(PostDialogueEntryTableViewCell.self, forCellReuseIdentifier: postDialogueEntryTableViewCellIdentifier)
+        tableView.registerClass(TagsTableViewCell.self, forCellReuseIdentifier: postTagsTableViewCellIdentifier)
+        tableView.registerClass(VideoTableViewCell.self, forCellReuseIdentifier: videoTableViewCellIdentifier)
+        tableView.registerClass(YoutubeTableViewCell.self, forCellReuseIdentifier: youtubeTableViewCellIdentifier)
         
-        self.view.addSubview(self.tableView)
+        view.addSubview(tableView)
 
-        constrain(self.tableView, self.view) { tableView, view in
-            tableView.edges == view.edges; return
+        constrain(tableView, view) { tableView, view in
+            tableView.edges == view.edges
         }
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        self.heightCache.removeAll()
-        self.tableView.reloadData()
+
+        heightCache.removeAll()
+        tableView.reloadData()
     }
 
     func endDisplay() {
-        if let indexPaths = self.tableView.indexPathsForVisibleRows {
-            for indexPath in indexPaths {
-                if let cell = self.tableView.cellForRowAtIndexPath(indexPath) {
-                    if let cell = cell as? PhotosetRowTableViewCell {
-                        cell.cancelDownloads()
-                    } else if let cell = cell as? ContentTableViewCell {
-                        cell.content = nil
-                    }
-                }
+        guard let indexPaths = tableView.indexPathsForVisibleRows else {
+            return
+        }
+
+        for indexPath in indexPaths {
+            guard let cell = tableView.cellForRowAtIndexPath(indexPath) else {
+                continue
+            }
+
+            if let cell = cell as? PhotosetRowTableViewCell {
+                cell.cancelDownloads()
+            } else if let cell = cell as? ContentTableViewCell {
+                cell.content = nil
             }
         }
     }
 
     func imageAtPoint(point: CGPoint) -> UIImage? {
-        if let indexPath = self.tableView.indexPathForRowAtPoint(self.view.convertPoint(point, toView: self.tableView)) {
-            if let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? PhotosetRowTableViewCell {
-                return cell.imageAtPoint(point)
-            }
+        guard
+            let indexPath = tableView.indexPathForRowAtPoint(view.convertPoint(point, toView: tableView)),
+            let cell = tableView.cellForRowAtIndexPath(indexPath) as? PhotosetRowTableViewCell
+        else {
+            return nil
         }
-        return nil
+
+        return cell.imageAtPoint(point)
     }
+}
 
-    // MARK: UITableViewDataSource
-
+extension PostViewController: UITableViewDataSource {
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        if let _ = self.post {
-            return 1
-        }
-        return 0
+        return post == nil ? 0 : 1
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var rowCount = 0
 
-        switch self.post.type {
+        switch post.type {
         case "photo":
-            let postPhotos = self.post.photos
+            let postPhotos = post.photos
             if postPhotos.count == 1 {
                 rowCount = 2
             }
-            rowCount = self.post.layoutRows.count + 1
+            rowCount = post.layoutRows.count + 1
         case "text":
             rowCount = 2
         case "answer":
@@ -127,7 +117,7 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
         case "link":
             rowCount = 2
         case "chat":
-            rowCount = 1 + self.post.dialogueEntries.count
+            rowCount = 1 + post.dialogueEntries.count
         case "video":
             rowCount = 2
         case "audio":
@@ -141,7 +131,7 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = self.tableView(tableView, postCellForRowAtIndexPath: indexPath)
-        cell.selectionStyle = UITableViewCellSelectionStyle.None
+        cell.selectionStyle = .None
         return cell
     }
 
@@ -149,31 +139,29 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
         if indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 1 {
             let cell = tableView.dequeueReusableCellWithIdentifier(postTagsTableViewCellIdentifier) as! TagsTableViewCell!
             cell.delegate = self
-            cell.tags = self.post.tags
+            cell.tags = post.tags
             return cell
         }
         
-        switch self.post.type {
+        switch post.type {
         case "photo":
             if indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 2 {
                 let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as! ContentTableViewCell!
-                cell.content = self.post.htmlBodyWithWidth(tableView.frame.size.width)
+                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
                 cell.linkHandler = { url in
-                    if let handler = self.linkTapHandler {
-                        handler(self.post, url)
-                    }
+                    self.linkTapHandler?(self.post, url)
                 }
                 return cell
             }
             let cell = tableView.dequeueReusableCellWithIdentifier(photosetRowTableViewCellIdentifier) as! PhotosetRowTableViewCell!
-            let postPhotos = self.post.photos
+            let postPhotos = post.photos
             
             cell.contentWidth = tableView.frame.size.width
             
             if postPhotos.count == 1 {
                 cell.images = postPhotos
             } else {
-                let photosetLayoutRows = self.post.layoutRows
+                let photosetLayoutRows = post.layoutRows
                 var photosIndexStart = 0
                 for photosetLayoutRow in photosetLayoutRows[0..<indexPath.row] {
                     photosIndexStart += photosetLayoutRow
@@ -188,153 +176,122 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
             switch TextRow(rawValue: indexPath.row)! {
             case .Title:
                 let cell = tableView.dequeueReusableCellWithIdentifier(titleTableViewCellIdentifier) as! TitleTableViewCell!
-                cell.titleLabel.text = self.post.title
+                cell.titleLabel.text = post.title
                 return cell
             case .Body:
                 let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as! ContentTableViewCell!
-                cell.content = self.post.htmlBodyWithWidth(tableView.frame.size.width)
-                cell.linkHandler = { url in
-                    if let handler = self.linkTapHandler {
-                        handler(self.post, url)
-                    }
-                }
+                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
+                cell.linkHandler = { self.linkTapHandler?(self.post, $0) }
                 return cell
             }
         case "answer":
             switch AnswerRow(rawValue: indexPath.row)! {
             case .Question:
                 let cell = tableView.dequeueReusableCellWithIdentifier(postQuestionTableViewCellIdentifier) as! PostQuestionTableViewCell!
-                cell.post = self.post
+                cell.post = post
                 return cell
             case .Answer:
                 let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as! ContentTableViewCell!
-                cell.content = self.post.htmlBodyWithWidth(tableView.frame.size.width)
-                cell.linkHandler = { url in
-                    if let handler = self.linkTapHandler {
-                        handler(self.post, url)
-                    }
-                }
+                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
+                cell.linkHandler = { self.linkTapHandler?(self.post, $0) }
                 return cell
             }
         case "quote":
             switch QuoteRow(rawValue: indexPath.row)! {
             case .Quote:
                 let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as! ContentTableViewCell!
-                cell.content = self.post.htmlBodyWithWidth(tableView.frame.size.width)
-                cell.linkHandler = { url in
-                    if let handler = self.linkTapHandler {
-                        handler(self.post, url)
-                    }
-                }
+                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
+                cell.linkHandler = { self.linkTapHandler?(self.post, $0) }
                 return cell
             case .Source:
                 let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as! ContentTableViewCell!
-                cell.content = self.post.htmlSecondaryBodyWithWidth(tableView.frame.size.width)
-                cell.linkHandler = { url in
-                    if let handler = self.linkTapHandler {
-                        handler(self.post, url)
-                    }
-                }
+                cell.content = post.htmlSecondaryBodyWithWidth(tableView.frame.size.width)
+                cell.linkHandler = { self.linkTapHandler?(self.post, $0) }
                 return cell
             }
         case "link":
             switch LinkRow(rawValue: indexPath.row)! {
             case .Link:
                 let cell = tableView.dequeueReusableCellWithIdentifier(postLinkTableViewCellIdentifier) as! PostLinkTableViewCell!
-                cell.post = self.post
+                cell.post = post
                 return cell
             case .Description:
                 let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as! ContentTableViewCell!
-                cell.content = self.post.htmlBodyWithWidth(tableView.frame.size.width)
-                cell.linkHandler = { url in
-                    if let handler = self.linkTapHandler {
-                        handler(self.post, url)
-                    }
-                }
+                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
+                cell.linkHandler = { self.linkTapHandler?(self.post, $0) }
                 return cell
             }
         case "chat":
             if indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCellWithIdentifier(titleTableViewCellIdentifier) as! TitleTableViewCell!
-                cell.titleLabel.text = self.post.title
+                cell.titleLabel.text = post.title
                 return cell;
             }
-            let dialogueEntry = self.post.dialogueEntries[indexPath.row - 1]
+            let dialogueEntry = post.dialogueEntries[indexPath.row - 1]
             let cell = tableView.dequeueReusableCellWithIdentifier(postDialogueEntryTableViewCellIdentifier) as! PostDialogueEntryTableViewCell!
             cell.dialogueEntry = dialogueEntry
             return cell
         case "video":
             switch VideoRow(rawValue: indexPath.row)! {
             case .Player:
-                switch self.post.videoType! {
+                switch post.videoType! {
                 case "youtube":
                     let cell = tableView.dequeueReusableCellWithIdentifier(youtubeTableViewCellIdentifier) as! YoutubeTableViewCell!
-                    cell.post = self.post
+                    cell.post = post
                     return cell
                 default:
                     let cell = tableView.dequeueReusableCellWithIdentifier(videoTableViewCellIdentifier) as! VideoTableViewCell!
-                    cell.post = self.post
+                    cell.post = post
                     return cell
                 }
             case .Caption:
                 let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as! ContentTableViewCell!
-                cell.content = self.post.htmlBodyWithWidth(tableView.frame.size.width)
-                cell.linkHandler = { url in
-                    if let handler = self.linkTapHandler {
-                        handler(self.post, url)
-                    }
-                }
+                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
+                cell.linkHandler = { self.linkTapHandler?(self.post, $0) }
                 return cell
             }
         case "audio":
             let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as! ContentTableViewCell!
             switch AudioRow(rawValue: indexPath.row)! {
             case .Player:
-                cell.content = self.post.htmlSecondaryBodyWithWidth(tableView.frame.size.width)
+                cell.content = post.htmlSecondaryBodyWithWidth(tableView.frame.size.width)
             case .Caption:
-                cell.content = self.post.htmlBodyWithWidth(tableView.frame.size.width)
+                cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
             }
-            cell.linkHandler = { url in
-                if let handler = self.linkTapHandler {
-                    handler(self.post, url)
-                }
-            }
+            cell.linkHandler = { self.linkTapHandler?(self.post, $0) }
             return cell
         default:
             return tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier)!
         }
     }
+}
 
-    // MARK: UITableViewDelegate
-
+extension PostViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 1 {
-            if self.post.tags.count > 0 {
+            if post.tags.count > 0 {
                 return 30
             }
             return 0
         }
         
-        switch self.post.type {
+        switch post.type {
         case "photo":
             if indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 2 {
-                if let height = self.bodyHeight {
-                    return height
-                }
-                return 0
+                return bodyHeight ?? 0
             }
             
-            if let height = self.heightCache[indexPath] {
+            if let height = heightCache[indexPath] {
                 return height
             }
             
-            let postPhotos = self.post.photos
+            let postPhotos = post.photos
             var images: Array<PostPhoto>!
             
             if postPhotos.count == 1 {
                 images = postPhotos
             } else {
-                let photosetLayoutRows = self.post.layoutRows
+                let photosetLayoutRows = post.layoutRows
                 var photosIndexStart = 0
                 for photosetLayoutRow in photosetLayoutRows[0..<indexPath.row] {
                     photosIndexStart += photosetLayoutRow
@@ -344,129 +301,110 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
                 images = Array(postPhotos[(photosIndexStart)..<(photosIndexStart + photosetLayoutRow)])
             }
             
-            let imageWidth = tableView.frame.size.width / CGFloat(images.count)
-            let minHeight = floor(images.map { (image: PostPhoto) -> CGFloat in
-                let scale = image.height / image.width
-                return imageWidth * scale
-                }.reduce(CGFloat.max, combine: { min($0, $1) }))
+            let imageWidth = tableView.frame.width / CGFloat(images.count)
+            let minHeight = floor(images
+                .map { (image: PostPhoto) -> CGFloat in
+                    let scale = image.height / image.width
+                    return imageWidth * scale
+                }
+                .reduce(CGFloat.max) { min($0, $1) }
+            )
             
-            self.heightCache[indexPath] = minHeight
+            heightCache[indexPath] = minHeight
             return minHeight
         case "text":
             switch TextRow(rawValue: indexPath.row)! {
             case .Title:
-                if let title = self.post.title {
-                    if let height = self.heightCache[indexPath] {
+                if let title = post.title {
+                    if let height = heightCache[indexPath] {
                         return height
                     }
 
-                    let height = TitleTableViewCell.heightForTitle(title, width: tableView.frame.size.width)
-                    self.heightCache[indexPath] = height
+                    let height = TitleTableViewCell.heightForTitle(title, width: tableView.frame.width)
+                    heightCache[indexPath] = height
                     return height
                 }
                 return 0
             case .Body:
-                if let height = self.bodyHeight {
-                    return height
-                }
-                return 0
+                return bodyHeight ?? 0
             }
         case "answer":
             switch AnswerRow(rawValue: indexPath.row)! {
             case .Question:
-                if let height = self.heightCache[indexPath] {
+                if let height = heightCache[indexPath] {
                     return height
                 }
                 
-                let height = PostQuestionTableViewCell.heightForPost(self.post, width: tableView.frame.size.width)
-                self.heightCache[indexPath] = height
+                let height = PostQuestionTableViewCell.heightForPost(post, width: tableView.frame.width)
+                heightCache[indexPath] = height
                 return height
             case .Answer:
-                if let height = self.bodyHeight {
-                    return height
-                }
-                return 0
+                return bodyHeight ?? 0
             }
         case "quote":
             switch QuoteRow(rawValue: indexPath.row)! {
             case .Quote:
-                if let height = self.bodyHeight {
-                    return height
-                }
-                return 0
+                return bodyHeight ?? 0
             case .Source:
-                if let height = self.secondaryBodyHeight {
-                    return height
-                }
-                return 0
+                return secondaryBodyHeight ?? 0
             }
         case "link":
             switch LinkRow(rawValue: indexPath.row)! {
             case .Link:
-                if let height = self.heightCache[indexPath] {
+                if let height = heightCache[indexPath] {
                     return height
                 }
                 
-                let height = PostLinkTableViewCell.heightForPost(self.post, width: tableView.frame.size.width)
-                self.heightCache[indexPath] = height
+                let height = PostLinkTableViewCell.heightForPost(post, width: tableView.frame.width)
+                heightCache[indexPath] = height
                 return height
             case .Description:
-                if let height = self.bodyHeight {
-                    return height
-                }
-                return 0
+                return bodyHeight ?? 0
             }
         case "chat":
             if indexPath.row == 0 {
-                if let title = self.post.title {
-                    if let height = self.heightCache[indexPath] {
-                        return height
-                    }
-                    
-                    let height = TitleTableViewCell.heightForTitle(title, width: tableView.frame.size.width)
-                    self.heightCache[indexPath] = height
+                guard let title = post.title else {
+                    return 0
+                }
+
+                if let height = heightCache[indexPath] {
                     return height
                 }
-                return 0
+                
+                let height = TitleTableViewCell.heightForTitle(title, width: tableView.frame.width)
+                heightCache[indexPath] = height
+                return height
             }
-            let dialogueEntry = self.post.dialogueEntries[indexPath.row - 1]
-            if let height = self.heightCache[indexPath] {
+
+            let dialogueEntry = post.dialogueEntries[indexPath.row - 1]
+            if let height = heightCache[indexPath] {
                 return height
             }
             
-            let height = PostDialogueEntryTableViewCell.heightForPostDialogueEntry(dialogueEntry, width: tableView.frame.size.width)
-            self.heightCache[indexPath] = height
+            let height = PostDialogueEntryTableViewCell.heightForPostDialogueEntry(dialogueEntry, width: tableView.frame.width)
+            heightCache[indexPath] = height
             return height
         case "video":
             switch VideoRow(rawValue: indexPath.row)! {
             case .Player:
-                if let height = self.heightCache[indexPath] {
+                if let height = heightCache[indexPath] {
                     return height
                 }
-                if let height = self.post.videoHeightWidthWidth(tableView.frame.size.width) {
-                    self.heightCache[indexPath] = height
+                if let height = post.videoHeightWidthWidth(tableView.frame.width) {
+                    heightCache[indexPath] = height
                     return height
                 }
-                self.heightCache[indexPath] = 320
+                heightCache[indexPath] = 320
                 return 320
             case .Caption:
-                if let height = self.bodyHeight {
-                    return height
-                }
-                return 0
+                return bodyHeight ?? 0
             }
         case "video":
             switch AudioRow(rawValue: indexPath.row)! {
             case .Player:
-                if let height = self.secondaryBodyHeight {
-                    return height
-                }
-                return 0
+                return secondaryBodyHeight ?? 0
             case .Caption:
-                if let height = self.bodyHeight {
-                    return height
-                }
-                return 0
+                return bodyHeight ?? 0
             }
         default:
             return 0
@@ -474,18 +412,16 @@ class PostViewController: UIViewController, TagsTableViewCellDelegate, UITableVi
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if let cell = tableView.cellForRowAtIndexPath(indexPath) {
-            if let bodyTapHandler = self.bodyTapHandler {
-                bodyTapHandler(self.post, cell)
-            }
+        guard let cell = tableView.cellForRowAtIndexPath(indexPath) else {
+            return
         }
-    }
 
-    // MARK: TagsTableViewCellDelegate
-    
+        bodyTapHandler?(post, cell)
+    }
+}
+
+extension PostViewController: TagsTableViewCellDelegate {
     func tagsTableViewCell(cell: TagsTableViewCell, didSelectTag tag: String) {
-        if let tagTapHandler = self.tagTapHandler {
-            tagTapHandler(self.post, tag)
-        }
+        tagTapHandler?(post, tag)
     }
 }

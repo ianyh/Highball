@@ -6,34 +6,32 @@
 //  Copyright (c) 2014 ianynda. All rights reserved.
 //
 
-
-import UIKit
 import Cartography
+import UIKit
 import WCFastCell
 
 class TitleTableViewCell: WCFastCell {
-
     var titleLabel: UILabel!
 
-    override required init(style: UITableViewCellStyle, reuseIdentifier: String!) {
+    override init(style: UITableViewCellStyle, reuseIdentifier: String!) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.setUpCell()
+        setUpCell()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.setUpCell()
+        setUpCell()
     }
 
     func setUpCell() {
-        self.titleLabel = UILabel()
+        titleLabel = UILabel()
 
-        self.titleLabel.font = UIFont.boldSystemFontOfSize(16)
-        self.titleLabel.numberOfLines = 0
+        titleLabel.font = UIFont.boldSystemFontOfSize(16)
+        titleLabel.numberOfLines = 0
 
-        self.contentView.addSubview(self.titleLabel)
+        contentView.addSubview(titleLabel)
 
-        constrain(self.titleLabel, self.contentView) { titleLabel, contentView in
+        constrain(titleLabel, contentView) { titleLabel, contentView in
             titleLabel.left == contentView.left + 10
             titleLabel.right == contentView.right - 10
             titleLabel.top == contentView.top + 4

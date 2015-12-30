@@ -465,16 +465,16 @@ class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, U
                             case .Like:
                                 if post.liked.boolValue {
                                     TMAPIClient.sharedInstance().unlike("\(post.id)", reblogKey: post.reblogKey) { (response, error) in
-                                        if let e = error {
-                                            print(e)
+                                        if let error = error {
+                                            self.presentError(error)
                                         } else {
                                             post.liked = false
                                         }
                                     }
                                 } else {
                                     TMAPIClient.sharedInstance().like("\(post.id)", reblogKey: post.reblogKey) { (response, error) in
-                                        if let e = error {
-                                            print(e)
+                                        if let error = error {
+                                            self.presentError(error)
                                         } else {
                                             post.liked = true
                                         }

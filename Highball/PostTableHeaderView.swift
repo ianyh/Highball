@@ -20,58 +20,59 @@ class PostTableHeaderView: UITableViewHeaderFooterView {
     
     var post: Post? {
         didSet {
-            if let post = self.post {
-                let blogName = post.blogName
-                
-                self.avatarImageView.image = UIImage(named: "Placeholder")
-
-                PINCache.sharedCache().objectForKey("avatar:\(blogName)") { cache, key, object in
-                    if let data = object as? NSData {
-                        dispatch_async(self.avatarLoadQueue, {
-                            let image = UIImage(data: data)
-                            dispatch_async(dispatch_get_main_queue(), {
-                                self.avatarImageView.image = image
-                            })
-                        })
-                    } else {
-                        TMAPIClient.sharedInstance().avatar(blogName, size: 80) { (response: AnyObject!, error: NSError!) in
-                            if let e = error {
-                                print(e)
-                            } else {
-                                let data = response as! NSData!
-                                PINCache.sharedCache().setObject(data, forKey: "avatar:\(blogName)", block: nil)
-                                dispatch_async(self.avatarLoadQueue, {
-                                    let image = UIImage(data: data)
-                                    dispatch_async(dispatch_get_main_queue(), {
-                                        self.avatarImageView.image = image
-                                    })
-                                })
+            guard let post = post else {
+                return
+            }
+            let blogName = post.blogName
+            
+            avatarImageView.image = UIImage(named: "Placeholder")
+            
+            PINCache.sharedCache().objectForKey("avatar:\(blogName)") { cache, key, object in
+                if let data = object as? NSData {
+                    dispatch_async(self.avatarLoadQueue) {
+                        let image = UIImage(data: data)
+                        dispatch_async(dispatch_get_main_queue()) {
+                            self.avatarImageView.image = image
+                        }
+                    }
+                } else {
+                    TMAPIClient.sharedInstance().avatar(blogName, size: 80) { (response: AnyObject!, error: NSError!) in
+                        if let error = error {
+                            print(error)
+                        } else {
+                            let data = response as! NSData!
+                            PINCache.sharedCache().setObject(data, forKey: "avatar:\(blogName)", block: nil)
+                            dispatch_async(self.avatarLoadQueue) {
+                                let image = UIImage(data: data)
+                                dispatch_async(dispatch_get_main_queue()) {
+                                    self.avatarImageView.image = image
+                                }
                             }
                         }
                     }
                 }
-                
-                if let rebloggedBlogName = post.rebloggedBlogName {
-                    self.usernameLabel.text = nil
-                    self.topUsernameLabel.text = blogName
-                    self.bottomUsernameLabel.text = rebloggedBlogName
-                } else {
-                    self.usernameLabel.text = blogName
-                    self.topUsernameLabel.text = nil
-                    self.bottomUsernameLabel.text = nil
-                }
+            }
+            
+            if let rebloggedBlogName = post.rebloggedBlogName {
+                self.usernameLabel.text = nil
+                self.topUsernameLabel.text = blogName
+                self.bottomUsernameLabel.text = rebloggedBlogName
+            } else {
+                self.usernameLabel.text = blogName
+                self.topUsernameLabel.text = nil
+                self.bottomUsernameLabel.text = nil
             }
         }
     }
-    
+
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
-        self.setUpCell()
+        setUpCell()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.setUpCell()
+        setUpCell()
     }
     
     func setUpCell() {

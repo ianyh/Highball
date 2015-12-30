@@ -14,15 +14,15 @@ struct AnimatedImageCache {
 
     static func setAnimatedImage(animatedImage: FLAnimatedImage?, forKey key: String) {
         if let image = animatedImage {
-            self.animatedImageCache.setObject(image, forKey: key)
+            animatedImageCache.setObject(image, forKey: key)
         }
     }
 
     static func animatedImageForKey(key: String) -> FLAnimatedImage? {
-        return self.animatedImageCache.objectForKey(key) as? FLAnimatedImage
+        return animatedImageCache.objectForKey(key) as? FLAnimatedImage
     }
 
     static func clearCache() {
-        self.animatedImageCache.removeAllObjects()
+        animatedImageCache.removeAllObjects()
     }
 }

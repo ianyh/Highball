@@ -30,8 +30,8 @@ class AccountsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.tableView.registerClass(UITableViewCell.classForCoder(), forCellReuseIdentifier: cellIdentifier)
-        self.accounts = AccountsService.accounts()
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+        accounts = AccountsService.accounts()
     }
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -41,7 +41,7 @@ class AccountsViewController: UITableViewController {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch Section(rawValue: section)! {
         case .Accounts:
-            return self.accounts.count
+            return accounts.count
         case .AddAccount:
             return 1
         }
@@ -50,16 +50,16 @@ class AccountsViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         switch Section(rawValue: indexPath.section)! {
         case .Accounts:
-            let account = self.accounts[indexPath.row]
-            let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier)!
+            let account = accounts[indexPath.row]
+            let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath)
 
             cell.textLabel?.text = account.blog.name
 
             if let currentAccount = AccountsService.account {
                 if account == currentAccount {
-                    cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+                    cell.accessoryType = .Checkmark
                 } else {
-                    cell.accessoryType = UITableViewCellAccessoryType.None
+                    cell.accessoryType = .None
                 }
             }
 
@@ -68,7 +68,7 @@ class AccountsViewController: UITableViewController {
             let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier)!
 
             cell.textLabel?.text = "Add account"
-            cell.accessoryType = UITableViewCellAccessoryType.None
+            cell.accessoryType = .None
 
             return cell
         }
@@ -77,13 +77,13 @@ class AccountsViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         switch Section(rawValue: indexPath.section)! {
         case .Accounts:
-            let account = self.accounts[indexPath.row]
-            AccountsService.loginToAccount(account, completion: { () -> () in
+            let account = accounts[indexPath.row]
+            AccountsService.loginToAccount(account) {
                 if let navigationController = self.presentingViewController as? UINavigationController {
                     navigationController.viewControllers = [DashboardViewController()]
                 }
                 self.tableView.reloadData()
-            })
+            }
         case .AddAccount:
             AccountsService.authenticateNewAccount(fromViewController: self) { (account) -> () in
                 self.accounts = AccountsService.accounts()
@@ -93,16 +93,18 @@ class AccountsViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return Section(rawValue: indexPath.section) == Section.Accounts
+        return Section(rawValue: indexPath.section) == .Accounts
     }
 
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if Section(rawValue: indexPath.section) == Section.Accounts {
-            let account = self.accounts[indexPath.row]
-            AccountsService.deleteAccount(account, fromViewController: self) {
-                self.accounts = AccountsService.accounts()
-                self.tableView.reloadData()
-            }
+        guard Section(rawValue: indexPath.section) == .Accounts else {
+            return
+        }
+
+        let account = accounts[indexPath.row]
+        AccountsService.deleteAccount(account, fromViewController: self) {
+            self.accounts = AccountsService.accounts()
+            self.tableView.reloadData()
         }
     }
 }

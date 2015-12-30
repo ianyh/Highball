@@ -40,9 +40,11 @@ class SettingsViewController : UITableViewController {
     }
 
     override func viewDidAppear(animated: Bool) {
-        if let selectedInexPath = tableView.indexPathForSelectedRow {
-            tableView.deselectRowAtIndexPath(selectedInexPath, animated: animated)
+        guard let selectedInexPath = tableView.indexPathForSelectedRow else {
+            return
         }
+
+        tableView.deselectRowAtIndexPath(selectedInexPath, animated: animated)
     }
 
     func done(sender: UIBarButtonItem) {
@@ -58,10 +60,7 @@ class SettingsViewController : UITableViewController {
         case .Accounts:
             return 1
         case .Passcode:
-            if VENTouchLock.canUseTouchID() {
-                return 3
-            }
-            return 2
+            return VENTouchLock.canUseTouchID() ? 3 : 2
         case .Cache:
             return 1
         }
@@ -95,7 +94,7 @@ class SettingsViewController : UITableViewController {
             }
         case .Cache:
             cell.textLabel?.text = "Clear Cache"
-            cell.accessoryType = UITableViewCellAccessoryType.None
+            cell.accessoryType = .None
         }
 
         return cell
@@ -113,7 +112,7 @@ class SettingsViewController : UITableViewController {
                 let viewController = VENTouchLockCreatePasscodeViewController()
                 if let navigationController = self.navigationController {
                     viewController.willFinishWithResult = { finished in
-                        navigationController.popViewControllerAnimated(true); return
+                        navigationController.popViewControllerAnimated(true)
                     }
                     navigationController.pushViewController(viewController, animated: true)
                 }
@@ -131,12 +130,12 @@ class SettingsViewController : UITableViewController {
                 tableView.reloadData()
             }
         case .Cache:
-            let alertController = UIAlertController(title: "Are you sure?", message: "Are you sure that you want to clear your cache?", preferredStyle: UIAlertControllerStyle.Alert)
-            alertController.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.Destructive) { action in
+            let alertController = UIAlertController(title: "Are you sure?", message: "Are you sure that you want to clear your cache?", preferredStyle: .Alert)
+            alertController.addAction(UIAlertAction(title: "Yes", style: .Destructive) { action in
                 PINRemoteImageManager.sharedImageManager().cache.diskCache.removeAllObjects(nil)
                 PINCache.sharedCache().diskCache.removeAllObjects(nil)
             })
-            alertController.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.Cancel) { _ in })
+            alertController.addAction(UIAlertAction(title: "No", style: .Cancel, handler: nil))
             presentViewController(alertController, animated: true, completion: nil)
         }
     }

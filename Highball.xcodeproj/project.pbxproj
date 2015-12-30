@@ -34,8 +34,6 @@
 		408C7D1F19B36F7400EFC410 /* PostLinkTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408C7D1E19B36F7400EFC410 /* PostLinkTableViewCell.swift */; };
 		408C7D2119B384C800EFC410 /* PostDialogueEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408C7D2019B384C800EFC410 /* PostDialogueEntry.swift */; };
 		408C7D2319B387A500EFC410 /* PostDialogueEntryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408C7D2219B387A500EFC410 /* PostDialogueEntryTableViewCell.swift */; };
-		408D393F19C12E550001981F /* ImageItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408D393E19C12E550001981F /* ImageItemProvider.swift */; };
-		408D394119C12EF00001981F /* PostItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408D394019C12EF00001981F /* PostItemProvider.swift */; };
 		408D5B6E1B7D6AA300C787FA /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 408D5B6D1B7D6AA300C787FA /* Launch Screen.xib */; };
 		409030C81C306C42008E786F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 409030C71C306C42008E786F /* Main.storyboard */; };
 		409030CA1C308059008E786F /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409030C91C308059008E786F /* PostTableViewCell.swift */; };
@@ -119,8 +117,6 @@
 		408C7D1E19B36F7400EFC410 /* PostLinkTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostLinkTableViewCell.swift; sourceTree = "<group>"; };
 		408C7D2019B384C800EFC410 /* PostDialogueEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostDialogueEntry.swift; sourceTree = "<group>"; };
 		408C7D2219B387A500EFC410 /* PostDialogueEntryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostDialogueEntryTableViewCell.swift; sourceTree = "<group>"; };
-		408D393E19C12E550001981F /* ImageItemProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageItemProvider.swift; sourceTree = "<group>"; };
-		408D394019C12EF00001981F /* PostItemProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostItemProvider.swift; sourceTree = "<group>"; };
 		408D5B6D1B7D6AA300C787FA /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		409030C71C306C42008E786F /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		409030C91C308059008E786F /* PostTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
@@ -278,8 +274,6 @@
 				4050698519AA76BD0066ECE3 /* DashboardViewController.swift */,
 				40A11E6719B518DD00B91843 /* ImagesViewController.swift */,
 				40FF6D4419B9F656008119A3 /* QuickReblogViewController.swift */,
-				408D393E19C12E550001981F /* ImageItemProvider.swift */,
-				408D394019C12EF00001981F /* PostItemProvider.swift */,
 				402D979819F1E442003DCD55 /* TextReblogViewController.swift */,
 				40731BB719FDC38900F6978D /* PostsViewController.swift */,
 				40731BB919FDCAD300F6978D /* LikesViewController.swift */,
@@ -514,13 +508,11 @@
 				4050698119AA76BD0066ECE3 /* AppDelegate.swift in Sources */,
 				4018C18C1A9AAB7700B27D08 /* PostViewController.swift in Sources */,
 				408C7D1F19B36F7400EFC410 /* PostLinkTableViewCell.swift in Sources */,
-				408D393F19C12E550001981F /* ImageItemProvider.swift in Sources */,
 				40DF7DB41A79919900CE3D4C /* VideoPlayController.swift in Sources */,
 				40F8CE9A1A41143000609ABF /* AccountsService.swift in Sources */,
 				40F8CE961A41111300609ABF /* AccountsViewController.swift in Sources */,
 				403F53DF19AFCEB800FF8F3B /* String+HTML.swift in Sources */,
 				406690651A5A17A1006345B0 /* TagsTableViewCell.swift in Sources */,
-				408D394119C12EF00001981F /* PostItemProvider.swift in Sources */,
 				4018C1861A9AA61E00B27D08 /* PostCollectionViewCell.swift in Sources */,
 				40778B9C19B15F9C00F8EE13 /* Post.swift in Sources */,
 				40080E8E1A0F042B00D883AE /* SettingsViewController.swift in Sources */,

@@ -18,57 +18,62 @@ class PostLinkTableViewCell: WCFastCell {
     
     var post: Post? {
         didSet {
-            if let post = self.post {
-                let url = NSURL(string: post.urlString!)
-                self.titleLabel.text = post.title
-                self.urlLabel.text = url?.host
+            guard
+                let post = post,
+                let urlString = post.urlString,
+                let url = NSURL(string: urlString)
+            else {
+                return
             }
+
+            self.titleLabel.text = post.title
+            self.urlLabel.text = url.host
         }
     }
     
     override required init(style: UITableViewCellStyle, reuseIdentifier: String!) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.setUpCell()
+        setUpCell()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.setUpCell()
+        setUpCell()
     }
     
     func setUpCell() {
-        self.bubbleView = UIView()
-        self.titleLabel = UILabel()
-        self.urlLabel = UILabel()
+        bubbleView = UIView()
+        titleLabel = UILabel()
+        urlLabel = UILabel()
         
-        self.bubbleView.backgroundColor = UIColor(red: 86.0/255.0, green: 188.0/255.0, blue: 138.0/255.0, alpha: 1)
-        self.bubbleView.clipsToBounds = true
+        bubbleView.backgroundColor = UIColor(red: 86.0/255.0, green: 188.0/255.0, blue: 138.0/255.0, alpha: 1)
+        bubbleView.clipsToBounds = true
 
-        self.titleLabel.font = UIFont.boldSystemFontOfSize(19)
-        self.titleLabel.textColor = UIColor.whiteColor()
-        self.titleLabel.numberOfLines = 0
-        self.titleLabel.textAlignment = NSTextAlignment.Center
+        titleLabel.font = UIFont.boldSystemFontOfSize(19)
+        titleLabel.textColor = UIColor.whiteColor()
+        titleLabel.numberOfLines = 0
+        titleLabel.textAlignment = NSTextAlignment.Center
         
-        self.urlLabel.font = UIFont.systemFontOfSize(12)
-        self.urlLabel.textColor = UIColor(white: 1, alpha: 0.7)
-        self.urlLabel.numberOfLines = 1
-        self.urlLabel.textAlignment = NSTextAlignment.Center
+        urlLabel.font = UIFont.systemFontOfSize(12)
+        urlLabel.textColor = UIColor(white: 1, alpha: 0.7)
+        urlLabel.numberOfLines = 1
+        urlLabel.textAlignment = NSTextAlignment.Center
         
-        self.contentView.addSubview(self.bubbleView)
-        self.contentView.addSubview(self.titleLabel)
-        self.contentView.addSubview(self.urlLabel)
+        contentView.addSubview(bubbleView)
+        contentView.addSubview(titleLabel)
+        contentView.addSubview(urlLabel)
 
-        constrain(self.bubbleView, self.contentView) { bubbleView, contentView in
-            bubbleView.edges == contentView.edges; return
+        constrain(bubbleView, contentView) { bubbleView, contentView in
+            bubbleView.edges == contentView.edges
         }
 
-        constrain(self.titleLabel, self.bubbleView) { titleLabel, bubbleView in
+        constrain(titleLabel, bubbleView) { titleLabel, bubbleView in
             titleLabel.left == bubbleView.left + 10
             titleLabel.right == bubbleView.right - 10
             titleLabel.top == bubbleView.top + 14
         }
 
-        constrain(self.urlLabel, self.titleLabel, self.bubbleView) { urlLabel, titleLabel, bubbleView in
+        constrain(urlLabel, titleLabel, bubbleView) { urlLabel, titleLabel, bubbleView in
             urlLabel.left == bubbleView.left + 20
             urlLabel.right == bubbleView.right - 20
             urlLabel.top == titleLabel.bottom + 4

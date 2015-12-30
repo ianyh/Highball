@@ -96,6 +96,6 @@ class BlogViewController: PostsViewController {
 
         alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
 
-        self.presentViewController(alertController, animated: true, completion: nil)
+        presentViewController(alertController, animated: true, completion: nil)
     }
 }

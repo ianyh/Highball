@@ -53,21 +53,10 @@ class Post {
         self.reblogKey = json["reblog_key"].string!
         self.timestamp = json["timestamp"].int!
         self.shortURLString = json["short_url"].string!
-        if let tagsJSON = json["tags"].array {
-            self.tags = tagsJSON.map { tag in
-                return "#\(tag)"
-            }
-        } else {
-            self.tags = []
-        }
-        if let photosJSON = self.json["photos"].array {
-            self.photos = photosJSON.map { photoJSON in
-                return PostPhoto(json: photoJSON)
-            }
-        } else {
-            self.photos = []
-        }
-        if let layoutString = self.json["photoset_layout"].string {
+        self.tags = json["tags"].array?.map { "#\($0)" } ?? []
+        self.photos = json["photos"].array?.map { PostPhoto(json: $0) } ?? []
+
+        if let layoutString = json["photoset_layout"].string {
             var photosetLayoutRows = Array<Int>()
             for character in layoutString.characters {
                 photosetLayoutRows.append(Int("\(character)")!)
@@ -101,6 +90,7 @@ class Post {
         } else {
             self.dialogueEntries = []
         }
+
         var bodyString: String?
         switch self.type {
         case "photo":
@@ -160,57 +150,66 @@ class Post {
         self.liked = json["liked"].bool!
     }
 
-    func htmlBodyWithWidth(width: CGFloat) -> (String?) {
-        return self.body?.htmlStringWithTumblrStyle(width)
+    func htmlBodyWithWidth(width: CGFloat) -> String? {
+        return body?.htmlStringWithTumblrStyle(width)
     }
 
-    func htmlSecondaryBodyWithWidth(width: CGFloat) -> (String?) {
+    func htmlSecondaryBodyWithWidth(width: CGFloat) -> String? {
+        guard let secondaryBody = secondaryBody else {
+            return nil
+        }
+
         var stringToStyle: String?
-        if let secondaryBody = self.secondaryBody {
-            switch self.type {
-            case "quote":
-                stringToStyle = "<table><tr><td>-&nbsp;</td><td>\(secondaryBody)</td></tr></table>"
-            default:
-                stringToStyle = secondaryBody
-            }
+
+        switch type {
+        case "quote":
+            stringToStyle = "<table><tr><td>-&nbsp;</td><td>\(secondaryBody)</td></tr></table>"
+        default:
+            stringToStyle = secondaryBody
         }
 
         return stringToStyle?.htmlStringWithTumblrStyle(width)
     }
 
     func videoURL() -> NSURL? {
-        if self.type != "video" {
+        guard self.type != "video" else {
             return nil
         }
 
-        if let videoType = self.videoType {
-            switch videoType {
-            case "vine":
-                if let permalinkURLString = self.permalinkURLString {
-                    if let permalinkURL = NSURL(string: permalinkURLString) {
-                        let document = NSString(data: NSData(contentsOfURL: permalinkURL)!, encoding: NSASCIIStringEncoding) as? String
-                        if let document = document {
-                            let metaStringRange = document.rangeOfString("twitter:player:stream.*?content=\".*?\"", options: NSStringCompareOptions.RegularExpressionSearch)
-                            if let metaStringRange = metaStringRange {
-                                let metaString = document.substringWithRange(metaStringRange)
-                                var urlStringRange = metaString.rangeOfString("http.*?\"", options: NSStringCompareOptions.RegularExpressionSearch)
-                                urlStringRange?.endIndex--
-                                if let urlStringRange = urlStringRange {
-                                    let urlString = metaString.substringWithRange(urlStringRange)
-                                    return NSURL(string: urlString)
-                                }
-                            }
-                        }
-                    }
-                }
-            case "youtube":
-                if let permalinkURLString = self.permalinkURLString {
-                    return NSURL(string: permalinkURLString)
-                }
-            default:
-                if let videoURLString = self.videoURLString {
-                    return NSURL(string: videoURLString)
-                }
+        guard let videoType = self.videoType else {
+            return nil
+        }
+
+        switch videoType {
+        case "vine":
+            guard
+                let permalinkURLString = permalinkURLString,
+                let permalinkURL = NSURL(string: permalinkURLString),
+                let documentData = NSData(contentsOfURL: permalinkURL),
+                let document = NSString(data: documentData, encoding: NSASCIIStringEncoding) as? String,
+                let metaStringRange = document.rangeOfString("twitter:player:stream.*?content=\".*?\"", options: .RegularExpressionSearch)
+            else {
+                return nil
+            }
+
+            let metaString = document.substringWithRange(metaStringRange)
+
+            guard
+                var urlStringRange = metaString.rangeOfString("http.*?\"", options: .RegularExpressionSearch)
+            else {
+                return nil
+            }
+
+            urlStringRange.endIndex--
+
+            return NSURL(string: metaString.substringWithRange(urlStringRange))
+        case "youtube":
+            if let permalinkURLString = permalinkURLString {
+                return NSURL(string: permalinkURLString)
+            }
+        default:
+            if let videoURLString = videoURLString {
+                return NSURL(string: videoURLString)
             }
         }
 
@@ -218,16 +217,17 @@ class Post {
     }
 
     func videoHeightWidthWidth(width: CGFloat) -> CGFloat? {
-        if self.type != "video" {
+        guard self.type != "video" else {
             return nil
         }
 
-        if let videoWidth = self.videoWidth {
-            if let videoHeight = self.videoHeight {
-                return floor(CGFloat(videoHeight / videoWidth) * width)
-            }
+        guard
+            let videoWidth = videoWidth,
+            let videoHeight = videoHeight
+        else {
+            return nil
         }
 
-        return nil
+        return floor(CGFloat(videoHeight / videoWidth) * width)
     }
 }

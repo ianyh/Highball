@@ -21,96 +21,100 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
 
     var contentWidth: CGFloat? {
         didSet {
-            self.loadPhoto()
+            loadPhoto()
         }
     }
     var photo: PostPhoto? {
         didSet {
-            self.loadPhoto()
+            loadPhoto()
         }
     }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.setUpCell()
+        setUpCell()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.setUpCell()
+        setUpCell()
     }
 
     func setUpCell() {
-        self.scrollView = UIScrollView()
-        self.imageView = FLAnimatedImageView()
-        self.failedImageView = UIImageView()
+        scrollView = UIScrollView()
+        imageView = FLAnimatedImageView()
+        failedImageView = UIImageView()
 
-        self.scrollView.delegate = self
-        self.scrollView.maximumZoomScale = 5.0
-        self.scrollView.showsHorizontalScrollIndicator = false
-        self.scrollView.showsVerticalScrollIndicator = false
+        scrollView.delegate = self
+        scrollView.maximumZoomScale = 5.0
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.showsVerticalScrollIndicator = false
 
-        self.imageView.contentMode = UIViewContentMode.ScaleAspectFit
+        imageView.contentMode = .ScaleAspectFit
 
-        self.failedImageView.image = FAKIonIcons.iosCameraOutlineIconWithSize(50).imageWithSize(CGSize(width: 50, height: 50))
+        failedImageView.image = FAKIonIcons.iosCameraOutlineIconWithSize(50).imageWithSize(CGSize(width: 50, height: 50))
 
-        self.contentView.addSubview(self.scrollView)
-        self.scrollView.addSubview(self.imageView)
-        self.scrollView.addSubview(self.failedImageView)
+        contentView.addSubview(scrollView)
+        scrollView.addSubview(imageView)
+        scrollView.addSubview(failedImageView)
 
-        constrain(self.scrollView, self.contentView) { scrollView, contentView in
-            scrollView.edges == contentView.edges; return
+        constrain(scrollView, contentView) { scrollView, contentView in
+            scrollView.edges == contentView.edges
         }
 
-        constrain(self.failedImageView, self.imageView) { failedImageView, imageView in
-            failedImageView.edges == imageView.edges; return
+        constrain(failedImageView, imageView) { failedImageView, imageView in
+            failedImageView.edges == imageView.edges
         }
 
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: Selector("onTap:"))
 
-        self.addGestureRecognizer(tapGestureRecognizer)
+        addGestureRecognizer(tapGestureRecognizer)
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        let imageSize = self.contentView.frame.size
+        let imageSize = contentView.frame.size
         let imageFrame = CGRect(origin: CGPointZero, size: imageSize)
 
-        self.imageView.frame = imageFrame
+        imageView.frame = imageFrame
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        self.imageView.image = nil
-        self.imageView.animatedImage = nil
-        self.failedImageView.hidden = true
-        self.scrollView.zoomScale = 1
-        self.centerScrollViewContents()
+
+        imageView.image = nil
+        imageView.animatedImage = nil
+        failedImageView.hidden = true
+        scrollView.zoomScale = 1
+        centerScrollViewContents()
     }
 
     func loadPhoto() {
-        if let photo = self.photo {
-            if let contentWidth = self.contentWidth {
-                let imageURL = photo.urlWithWidth(contentWidth)
-                self.imageView.pin_setImageFromURL(imageURL) { result in
-                    self.failedImageView.hidden = result.error == nil; return
-                }
-            }
+        guard
+            let photo = photo,
+            let contentWidth = contentWidth
+        else {
+            return
+        }
+
+        let imageURL = photo.urlWithWidth(contentWidth)
+        imageView.pin_setImageFromURL(imageURL) { result in
+            self.failedImageView.hidden = result.error == nil
         }
     }
 
     func scrollViewDidZoom(scrollView: UIScrollView) {
-        self.centerScrollViewContents()
+        centerScrollViewContents()
     }
 
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
-        return self.imageView
+        return imageView
     }
 
     func centerScrollViewContents() {
-        let boundsSize = self.scrollView.bounds.size;
-        var contentsFrame = self.imageView.frame;
+        let boundsSize = scrollView.bounds.size;
+        var contentsFrame = imageView.frame;
         
         if (contentsFrame.size.width < boundsSize.width) {
             contentsFrame.origin.x = (boundsSize.width - contentsFrame.size.width) / 2.0;
@@ -124,12 +128,10 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
             contentsFrame.origin.y = 0.0;
         }
 
-        self.imageView.frame = contentsFrame
+        imageView.frame = contentsFrame
     }
 
     func onTap(recognizer: UITapGestureRecognizer) {
-        if let handler = self.onTapHandler {
-            handler()
-        }
+        onTapHandler?()
     }
 }

@@ -60,6 +60,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         UIApplication.sharedApplication().statusBarStyle = .LightContent
 
+        let backgroundColor = UIColor.flatSkyBlueColorDark().lightenByPercentage(0.5)
+
+        UINavigationBar.appearance().barTintColor = backgroundColor
+        UINavigationBar.appearance().tintColor = UIColor.whiteColor()
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+
+        UITabBar.appearance().tintColor = backgroundColor
+
         window?.rootViewController?.setStatusBarStyle(.LightContent)
         window?.tintColor = UIColor.flatSkyBlueColorDark().lightenByPercentage(0.5)
         window?.makeKeyAndVisible()

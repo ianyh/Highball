@@ -11,15 +11,11 @@ import MediaPlayer
 import Cartography
 
 class VideoPlayController: UIViewController {
-    private var completion: ((Bool) -> ())!
+    private let completion: ((Bool) -> ())
 
-    required init(completion: (Bool) -> ()) {
-        super.init(nibName: nil, bundle: nil)
+    init(completion: (Bool) -> ()) {
         self.completion = completion
-    }
-
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -32,30 +28,30 @@ class VideoPlayController: UIViewController {
         let volumeView = MPVolumeView()
 
         backgroundButton.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.75)
-        backgroundButton.setTitle("", forState: UIControlState.Normal)
-        backgroundButton.addTarget(self, action: Selector("cancel"), forControlEvents: UIControlEvents.TouchUpInside)
+        backgroundButton.setTitle("", forState: .Normal)
+        backgroundButton.addTarget(self, action: Selector("cancel"), forControlEvents: .TouchUpInside)
 
-        playButton.setTitle("Play", forState: UIControlState.Normal)
-        playButton.addTarget(self, action: Selector("play"), forControlEvents: UIControlEvents.TouchUpInside)
+        playButton.setTitle("Play", forState: .Normal)
+        playButton.addTarget(self, action: Selector("play"), forControlEvents: .TouchUpInside)
 
         volumeView.alpha = 1.0
 
-        self.view.addSubview(backgroundButton)
-        self.view.addSubview(playButton)
-        self.view.addSubview(volumeView)
+        view.addSubview(backgroundButton)
+        view.addSubview(playButton)
+        view.addSubview(volumeView)
 
-        constrain(backgroundButton, self.view) { backgroundButton, view in
-            backgroundButton.edges == view.edges; return
+        constrain(backgroundButton, view) { backgroundButton, view in
+            backgroundButton.edges == view.edges
         }
 
-        constrain(playButton, self.view) { playButton, view in
+        constrain(playButton, view) { playButton, view in
             playButton.centerX == view.centerX
             playButton.bottom == view.centerY - 5
             playButton.width == 60
             playButton.height == 50
         }
 
-        constrain(volumeView, self.view) { volumeView, view in
+        constrain(volumeView, view) { volumeView, view in
             volumeView.left == view.left + 30
             volumeView.right == view.right - 30
             volumeView.top == view.centerY + 5
@@ -64,17 +60,15 @@ class VideoPlayController: UIViewController {
     }
 
     func play() {
-        self.finish(true)
+        finish(true)
     }
 
     func cancel() {
-        self.finish(false)
+        finish(false)
     }
 
     private func finish(play: Bool) {
-        let completion = self.completion
-        self.completion = nil
         completion(play)
-        self.dismissViewControllerAnimated(true, completion: nil)
+        dismissViewControllerAnimated(true, completion: nil)
     }
 }

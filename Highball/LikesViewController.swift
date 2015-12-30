@@ -22,12 +22,13 @@ class LikesViewController: PostsViewController {
     }
 
     override func postsFromJSON(json: JSON) -> Array<Post> {
-        if let postsJSON = json["liked_posts"].array {
-            return postsJSON.map { (post) -> (Post) in
-                return Post(json: post)
-            }
+        guard let postsJSON = json["liked_posts"].array else {
+            return []
         }
-        return []
+
+        return postsJSON.map { (post) -> (Post) in
+            return Post(json: post)
+        }
     }
 
     override func requestPosts(postCount: Int, var parameters: Dictionary<String, AnyObject>, callback: TMAPICallback) {

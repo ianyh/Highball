@@ -43,20 +43,6 @@ class MainViewController: UITabBarController {
             settingsViewController
         ]
 
-        let backgroundColor = UIColor.flatSkyBlueColorDark().lightenByPercentage(0.5)
-
-        (viewControllers as? [UINavigationController])?.forEach { navigationController in
-            navigationController.navigationBar.barTintColor = backgroundColor
-            navigationController.navigationBar.tintColor = UIColor.whiteColor()
-            navigationController.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
-//            navigationController.navigationBar.translucent = false
-//            navigationController.hidesNavigationBarHairline = true
-//            navigationController.setNavigationBarHidden(true, animated: false)
-        }
-
-        tabBar.tintColor = backgroundColor
-//        tabBar.barTintColor = backgroundColor
-
         statusBarBackgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .ExtraLight))
 
 //        view.addSubview(statusBarBackgroundView)

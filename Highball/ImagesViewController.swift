@@ -23,32 +23,29 @@ class ImagesViewController: UIViewController, UICollectionViewDataSource, UIColl
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
 
-        self.imagesCollectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
-        self.imagesCollectionView.delegate = self
-        self.imagesCollectionView.dataSource = self
-        self.imagesCollectionView.pagingEnabled = true
-        self.imagesCollectionView.showsHorizontalScrollIndicator = false
-        self.imagesCollectionView.showsVerticalScrollIndicator = false
+        imagesCollectionView = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
+        imagesCollectionView.dataSource = self
+        imagesCollectionView.delegate = self
+        imagesCollectionView.pagingEnabled = true
+        imagesCollectionView.showsHorizontalScrollIndicator = false
+        imagesCollectionView.showsVerticalScrollIndicator = false
 
-        self.imagesCollectionView.registerClass(ImageCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: imageCollectionViewCellIdentifier)
+        imagesCollectionView.registerClass(ImageCollectionViewCell.self, forCellWithReuseIdentifier: imageCollectionViewCellIdentifier)
 
-        self.view.addSubview(self.imagesCollectionView)
+        view.addSubview(imagesCollectionView)
     }
 
     override func viewDidAppear(animated: Bool) {
-        self.imagesCollectionView.reloadData()
+        imagesCollectionView.reloadData()
     }
 
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let post = self.post {
-            return post.photos.count
-        }
-        return 0
+        return post?.photos.count ?? 0
     }
 
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(imageCollectionViewCellIdentifier, forIndexPath: indexPath) as! ImageCollectionViewCell
-        let postPhoto = self.post!.photos[indexPath.row]
+        let postPhoto = post!.photos[indexPath.row]
 
         cell.contentWidth = collectionView.frame.size.width
         cell.photo = postPhoto
@@ -58,7 +55,7 @@ class ImagesViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
 
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        dismissViewControllerAnimated(true, completion: nil)
     }
 
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {

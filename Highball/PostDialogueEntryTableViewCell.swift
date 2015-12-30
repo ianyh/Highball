@@ -11,35 +11,32 @@ import UIKit
 import WCFastCell
 
 class PostDialogueEntryTableViewCell: WCFastCell {
-
     var contentLabel: UILabel!
 
     var dialogueEntry: PostDialogueEntry? {
         didSet {
-            if let dialogueEntry = self.dialogueEntry {
-                self.contentLabel.attributedText = dialogueEntry.formattedString
-            }
+            contentLabel.attributedText = dialogueEntry?.formattedString
         }
     }
 
     override required init(style: UITableViewCellStyle, reuseIdentifier: String!) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.setUpCell()
+        setUpCell()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.setUpCell()
+        setUpCell()
     }
 
     func setUpCell() {
-        self.contentLabel = UILabel()
+        contentLabel = UILabel()
 
-        self.contentLabel.numberOfLines = 0
+        contentLabel.numberOfLines = 0
 
-        self.contentView.addSubview(self.contentLabel)
+        contentView.addSubview(contentLabel)
 
-        constrain(self.contentLabel, self.contentView) { contentLabel, contentView in
+        constrain(contentLabel, contentView) { contentLabel, contentView in
             contentLabel.left == contentView.left + 10
             contentLabel.right == contentView.right - 10
             contentLabel.top == contentView.top + 4
@@ -55,5 +52,4 @@ class PostDialogueEntryTableViewCell: WCFastCell {
 
         return extraHeight + ceil(contentRect.size.height)
     }
-
 }

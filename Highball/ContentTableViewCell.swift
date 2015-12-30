@@ -16,7 +16,7 @@ class ContentTableViewCell: WCFastCell, WKNavigationDelegate {
     var content: String? {
         didSet {
             if let content = content {
-                self.contentWebView.loadHTMLString(content, baseURL: nil)
+                contentWebView.loadHTMLString(content, baseURL: nil)
             } else {
                 contentWebView.loadHTMLString("", baseURL: nil)
             }
@@ -27,12 +27,12 @@ class ContentTableViewCell: WCFastCell, WKNavigationDelegate {
 
     override init(style: UITableViewCellStyle, reuseIdentifier: String!) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.setUpCell()
+        setUpCell()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.setUpCell()
+        setUpCell()
     }
 
     func setUpCell() {
@@ -52,9 +52,7 @@ class ContentTableViewCell: WCFastCell, WKNavigationDelegate {
             decisionHandler(.Allow)
         } else {
             if navigationAction.navigationType == .LinkActivated, let url = navigationAction.request.URL {
-                if let handler = linkHandler {
-                    handler(url)
-                }
+                linkHandler?(url)
             }
             decisionHandler(.Cancel)
         }

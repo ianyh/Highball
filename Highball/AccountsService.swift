@@ -38,27 +38,27 @@ struct AccountsService {
     static var account: Account!
 
     static func start(fromViewController viewController: UIViewController, completion: () -> ()) {
-        if let lastAccount = self.lastAccount() {
-            self.loginToAccount(lastAccount, completion: completion)
+        if let lastAccount = lastAccount() {
+            loginToAccount(lastAccount, completion: completion)
             return
         }
 
-        let accounts = self.accounts()
-        if accounts.count > 0 {
-            self.loginToAccount(accounts.first!, completion: completion)
-        } else {
-            self.authenticateNewAccount(fromViewController: viewController) { (account) -> () in
+        guard let firstAccount = accounts().first else {
+            authenticateNewAccount(fromViewController: viewController) { account in
                 if let account = account {
                     self.loginToAccount(account, completion: completion)
                 } else {
                     self.start(fromViewController: viewController, completion: completion)
                 }
             }
+            return
         }
+
+        loginToAccount(firstAccount, completion: completion)
     }
 
     static func accounts() -> Array<Account> {
-        return self.accountDictionaries().map { (accountDictionary) -> Account in
+        return accountDictionaries().map { (accountDictionary) -> Account in
             let blogData = accountDictionary[self.accountBlogDataKey]! as! NSData
             let blog = NSKeyedUnarchiver.unarchiveObjectWithData(blogData) as! Blog
             return Account(
@@ -70,30 +70,32 @@ struct AccountsService {
     }
 
     static func lastAccount() -> Account? {
-        if let accountDictionary = NSUserDefaults.standardUserDefaults().dictionaryForKey(self.lastAccountDefaultsKey) {
-            let blogData = accountDictionary[self.accountBlogDataKey]! as! NSData
-            let blog = NSKeyedUnarchiver.unarchiveObjectWithData(blogData) as! Blog
-            return Account(
-                blog: blog,
-                token: accountDictionary[self.accountOAuthTokenKey]! as! String,
-                tokenSecret: accountDictionary[self.accountOAuthTokenSecretKey]! as! String
-            )
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        guard let accountDictionary = userDefaults.dictionaryForKey(lastAccountDefaultsKey) else {
+            return nil
         }
-        return nil
+
+        let blogData = accountDictionary[self.accountBlogDataKey]! as! NSData
+        let blog = NSKeyedUnarchiver.unarchiveObjectWithData(blogData) as! Blog
+        return Account(
+            blog: blog,
+            token: accountDictionary[self.accountOAuthTokenKey]! as! String,
+            tokenSecret: accountDictionary[self.accountOAuthTokenSecretKey]! as! String
+        )
     }
 
     static func loginToAccount(account: Account, completion: () -> ()) {
         self.account = account
         let accountDictionary = [
-            self.accountBlogDataKey : NSKeyedArchiver.archivedDataWithRootObject(account.blog),
-            self.accountOAuthTokenKey : account.token,
-            self.accountOAuthTokenSecretKey : account.tokenSecret
+            accountBlogDataKey : NSKeyedArchiver.archivedDataWithRootObject(account.blog),
+            accountOAuthTokenKey : account.token,
+            accountOAuthTokenSecretKey : account.tokenSecret
         ]
 
         TMAPIClient.sharedInstance().OAuthToken = account.token
         TMAPIClient.sharedInstance().OAuthTokenSecret = account.tokenSecret
 
-        NSUserDefaults.standardUserDefaults().setObject(accountDictionary, forKey: self.lastAccountDefaultsKey)
+        NSUserDefaults.standardUserDefaults().setObject(accountDictionary, forKey: lastAccountDefaultsKey)
 
         dispatch_async(dispatch_get_main_queue(), completion)
     }
@@ -106,9 +108,9 @@ struct AccountsService {
             authorizeUrl: "https://www.tumblr.com/oauth/authorize",
             accessTokenUrl: "https://www.tumblr.com/oauth/access_token"
         )
-        let currentAccount: Account? = self.account
+        let currentAccount: Account? = account
 
-        self.account = nil
+        account = nil
 
         TMAPIClient.sharedInstance().OAuthToken = nil
         TMAPIClient.sharedInstance().OAuthTokenSecret = nil
@@ -122,14 +124,15 @@ struct AccountsService {
                 TMAPIClient.sharedInstance().OAuthTokenSecret = credential.oauth_token_secret
 
                 TMAPIClient.sharedInstance().userInfo { response, error in
-                    if let _ = error {
+                    if let error = error {
+                        print(error)
                         completion(account: nil)
                         return
                     }
 
                     let json = JSON(response)
-                    let blogs = json["user"]["blogs"].array!.map({ Blog(json: $0) })
-                    let primaryBlog = blogs.filter({ $0.primary }).first
+                    let blogs = json["user"]["blogs"].array!.map { Blog(json: $0) }
+                    let primaryBlog = blogs.filter { $0.primary }.first
                     let account = Account(
                         blog: primaryBlog!,
                         token: TMAPIClient.sharedInstance().OAuthToken,
@@ -161,29 +164,30 @@ struct AccountsService {
     }
 
     static func deleteAccount(account: Account, fromViewController viewController: UIViewController, completion: () -> ()) {
-        let accountDictionaries = self.accounts().filter({ existingAccount in
-            return !(existingAccount == account)
-        }).map({ existingAccount -> Dictionary<String, AnyObject> in
-            return [
-                self.accountBlogDataKey : NSKeyedArchiver.archivedDataWithRootObject(existingAccount.blog),
-                self.accountOAuthTokenKey : existingAccount.token,
-                self.accountOAuthTokenSecretKey : existingAccount.tokenSecret
-            ]
-        })
+        let accountDictionaries = accounts()
+            .filter { $0 != nil }
+            .map { existingAccount -> Dictionary<String, AnyObject> in
+                return [
+                    self.accountBlogDataKey : NSKeyedArchiver.archivedDataWithRootObject(existingAccount.blog),
+                    self.accountOAuthTokenKey : existingAccount.token,
+                    self.accountOAuthTokenSecretKey : existingAccount.tokenSecret
+                ]
+            }
 
-        NSUserDefaults.standardUserDefaults().setObject(accountDictionaries, forKey: self.accountsDefaultsKey)
+        NSUserDefaults.standardUserDefaults().setObject(accountDictionaries, forKey: accountsDefaultsKey)
 
         if self.account == account {
             self.account = nil
-            NSUserDefaults.standardUserDefaults().removeObjectForKey(self.lastAccountDefaultsKey)
-            self.start(fromViewController: viewController, completion: completion)
+            NSUserDefaults.standardUserDefaults().removeObjectForKey(lastAccountDefaultsKey)
+            start(fromViewController: viewController, completion: completion)
         } else {
             dispatch_async(dispatch_get_main_queue(), completion)
         }
     }
 
     private static func accountDictionaries() -> Array<Dictionary<String, AnyObject>> {
-        if let accountDictionaries = NSUserDefaults.standardUserDefaults().arrayForKey(self.accountsDefaultsKey) as? Array<Dictionary<String, AnyObject>> {
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        if let accountDictionaries = userDefaults.arrayForKey(self.accountsDefaultsKey) as? [[String: AnyObject]] {
             return accountDictionaries
         } else {
             return []

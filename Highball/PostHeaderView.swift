@@ -23,49 +23,51 @@ class PostHeaderView: UITableViewHeaderFooterView {
 
     var post: Post? {
         didSet {
-            if let post = self.post {
-                let blogName = post.blogName
+            guard let post = self.post else {
+                return
+            }
 
-                avatarImageView.image = UIImage(named: "Placeholder")
-
-                PINCache.sharedCache().objectForKey("avatar:\(blogName)") { cache, key, object in
-                    if let data = object as? NSData {
-                        dispatch_async(self.avatarLoadQueue, {
-                            let image = UIImage(data: data)
-                            dispatch_async(dispatch_get_main_queue(), {
-                                self.avatarImageView.image = image
-                            })
-                        })
-                    } else {
-                        TMAPIClient.sharedInstance().avatar(blogName, size: 80) { (response: AnyObject!, error: NSError!) in
-                            if let e = error {
-                                print(e)
-                            } else {
-                                let data = response as! NSData!
-                                PINCache.sharedCache().setObject(data, forKey: "avatar:\(blogName)", block: nil)
-                                dispatch_async(self.avatarLoadQueue, {
-                                    let image = UIImage(data: data)
-                                    dispatch_async(dispatch_get_main_queue(), {
-                                        self.avatarImageView.image = image
-                                    })
-                                })
+            let blogName = post.blogName
+            
+            avatarImageView.image = UIImage(named: "Placeholder")
+            
+            PINCache.sharedCache().objectForKey("avatar:\(blogName)") { cache, key, object in
+                if let data = object as? NSData {
+                    dispatch_async(self.avatarLoadQueue) {
+                        let image = UIImage(data: data)
+                        dispatch_async(dispatch_get_main_queue()) {
+                            self.avatarImageView.image = image
+                        }
+                    }
+                } else {
+                    TMAPIClient.sharedInstance().avatar(blogName, size: 80) { response, error in
+                        if let error = error {
+                            print(error)
+                        } else {
+                            let data = response as! NSData!
+                            PINCache.sharedCache().setObject(data, forKey: "avatar:\(blogName)", block: nil)
+                            dispatch_async(self.avatarLoadQueue) {
+                                let image = UIImage(data: data)
+                                dispatch_async(dispatch_get_main_queue()) {
+                                    self.avatarImageView.image = image
+                                }
                             }
                         }
                     }
                 }
-
-                if let rebloggedBlogName = post.rebloggedBlogName {
-                    usernameLabel.text = nil
-                    topUsernameLabel.text = blogName
-                    bottomUsernameLabel.text = rebloggedBlogName
-                } else {
-                    usernameLabel.text = blogName
-                    topUsernameLabel.text = nil
-                    bottomUsernameLabel.text = nil
-                }
-
-                timeLabel.text = NSDate(timeIntervalSince1970: NSTimeInterval(post.timestamp)).stringWithRelativeFormat()
             }
+            
+            if let rebloggedBlogName = post.rebloggedBlogName {
+                usernameLabel.text = nil
+                topUsernameLabel.text = blogName
+                bottomUsernameLabel.text = rebloggedBlogName
+            } else {
+                usernameLabel.text = blogName
+                topUsernameLabel.text = nil
+                bottomUsernameLabel.text = nil
+            }
+            
+            timeLabel.text = NSDate(timeIntervalSince1970: NSTimeInterval(post.timestamp)).stringWithRelativeFormat()
         }
     }
 
@@ -160,10 +162,10 @@ class PostHeaderView: UITableViewHeaderFooterView {
     }
 
     func tap(sender: UIButton) {
-        if let tapHandler = tapHandler {
-            if let post = post {
-                tapHandler(post, self)
-            }
+        guard let post = post else {
+            return
         }
+
+        tapHandler?(post, self)
     }
 }

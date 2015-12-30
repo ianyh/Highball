@@ -28,23 +28,23 @@ class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollecti
 
         override init(frame: CGRect) {
             super.init(frame: frame)
-            self.setUpCell()
+            setUpCell()
         }
 
         required init?(coder aDecoder: NSCoder) {
             super.init(coder: aDecoder)
-            self.setUpCell()
+            setUpCell()
         }
 
         func setUpCell() {
-            self.tagLabel = UILabel()
-            self.tagLabel.font = UIFont.systemFontOfSize(14)
-            self.tagLabel.textColor = UIColor.grayColor()
+            tagLabel = UILabel()
+            tagLabel.font = UIFont.systemFontOfSize(14)
+            tagLabel.textColor = UIColor.grayColor()
 
-            self.contentView.addSubview(self.tagLabel)
+            contentView.addSubview(tagLabel)
 
-            constrain(self.tagLabel, self.contentView) { tagLabel, contentView in
-                tagLabel.edges == contentView.edges; return
+            constrain(tagLabel, contentView) { tagLabel, contentView in
+                tagLabel.edges == contentView.edges
             }
         }
     }
@@ -53,57 +53,52 @@ class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollecti
     var delegate: TagsTableViewCellDelegate?
     var tags: Array<String>? {
         didSet {
-            if let collectionView = self.collectionView {
-                collectionView.reloadData()
-            }
+            collectionView?.reloadData()
         }
     }
     
     override required init(style: UITableViewCellStyle, reuseIdentifier: String!) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.setUpCell()
+        setUpCell()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.setUpCell()
+        setUpCell()
     }
     
     func setUpCell() {
         let collectionViewLayout = UICollectionViewFlowLayout()
-        collectionViewLayout.scrollDirection = UICollectionViewScrollDirection.Horizontal
+        collectionViewLayout.scrollDirection = .Horizontal
         collectionViewLayout.minimumInteritemSpacing = 5
 
-        self.collectionView = UICollectionView(frame: self.bounds, collectionViewLayout: collectionViewLayout)
-        self.collectionView.dataSource = self
-        self.collectionView.delegate = self
-        self.collectionView.scrollsToTop = false
-        self.collectionView.showsHorizontalScrollIndicator = false
-        self.collectionView.showsVerticalScrollIndicator = false
-        self.collectionView.bounces = true
-        self.collectionView.alwaysBounceHorizontal = true
-        self.collectionView.backgroundColor = UIColor.whiteColor()
-        self.collectionView.contentInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+        collectionView = UICollectionView(frame: bounds, collectionViewLayout: collectionViewLayout)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.scrollsToTop = false
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.bounces = true
+        collectionView.alwaysBounceHorizontal = true
+        collectionView.backgroundColor = UIColor.whiteColor()
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
 
-        self.collectionView.registerClass(TagCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: tagCollectionViewCellIdentifier)
+        collectionView.registerClass(TagCollectionViewCell.self, forCellWithReuseIdentifier: tagCollectionViewCellIdentifier)
 
-        self.contentView.addSubview(self.collectionView)
+        contentView.addSubview(collectionView)
         
-        constrain(self.collectionView, self.contentView) { collectionView, contentView in
-            collectionView.edges == contentView.edges; return
+        constrain(collectionView, contentView) { collectionView, contentView in
+            collectionView.edges == contentView.edges
         }
     }
 
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let tags = self.tags {
-            return tags.count
-        }
-        return 0
+        return tags?.count ?? 0
     }
 
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(tagCollectionViewCellIdentifier, forIndexPath: indexPath) as! TagCollectionViewCell
-        let tag = self.tags![indexPath.row]
+        let tag = tags![indexPath.row]
 
         cell.tagLabel.text = tag
 
@@ -111,14 +106,12 @@ class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollecti
     }
 
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        let tag = self.tags![indexPath.row]
+        let tag = tags![indexPath.row]
 
-        return CGSize(width: TagCollectionViewCell.widthForTag(tag), height: collectionView.frame.size.height)
+        return CGSize(width: TagCollectionViewCell.widthForTag(tag), height: collectionView.frame.height)
     }
 
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        if let delegate = self.delegate {
-            delegate.tagsTableViewCell(self, didSelectTag: self.tags![indexPath.row])
-        }
+        delegate?.tagsTableViewCell(self, didSelectTag: self.tags![indexPath.row])
     }
 }

@@ -12,13 +12,13 @@ private let formatterKey = "GroundSignalTimeIntervalFormatterKey"
 
 extension NSDate {
     func stringWithRelativeFormat() -> String {
-        var intervalFormatter: TTTTimeIntervalFormatter! = NSThread.currentThread().threadDictionary[formatterKey] as? TTTTimeIntervalFormatter
-        
-        if let _ = intervalFormatter {} else {
+        var intervalFormatter = NSThread.currentThread().threadDictionary[formatterKey] as? TTTTimeIntervalFormatter
+
+        if intervalFormatter == nil {
             intervalFormatter = TTTTimeIntervalFormatter()
             NSThread.currentThread().threadDictionary[formatterKey] = intervalFormatter
         }
         
-        return intervalFormatter.stringForTimeInterval(timeIntervalSinceNow)
+        return intervalFormatter!.stringForTimeInterval(timeIntervalSinceNow)
     }
 }

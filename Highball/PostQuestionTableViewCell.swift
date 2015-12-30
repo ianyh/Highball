@@ -17,57 +17,59 @@ class PostQuestionTableViewCell: WCFastCell {
 
     var post: Post? {
         didSet {
-            if let post = self.post {
-                let asker = post.asker!
-
-                self.askerLabel.text = "\(asker) said:"
-                self.contentLabel.text = post.question!
+            guard let post = post else {
+                return
             }
+
+            let asker = post.asker!
+            
+            askerLabel.text = "\(asker) said:"
+            contentLabel.text = post.question!
         }
     }
 
-    override required init(style: UITableViewCellStyle, reuseIdentifier: String!) {
+    override init(style: UITableViewCellStyle, reuseIdentifier: String!) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.setUpCell()
+        setUpCell()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.setUpCell()
+        setUpCell()
     }
 
     func setUpCell() {
-        self.bubbleView = UIView()
-        self.askerLabel = UILabel()
-        self.contentLabel = UILabel()
+        bubbleView = UIView()
+        askerLabel = UILabel()
+        contentLabel = UILabel()
 
-        self.bubbleView.backgroundColor = UIColor(white: 245.0/255.0, alpha: 1)
-        self.bubbleView.layer.borderColor = UIColor(white: 217.0/255.0, alpha: 1).CGColor
-        self.bubbleView.layer.borderWidth = 1
+        bubbleView.backgroundColor = UIColor(white: 245.0/255.0, alpha: 1)
+        bubbleView.layer.borderColor = UIColor(white: 217.0/255.0, alpha: 1).CGColor
+        bubbleView.layer.borderWidth = 1
 
-        self.askerLabel.font = UIFont.systemFontOfSize(14)
-        self.askerLabel.textColor = UIColor(white: 166.0/255.0, alpha: 1)
+        askerLabel.font = UIFont.systemFontOfSize(14)
+        askerLabel.textColor = UIColor(white: 166.0/255.0, alpha: 1)
 
-        self.contentLabel.font = UIFont.systemFontOfSize(14)
-        self.contentLabel.textColor = UIColor(white: 68.0/255.0, alpha: 1)
-        self.contentLabel.numberOfLines = 0
+        contentLabel.font = UIFont.systemFontOfSize(14)
+        contentLabel.textColor = UIColor(white: 68.0/255.0, alpha: 1)
+        contentLabel.numberOfLines = 0
 
-        self.contentView.addSubview(self.bubbleView)
-        self.contentView.addSubview(self.askerLabel)
-        self.contentView.addSubview(self.contentLabel)
+        contentView.addSubview(bubbleView)
+        contentView.addSubview(askerLabel)
+        contentView.addSubview(contentLabel)
 
-        constrain(self.bubbleView, self.contentView) { bubbleView, contentView in
-            bubbleView.edges == inset(contentView.edges, 1, 0); return
+        constrain(bubbleView, contentView) { bubbleView, contentView in
+            bubbleView.edges == inset(contentView.edges, 1, 0)
         }
 
-        constrain(self.askerLabel, self.bubbleView) { askerLabel, bubbleView in
+        constrain(askerLabel, bubbleView) { askerLabel, bubbleView in
             askerLabel.left == bubbleView.left + 10
             askerLabel.right == bubbleView.right - 10
             askerLabel.top == bubbleView.top + 12
             askerLabel.height == 20
         }
 
-        constrain(self.contentLabel, self.askerLabel, self.bubbleView) { contentLabel, askerLabel, bubbleView in
+        constrain(contentLabel, askerLabel, bubbleView) { contentLabel, askerLabel, bubbleView in
             contentLabel.top == askerLabel.top + 14
             contentLabel.left == bubbleView.left + 14
             contentLabel.right == bubbleView.right - 14

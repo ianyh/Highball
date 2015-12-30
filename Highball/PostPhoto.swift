@@ -39,23 +39,25 @@ class PostPhoto {
     }
 
     func urlWithWidth(width: CGFloat) -> NSURL {
-        if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
-            if let reachability = delegate.reachability {
-                if reachability.isReachableViaWiFi() {
-                    return NSURL(string: self.sizes.first!["url"].stringValue)!
-                }
+        let appDelegate = UIApplication.sharedApplication().delegate
+        if let delegate = appDelegate as? AppDelegate, let reachability = delegate.reachability {
+            if reachability.isReachableViaWiFi() {
+                return NSURL(string: sizes.first!["url"].stringValue)!
             }
         }
-        let largerSizes = self.sizes.filter {
-            if let sizeWidth = $0["width"].int {
-                return CGFloat(sizeWidth) > width
+
+        let largerSizes = sizes.filter {
+            guard let sizeWidth = $0["width"].int else {
+                return false
             }
-            return false
+
+            return CGFloat(sizeWidth) > width
         }
+
         if let smallestFittedSize = largerSizes.last {
             return NSURL(string: smallestFittedSize["url"].stringValue)!
         } else {
-            return NSURL(string: self.sizes.first!["url"].stringValue)!
+            return NSURL(string: sizes.first!["url"].stringValue)!
         }
     }
 }

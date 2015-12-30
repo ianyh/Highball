@@ -16,11 +16,13 @@ class PostCollectionViewCell: WCFastCollectionViewCell {
     var secondaryBodyHeight: CGFloat? = 0.0
     var post: Post? {
         didSet {
-            if let post = self.post {
-                self.postViewController.post = post
-                self.postViewController.bodyHeight = self.bodyHeight
-                self.postViewController.secondaryBodyHeight = self.secondaryBodyHeight
+            guard let post = post else {
+                return
             }
+
+            postViewController.post = post
+            postViewController.bodyHeight = bodyHeight
+            postViewController.secondaryBodyHeight = secondaryBodyHeight
         }
     }
 
@@ -28,29 +30,18 @@ class PostCollectionViewCell: WCFastCollectionViewCell {
     var tagTapHandler: ((Post, String) -> ())?
     var linkTapHandler: ((Post, NSURL) -> ())?
 
-    required override init(frame: CGRect) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
-        self.postViewController = PostViewController()
-        self.postViewController.bodyTapHandler = { post, view in
-            if let bodyTapHandler = self.bodyTapHandler {
-                bodyTapHandler(post, view)
-            }
-        }
-        self.postViewController.tagTapHandler = { post, tag in
-            if let tagTapHandler = self.tagTapHandler {
-                tagTapHandler(post, tag)
-            }
-        }
-        self.postViewController.linkTapHandler = { post, url in
-            if let linkTapHandler = self.linkTapHandler {
-                linkTapHandler(post, url)
-            }
-        }
 
-        self.contentView.addSubview(self.postViewController.view)
+        postViewController = PostViewController()
+        postViewController.bodyTapHandler = { self.bodyTapHandler?($0, $1) }
+        postViewController.tagTapHandler = { self.tagTapHandler?($0, $1) }
+        postViewController.linkTapHandler = { self.linkTapHandler?($0, $1) }
+
+        contentView.addSubview(postViewController.view)
         
-        constrain(self.postViewController.view, self.contentView) { singlePostView, contentView in
-            singlePostView.edges == contentView.edges; return
+        constrain(postViewController.view, contentView) { singlePostView, contentView in
+            singlePostView.edges == contentView.edges
         }
     }
 
@@ -59,10 +50,10 @@ class PostCollectionViewCell: WCFastCollectionViewCell {
     }
 
     func imageAtPoint(point: CGPoint) -> UIImage? {
-        return self.postViewController.imageAtPoint(self.convertPoint(point, toView: self.postViewController.view))
+        return postViewController.imageAtPoint(convertPoint(point, toView: postViewController.view))
     }
 
     func endDisplay() {
-        self.postViewController.endDisplay()
+        postViewController.endDisplay()
     }
 }

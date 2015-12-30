@@ -42,24 +42,25 @@ class DashboardViewController: PostsViewController {
     }
 
     override func postsFromJSON(json: JSON) -> Array<Post> {
-        if let postsJSON = json["posts"].array {
-            return postsJSON.map { (post) -> (Post) in
-                return Post(json: post)
-            }
+        guard let postsJSON = json["posts"].array else {
+            return []
         }
-        return []
+
+        return postsJSON.map { post -> Post in
+            return Post(json: post)
+        }
     }
 
     override func requestPosts(postCount: Int, parameters: Dictionary<String, AnyObject>, callback: TMAPICallback) {
         TMAPIClient.sharedInstance().dashboard(parameters, callback: callback)
     }
 
-    override func reblogBlogName() -> (String) {
+    override func reblogBlogName() -> String {
         return AccountsService.account.blog.name
     }
 
     func applicationWillResignActive(notification: NSNotification) {
-        self.bookmark()
+        bookmark()
     }
 
     func bookmark() {
@@ -71,8 +72,10 @@ class DashboardViewController: PostsViewController {
             return
         }
 
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        let bookmarksKey = "HIBookmarks:\(account.blog.url)"
         let post = self.posts[firstIndexPath.section]
-        var bookmarks: [[String: AnyObject]] = NSUserDefaults.standardUserDefaults().arrayForKey("HIBookmarks:\(account.blog.url)") as? [[String: AnyObject]] ?? []
+        var bookmarks: [[String: AnyObject]] = userDefaults.arrayForKey(bookmarksKey) as? [[String: AnyObject]] ?? []
 
         bookmarks.insert(["date": NSDate(), "id": post.id], atIndex: 0)
 
@@ -80,27 +83,29 @@ class DashboardViewController: PostsViewController {
             bookmarks = [[String: AnyObject]](bookmarks.prefix(20))
         }
 
-        NSUserDefaults.standardUserDefaults().setObject(bookmarks, forKey: "HIBookmarks:\(account.blog.url)")
+        userDefaults.setObject(bookmarks, forKey: bookmarksKey)
     }
 
     func bookmarks(sender: UIButton, event: UIEvent) {
-        if let _ = self.topID {
-            let alertController = UIAlertController(title: "", message: "Go to top of your feed?", preferredStyle: .Alert)
-            alertController.addAction(UIAlertAction(title: "Yes", style: .Default) { action  in
-                self.navigationItem.rightBarButtonItem = nil
-                self.topID = nil
-                self.posts = []
-                self.heightCache.removeAll()
-                self.tableView.reloadData()
-                self.loadTop()
-            })
-            alertController.addAction(UIAlertAction(title: "No", style: .Cancel, handler: nil))
-            presentViewController(alertController, animated: true, completion: nil)
+        guard topID != nil else {
+            return
         }
+
+        let alertController = UIAlertController(title: "", message: "Go to top of your feed?", preferredStyle: .Alert)
+        alertController.addAction(UIAlertAction(title: "Yes", style: .Default) { action  in
+            self.navigationItem.rightBarButtonItem = nil
+            self.topID = nil
+            self.posts = []
+            self.heightCache.removeAll()
+            self.tableView.reloadData()
+            self.loadTop()
+            })
+        alertController.addAction(UIAlertAction(title: "No", style: .Cancel, handler: nil))
+        presentViewController(alertController, animated: true, completion: nil)
     }
 
     func gotoBookmark(id: Int) {
-        let upArrow = FAKIonIcons.iosArrowUpIconWithSize(30);
+        let upArrow = FAKIonIcons.iosArrowUpIconWithSize(30)
         let upArrowImage = upArrow.imageWithSize(CGSize(width: 30, height: 30))
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(
