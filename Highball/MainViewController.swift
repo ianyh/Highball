@@ -6,6 +6,7 @@
 //  Copyright © 2015 ianynda. All rights reserved.
 //
 
+import FontAwesomeKit
 import UIKit
 
 class MainViewController: UITabBarController {
@@ -23,15 +24,19 @@ class MainViewController: UITabBarController {
         let settingsViewController = UINavigationController(rootViewController: SettingsViewController())
         
         dashboardViewController.tabBarItem.title = "Dashboard"
+        dashboardViewController.tabBarItem.image = FAKFontAwesome.homeIconWithSize(28.0).imageWithSize(CGSize(width: 28, height: 28))
 //        dashboardViewController.setNavigationBarHidden(true, animated: false)
 
         likesViewController.tabBarItem.title = "Likes"
+        likesViewController.tabBarItem.image = FAKFontAwesome.heartIconWithSize(22.0).imageWithSize(CGSize(width: 24, height: 24))
 //        likesViewController.setNavigationBarHidden(true, animated: false)
 
         historyViewController.tabBarItem.title = "History"
+        historyViewController.tabBarItem.image = FAKFontAwesome.historyIconWithSize(22.0).imageWithSize(CGSize(width: 24, height: 24))
 //        historyViewController.setNavigationBarHidden(true, animated: false)
 
-        settingsViewController.tabBarItem.title = "Account"
+        settingsViewController.tabBarItem.title = "Settings"
+        settingsViewController.tabBarItem.image = FAKFontAwesome.cogsIconWithSize(22.0).imageWithSize(CGSize(width: 24, height: 24))
 //        settingsViewController.setNavigationBarHidden(true, animated: false)
         
         viewControllers = [
