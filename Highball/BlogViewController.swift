@@ -50,10 +50,6 @@ class BlogViewController: PostsViewController {
     override func requestPosts(postCount: Int, parameters: Dictionary<String, AnyObject>, callback: TMAPICallback) {
         TMAPIClient.sharedInstance().posts(self.blogName, type: "", parameters: parameters, callback: callback)
     }
-    
-    override func reblogBlogName() -> (String) {
-        return AccountsService.account.blog.name
-    }
 
     func follow(sender: UIBarButtonItem) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)

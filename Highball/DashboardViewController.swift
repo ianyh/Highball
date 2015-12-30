@@ -55,10 +55,6 @@ class DashboardViewController: PostsViewController {
         TMAPIClient.sharedInstance().dashboard(parameters, callback: callback)
     }
 
-    override func reblogBlogName() -> String {
-        return AccountsService.account.blog.name
-    }
-
     func applicationWillResignActive(notification: NSNotification) {
         bookmark()
     }

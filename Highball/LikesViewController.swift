@@ -35,8 +35,4 @@ class LikesViewController: PostsViewController {
         parameters["offset"] = postCount
         TMAPIClient.sharedInstance().likes(parameters, callback: callback)
     }
-
-    override func reblogBlogName() -> String {
-        return AccountsService.account.blog.name
-    }
 }

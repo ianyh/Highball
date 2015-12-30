@@ -59,7 +59,7 @@ let videoTableViewCellIdentifier = "videoTableViewCellIdentifier"
 let youtubeTableViewCellIdentifier = "youtubeTableViewCellIdentifier"
 let postTagsTableViewCellIdentifier = "postTagsTableViewCellIdentifier"
 
-class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, UIViewControllerTransitioningDelegate, WKNavigationDelegate, TagsTableViewCellDelegate {
+class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, UIViewControllerTransitioningDelegate, TagsTableViewCellDelegate {
     private var heightComputationQueue: NSOperationQueue!
     private let requiredRefreshDistance: CGFloat = 60
     private let postParseQueue = dispatch_queue_create("postParseQueue", nil)
@@ -70,11 +70,12 @@ class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, U
     private var reblogViewController: QuickReblogViewController?
 
     var webViewCache: Array<WKWebView>!
-    var bodyWebViewCache: Dictionary<Int, WKWebView>!
     var bodyHeightCache: Dictionary<Int, CGFloat>!
-    var secondaryBodyWebViewCache: Dictionary<Int, WKWebView>!
     var secondaryBodyHeightCache: Dictionary<Int, CGFloat>!
     var heightCache: Dictionary<NSIndexPath, CGFloat>!
+
+    private var heightCalculators = [Int: HeightCalculator]()
+    private var secondaryHeightCalculators = [Int: HeightCalculator]()
 
     var posts: Array<Post>!
     var topID: Int? = nil
@@ -120,9 +121,7 @@ class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, U
         loadingBottom = false
 
         webViewCache = Array<WKWebView>()
-        bodyWebViewCache = Dictionary<Int, WKWebView>()
         bodyHeightCache = Dictionary<Int, CGFloat>()
-        secondaryBodyWebViewCache = Dictionary<Int, WKWebView>()
         secondaryBodyHeightCache = Dictionary<Int, CGFloat>()
         heightCache = Dictionary<NSIndexPath, CGFloat>()
 
@@ -201,7 +200,6 @@ class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, U
         }
 
         let webView = WKWebView(frame: frame)
-        webView.navigationDelegate = self
         return webView
     }
 
@@ -342,40 +340,46 @@ class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, U
     func processPosts(posts: Array<Post>) {
         for post in posts {
             heightComputationQueue.addOperationWithBlock() {
-                if let content = post.htmlBodyWithWidth(self.tableView.frame.width) {
-                    let webView = self.popWebView()
-                    let htmlString = content
+                let width = self.tableView.frame.width
+                let webView = self.popWebView()
+                let heightCalculator = HeightCalculator(post: post, width: width, webView: webView)
 
-                    self.bodyWebViewCache[post.id] = webView
+                self.heightCalculators[post.id] = heightCalculator
 
-                    webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+                heightCalculator.calculateHeight { height in
+                    self.pushWebView(webView)
+                    self.heightCalculators[post.id] = nil
+                    self.bodyHeightCache[post.id] = height
+                    self.reloadTable()
                 }
             }
             heightComputationQueue.addOperationWithBlock() {
-                if let content = post.htmlSecondaryBodyWithWidth(self.tableView.frame.width) {
-                    let webView = self.popWebView()
-                    let htmlString = content
-                    
-                    self.secondaryBodyWebViewCache[post.id] = webView
-                    
-                    webView.loadHTMLString(htmlString, baseURL: NSURL(string: ""))
+                let width = self.tableView.frame.width
+                let webView = self.popWebView()
+                let heightCalculator = HeightCalculator(post: post, width: width, webView: webView)
+
+                self.secondaryHeightCalculators[post.id] = heightCalculator
+
+                heightCalculator.calculateHeight(true) { height in
+                    self.pushWebView(webView)
+                    self.secondaryHeightCalculators[post.id] = nil
+                    self.secondaryBodyHeightCache[post.id] = height
+                    self.reloadTable()
                 }
             }
         }
     }
 
-    func reblogBlogName() -> (String) {
-        return ""
+    private func reblogBlogName() -> (String) {
+        return AccountsService.account.blog.name
     }
 
     func reloadTable() {
-        if heightComputationQueue.operationCount > 0 {
-            return
-        }
-
-        if bodyWebViewCache.count > 0 {
-            return
-        } else if secondaryBodyWebViewCache.count > 0 {
+        guard
+            heightComputationQueue.operationCount == 0 &&
+            heightCalculators.count == 0 &&
+            secondaryHeightCalculators.count == 0
+        else {
             return
         }
 
@@ -689,38 +693,6 @@ class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, U
         }
     }
 
-    // MARK: WKNavigationDelegate
-
-    func webView(webView: WKWebView, didFinishNavigation navigation: WKNavigation!) {
-        webView.getDocumentHeight { height in
-            if let postId = self.bodyWebViewCache.keyForObject(webView, isEqual: ==) {
-                self.bodyHeightCache[postId] = height
-                self.bodyWebViewCache[postId] = nil
-                self.reloadTable()
-            } else if let postId = self.secondaryBodyWebViewCache.keyForObject(webView, isEqual: ==) {
-                self.secondaryBodyHeightCache[postId] = height
-                self.secondaryBodyWebViewCache[postId] = nil
-                self.reloadTable()
-            }
-
-            self.pushWebView(webView)
-        }
-    }
-
-    func webView(webView: WKWebView, didFailNavigation navigation: WKNavigation!, withError error: NSError) {
-        if let postId = bodyWebViewCache.keyForObject(webView, isEqual: ==) {
-            self.bodyHeightCache[postId] = 0
-            self.bodyWebViewCache[postId] = nil
-            self.reloadTable()
-        } else if let postId = secondaryBodyWebViewCache.keyForObject(webView, isEqual: ==) {
-            self.secondaryBodyHeightCache[postId] = 0
-            self.secondaryBodyWebViewCache[postId] = nil
-            self.reloadTable()
-        }
-        
-        pushWebView(webView)
-    }
-    
     // MARK: UIViewControllerTransitioningDelegate
     
     func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
@@ -739,30 +711,5 @@ class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, U
 
     func tagsTableViewCell(cell: TagsTableViewCell, didSelectTag tag: String) {
         navigationController?.pushViewController(TagViewController(tag: tag), animated: true)
-    }
-}
-
-extension WKWebView {
-    func getDocumentHeight(completion: (CGFloat) -> ()) {
-        evaluateJavaScript("var body = document.body, html = document.documentElement; Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);", completionHandler: { result, error in
-            if let _ = error {
-                completion(0)
-            } else if let height = JSON(result!).int {
-                completion(CGFloat(height))
-            } else {
-                completion(0)
-            }
-        })
-    }
-}
-
-extension Dictionary {
-    func keyForObject(object: Value!, isEqual: (Value!, Value!) -> (Bool)) -> (Key?) {
-        for key in self.keys {
-            if isEqual(object, self[key] as Value!) {
-                return key
-            }
-        }
-        return nil
     }
 }

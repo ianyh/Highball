@@ -39,8 +39,4 @@ class TagViewController: PostsViewController {
         }
         TMAPIClient.sharedInstance().tagged(self.tag, parameters: parameters, callback: callback)
     }
-    
-    override func reblogBlogName() -> String {
-        return AccountsService.account.blog.name
-    }
 }
