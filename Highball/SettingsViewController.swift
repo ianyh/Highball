@@ -22,7 +22,6 @@ class SettingsViewController : UITableViewController {
         case ClearPasscode
         case UseTouch
     }
-    let settingsCellIdentifier = "settingsCellIdentifier"
 
     init() {
         super.init(style: .Grouped)
@@ -36,7 +35,7 @@ class SettingsViewController : UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: settingsCellIdentifier)
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: UITableViewCell.cellIdentifier)
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -67,7 +66,7 @@ class SettingsViewController : UITableViewController {
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(settingsCellIdentifier, forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCellWithIdentifier(UITableViewCell.cellIdentifier, forIndexPath: indexPath)
 
         switch SettingsSection(rawValue: indexPath.section)! {
         case .Accounts:

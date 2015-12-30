@@ -11,8 +11,6 @@ import Cartography
 import VENTouchLock
 
 class LockSplashViewController: VENTouchLockSplashViewController, UITableViewDataSource, UITableViewDelegate {
-    private let cellIdentifier = "cellIdentifier"
-
     private var tableView: UITableView!
     private var accounts: Array<Account>!
 
@@ -29,7 +27,7 @@ class LockSplashViewController: VENTouchLockSplashViewController, UITableViewDat
         tableView.allowsSelection = true
         tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0)
 
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: UITableViewCell.cellIdentifier)
 
         view.addSubview(tableView)
 
@@ -44,7 +42,7 @@ class LockSplashViewController: VENTouchLockSplashViewController, UITableViewDat
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let account = accounts[indexPath.row]
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier)!
+        let cell = tableView.dequeueReusableCellWithIdentifier(UITableViewCell.cellIdentifier)!
 
         cell.textLabel?.text = account.blog.name
 

@@ -45,20 +45,6 @@ enum AudioRow: Int {
     case Caption
 }
 
-let postCollectionViewCellIdentifier = "postCollectionViewCellIdentifier"
-
-let postHeaderViewIdentifier = "postHeaderViewIdentifier"
-let postFooterViewIdentifier = "postFooterViewIdentifier"
-let titleTableViewCellIdentifier = "titleTableViewCellIdentifier"
-let photosetRowTableViewCellIdentifier = "photosetRowTableViewCellIdentifier"
-let contentTableViewCellIdentifier = "contentTableViewCellIdentifier"
-let postQuestionTableViewCellIdentifier = "postQuestionTableViewCellIdentifier"
-let postLinkTableViewCellIdentifier = "postLinkTableViewCellIdentifier"
-let postDialogueEntryTableViewCellIdentifier = "postDialogueEntryTableViewCellIdentifier"
-let videoTableViewCellIdentifier = "videoTableViewCellIdentifier"
-let youtubeTableViewCellIdentifier = "youtubeTableViewCellIdentifier"
-let postTagsTableViewCellIdentifier = "postTagsTableViewCellIdentifier"
-
 class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, UIViewControllerTransitioningDelegate, TagsTableViewCellDelegate {
     private var heightComputationQueue: NSOperationQueue!
     private let requiredRefreshDistance: CGFloat = 60
@@ -140,8 +126,8 @@ class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, U
         tableView.showsVerticalScrollIndicator = false
         tableView.tableFooterView = loadingView
 
-        tableView.registerClass(PostTableViewCell.self, forCellReuseIdentifier: postCollectionViewCellIdentifier)
-        tableView.registerClass(PostHeaderView.self, forHeaderFooterViewReuseIdentifier: postCollectionViewCellIdentifier)
+        tableView.registerClass(PostTableViewCell.self, forCellReuseIdentifier: PostTableViewCell.cellIdentifier)
+        tableView.registerClass(PostHeaderView.self, forHeaderFooterViewReuseIdentifier: PostHeaderView.viewIdentifier)
         
         longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: Selector("didLongPress:"))
         longPressGestureRecognizer.delegate = self
@@ -512,7 +498,7 @@ class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, U
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let post = posts![indexPath.section]
-        let cell = tableView.dequeueReusableCellWithIdentifier(postCollectionViewCellIdentifier, forIndexPath: indexPath) as! PostTableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(PostTableViewCell.cellIdentifier, forIndexPath: indexPath) as! PostTableViewCell
         
         cell.bodyHeight = bodyHeightCache[post.id]
         cell.secondaryBodyHeight = secondaryBodyHeightCache[post.id]
@@ -650,7 +636,7 @@ class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, U
     }
 
     override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(postCollectionViewCellIdentifier) as! PostHeaderView
+        let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(PostHeaderView.viewIdentifier) as! PostHeaderView
         let post = posts![section] as Post
         view.post = post
         view.tapHandler = { post, view in

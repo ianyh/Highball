@@ -14,7 +14,6 @@ protocol TagsTableViewCellDelegate {
 }
 
 class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    private let tagCollectionViewCellIdentifier = "tagCollectionViewCellIdentifier"
     private class TagCollectionViewCell: UICollectionViewCell {
         private var tagLabel: UILabel!
 
@@ -83,7 +82,7 @@ class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollecti
         collectionView.backgroundColor = UIColor.whiteColor()
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
 
-        collectionView.registerClass(TagCollectionViewCell.self, forCellWithReuseIdentifier: tagCollectionViewCellIdentifier)
+        collectionView.registerClass(TagCollectionViewCell.self, forCellWithReuseIdentifier: TagCollectionViewCell.cellIdentifier)
 
         contentView.addSubview(collectionView)
         
@@ -97,7 +96,7 @@ class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollecti
     }
 
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(tagCollectionViewCellIdentifier, forIndexPath: indexPath) as! TagCollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(TagCollectionViewCell.cellIdentifier, forIndexPath: indexPath) as! TagCollectionViewCell
         let tag = tags![indexPath.row]
 
         cell.tagLabel.text = tag

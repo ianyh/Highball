@@ -38,16 +38,16 @@ class PostViewController: UIViewController {
         tableView.separatorStyle = .None
         tableView.showsHorizontalScrollIndicator = false
         tableView.showsVerticalScrollIndicator = false
-        
-        tableView.registerClass(TitleTableViewCell.self, forCellReuseIdentifier: titleTableViewCellIdentifier)
-        tableView.registerClass(PhotosetRowTableViewCell.self, forCellReuseIdentifier: photosetRowTableViewCellIdentifier)
-        tableView.registerClass(ContentTableViewCell.self, forCellReuseIdentifier: contentTableViewCellIdentifier)
-        tableView.registerClass(PostQuestionTableViewCell.self, forCellReuseIdentifier: postQuestionTableViewCellIdentifier)
-        tableView.registerClass(PostLinkTableViewCell.self, forCellReuseIdentifier: postLinkTableViewCellIdentifier)
-        tableView.registerClass(PostDialogueEntryTableViewCell.self, forCellReuseIdentifier: postDialogueEntryTableViewCellIdentifier)
-        tableView.registerClass(TagsTableViewCell.self, forCellReuseIdentifier: postTagsTableViewCellIdentifier)
-        tableView.registerClass(VideoTableViewCell.self, forCellReuseIdentifier: videoTableViewCellIdentifier)
-        tableView.registerClass(YoutubeTableViewCell.self, forCellReuseIdentifier: youtubeTableViewCellIdentifier)
+
+        tableView.registerClass(TitleTableViewCell.self, forCellReuseIdentifier: TitleTableViewCell.cellIdentifier)
+        tableView.registerClass(PhotosetRowTableViewCell.self, forCellReuseIdentifier: PhotosetRowTableViewCell.cellIdentifier)
+        tableView.registerClass(ContentTableViewCell.self, forCellReuseIdentifier: ContentTableViewCell.cellIdentifier)
+        tableView.registerClass(PostQuestionTableViewCell.self, forCellReuseIdentifier: PostQuestionTableViewCell.cellIdentifier)
+        tableView.registerClass(PostLinkTableViewCell.self, forCellReuseIdentifier: PostLinkTableViewCell.cellIdentifier)
+        tableView.registerClass(PostDialogueEntryTableViewCell.self, forCellReuseIdentifier: PostDialogueEntryTableViewCell.cellIdentifier)
+        tableView.registerClass(TagsTableViewCell.self, forCellReuseIdentifier: TagsTableViewCell.cellIdentifier)
+        tableView.registerClass(VideoTableViewCell.self, forCellReuseIdentifier: VideoTableViewCell.cellIdentifier)
+        tableView.registerClass(YoutubeTableViewCell.self, forCellReuseIdentifier: YoutubeTableViewCell.cellIdentifier)
         
         view.addSubview(tableView)
 
@@ -137,7 +137,7 @@ extension PostViewController: UITableViewDataSource {
 
     func tableView(tableView: UITableView, postCellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 1 {
-            let cell = tableView.dequeueReusableCellWithIdentifier(postTagsTableViewCellIdentifier) as! TagsTableViewCell!
+            let cell = tableView.dequeueReusableCellWithIdentifier(TagsTableViewCell.cellIdentifier) as! TagsTableViewCell!
             cell.delegate = self
             cell.tags = post.tags
             return cell
@@ -146,14 +146,14 @@ extension PostViewController: UITableViewDataSource {
         switch post.type {
         case "photo":
             if indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 2 {
-                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as! ContentTableViewCell!
+                let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
                 cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
                 cell.linkHandler = { url in
                     self.linkTapHandler?(self.post, url)
                 }
                 return cell
             }
-            let cell = tableView.dequeueReusableCellWithIdentifier(photosetRowTableViewCellIdentifier) as! PhotosetRowTableViewCell!
+            let cell = tableView.dequeueReusableCellWithIdentifier(PhotosetRowTableViewCell.cellIdentifier) as! PhotosetRowTableViewCell!
             let postPhotos = post.photos
             
             cell.contentWidth = tableView.frame.size.width
@@ -175,11 +175,11 @@ extension PostViewController: UITableViewDataSource {
         case "text":
             switch TextRow(rawValue: indexPath.row)! {
             case .Title:
-                let cell = tableView.dequeueReusableCellWithIdentifier(titleTableViewCellIdentifier) as! TitleTableViewCell!
+                let cell = tableView.dequeueReusableCellWithIdentifier(TitleTableViewCell.cellIdentifier) as! TitleTableViewCell!
                 cell.titleLabel.text = post.title
                 return cell
             case .Body:
-                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as! ContentTableViewCell!
+                let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
                 cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
                 cell.linkHandler = { self.linkTapHandler?(self.post, $0) }
                 return cell
@@ -187,11 +187,11 @@ extension PostViewController: UITableViewDataSource {
         case "answer":
             switch AnswerRow(rawValue: indexPath.row)! {
             case .Question:
-                let cell = tableView.dequeueReusableCellWithIdentifier(postQuestionTableViewCellIdentifier) as! PostQuestionTableViewCell!
+                let cell = tableView.dequeueReusableCellWithIdentifier(PostQuestionTableViewCell.cellIdentifier) as! PostQuestionTableViewCell!
                 cell.post = post
                 return cell
             case .Answer:
-                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as! ContentTableViewCell!
+                let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
                 cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
                 cell.linkHandler = { self.linkTapHandler?(self.post, $0) }
                 return cell
@@ -199,12 +199,12 @@ extension PostViewController: UITableViewDataSource {
         case "quote":
             switch QuoteRow(rawValue: indexPath.row)! {
             case .Quote:
-                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as! ContentTableViewCell!
+                let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
                 cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
                 cell.linkHandler = { self.linkTapHandler?(self.post, $0) }
                 return cell
             case .Source:
-                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as! ContentTableViewCell!
+                let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
                 cell.content = post.htmlSecondaryBodyWithWidth(tableView.frame.size.width)
                 cell.linkHandler = { self.linkTapHandler?(self.post, $0) }
                 return cell
@@ -212,23 +212,23 @@ extension PostViewController: UITableViewDataSource {
         case "link":
             switch LinkRow(rawValue: indexPath.row)! {
             case .Link:
-                let cell = tableView.dequeueReusableCellWithIdentifier(postLinkTableViewCellIdentifier) as! PostLinkTableViewCell!
+                let cell = tableView.dequeueReusableCellWithIdentifier(PostLinkTableViewCell.cellIdentifier) as! PostLinkTableViewCell!
                 cell.post = post
                 return cell
             case .Description:
-                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as! ContentTableViewCell!
+                let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
                 cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
                 cell.linkHandler = { self.linkTapHandler?(self.post, $0) }
                 return cell
             }
         case "chat":
             if indexPath.row == 0 {
-                let cell = tableView.dequeueReusableCellWithIdentifier(titleTableViewCellIdentifier) as! TitleTableViewCell!
+                let cell = tableView.dequeueReusableCellWithIdentifier(TitleTableViewCell.cellIdentifier) as! TitleTableViewCell!
                 cell.titleLabel.text = post.title
                 return cell;
             }
             let dialogueEntry = post.dialogueEntries[indexPath.row - 1]
-            let cell = tableView.dequeueReusableCellWithIdentifier(postDialogueEntryTableViewCellIdentifier) as! PostDialogueEntryTableViewCell!
+            let cell = tableView.dequeueReusableCellWithIdentifier(PostDialogueEntryTableViewCell.cellIdentifier) as! PostDialogueEntryTableViewCell!
             cell.dialogueEntry = dialogueEntry
             return cell
         case "video":
@@ -236,22 +236,22 @@ extension PostViewController: UITableViewDataSource {
             case .Player:
                 switch post.videoType! {
                 case "youtube":
-                    let cell = tableView.dequeueReusableCellWithIdentifier(youtubeTableViewCellIdentifier) as! YoutubeTableViewCell!
+                    let cell = tableView.dequeueReusableCellWithIdentifier(YoutubeTableViewCell.cellIdentifier) as! YoutubeTableViewCell!
                     cell.post = post
                     return cell
                 default:
-                    let cell = tableView.dequeueReusableCellWithIdentifier(videoTableViewCellIdentifier) as! VideoTableViewCell!
+                    let cell = tableView.dequeueReusableCellWithIdentifier(VideoTableViewCell.cellIdentifier) as! VideoTableViewCell!
                     cell.post = post
                     return cell
                 }
             case .Caption:
-                let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as! ContentTableViewCell!
+                let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
                 cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
                 cell.linkHandler = { self.linkTapHandler?(self.post, $0) }
                 return cell
             }
         case "audio":
-            let cell = tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier) as! ContentTableViewCell!
+            let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
             switch AudioRow(rawValue: indexPath.row)! {
             case .Player:
                 cell.content = post.htmlSecondaryBodyWithWidth(tableView.frame.size.width)
@@ -261,7 +261,7 @@ extension PostViewController: UITableViewDataSource {
             cell.linkHandler = { self.linkTapHandler?(self.post, $0) }
             return cell
         default:
-            return tableView.dequeueReusableCellWithIdentifier(contentTableViewCellIdentifier)!
+            return tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier)!
         }
     }
 }

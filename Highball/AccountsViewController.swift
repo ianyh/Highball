@@ -13,7 +13,6 @@ class AccountsViewController: UITableViewController {
         case Accounts
         case AddAccount
     }
-    private let cellIdentifier = "cellIdentifier"
 
     private var accounts: Array<Account>
 
@@ -30,7 +29,7 @@ class AccountsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: UITableViewCell.cellIdentifier)
         accounts = AccountsService.accounts()
     }
 
@@ -51,7 +50,7 @@ class AccountsViewController: UITableViewController {
         switch Section(rawValue: indexPath.section)! {
         case .Accounts:
             let account = accounts[indexPath.row]
-            let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCellWithIdentifier(UITableViewCell.cellIdentifier, forIndexPath: indexPath)
 
             cell.textLabel?.text = account.blog.name
 
@@ -65,7 +64,7 @@ class AccountsViewController: UITableViewController {
 
             return cell
         case .AddAccount:
-            let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier)!
+            let cell = tableView.dequeueReusableCellWithIdentifier(UITableViewCell.cellIdentifier)!
 
             cell.textLabel?.text = "Add account"
             cell.accessoryType = .None

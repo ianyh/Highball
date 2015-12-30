@@ -34,9 +34,6 @@ class TextReblogViewController: SLKTextViewController {
         }
     }
 
-    private let postHeaderViewIdentifier = "postHeaderViewIdentifier"
-    private let postTableViewCellIdentifier = "postTableViewCellIdentifier"
-
     init() {
         super.init(tableViewStyle: .Plain)
     }
@@ -89,9 +86,9 @@ class TextReblogViewController: SLKTextViewController {
         tableView.showsHorizontalScrollIndicator = false
         tableView.showsVerticalScrollIndicator = false
 
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: postTableViewCellIdentifier)
-        tableView.registerClass(ReblogCommentCell.self, forCellReuseIdentifier: "Cell")
-        tableView.registerClass(PostTableHeaderView.self, forHeaderFooterViewReuseIdentifier: postHeaderViewIdentifier)
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: UITableViewCell.cellIdentifier)
+        tableView.registerClass(ReblogCommentCell.self, forCellReuseIdentifier: ReblogCommentCell.cellIdentifier)
+        tableView.registerClass(PostTableHeaderView.self, forHeaderFooterViewReuseIdentifier: PostTableHeaderView.viewIdentifier)
 
         let blurEffect = UIBlurEffect(style: .Light)
         let blurView = UIVisualEffectView(effect: blurEffect)
@@ -189,7 +186,7 @@ class TextReblogViewController: SLKTextViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         switch Section(rawValue: indexPath.section)! {
         case .Post:
-            let cell = tableView.dequeueReusableCellWithIdentifier(postTableViewCellIdentifier)!
+            let cell = tableView.dequeueReusableCellWithIdentifier(PostTableViewCell.cellIdentifier)!
             
             cell.transform = tableView.transform
             cell.backgroundColor = UIColor.whiteColor()
@@ -203,7 +200,7 @@ class TextReblogViewController: SLKTextViewController {
             
             return cell
         case .Comment:
-            let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCellWithIdentifier(UITableViewCell.cellIdentifier, forIndexPath: indexPath)
 
             cell.transform = tableView.transform
             cell.textLabel?.text = comment
@@ -216,7 +213,7 @@ class TextReblogViewController: SLKTextViewController {
     override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         switch Section(rawValue: section)! {
         case .Post:
-            let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(postHeaderViewIdentifier) as! PostTableHeaderView
+            let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(PostTableHeaderView.viewIdentifier) as! PostTableHeaderView
             
             view.post = post
             view.transform = tableView.transform

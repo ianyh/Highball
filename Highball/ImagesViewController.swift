@@ -11,8 +11,6 @@ import UIKit
 class ImagesViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var imagesCollectionView: UICollectionView!
     
-    let imageCollectionViewCellIdentifier = "imageCollectionViewCellIdentifier"
-
     var post: Post?
 
     override func viewDidLoad() {
@@ -30,7 +28,7 @@ class ImagesViewController: UIViewController, UICollectionViewDataSource, UIColl
         imagesCollectionView.showsHorizontalScrollIndicator = false
         imagesCollectionView.showsVerticalScrollIndicator = false
 
-        imagesCollectionView.registerClass(ImageCollectionViewCell.self, forCellWithReuseIdentifier: imageCollectionViewCellIdentifier)
+        imagesCollectionView.registerClass(ImageCollectionViewCell.self, forCellWithReuseIdentifier: ImageCollectionViewCell.cellIdentifier)
 
         view.addSubview(imagesCollectionView)
     }
@@ -44,7 +42,7 @@ class ImagesViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
 
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(imageCollectionViewCellIdentifier, forIndexPath: indexPath) as! ImageCollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(ImageCollectionViewCell.cellIdentifier, forIndexPath: indexPath) as! ImageCollectionViewCell
         let postPhoto = post!.photos[indexPath.row]
 
         cell.contentWidth = collectionView.frame.size.width
