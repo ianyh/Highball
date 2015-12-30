@@ -38,12 +38,13 @@ class BlogViewController: PostsViewController {
     }
 
     override func postsFromJSON(json: JSON) -> Array<Post> {
-        if let postsJSON = json["posts"].array {
-            return postsJSON.map { (post) -> (Post) in
-                return Post(json: post)
-            }
+        guard let postsJSON = json["posts"].array else {
+            return []
         }
-        return []
+
+        return postsJSON.map { (post) -> (Post) in
+            return Post(json: post)
+        }
     }
     
     override func requestPosts(postCount: Int, parameters: Dictionary<String, AnyObject>, callback: TMAPICallback) {
@@ -55,11 +56,11 @@ class BlogViewController: PostsViewController {
     }
 
     func follow(sender: UIBarButtonItem) {
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
 
-        alertController.addAction(UIAlertAction(title: "Follow", style: UIAlertActionStyle.Default) { action in
+        alertController.addAction(UIAlertAction(title: "Follow", style: .Default) { action in
             TMAPIClient.sharedInstance().follow(self.blogName) { result, error in
-                let alertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+                let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .Alert)
 
                 if let _ = error {
                     alertController.title = "Follow Failed"
@@ -69,15 +70,15 @@ class BlogViewController: PostsViewController {
                     alertController.message = "Successfully followed \(self.blogName)!"
                 }
 
-                alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { _ in }))
+                alertController.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
 
                 self.presentViewController(alertController, animated: true, completion: nil)
             }
         })
 
-        alertController.addAction(UIAlertAction(title: "Unfollow", style: UIAlertActionStyle.Destructive) { action in
+        alertController.addAction(UIAlertAction(title: "Unfollow", style: .Destructive) { action in
             TMAPIClient.sharedInstance().unfollow(self.blogName) { result, error in
-                let alertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+                let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .Alert)
                 
                 if let _ = error {
                     alertController.title = "Unfollow Failed"
@@ -87,13 +88,13 @@ class BlogViewController: PostsViewController {
                     alertController.message = "Successfully unfollowed \(self.blogName)!"
                 }
                 
-                alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { _ in }))
+                alertController.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
                 
                 self.presentViewController(alertController, animated: true, completion: nil)
             }
         })
 
-        alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: { _ in }))
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
 
         self.presentViewController(alertController, animated: true, completion: nil)
     }
