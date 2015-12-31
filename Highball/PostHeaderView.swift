@@ -28,9 +28,9 @@ class PostHeaderView: UITableViewHeaderFooterView {
             }
 
             let blogName = post.blogName
-            
+
             avatarImageView.image = UIImage(named: "Placeholder")
-            
+
             PINCache.sharedCache().objectForKey("avatar:\(blogName)") { cache, key, object in
                 if let data = object as? NSData {
                     dispatch_async(self.avatarLoadQueue) {
@@ -44,7 +44,9 @@ class PostHeaderView: UITableViewHeaderFooterView {
                         if let error = error {
                             print(error)
                         } else {
-                            let data = response as! NSData!
+                            guard let data = response as? NSData else {
+                                return
+                            }
                             PINCache.sharedCache().setObject(data, forKey: "avatar:\(blogName)", block: nil)
                             dispatch_async(self.avatarLoadQueue) {
                                 let image = UIImage(data: data)
@@ -56,7 +58,7 @@ class PostHeaderView: UITableViewHeaderFooterView {
                     }
                 }
             }
-            
+
             if let rebloggedBlogName = post.rebloggedBlogName {
                 usernameLabel.text = nil
                 topUsernameLabel.text = blogName
@@ -66,7 +68,7 @@ class PostHeaderView: UITableViewHeaderFooterView {
                 topUsernameLabel.text = nil
                 bottomUsernameLabel.text = nil
             }
-            
+
             timeLabel.text = NSDate(timeIntervalSince1970: NSTimeInterval(post.timestamp)).stringWithRelativeFormat()
         }
     }

@@ -16,7 +16,7 @@ class PhotosetRowTableViewCell: WCFastCell {
     var imageViews: Array<FLAnimatedImageView>?
     var failedImageViews: Array<UIImageView>?
     var shareHandler: ((UIImage) -> ())?
-    
+
     var contentWidth: CGFloat! = 0
     var images: Array<PostPhoto>? {
         didSet {
@@ -40,7 +40,7 @@ class PhotosetRowTableViewCell: WCFastCell {
         }
 
         clearImages()
-        
+
         let totalWidth = images.map { $0.widthToHeightRatio! }.reduce(0, combine: +)
         let lastImageIndex = images.count - 1
         var imageViews = Array<FLAnimatedImageView>()
@@ -51,23 +51,23 @@ class PhotosetRowTableViewCell: WCFastCell {
             let imageView = FLAnimatedImageView()
             let failedImageView = UIImageView()
             let imageURL = image.urlWithWidth(contentWidth)
-            
+
             imageView.image = nil
             imageView.backgroundColor = UIColor.lightGrayColor()
             imageView.userInteractionEnabled = true
             imageView.contentMode = .ScaleAspectFill
-            
+
             failedImageView.contentMode = .Center
             failedImageView.hidden = true
             failedImageView.image = FAKIonIcons.iosCameraOutlineIconWithSize(50).imageWithSize(CGSize(width: 50, height: 50))
-            
+
             contentView.addSubview(imageView)
             contentView.addSubview(failedImageView)
-            
+
             constrain(failedImageView, imageView) { failedImageView, imageView in
                 failedImageView.edges == imageView.edges
             }
-            
+
             if let leftImageView = lastImageView {
                 if index == lastImageIndex {
                     constrain(imageView, leftImageView, contentView) { imageView, leftImageView, contentView in
@@ -99,17 +99,17 @@ class PhotosetRowTableViewCell: WCFastCell {
                     imageView.width == contentView.width * CGFloat(widthPortion)
                 }
             }
-            
+
             imageView.pin_setImageFromURL(imageURL) { result in
                 failedImageView.hidden = result.error == nil
             }
-            
+
             lastImageView = imageView
-            
+
             imageViews.append(imageView)
             failedImageViews.append(failedImageView)
         }
-        
+
         self.imageViews = imageViews
         self.failedImageViews = failedImageViews
     }

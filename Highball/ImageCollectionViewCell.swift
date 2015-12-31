@@ -16,7 +16,7 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
     var scrollView: UIScrollView!
     var imageView: FLAnimatedImageView!
     var failedImageView: UIImageView!
-    
+
     var onTapHandler: (() -> ())?
 
     var contentWidth: CGFloat? {
@@ -34,7 +34,7 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
         super.init(frame: frame)
         setUpCell()
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setUpCell()
@@ -113,19 +113,19 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
     }
 
     func centerScrollViewContents() {
-        let boundsSize = scrollView.bounds.size;
-        var contentsFrame = imageView.frame;
-        
-        if (contentsFrame.size.width < boundsSize.width) {
-            contentsFrame.origin.x = (boundsSize.width - contentsFrame.size.width) / 2.0;
+        let boundsSize = scrollView.bounds.size
+        var contentsFrame = imageView.frame
+
+        if contentsFrame.size.width < boundsSize.width {
+            contentsFrame.origin.x = (boundsSize.width - contentsFrame.size.width) / 2.0
         } else {
-            contentsFrame.origin.x = 0.0;
+            contentsFrame.origin.x = 0.0
         }
-        
-        if (contentsFrame.size.height < boundsSize.height) {
-            contentsFrame.origin.y = (boundsSize.height - contentsFrame.size.height) / 2.0;
+
+        if contentsFrame.size.height < boundsSize.height {
+            contentsFrame.origin.y = (boundsSize.height - contentsFrame.size.height) / 2.0
         } else {
-            contentsFrame.origin.y = 0.0;
+            contentsFrame.origin.y = 0.0
         }
 
         imageView.frame = contentsFrame

@@ -23,7 +23,7 @@ class MainViewController: UITabBarController {
         let likesViewController = UINavigationController(rootViewController: LikesViewController())
         let historyViewController = UINavigationController(rootViewController: HistoryViewController(delegate: self))
         let settingsViewController = UINavigationController(rootViewController: SettingsViewController())
-        
+
         dashboardViewController.tabBarItem.title = "Dashboard"
         dashboardViewController.tabBarItem.image = FAKFontAwesome.homeIconWithSize(28.0).imageWithSize(CGSize(width: 28, height: 28))
 
@@ -35,7 +35,7 @@ class MainViewController: UITabBarController {
 
         settingsViewController.tabBarItem.title = "Settings"
         settingsViewController.tabBarItem.image = FAKFontAwesome.cogsIconWithSize(22.0).imageWithSize(CGSize(width: 24, height: 24))
-        
+
         viewControllers = [
             dashboardViewController,
             likesViewController,

@@ -18,7 +18,7 @@ extension NSDate {
             intervalFormatter = TTTTimeIntervalFormatter()
             NSThread.currentThread().threadDictionary[formatterKey] = intervalFormatter
         }
-        
+
         return intervalFormatter!.stringForTimeInterval(timeIntervalSinceNow)
     }
 }

@@ -51,7 +51,7 @@ class DashboardViewController: PostsViewController {
         }
     }
 
-    override func requestPosts(postCount: Int, parameters: Dictionary<String, AnyObject>, callback: TMAPICallback) {
+    override func requestPosts(postCount: Int, parameters: [String: AnyObject], callback: TMAPICallback) {
         TMAPIClient.sharedInstance().dashboard(parameters, callback: callback)
     }
 
@@ -70,7 +70,7 @@ class DashboardViewController: PostsViewController {
 
         let userDefaults = NSUserDefaults.standardUserDefaults()
         let bookmarksKey = "HIBookmarks:\(account.blog.url)"
-        let post = self.posts[firstIndexPath.section]
+        let post = dataManager.posts[firstIndexPath.section]
         var bookmarks: [[String: AnyObject]] = userDefaults.arrayForKey(bookmarksKey) as? [[String: AnyObject]] ?? []
 
         bookmarks.insert(["date": NSDate(), "id": post.id], atIndex: 0)
@@ -83,24 +83,24 @@ class DashboardViewController: PostsViewController {
     }
 
     func bookmarks(sender: UIButton, event: UIEvent) {
-        guard topID != nil else {
+        guard dataManager.topID != nil else {
             return
         }
 
         let alertController = UIAlertController(title: "", message: "Go to top of your feed?", preferredStyle: .Alert)
         alertController.addAction(UIAlertAction(title: "Yes", style: .Default) { action  in
             self.navigationItem.rightBarButtonItem = nil
-            self.topID = nil
-            self.posts = []
-            self.heightCache.removeAll()
+            self.dataManager.topID = nil
+            self.dataManager.posts = []
+            self.tableViewAdapter?.resetCache()
             self.tableView.reloadData()
-            self.loadTop()
+            self.dataManager.loadTop(self.tableView.frame.width)
         })
         alertController.addAction(UIAlertAction(title: "No", style: .Cancel, handler: nil))
         presentViewController(alertController, animated: true, completion: nil)
     }
 
-    func gotoBookmark(id: Int) {
+    func gotoBookmark(bookmarkID: Int) {
         let upArrow = FAKIonIcons.iosArrowUpIconWithSize(30)
         let upArrowImage = upArrow.imageWithSize(CGSize(width: 30, height: 30))
 
@@ -111,10 +111,10 @@ class DashboardViewController: PostsViewController {
             action: Selector("bookmarks:event:")
         )
 
-        topID = id
-        posts = []
-        heightCache.removeAll()
+        dataManager.topID = bookmarkID
+        dataManager.posts = []
+        tableViewAdapter?.resetCache()
         tableView.reloadData()
-        loadTop()
+        dataManager.loadTop(tableView.frame.width)
     }
 }

@@ -46,7 +46,7 @@ class BlogViewController: PostsViewController {
             return Post(json: post)
         }
     }
-    
+
     override func requestPosts(postCount: Int, parameters: Dictionary<String, AnyObject>, callback: TMAPICallback) {
         TMAPIClient.sharedInstance().posts(self.blogName, type: "", parameters: parameters, callback: callback)
     }
@@ -75,7 +75,7 @@ class BlogViewController: PostsViewController {
         alertController.addAction(UIAlertAction(title: "Unfollow", style: .Destructive) { action in
             TMAPIClient.sharedInstance().unfollow(self.blogName) { result, error in
                 let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .Alert)
-                
+
                 if let _ = error {
                     alertController.title = "Unfollow Failed"
                     alertController.message = "Tried to unfollow \(self.blogName), but failed."
@@ -83,9 +83,9 @@ class BlogViewController: PostsViewController {
                     alertController.title = "Unfollowed"
                     alertController.message = "Successfully unfollowed \(self.blogName)!"
                 }
-                
+
                 alertController.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
-                
+
                 self.presentViewController(alertController, animated: true, completion: nil)
             }
         })

@@ -42,16 +42,16 @@ class PhotoTableViewCell: UITableViewCell {
 
                         imageView.setImageWithURL(NSURL(string: imageURLString))
 
-                        self.contentView.addSubview(imageView);
+                        self.contentView.addSubview(imageView)
 
                         if let leftImageView = lastImageView {
                             layout(imageView) { imageView in
-                                
+
                             }
                         }
 
-                        layoutRowCount--;
-                        photoIndex++;
+                        layoutRowCount--
+                        photoIndex++
                     }
                 }
             }

@@ -62,7 +62,7 @@ class QuickReblogViewController: UIViewController {
             }
         }
     }
-    
+
     var showingOptions: Bool = false {
         didSet {
             startButton.layer.pop_removeAllAnimations()
@@ -76,7 +76,7 @@ class QuickReblogViewController: UIViewController {
                     let opacityAnimation = POPSpringAnimation(propertyNamed: kPOPLayerOpacity)
                     opacityAnimation.toValue = 1
                     opacityAnimation.name = "opacity"
-                    
+
                     button.layer.pop_addAnimation(opacityAnimation, forKey: opacityAnimation.name)
                 }
 
@@ -86,20 +86,20 @@ class QuickReblogViewController: UIViewController {
                 let distanceFromBottom = UIScreen.mainScreen().bounds.height - center.y - 50
                 var angleFromTop: CGFloat = CGFloat(-M_PI_2) / 3
                 var angleFromBottom: CGFloat = CGFloat(-M_PI_2) / 3
-                
+
                 if distanceFromTop < radius {
                     angleFromTop = acos(distanceFromTop / radius)
                 }
-                
+
                 if distanceFromBottom < radius {
                     angleFromBottom = acos(distanceFromBottom / radius)
                 }
-                
+
                 let startAngle = CGFloat(M_PI_2) + angleFromTop
                 let endAngle = CGFloat(M_PI + M_PI_2) - angleFromBottom
                 let initialAngle = startAngle + (endAngle - startAngle) / 8
                 let angleInterval = (endAngle - startAngle) / 4
-                
+
                 for (index, button) in [ reblogButton, queueButton, shareButton, likeButton ].enumerate() {
                     let center = startButton.center
                     let angleOffset = angleInterval * CGFloat(index)
@@ -112,12 +112,12 @@ class QuickReblogViewController: UIViewController {
                         x = center.x + radius * cos(angle)
                     }
                     let positionAnimation = POPSpringAnimation(propertyNamed: kPOPLayerPosition)
-                    
+
                     positionAnimation.toValue = NSValue(CGPoint: CGPoint(x: x, y: y))
                     positionAnimation.springBounciness = 20
                     positionAnimation.name = "move"
                     positionAnimation.beginTime = CACurrentMediaTime() + 0.01
-                    
+
                     button.layer.position = startButton.center
                     button.layer.pop_addAnimation(positionAnimation, forKey: positionAnimation.name)
                 }
@@ -126,13 +126,13 @@ class QuickReblogViewController: UIViewController {
                     let opacityAnimation = POPSpringAnimation(propertyNamed: kPOPLayerOpacity)
                     opacityAnimation.toValue = 0
                     opacityAnimation.name = "opacity"
-                    
+
                     button.layer.pop_addAnimation(opacityAnimation, forKey: opacityAnimation.name)
-                    
+
                     let positionAnimation = POPSpringAnimation(propertyNamed: kPOPLayerPosition)
                     positionAnimation.toValue = NSValue(CGPoint: startButton.center)
                     positionAnimation.name = "moveReblog"
-                    
+
                     button.layer.pop_addAnimation(positionAnimation, forKey: positionAnimation.name)
                 }
             }
@@ -147,7 +147,7 @@ class QuickReblogViewController: UIViewController {
 
         backgroundButton = UIButton(type: .System)
         backgroundButton.addTarget(self, action: Selector("exit:"), forControlEvents: .TouchUpInside)
-        
+
         startButton = UIButton(type: .System)
         startButton.setImage(UIImage(named: "Reblog"), forState: .Normal)
         startButton.tintColor = UIColor.grayColor()
@@ -213,7 +213,9 @@ class QuickReblogViewController: UIViewController {
 
         dispatch_async(dispatch_get_main_queue()) { self.showingOptions = true }
     }
+}
 
+extension QuickReblogViewController {
     func updateWithPoint(point: CGPoint) {
         guard
             let view = view.hitTest(point, withEvent: nil),

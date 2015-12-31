@@ -49,12 +49,14 @@ struct HeightCalculator {
         self.post = post
         self.width = width
         self.webView = webView
-
         webViewDelegate = WebViewDelegate(webView: webView)
+
+        webView.frame = CGRect(x: 0, y: 0, width: width, height: 1)
     }
 
     func calculateHeight(secondary: Bool = false, completion: (height: CGFloat?) -> ()) {
         let htmlStringMethod = secondary ? Post.htmlSecondaryBodyWithWidth : Post.htmlBodyWithWidth
+
         guard let content = htmlStringMethod(post)(width) else {
             dispatch_async(dispatch_get_main_queue()) {
                 completion(height: nil)
@@ -70,14 +72,24 @@ struct HeightCalculator {
 
 private extension WKWebView {
     func getDocumentHeight(completion: (CGFloat) -> ()) {
-        evaluateJavaScript("var body = document.body, html = document.documentElement; Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);", completionHandler: { result, error in
-            if let _ = error {
+        let javascriptString = "" +
+            "var body = document.body;" +
+            "var html = document.documentElement;" +
+            "Math.max(" +
+            "   body.scrollHeight," +
+            "   body.offsetHeight," +
+            "   html.clientHeight," +
+            "   html.offsetHeight" +
+            ");"
+        evaluateJavaScript(javascriptString) { result, error in
+            if let error = error {
+                print(error)
                 completion(0)
-            } else if let height = JSON(result!).int {
+            } else if let result = result, let height = JSON(result).int {
                 completion(CGFloat(height))
             } else {
                 completion(0)
             }
-        })
+        }
     }
 }

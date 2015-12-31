@@ -7,8 +7,8 @@
 //
 
 import Foundation
-import AVFoundation
 import SwiftyJSON
+import UIKit
 
 enum ReblogType {
     case Reblog
@@ -23,17 +23,17 @@ class Post {
     let rebloggedBlogName: String?
     let reblogKey: String
     let timestamp: Int
+    let urlString: String
     let shortURLString: String
-    let tags: Array<String>
-    let photos: Array<PostPhoto>
-    let layoutRows: Array<Int>
-    let dialogueEntries: Array<PostDialogueEntry>
+    let tags: [String]
+    let photos: [PostPhoto]
+    let layoutRows: PhotosetLayoutRows
+    let dialogueEntries: [PostDialogueEntry]
     let body: String?
     let secondaryBody: String?
     let asker: String?
     let question: String?
     let title: String?
-    let urlString: String?
     let thumbnailURLString: String?
     let permalinkURLString: String?
     let videoType: String?
@@ -42,9 +42,7 @@ class Post {
     let videoHeight: Float?
     var liked = false
 
-    var cachedVideoPlayer: AVPlayer?
-
-    required init(json: JSON!) {
+    init(json: JSON) {
         self.json = json
         self.id = json["id"].int!
         self.type = json["type"].string!
@@ -52,95 +50,19 @@ class Post {
         self.rebloggedBlogName = json["reblogged_from_name"].string
         self.reblogKey = json["reblog_key"].string!
         self.timestamp = json["timestamp"].int!
+        self.urlString = json["post_url"].string!
         self.shortURLString = json["short_url"].string!
         self.tags = json["tags"].array?.map { "#\($0)" } ?? []
         self.photos = json["photos"].array?.map { PostPhoto(json: $0) } ?? []
+        self.layoutRows = PhotosetLayoutRows(photos: self.photos, layoutString: json["photoset_layout"].string)
+        self.dialogueEntries = json["dialogue"].array?.map { PostDialogueEntry(json: $0) } ?? []
 
-        if let layoutString = json["photoset_layout"].string {
-            var photosetLayoutRows = Array<Int>()
-            for character in layoutString.characters {
-                photosetLayoutRows.append(Int("\(character)")!)
-            }
-            self.layoutRows = photosetLayoutRows
-        } else if self.photos.count == 0 {
-            self.layoutRows = []
-        } else if self.photos.count % 2 == 0 {
-            var layoutRows = Array<Int>()
-            for _ in 0...self.photos.count/2-1 {
-                layoutRows.append(2)
-            }
-            self.layoutRows = layoutRows
-        } else if self.photos.count % 3 == 0 {
-            var layoutRows = Array<Int>()
-            for _ in 0...self.photos.count/3-1 {
-                layoutRows.append(3)
-            }
-            self.layoutRows = layoutRows
-        } else {
-            var layoutRows = Array<Int>()
-            for _ in 0...self.photos.count-1 {
-                layoutRows.append(1)
-            }
-            self.layoutRows = layoutRows
-        }
-        if let entriesJSON = self.json["dialogue"].array {
-            self.dialogueEntries = entriesJSON.map { entryJSON in
-                return PostDialogueEntry(json: entryJSON)
-            }
-        } else {
-            self.dialogueEntries = []
-        }
+        self.body = Post.bodyStringFromJSON(json)
+        self.secondaryBody = Post.secondaryBodyStringFromJSON(json)
 
-        var bodyString: String?
-        switch self.type {
-        case "photo":
-            bodyString = self.json["caption"].string
-        case "text":
-            bodyString = self.json["body"].string
-        case "answer":
-            bodyString = self.json["answer"].string
-        case "quote":
-            bodyString = self.json["text"].string
-        case "link":
-            bodyString = self.json["description"].string
-        case "video":
-            bodyString = self.json["caption"].string
-        case "audio":
-            bodyString = self.json["caption"].string
-        default:
-            bodyString = nil
-        }
-        if let string = bodyString {
-            if string.characters.count > 0 {
-                self.body = string
-            } else {
-                self.body = nil
-            }
-        } else {
-            self.body = nil
-        }
-        bodyString = nil
-        switch self.type {
-        case "quote":
-            bodyString = self.json["source"].string
-        case "audio":
-            bodyString = self.json["player"].string
-        default:
-            bodyString = nil
-        }
-        if let string = bodyString {
-            if string.characters.count > 0 {
-                self.secondaryBody = string
-            } else {
-                self.secondaryBody = nil
-            }
-        } else {
-            self.secondaryBody = nil
-        }
         self.asker = json["asking_name"].string
         self.question = json["question"].string
         self.title = json["title"].string
-        self.urlString = json["post_url"].string
         self.thumbnailURLString = json["thumbnail_url"].string
         self.permalinkURLString = json["permalink_url"].string
         self.videoType = json["video_type"].string
@@ -229,5 +151,62 @@ class Post {
         }
 
         return floor(CGFloat(videoHeight / videoWidth) * width)
+    }
+}
+
+extension Post {
+    class func bodyStringFromJSON(json: JSON) -> String? {
+        guard let type = json["type"].string else {
+            return nil
+        }
+
+        var bodyString: String?
+
+        switch type {
+        case "photo":
+            bodyString = json["caption"].string
+        case "text":
+            bodyString = json["body"].string
+        case "answer":
+            bodyString = json["answer"].string
+        case "quote":
+            bodyString = json["text"].string
+        case "link":
+            bodyString = json["description"].string
+        case "video":
+            bodyString = json["caption"].string
+        case "audio":
+            bodyString = json["caption"].string
+        default:
+            bodyString = nil
+        }
+
+        if bodyString?.characters.count > 0 {
+            return bodyString
+        }
+
+        return nil
+    }
+
+    class func secondaryBodyStringFromJSON(json: JSON) -> String? {
+        guard let type = json["type"].string else {
+            return nil
+        }
+        var secondaryBodyString: String?
+
+        switch type {
+        case "quote":
+            secondaryBodyString = json["source"].string
+        case "audio":
+            secondaryBodyString = json["player"].string
+        default:
+            secondaryBodyString = nil
+        }
+
+        if secondaryBodyString?.characters.count > 0 {
+            return secondaryBodyString
+        }
+
+        return nil
     }
 }

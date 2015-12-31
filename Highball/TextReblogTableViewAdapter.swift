@@ -21,7 +21,7 @@ class TextReblogTableViewAdapter: NSObject {
     private enum Section: Int {
         case Comment
         case Post
-        
+
         static var count: Int {
             return 2
         }
@@ -34,10 +34,10 @@ class TextReblogTableViewAdapter: NSObject {
         self.height = height
 
         super.init()
-        
+
         tableView.dataSource = self
         tableView.delegate = self
-        
+
         tableView.allowsSelection = false
         tableView.backgroundColor = UIColor.clearColor()
         tableView.estimatedRowHeight = 30
@@ -47,7 +47,7 @@ class TextReblogTableViewAdapter: NSObject {
         tableView.separatorStyle = .None
         tableView.showsHorizontalScrollIndicator = false
         tableView.showsVerticalScrollIndicator = false
-        
+
         tableView.registerClass(PostTableViewCell.self, forCellReuseIdentifier: PostTableViewCell.cellIdentifier)
         tableView.registerClass(ReblogCommentCell.self, forCellReuseIdentifier: ReblogCommentCell.cellIdentifier)
         tableView.registerClass(PostTableHeaderView.self, forHeaderFooterViewReuseIdentifier: PostTableHeaderView.viewIdentifier)
@@ -58,7 +58,7 @@ extension TextReblogTableViewAdapter: UITableViewDataSource {
     @objc func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return Section.count
     }
-    
+
     @objc func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch Section(rawValue: section)! {
         case .Post:
@@ -67,30 +67,30 @@ extension TextReblogTableViewAdapter: UITableViewDataSource {
             return comment == nil ? 0 : 1
         }
     }
-    
+
     @objc func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         switch Section(rawValue: indexPath.section)! {
         case .Post:
             let cell = tableView.dequeueReusableCellWithIdentifier(PostTableViewCell.cellIdentifier, forIndexPath: indexPath)
-            
+
             cell.transform = tableView.transform
             cell.backgroundColor = UIColor.whiteColor()
-            
+
             postViewController.view.backgroundColor = UIColor.clearColor()
             cell.contentView.addSubview(postViewController.view)
-            
+
             constrain(postViewController.view, cell.contentView) { postView, contentView in
                 postView.edges == contentView.edges
             }
-            
+
             return cell
         case .Comment:
             let cell = tableView.dequeueReusableCellWithIdentifier(UITableViewCell.cellIdentifier, forIndexPath: indexPath)
-            
+
             cell.transform = tableView.transform
             cell.textLabel?.text = comment
             cell.detailTextLabel?.text = tags.map { "#\($0)" }.joinWithSeparator(" ")
-            
+
             return cell
         }
     }
@@ -100,17 +100,22 @@ extension TextReblogTableViewAdapter: UITableViewDelegate {
     @objc func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         switch Section(rawValue: section)! {
         case .Post:
-            let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(PostTableHeaderView.viewIdentifier) as! PostTableHeaderView
-            
-            view.post = post
-            view.transform = tableView.transform
-            
-            return view
+            guard
+                let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(PostTableHeaderView.viewIdentifier),
+                let postHeaderView = view as? PostTableHeaderView
+            else {
+                return nil
+            }
+
+            postHeaderView.post = post
+            postHeaderView.transform = tableView.transform
+
+            return postHeaderView
         case .Comment:
             return nil
         }
     }
-    
+
     @objc func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         switch Section(rawValue: indexPath.section)! {
         case .Post:
@@ -119,7 +124,7 @@ extension TextReblogTableViewAdapter: UITableViewDelegate {
             return 30
         }
     }
-    
+
     @objc func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         switch Section(rawValue: indexPath.section)! {
         case .Post:
@@ -128,7 +133,7 @@ extension TextReblogTableViewAdapter: UITableViewDelegate {
             return UITableViewAutomaticDimension
         }
     }
-    
+
     @objc func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         switch Section(rawValue: section)! {
         case .Post:

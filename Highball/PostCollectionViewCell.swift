@@ -39,7 +39,7 @@ class PostCollectionViewCell: WCFastCollectionViewCell {
         postViewController.linkTapHandler = { self.linkTapHandler?($0, $1) }
 
         contentView.addSubview(postViewController.view)
-        
+
         constrain(postViewController.view, contentView) { singlePostView, contentView in
             singlePostView.edges == contentView.edges
         }

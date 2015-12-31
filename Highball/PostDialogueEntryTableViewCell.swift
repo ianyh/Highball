@@ -23,7 +23,7 @@ class PostDialogueEntryTableViewCell: WCFastCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUpCell()
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setUpCell()

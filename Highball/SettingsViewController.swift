@@ -11,7 +11,7 @@ import PINRemoteImage
 import UIKit
 import VENTouchLock
 
-class SettingsViewController : UITableViewController {
+class SettingsViewController: UITableViewController {
     private enum SettingsSection: Int {
         case Accounts
         case Passcode

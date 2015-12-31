@@ -11,17 +11,15 @@ import Cartography
 import WCFastCell
 
 class PostLinkTableViewCell: WCFastCell {
-
     var bubbleView: UIView!
     var titleLabel: UILabel!
     var urlLabel: UILabel!
-    
+
     var post: Post? {
         didSet {
             guard
                 let post = post,
-                let urlString = post.urlString,
-                let url = NSURL(string: urlString)
+                let url = NSURL(string: post.urlString)
             else {
                 return
             }
@@ -30,22 +28,22 @@ class PostLinkTableViewCell: WCFastCell {
             self.urlLabel.text = url.host
         }
     }
-    
+
     override required init(style: UITableViewCellStyle, reuseIdentifier: String!) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUpCell()
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setUpCell()
     }
-    
+
     func setUpCell() {
         bubbleView = UIView()
         titleLabel = UILabel()
         urlLabel = UILabel()
-        
+
         bubbleView.backgroundColor = UIColor(red: 86.0/255.0, green: 188.0/255.0, blue: 138.0/255.0, alpha: 1)
         bubbleView.clipsToBounds = true
 
@@ -53,12 +51,12 @@ class PostLinkTableViewCell: WCFastCell {
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.numberOfLines = 0
         titleLabel.textAlignment = NSTextAlignment.Center
-        
+
         urlLabel.font = UIFont.systemFontOfSize(12)
         urlLabel.textColor = UIColor(white: 1, alpha: 0.7)
         urlLabel.numberOfLines = 1
         urlLabel.textAlignment = NSTextAlignment.Center
-        
+
         contentView.addSubview(bubbleView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(urlLabel)

@@ -10,7 +10,6 @@ import UIKit
 
 class ImagesViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var imagesCollectionView: UICollectionView!
-    
     var post: Post?
 
     override func viewDidLoad() {
@@ -42,12 +41,15 @@ class ImagesViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
 
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(ImageCollectionViewCell.cellIdentifier, forIndexPath: indexPath) as! ImageCollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(ImageCollectionViewCell.cellIdentifier, forIndexPath: indexPath)
+        guard let imageCell = cell as? ImageCollectionViewCell else {
+            return cell
+        }
         let postPhoto = post!.photos[indexPath.row]
 
-        cell.contentWidth = collectionView.frame.size.width
-        cell.photo = postPhoto
-        cell.onTapHandler = { self.dismissViewControllerAnimated(true, completion: nil) }
+        imageCell.contentWidth = collectionView.frame.size.width
+        imageCell.photo = postPhoto
+        imageCell.onTapHandler = { self.dismissViewControllerAnimated(true, completion: nil) }
 
         return cell
     }

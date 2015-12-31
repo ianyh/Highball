@@ -21,7 +21,7 @@ class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollecti
             let constrainedSize = CGSize(width: CGFloat.max, height: CGFloat.max)
             let attributedTag = NSAttributedString(string: tag, attributes: [ NSFontAttributeName : UIFont.systemFontOfSize(14) ])
             let tagRect = attributedTag.boundingRectWithSize(constrainedSize, options: NSStringDrawingOptions.UsesLineFragmentOrigin, context: nil)
-            
+
             return ceil(tagRect.size.width)
         }
 
@@ -55,17 +55,17 @@ class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollecti
             collectionView?.reloadData()
         }
     }
-    
+
     override required init(style: UITableViewCellStyle, reuseIdentifier: String!) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUpCell()
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setUpCell()
     }
-    
+
     func setUpCell() {
         let collectionViewLayout = UICollectionViewFlowLayout()
         collectionViewLayout.scrollDirection = .Horizontal
@@ -85,7 +85,7 @@ class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollecti
         collectionView.registerClass(TagCollectionViewCell.self, forCellWithReuseIdentifier: TagCollectionViewCell.cellIdentifier)
 
         contentView.addSubview(collectionView)
-        
+
         constrain(collectionView, contentView) { collectionView, contentView in
             collectionView.edges == contentView.edges
         }

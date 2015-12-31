@@ -10,9 +10,9 @@ import UIKit
 import SwiftyJSON
 import TMTumblrSDK
 
-class TagViewController: PostsViewController {
+final class TagViewController: PostsViewController {
     private let tag: String!
-    
+
     init(tag: String) {
         self.tag = tag.substringFromIndex(tag.startIndex.advancedBy(1))
         super.init()
@@ -32,9 +32,9 @@ class TagViewController: PostsViewController {
             return Post(json: post)
         }
     }
-    
+
     override func requestPosts(postCount: Int, var parameters: Dictionary<String, AnyObject>, callback: TMAPICallback) {
-        if let lastPost = posts?.last {
+        if let lastPost = dataManager.posts?.last {
             parameters["before"] = "\(lastPost.timestamp)"
         }
         TMAPIClient.sharedInstance().tagged(self.tag, parameters: parameters, callback: callback)

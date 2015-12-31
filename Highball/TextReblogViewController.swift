@@ -84,7 +84,7 @@ class TextReblogViewController: SLKTextViewController {
         let vibrancyView = UIVisualEffectView(effect: vibrancyEffect)
         view.insertSubview(vibrancyView, atIndex: 0)
         view.insertSubview(blurView, atIndex: 0)
-        
+
         constrain(blurView, view) { blurView, view in
             blurView.edges == view.edges
         }
@@ -93,20 +93,37 @@ class TextReblogViewController: SLKTextViewController {
         }
     }
 
+    func controllerToPresent(fromView view: UIView, rect: CGRect) -> UIViewController {
+        let navigationController = UINavigationController(rootViewController: self)
+
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            navigationController.modalPresentationStyle = .Popover
+        } else {
+            navigationController.modalPresentationStyle = .OverFullScreen
+        }
+        navigationController.modalTransitionStyle = .CrossDissolve
+        navigationController.popoverPresentationController?.sourceView = view
+        navigationController.popoverPresentationController?.sourceRect = rect
+        navigationController.popoverPresentationController?.backgroundColor = UIColor.clearColor()
+        navigationController.preferredContentSize = CGSize(width: view.frame.width, height: 480)
+
+        return navigationController
+    }
+
     func cancel() {
         dismissViewControllerAnimated(true, completion: nil)
     }
 
     func reblog() {
         var parameters = [ "id" : "\(post.id)", "reblog_key" : post.reblogKey ]
-        
+
         switch reblogType {
         case .Reblog:
             parameters["state"] = "published"
         case .Queue:
             parameters["state"] = "queue"
         }
-        
+
         parameters["comment"] = tableViewAdapter.comment
 
         if tableViewAdapter.tags.count > 0 {
@@ -114,7 +131,7 @@ class TextReblogViewController: SLKTextViewController {
         }
 
         reblogging = true
-        
+
         TMAPIClient.sharedInstance().reblogPost(blogName, parameters: parameters) { response, error in
             if let error = error {
                 let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .Alert)

@@ -36,7 +36,17 @@ class HistoryViewController: UITableViewController {
         super.viewWillAppear(animated)
 
         bookmarks = NSUserDefaults.standardUserDefaults().arrayForKey("HIBookmarks:\(AccountsService.account.blog.url)") as? [[String: AnyObject]]
-        bookmarks = bookmarks?.sort { ($0["date"] as! NSDate).compare($1["date"] as! NSDate) == .OrderedDescending }
+        bookmarks = bookmarks?
+            .sort { bookmarkA, bookmarkB in
+                guard
+                    let dateA = bookmarkA["date"] as? NSDate,
+                    let dateB = bookmarkB["date"] as? NSDate
+                else {
+                    return false
+                }
+
+                return dateA.compare(dateB) == .OrderedDescending
+            }
 
         tableView.reloadData()
     }
@@ -50,7 +60,11 @@ class HistoryViewController: UITableViewController {
         let bookmark = bookmarks![indexPath.row]
 
         cell.accessoryType = .DisclosureIndicator
-        cell.textLabel?.text = "\(bookmark["date"] as! NSDate)"
+        if let date = bookmark["date"] as? NSDate {
+            cell.textLabel?.text = "\(date)"
+        } else {
+            cell.textLabel?.text = nil
+        }
 
         return cell
     }
@@ -58,6 +72,10 @@ class HistoryViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let bookmark = bookmarks![indexPath.row]
 
-        delegate.historyViewController(self, selectedId: bookmark["id"] as! Int)
+        guard let bookmarkID = bookmark["id"] as? Int else {
+            return
+        }
+
+        delegate.historyViewController(self, selectedId: bookmarkID)
     }
 }

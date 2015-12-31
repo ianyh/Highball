@@ -25,7 +25,7 @@ class PostTableViewCell: WCFastCell {
             postViewController.secondaryBodyHeight = secondaryBodyHeight
         }
     }
-    
+
     var bodyTapHandler: ((Post, UIView) -> ())?
     var tagTapHandler: ((Post, String) -> ())?
     var linkTapHandler: ((Post, NSURL) -> ())?
@@ -37,22 +37,22 @@ class PostTableViewCell: WCFastCell {
         postViewController.bodyTapHandler = { self.bodyTapHandler?($0, $1) }
         postViewController.tagTapHandler = { self.tagTapHandler?($0, $1) }
         postViewController.linkTapHandler = { self.linkTapHandler?($0, $1) }
-        
+
         contentView.addSubview(postViewController.view)
-        
+
         constrain(postViewController.view, contentView) { singlePostView, contentView in
             singlePostView.edges == contentView.edges
         }
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func imageAtPoint(point: CGPoint) -> UIImage? {
         return postViewController.imageAtPoint(convertPoint(point, toView: postViewController.view))
     }
-    
+
     func endDisplay() {
         postViewController.endDisplay()
     }

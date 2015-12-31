@@ -23,7 +23,7 @@ struct Account {
     }
 }
 
-func ==(lhs: Account, rhs: Account) -> Bool {
+func == (lhs: Account, rhs: Account) -> Bool {
     return lhs.token == rhs.token
 }
 

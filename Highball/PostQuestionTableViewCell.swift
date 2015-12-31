@@ -22,7 +22,7 @@ class PostQuestionTableViewCell: WCFastCell {
             }
 
             let asker = post.asker!
-            
+
             askerLabel.text = "\(asker) said:"
             contentLabel.text = post.question!
         }
