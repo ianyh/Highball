@@ -415,15 +415,15 @@ class PostsViewController: UITableViewController, UIGestureRecognizerDelegate, U
                         if let quickReblogAction = viewController.reblogAction() {
                             switch quickReblogAction {
                             case .Reblog(let reblogType):
-                                let reblogViewController = TextReblogViewController()
+                                let reblogViewController = TextReblogViewController(
+                                    post: post,
+                                    reblogType: reblogType,
+                                    blogName: reblogBlogName(),
+                                    bodyHeight: bodyHeightCache[post.id],
+                                    secondaryBodyHeight: secondaryBodyHeightCache[post.id],
+                                    height: tableView(tableView, heightForRowAtIndexPath: indexPath)
+                                )
                                 let navigationController = UINavigationController(rootViewController: reblogViewController)
-
-                                reblogViewController.reblogType = reblogType
-                                reblogViewController.post = post
-                                reblogViewController.blogName = reblogBlogName()
-                                reblogViewController.bodyHeight = bodyHeightCache[post.id]
-                                reblogViewController.secondaryBodyHeight = secondaryBodyHeightCache[post.id]
-                                reblogViewController.height = tableView(tableView, heightForRowAtIndexPath: indexPath)
 
                                 if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
                                     navigationController.modalPresentationStyle = .Popover

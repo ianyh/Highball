@@ -95,7 +95,7 @@ class DashboardViewController: PostsViewController {
             self.heightCache.removeAll()
             self.tableView.reloadData()
             self.loadTop()
-            })
+        })
         alertController.addAction(UIAlertAction(title: "No", style: .Cancel, handler: nil))
         presentViewController(alertController, animated: true, completion: nil)
     }

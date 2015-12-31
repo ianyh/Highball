@@ -47,6 +47,7 @@
 		40C78D1519BD29330002EB78 /* ReblogTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C78D1419BD29330002EB78 /* ReblogTransitionAnimator.swift */; };
 		40CFDAB41C344931008FBF9A /* HeightCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CFDAB31C344931008FBF9A /* HeightCalculator.swift */; };
 		40CFDAB61C34990F008FBF9A /* ReuseIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CFDAB51C34990F008FBF9A /* ReuseIdentifiers.swift */; };
+		40CFDAB81C349F84008FBF9A /* TextReblogTableViewAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CFDAB71C349F84008FBF9A /* TextReblogTableViewAdapter.swift */; };
 		40D475F11AAB98010034CF16 /* PostTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D475F01AAB98010034CF16 /* PostTableHeaderView.swift */; };
 		40DF7DB21A7672E900CE3D4C /* VideoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40DF7DB11A7672E900CE3D4C /* VideoTableViewCell.swift */; };
 		40DF7DB41A79919900CE3D4C /* VideoPlayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40DF7DB31A79919900CE3D4C /* VideoPlayController.swift */; };
@@ -130,6 +131,7 @@
 		40C78D1419BD29330002EB78 /* ReblogTransitionAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReblogTransitionAnimator.swift; sourceTree = "<group>"; };
 		40CFDAB31C344931008FBF9A /* HeightCalculator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeightCalculator.swift; sourceTree = "<group>"; };
 		40CFDAB51C34990F008FBF9A /* ReuseIdentifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReuseIdentifiers.swift; sourceTree = "<group>"; };
+		40CFDAB71C349F84008FBF9A /* TextReblogTableViewAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextReblogTableViewAdapter.swift; sourceTree = "<group>"; };
 		40D475F01AAB98010034CF16 /* PostTableHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostTableHeaderView.swift; sourceTree = "<group>"; };
 		40DF7DB11A7672E900CE3D4C /* VideoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoTableViewCell.swift; sourceTree = "<group>"; };
 		40DF7DB31A79919900CE3D4C /* VideoPlayController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlayController.swift; sourceTree = "<group>"; };
@@ -281,6 +283,7 @@
 				40A11E6719B518DD00B91843 /* ImagesViewController.swift */,
 				40FF6D4419B9F656008119A3 /* QuickReblogViewController.swift */,
 				402D979819F1E442003DCD55 /* TextReblogViewController.swift */,
+				40CFDAB71C349F84008FBF9A /* TextReblogTableViewAdapter.swift */,
 				40731BB719FDC38900F6978D /* PostsViewController.swift */,
 				40731BB919FDCAD300F6978D /* LikesViewController.swift */,
 				40080E8D1A0F042B00D883AE /* SettingsViewController.swift */,
@@ -530,6 +533,7 @@
 				40F75A851C31FA4100EC86DE /* HistoryViewController.swift in Sources */,
 				4074B6611A99269C00774E00 /* TagViewController.swift in Sources */,
 				40778B9E19B160DD00F8EE13 /* PostPhoto.swift in Sources */,
+				40CFDAB81C349F84008FBF9A /* TextReblogTableViewAdapter.swift in Sources */,
 				40D475F11AAB98010034CF16 /* PostTableHeaderView.swift in Sources */,
 				40DF7DB21A7672E900CE3D4C /* VideoTableViewCell.swift in Sources */,
 				40F75A821C31D68800EC86DE /* MainViewController.swift in Sources */,

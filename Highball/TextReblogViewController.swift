@@ -6,47 +6,42 @@
 //  Copyright (c) 2014 ianynda. All rights reserved.
 //
 
-import UIKit
 import Cartography
-import SlackTextViewController
 import FontAwesomeKit
+import SlackTextViewController
 import TMTumblrSDK
+import UIKit
 
 class TextReblogViewController: SLKTextViewController {
-    var reblogType: ReblogType!
-    var post: Post!
-    var blogName: String!
-    var bodyHeight: CGFloat?
-    var secondaryBodyHeight: CGFloat?
-    var postViewController: PostViewController!
-    var height: CGFloat!
+    let reblogType: ReblogType
+    let post: Post
+    let blogName: String
+    let bodyHeight: CGFloat?
+    let secondaryBodyHeight: CGFloat?
+    let height: CGFloat
 
     private var reblogging = false
-    private var comment: String?
-    private var tags: [String] = []
+    private var tableViewAdapter: TextReblogTableViewAdapter!
 
-    private enum Section: Int {
-        case Comment
-        case Post
-
-        static var count: Int {
-            return 2
-        }
-    }
-
-    init() {
+    init(post: Post, reblogType: ReblogType, blogName: String, bodyHeight: CGFloat?, secondaryBodyHeight: CGFloat?, height: CGFloat) {
+        self.post = post
+        self.reblogType = reblogType
+        self.blogName = blogName
+        self.bodyHeight = bodyHeight
+        self.secondaryBodyHeight = secondaryBodyHeight
+        self.height = height
         super.init(tableViewStyle: .Plain)
     }
 
     required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        fatalError()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         var reblogTitle: String
-        switch reblogType! {
+        switch reblogType {
         case .Reblog:
             reblogTitle = "Reblog"
         case .Queue:
@@ -68,27 +63,20 @@ class TextReblogViewController: SLKTextViewController {
         navigationController?.view.backgroundColor = UIColor.clearColor()
         view.backgroundColor = UIColor.clearColor()
 
-        postViewController = PostViewController()
+        let postViewController = PostViewController()
         postViewController.post = post
         postViewController.bodyHeight = bodyHeight
         postViewController.secondaryBodyHeight = secondaryBodyHeight
 
+        self.tableViewAdapter = TextReblogTableViewAdapter(
+            tableView: tableView,
+            post: post,
+            postViewController: postViewController,
+            height: height
+        )
+
         textInputbar.rightButton.setTitle("Add", forState: .Normal)
         textInputbar.autoHideRightButton = false
-
-        tableView.allowsSelection = false
-        tableView.backgroundColor = UIColor.clearColor()
-        tableView.estimatedRowHeight = 30
-        tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.sectionHeaderHeight = 50
-        tableView.sectionFooterHeight = 50
-        tableView.separatorStyle = .None
-        tableView.showsHorizontalScrollIndicator = false
-        tableView.showsVerticalScrollIndicator = false
-
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: UITableViewCell.cellIdentifier)
-        tableView.registerClass(ReblogCommentCell.self, forCellReuseIdentifier: ReblogCommentCell.cellIdentifier)
-        tableView.registerClass(PostTableHeaderView.self, forHeaderFooterViewReuseIdentifier: PostTableHeaderView.viewIdentifier)
 
         let blurEffect = UIBlurEffect(style: .Light)
         let blurView = UIVisualEffectView(effect: blurEffect)
@@ -103,17 +91,6 @@ class TextReblogViewController: SLKTextViewController {
         constrain(vibrancyView, view) { vibrancyView, view in
             vibrancyView.edges == view.edges
         }
-
-        let lightBlurEffect = UIBlurEffect(style: .Light)
-        let lightBlurView = UIVisualEffectView(effect: lightBlurEffect)
-        view.addSubview(lightBlurView)
-
-        constrain(lightBlurView, view) { lightBlurView, view in
-            lightBlurView.top == view.top
-            lightBlurView.left == view.left
-            lightBlurView.right == view.right
-            lightBlurView.height == 20
-        }
     }
 
     func cancel() {
@@ -123,19 +100,17 @@ class TextReblogViewController: SLKTextViewController {
     func reblog() {
         var parameters = [ "id" : "\(post.id)", "reblog_key" : post.reblogKey ]
         
-        switch reblogType as ReblogType {
+        switch reblogType {
         case .Reblog:
             parameters["state"] = "published"
         case .Queue:
             parameters["state"] = "queue"
         }
         
-        if let comment = comment {
-            parameters["comment"] = comment
-        }
+        parameters["comment"] = tableViewAdapter.comment
 
-        if tags.count > 0 {
-            parameters["tags"] = tags.joinWithSeparator(",")
+        if tableViewAdapter.tags.count > 0 {
+            parameters["tags"] = tableViewAdapter.tags.joinWithSeparator(",")
         }
 
         reblogging = true
@@ -160,94 +135,13 @@ class TextReblogViewController: SLKTextViewController {
             super.didPressRightButton(sender)
         }
 
-        guard comment != nil else {
-            comment = textView.text
+        guard tableViewAdapter.comment != nil else {
+            tableViewAdapter.comment = textView.text
             tableView.reloadData()
             return
         }
 
-        tags.append(textView.text)
+        tableViewAdapter.tags.append(textView.text)
         tableView.reloadData()
-    }
-
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return Section.count
-    }
-
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch Section(rawValue: section)! {
-        case .Post:
-            return post == nil ? 0 : 1
-        case .Comment:
-            return comment == nil ? 0 : 1
-        }
-    }
-
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        switch Section(rawValue: indexPath.section)! {
-        case .Post:
-            let cell = tableView.dequeueReusableCellWithIdentifier(PostTableViewCell.cellIdentifier)!
-            
-            cell.transform = tableView.transform
-            cell.backgroundColor = UIColor.whiteColor()
-            
-            postViewController.view.backgroundColor = UIColor.clearColor()
-            cell.contentView.addSubview(postViewController.view)
-            
-            constrain(postViewController.view, cell.contentView) { postView, contentView in
-                postView.edges == contentView.edges
-            }
-            
-            return cell
-        case .Comment:
-            let cell = tableView.dequeueReusableCellWithIdentifier(UITableViewCell.cellIdentifier, forIndexPath: indexPath)
-
-            cell.transform = tableView.transform
-            cell.textLabel?.text = comment
-            cell.detailTextLabel?.text = tags.map { "#\($0)" }.joinWithSeparator(" ")
-
-            return cell
-        }
-    }
-
-    override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        switch Section(rawValue: section)! {
-        case .Post:
-            let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(PostTableHeaderView.viewIdentifier) as! PostTableHeaderView
-            
-            view.post = post
-            view.transform = tableView.transform
-            
-            return view
-        case .Comment:
-            return nil
-        }
-    }
-
-    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        switch Section(rawValue: indexPath.section)! {
-        case .Post:
-            return height
-        case .Comment:
-            return 30
-        }
-    }
-
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        switch Section(rawValue: indexPath.section)! {
-        case .Post:
-            return height
-        case .Comment:
-            return UITableViewAutomaticDimension
-        }
-    }
-
-    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        switch Section(rawValue: section)! {
-        case .Post:
-            return tableView.sectionFooterHeight
-        case .Comment:
-            return 0
-        }
     }
 }
