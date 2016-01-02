@@ -15,7 +15,6 @@ class TextReblogTableViewAdapter: NSObject {
 
     private let tableView: UITableView
     private let post: Post
-    private let postViewController: PostViewController
     private let height: CGFloat
 
     private enum Section: Int {
@@ -27,10 +26,9 @@ class TextReblogTableViewAdapter: NSObject {
         }
     }
 
-    init(tableView: UITableView, post: Post, postViewController: PostViewController, height: CGFloat) {
+    init(tableView: UITableView, post: Post, height: CGFloat) {
         self.tableView = tableView
         self.post = post
-        self.postViewController = postViewController
         self.height = height
 
         super.init()
@@ -48,9 +46,17 @@ class TextReblogTableViewAdapter: NSObject {
         tableView.showsHorizontalScrollIndicator = false
         tableView.showsVerticalScrollIndicator = false
 
-        tableView.registerClass(PostTableViewCell.self, forCellReuseIdentifier: PostTableViewCell.cellIdentifier)
+        tableView.registerClass(TitleTableViewCell.self, forCellReuseIdentifier: TitleTableViewCell.cellIdentifier)
+        tableView.registerClass(PhotosetRowTableViewCell.self, forCellReuseIdentifier: PhotosetRowTableViewCell.cellIdentifier)
+        tableView.registerClass(ContentTableViewCell.self, forCellReuseIdentifier: ContentTableViewCell.cellIdentifier)
+        tableView.registerClass(PostQuestionTableViewCell.self, forCellReuseIdentifier: PostQuestionTableViewCell.cellIdentifier)
+        tableView.registerClass(PostLinkTableViewCell.self, forCellReuseIdentifier: PostLinkTableViewCell.cellIdentifier)
+        tableView.registerClass(PostDialogueEntryTableViewCell.self, forCellReuseIdentifier: PostDialogueEntryTableViewCell.cellIdentifier)
+        tableView.registerClass(TagsTableViewCell.self, forCellReuseIdentifier: TagsTableViewCell.cellIdentifier)
+        tableView.registerClass(VideoTableViewCell.self, forCellReuseIdentifier: VideoTableViewCell.cellIdentifier)
+        tableView.registerClass(YoutubeTableViewCell.self, forCellReuseIdentifier: YoutubeTableViewCell.cellIdentifier)
+        tableView.registerClass(PostHeaderView.self, forHeaderFooterViewReuseIdentifier: PostHeaderView.viewIdentifier)
         tableView.registerClass(ReblogCommentCell.self, forCellReuseIdentifier: ReblogCommentCell.cellIdentifier)
-        tableView.registerClass(PostTableHeaderView.self, forHeaderFooterViewReuseIdentifier: PostTableHeaderView.viewIdentifier)
     }
 }
 
@@ -71,17 +77,12 @@ extension TextReblogTableViewAdapter: UITableViewDataSource {
     @objc func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         switch Section(rawValue: indexPath.section)! {
         case .Post:
-            let cell = tableView.dequeueReusableCellWithIdentifier(PostTableViewCell.cellIdentifier, forIndexPath: indexPath)
+            let sectionAdapter = PostSectionAdapter(post: post)
+            let adjustedRow = sectionAdapter.numbersOfRows() - indexPath.row - 1
+            let cell = sectionAdapter.tableView(tableView, cellForRow: adjustedRow)
 
             cell.transform = tableView.transform
             cell.backgroundColor = UIColor.whiteColor()
-
-            postViewController.view.backgroundColor = UIColor.clearColor()
-            cell.contentView.addSubview(postViewController.view)
-
-            constrain(postViewController.view, cell.contentView) { postView, contentView in
-                postView.edges == contentView.edges
-            }
 
             return cell
         case .Comment:
@@ -100,17 +101,12 @@ extension TextReblogTableViewAdapter: UITableViewDelegate {
     @objc func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         switch Section(rawValue: section)! {
         case .Post:
-            guard
-                let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(PostTableHeaderView.viewIdentifier),
-                let postHeaderView = view as? PostTableHeaderView
-            else {
-                return nil
-            }
+            let sectionAdapter = PostSectionAdapter(post: post)
+            let view = sectionAdapter.tableViewHeaderView(tableView) as! PostHeaderView
 
-            postHeaderView.post = post
-            postHeaderView.transform = tableView.transform
+            view.transform = tableView.transform
 
-            return postHeaderView
+            return view
         case .Comment:
             return nil
         }
