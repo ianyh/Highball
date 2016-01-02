@@ -63,15 +63,9 @@ class TextReblogViewController: SLKTextViewController {
         navigationController?.view.backgroundColor = UIColor.clearColor()
         view.backgroundColor = UIColor.clearColor()
 
-        let postViewController = PostViewController()
-        postViewController.post = post
-        postViewController.bodyHeight = bodyHeight
-        postViewController.secondaryBodyHeight = secondaryBodyHeight
-
-        self.tableViewAdapter = TextReblogTableViewAdapter(
+        tableViewAdapter = TextReblogTableViewAdapter(
             tableView: tableView,
             post: post,
-            postViewController: postViewController,
             height: height
         )
 

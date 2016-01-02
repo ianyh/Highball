@@ -13,14 +13,14 @@ struct PostViewHeightCalculator {
     let bodyHeight: CGFloat?
     let secondaryBodyHeight: CGFloat?
 
-    func heightForPost(post: Post, atIndexPath indexPath: NSIndexPath, sectionRowCount: Int) -> CGFloat {
-        if indexPath.row == sectionRowCount - 1 {
+    func heightForPost(post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
+        if row == sectionRowCount - 1 {
             return post.tags.count > 0 ? 30 : 0
         }
 
         switch post.type {
         case "photo":
-            if indexPath.row == sectionRowCount - 2 {
+            if row == sectionRowCount - 2 {
                 return bodyHeight ?? 0
             }
 
@@ -32,10 +32,10 @@ struct PostViewHeightCalculator {
             } else {
                 let photosetLayoutRows = post.layoutRows
                 var photosIndexStart = 0
-                for photosetLayoutRow in photosetLayoutRows.layoutRows[0..<indexPath.row] {
+                for photosetLayoutRow in photosetLayoutRows.layoutRows[0..<row] {
                     photosIndexStart += photosetLayoutRow
                 }
-                let photosetLayoutRow = photosetLayoutRows.layoutRows[indexPath.row]
+                let photosetLayoutRow = photosetLayoutRows.layoutRows[row]
 
                 images = Array(postPhotos[(photosIndexStart)..<(photosIndexStart + photosetLayoutRow)])
             }
@@ -51,7 +51,7 @@ struct PostViewHeightCalculator {
 
             return minHeight
         case "text":
-            switch PostViewSections.TextRow(rawValue: indexPath.row)! {
+            switch PostViewSections.TextRow(rawValue: row)! {
             case .Title:
                 if let title = post.title {
                     let height = TitleTableViewCell.heightForTitle(title, width: width)
@@ -62,7 +62,7 @@ struct PostViewHeightCalculator {
                 return bodyHeight ?? 0
             }
         case "answer":
-            switch PostViewSections.AnswerRow(rawValue: indexPath.row)! {
+            switch PostViewSections.AnswerRow(rawValue: row)! {
             case .Question:
                 let height = PostQuestionTableViewCell.heightForPost(post, width: width)
                 return height
@@ -70,21 +70,21 @@ struct PostViewHeightCalculator {
                 return bodyHeight ?? 0
             }
         case "quote":
-            switch PostViewSections.QuoteRow(rawValue: indexPath.row)! {
+            switch PostViewSections.QuoteRow(rawValue: row)! {
             case .Quote:
                 return bodyHeight ?? 0
             case .Source:
                 return secondaryBodyHeight ?? 0
             }
         case "link":
-            switch PostViewSections.LinkRow(rawValue: indexPath.row)! {
+            switch PostViewSections.LinkRow(rawValue: row)! {
             case .Link:
                 return PostLinkTableViewCell.heightForPost(post, width: width)
             case .Description:
                 return bodyHeight ?? 0
             }
         case "chat":
-            if indexPath.row == 0 {
+            if row == 0 {
                 guard let title = post.title else {
                     return 0
                 }
@@ -92,18 +92,18 @@ struct PostViewHeightCalculator {
                 return TitleTableViewCell.heightForTitle(title, width: width)
             }
 
-            let dialogueEntry = post.dialogueEntries[indexPath.row - 1]
+            let dialogueEntry = post.dialogueEntries[row - 1]
 
             return PostDialogueEntryTableViewCell.heightForPostDialogueEntry(dialogueEntry, width: width)
         case "video":
-            switch PostViewSections.VideoRow(rawValue: indexPath.row)! {
+            switch PostViewSections.VideoRow(rawValue: row)! {
             case .Player:
                 return post.videoHeightWidthWidth(width) ?? 320
             case .Caption:
                 return bodyHeight ?? 0
             }
         case "video":
-            switch PostViewSections.AudioRow(rawValue: indexPath.row)! {
+            switch PostViewSections.AudioRow(rawValue: row)! {
             case .Player:
                 return secondaryBodyHeight ?? 0
             case .Caption:

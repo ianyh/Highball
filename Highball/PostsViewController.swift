@@ -168,9 +168,9 @@ extension PostsViewController {
 
             guard
                 let indexPath = tableView.indexPathForRowAtPoint(collectionViewPoint),
-                let cell = tableView.cellForRowAtIndexPath(indexPath) as? PostTableViewCell,
+                let cell = tableView.cellForRowAtIndexPath(indexPath),
                 let quickReblogAction = viewController.reblogAction()
-                else {
+            else {
                     return
             }
             let post = dataManager.posts[indexPath.section]
@@ -193,7 +193,7 @@ extension PostsViewController {
                 let extensionItemSource = XExtensionItemSource(URL: NSURL(string: post.urlString)!)
                 var additionalAttachments: [AnyObject] = post.photos.map { $0.urlWithWidth(CGFloat.max) }
 
-                if let image = cell.imageAtPoint(view.convertPoint(point, toView: cell)) {
+                if let photosetCell = cell as? PhotosetRowTableViewCell, let image = photosetCell.imageAtPoint(view.convertPoint(point, toView: cell)) {
                     additionalAttachments.append(image)
                 }
 
