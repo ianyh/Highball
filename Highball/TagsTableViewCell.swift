@@ -31,8 +31,7 @@ class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollecti
         }
 
         required init?(coder aDecoder: NSCoder) {
-            super.init(coder: aDecoder)
-            setUpCell()
+            fatalError()
         }
 
         func setUpCell() {
@@ -50,9 +49,9 @@ class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollecti
 
     private var collectionView: UICollectionView!
     var delegate: TagsTableViewCellDelegate?
-    var tags: Array<String>? {
+    var tags: [String]? {
         didSet {
-            collectionView?.reloadData()
+            collectionView.contentOffset = CGPointZero
         }
     }
 
@@ -62,8 +61,7 @@ class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollecti
     }
 
     required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setUpCell()
+        fatalError()
     }
 
     func setUpCell() {
@@ -112,5 +110,11 @@ class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollecti
 
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         delegate?.tagsTableViewCell(self, didSelectTag: self.tags![indexPath.row])
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        collectionView.reloadData()
     }
 }
