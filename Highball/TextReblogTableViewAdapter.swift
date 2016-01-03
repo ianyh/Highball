@@ -15,7 +15,10 @@ class TextReblogTableViewAdapter: NSObject {
 
     private let tableView: UITableView
     private let post: Post
-    private let height: CGFloat
+    private let bodyHeight: CGFloat?
+    private let secondaryBodyHeight: CGFloat?
+
+    private let sectionAdapter: PostSectionAdapter
 
     private enum Section: Int {
         case Comment
@@ -26,10 +29,13 @@ class TextReblogTableViewAdapter: NSObject {
         }
     }
 
-    init(tableView: UITableView, post: Post, height: CGFloat) {
+    init(tableView: UITableView, post: Post, bodyHeight: CGFloat?, secondaryBodyHeight: CGFloat?) {
         self.tableView = tableView
         self.post = post
-        self.height = height
+        self.bodyHeight = bodyHeight
+        self.secondaryBodyHeight = secondaryBodyHeight
+
+        self.sectionAdapter = PostSectionAdapter(post: post)
 
         super.init()
 
@@ -68,7 +74,7 @@ extension TextReblogTableViewAdapter: UITableViewDataSource {
     @objc func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch Section(rawValue: section)! {
         case .Post:
-            return 1
+            return sectionAdapter.numbersOfRows()
         case .Comment:
             return comment == nil ? 0 : 1
         }
@@ -77,7 +83,6 @@ extension TextReblogTableViewAdapter: UITableViewDataSource {
     @objc func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         switch Section(rawValue: indexPath.section)! {
         case .Post:
-            let sectionAdapter = PostSectionAdapter(post: post)
             let adjustedRow = sectionAdapter.numbersOfRows() - indexPath.row - 1
             let cell = sectionAdapter.tableView(tableView, cellForRow: adjustedRow)
 
@@ -86,7 +91,7 @@ extension TextReblogTableViewAdapter: UITableViewDataSource {
 
             return cell
         case .Comment:
-            let cell = tableView.dequeueReusableCellWithIdentifier(UITableViewCell.cellIdentifier, forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCellWithIdentifier(ReblogCommentCell.cellIdentifier, forIndexPath: indexPath)
 
             cell.transform = tableView.transform
             cell.textLabel?.text = comment
@@ -115,7 +120,8 @@ extension TextReblogTableViewAdapter: UITableViewDelegate {
     @objc func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         switch Section(rawValue: indexPath.section)! {
         case .Post:
-            return height
+            let adjustedRow = sectionAdapter.numbersOfRows() - indexPath.row - 1
+            return sectionAdapter.tableView(tableView, heightForCellAtRow: adjustedRow, bodyHeight: bodyHeight, secondaryBodyHeight: secondaryBodyHeight)
         case .Comment:
             return 30
         }
@@ -124,7 +130,8 @@ extension TextReblogTableViewAdapter: UITableViewDelegate {
     @objc func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         switch Section(rawValue: indexPath.section)! {
         case .Post:
-            return height
+            let adjustedRow = sectionAdapter.numbersOfRows() - indexPath.row - 1
+            return sectionAdapter.tableView(tableView, heightForCellAtRow: adjustedRow, bodyHeight: bodyHeight, secondaryBodyHeight: secondaryBodyHeight)
         case .Comment:
             return UITableViewAutomaticDimension
         }
