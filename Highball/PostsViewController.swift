@@ -182,8 +182,7 @@ extension PostsViewController {
                     reblogType: reblogType,
                     blogName: AccountsService.account.blog.name,
                     bodyHeight: postHeightCache.bodyHeightForPost(post),
-                    secondaryBodyHeight: postHeightCache.secondaryBodyHeightForPost(post),
-                    height: tableView(tableView, heightForRowAtIndexPath: indexPath)
+                    secondaryBodyHeight: postHeightCache.secondaryBodyHeightForPost(post)
                 )
                 let sourceRect = view.convertRect(cell.bounds, fromView: cell)
                 let presentationViewController = reblogViewController.controllerToPresent(fromView: view, rect: sourceRect)
