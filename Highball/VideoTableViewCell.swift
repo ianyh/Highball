@@ -80,7 +80,9 @@ class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
         super.prepareForReuse()
 
         player.stop()
+        thumbnailImageView.animatedImage = nil
         thumbnailImageView.hidden = false
+        thumbnailImageView.image = nil
     }
 
     private func setUpCell() {
