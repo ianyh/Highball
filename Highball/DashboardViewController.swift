@@ -70,7 +70,8 @@ class DashboardViewController: PostsViewController {
 
         let userDefaults = NSUserDefaults.standardUserDefaults()
         let bookmarksKey = "HIBookmarks:\(account.blog.url)"
-        let post = dataManager.posts[firstIndexPath.section]
+        let postIndex = firstIndexPath.section > 0 ? firstIndexPath.section - 1 : firstIndexPath.section
+        let post = dataManager.posts[postIndex]
         var bookmarks: [[String: AnyObject]] = userDefaults.arrayForKey(bookmarksKey) as? [[String: AnyObject]] ?? []
 
         bookmarks.insert(["date": NSDate(), "id": post.id], atIndex: 0)
@@ -112,9 +113,10 @@ class DashboardViewController: PostsViewController {
         )
 
         dataManager.topID = bookmarkID
+        dataManager.cursor = bookmarkID
         dataManager.posts = []
+        dataManager.loadMore(tableView.frame.width)
         tableViewAdapter?.resetCache()
         tableView.reloadData()
-        dataManager.loadTop(tableView.frame.width)
     }
 }
