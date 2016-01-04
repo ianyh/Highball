@@ -37,7 +37,6 @@ class PostsTableViewAdapter: NSObject {
         activityIndicatorView.startAnimating()
         activityIndicatorView.center = loadingView.center
 
-        tableView.allowsSelection = false
         tableView.dataSource = self
         tableView.delegate = self
         tableView.sectionHeaderHeight = 50
