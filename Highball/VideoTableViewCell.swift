@@ -39,7 +39,18 @@ class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
                 return
             }
 
-            thumbnailImageView.pin_setImageFromURL(thumbnailURL)
+            thumbnailImageView.pin_setImageFromURL(thumbnailURL) { result in
+                if result.resultType != .MemoryCache {
+                    self.thumbnailImageView.alpha = 0
+                    UIView.animateWithDuration(
+                        0.5,
+                        delay: 0.1,
+                        options: .AllowUserInteraction,
+                        animations: { self.thumbnailImageView.alpha = 1.0 },
+                        completion: nil
+                    )
+                }
+            }
         }
     }
     var urlString: String? {

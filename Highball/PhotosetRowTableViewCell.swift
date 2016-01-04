@@ -52,11 +52,11 @@ class PhotosetRowTableViewCell: WCFastCell {
             let failedImageView = UIImageView()
             let imageURL = image.urlWithWidth(contentWidth)
 
-            imageView.image = nil
-            imageView.backgroundColor = UIColor.lightGrayColor()
-            imageView.userInteractionEnabled = true
             imageView.contentMode = .ScaleAspectFill
+            imageView.image = nil
+            imageView.userInteractionEnabled = true
 
+            failedImageView.backgroundColor = UIColor.whiteColor()
             failedImageView.contentMode = .Center
             failedImageView.hidden = true
             failedImageView.image = FAKIonIcons.iosCameraOutlineIconWithSize(50).imageWithSize(CGSize(width: 50, height: 50))
@@ -101,6 +101,16 @@ class PhotosetRowTableViewCell: WCFastCell {
             }
 
             imageView.pin_setImageFromURL(imageURL) { result in
+                if result.resultType != .MemoryCache {
+                    imageView.alpha = 0
+                    UIView.animateWithDuration(
+                        0.5,
+                        delay: 0.1,
+                        options: .AllowUserInteraction,
+                        animations: { imageView.alpha = 1.0 },
+                        completion: nil
+                    )
+                }
                 failedImageView.hidden = result.error == nil
             }
 
