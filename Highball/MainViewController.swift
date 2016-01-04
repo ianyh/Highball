@@ -11,78 +11,78 @@ import FontAwesomeKit
 import UIKit
 
 class MainViewController: UITabBarController {
-    private var statusBarBackgroundView: UIView!
-    private var observer: AnyObject!
+	private var statusBarBackgroundView: UIView!
+	private var observer: AnyObject!
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+	override func viewDidLoad() {
+		super.viewDidLoad()
 
-        observer = NSNotificationCenter.defaultCenter().addObserverForName(AccountDidChangeNotification, object: nil, queue: nil) { [unowned self] _ in
-            self.reset()
-        }
+		observer = NSNotificationCenter.defaultCenter().addObserverForName(AccountDidChangeNotification, object: nil, queue: nil) { [unowned self] _ in
+			self.reset()
+		}
 
-        reset()
-    }
+		reset()
+	}
 
-    deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(observer)
-    }
+	deinit {
+		NSNotificationCenter.defaultCenter().removeObserver(observer)
+	}
 
-    func reset() {
-        let dashboardViewController = UINavigationController(rootViewController: DashboardViewController())
-        let likesViewController = UINavigationController(rootViewController: LikesViewController())
-        let historyViewController = UINavigationController(rootViewController: HistoryViewController(delegate: self))
-        let settingsViewController = UINavigationController(rootViewController: SettingsViewController())
+	func reset() {
+		let dashboardViewController = UINavigationController(rootViewController: DashboardViewController())
+		let likesViewController = UINavigationController(rootViewController: LikesViewController())
+		let historyViewController = UINavigationController(rootViewController: HistoryViewController(delegate: self))
+		let settingsViewController = UINavigationController(rootViewController: SettingsViewController())
 
-        dashboardViewController.tabBarItem.title = "Dashboard"
-        dashboardViewController.tabBarItem.image = FAKFontAwesome.homeIconWithSize(28.0).imageWithSize(CGSize(width: 28, height: 28))
+		dashboardViewController.tabBarItem.title = "Dashboard"
+		dashboardViewController.tabBarItem.image = FAKFontAwesome.homeIconWithSize(28.0).imageWithSize(CGSize(width: 28, height: 28))
 
-        likesViewController.tabBarItem.title = "Likes"
-        likesViewController.tabBarItem.image = FAKFontAwesome.heartIconWithSize(22.0).imageWithSize(CGSize(width: 24, height: 24))
+		likesViewController.tabBarItem.title = "Likes"
+		likesViewController.tabBarItem.image = FAKFontAwesome.heartIconWithSize(22.0).imageWithSize(CGSize(width: 24, height: 24))
 
-        historyViewController.tabBarItem.title = "History"
-        historyViewController.tabBarItem.image = FAKFontAwesome.historyIconWithSize(22.0).imageWithSize(CGSize(width: 24, height: 24))
+		historyViewController.tabBarItem.title = "History"
+		historyViewController.tabBarItem.image = FAKFontAwesome.historyIconWithSize(22.0).imageWithSize(CGSize(width: 24, height: 24))
 
-        settingsViewController.tabBarItem.title = "Settings"
-        settingsViewController.tabBarItem.image = FAKFontAwesome.cogsIconWithSize(22.0).imageWithSize(CGSize(width: 24, height: 24))
+		settingsViewController.tabBarItem.title = "Settings"
+		settingsViewController.tabBarItem.image = FAKFontAwesome.cogsIconWithSize(22.0).imageWithSize(CGSize(width: 24, height: 24))
 
-        viewControllers = [
-            dashboardViewController,
-            likesViewController,
-            historyViewController,
-            settingsViewController
-        ]
+		viewControllers = [
+			dashboardViewController,
+			likesViewController,
+			historyViewController,
+			settingsViewController
+		]
 
-        statusBarBackgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .ExtraLight))
+		statusBarBackgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .ExtraLight))
 
 //        view.addSubview(statusBarBackgroundView)
 
-        NSNotificationCenter.defaultCenter().addObserverForName(
-            UIApplicationWillChangeStatusBarFrameNotification,
-            object:
-            self,
-            queue: nil
-        ) { [unowned self] _ in
-            self.resetStatusBarFrame()
-        }
+		NSNotificationCenter.defaultCenter().addObserverForName(
+			UIApplicationWillChangeStatusBarFrameNotification,
+			object:
+			self,
+			queue: nil
+		) { [unowned self] _ in
+			self.resetStatusBarFrame()
+		}
 
-        resetStatusBarFrame()
+		resetStatusBarFrame()
 
-        selectedIndex = 0
-    }
+		selectedIndex = 0
+	}
 
-    private func resetStatusBarFrame() {
-        statusBarBackgroundView.frame = UIApplication.sharedApplication().statusBarFrame
-    }
+	private func resetStatusBarFrame() {
+		statusBarBackgroundView.frame = UIApplication.sharedApplication().statusBarFrame
+	}
 }
 
 extension MainViewController: HistoryViewControllerDelegate {
-    func historyViewController(historyViewController: HistoryViewController, selectedId: Int) {
-        let dashboardViewController = viewControllers![0] as! UINavigationController
+	func historyViewController(historyViewController: HistoryViewController, selectedId: Int) {
+		let dashboardViewController = viewControllers![0] as! UINavigationController
 
-        dashboardViewController.popToRootViewControllerAnimated(false)
-        (dashboardViewController.topViewController as! DashboardViewController).gotoBookmark(selectedId)
+		dashboardViewController.popToRootViewControllerAnimated(false)
+		(dashboardViewController.topViewController as! DashboardViewController).gotoBookmark(selectedId)
 
-        selectedIndex = 0
-    }
+		selectedIndex = 0
+	}
 }

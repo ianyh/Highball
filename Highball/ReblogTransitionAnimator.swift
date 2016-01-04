@@ -9,61 +9,61 @@
 import UIKit
 
 class ReblogTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
-    var presenting = true
+	var presenting = true
 
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
-        return 0.2
-    }
+	func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+		return 0.2
+	}
 
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        guard
-            let fromViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey),
-            let toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)
-        else {
-            return
-        }
+	func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+		guard
+			let fromViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey),
+			let toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)
+		else {
+			return
+		}
 
-        if presenting {
-            toViewController.view.alpha = 0
-            toViewController.view.frame = fromViewController.view.frame
+		if presenting {
+			toViewController.view.alpha = 0
+			toViewController.view.frame = fromViewController.view.frame
 
-            transitionContext.containerView()!.addSubview(toViewController.view)
+			transitionContext.containerView()!.addSubview(toViewController.view)
 
-            toViewController.viewWillAppear(true)
-            fromViewController.viewWillDisappear(true)
+			toViewController.viewWillAppear(true)
+			fromViewController.viewWillDisappear(true)
 
-            UIView.animateWithDuration(
-                transitionDuration(transitionContext),
-                animations: {
-                    fromViewController.view.tintAdjustmentMode = .Dimmed
-                    toViewController.view.alpha = 1
-                },
-                completion: { finished in
-                    transitionContext.completeTransition(finished)
-                    if finished {
-                        toViewController.viewDidAppear(true)
-                        fromViewController.viewDidDisappear(true)
-                    }
-                }
-            )
-        } else {
-            toViewController.viewWillAppear(true)
-            fromViewController.viewWillDisappear(true)
+			UIView.animateWithDuration(
+				transitionDuration(transitionContext),
+				animations: {
+					fromViewController.view.tintAdjustmentMode = .Dimmed
+					toViewController.view.alpha = 1
+				},
+				completion: { finished in
+					transitionContext.completeTransition(finished)
+					if finished {
+						toViewController.viewDidAppear(true)
+						fromViewController.viewDidDisappear(true)
+					}
+				}
+			)
+		} else {
+			toViewController.viewWillAppear(true)
+			fromViewController.viewWillDisappear(true)
 
-            UIView.animateWithDuration(
-                transitionDuration(transitionContext),
-                animations: {
-                    toViewController.view.tintAdjustmentMode = .Normal
-                    fromViewController.view.alpha = 0
-                },
-                completion: { finished in
-                    transitionContext.completeTransition(finished)
-                    if finished {
-                        toViewController.viewDidAppear(true)
-                        fromViewController.viewDidDisappear(true)
-                    }
-                }
-            )
-        }
-    }
+			UIView.animateWithDuration(
+				transitionDuration(transitionContext),
+				animations: {
+					toViewController.view.tintAdjustmentMode = .Normal
+					fromViewController.view.alpha = 0
+				},
+				completion: { finished in
+					transitionContext.completeTransition(finished)
+					if finished {
+						toViewController.viewDidAppear(true)
+						fromViewController.viewDidDisappear(true)
+					}
+				}
+			)
+		}
+	}
 }

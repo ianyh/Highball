@@ -11,32 +11,32 @@ import SwiftyJSON
 import TMTumblrSDK
 
 final class TagViewController: PostsViewController {
-    private let tag: String!
+	private let tag: String!
 
-    init(tag: String) {
-        self.tag = tag.substringFromIndex(tag.startIndex.advancedBy(1))
-        super.init()
-        navigationItem.title = tag
-    }
+	init(tag: String) {
+		self.tag = tag.substringFromIndex(tag.startIndex.advancedBy(1))
+		super.init()
+		navigationItem.title = tag
+	}
 
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+	required init?(coder aDecoder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
 
-    override func postsFromJSON(json: JSON) -> Array<Post> {
-        guard let postsJSON = json.array else {
-            return []
-        }
+	override func postsFromJSON(json: JSON) -> Array<Post> {
+		guard let postsJSON = json.array else {
+			return []
+		}
 
-        return postsJSON.map { (post) -> (Post) in
-            return Post(json: post)
-        }
-    }
+		return postsJSON.map { (post) -> (Post) in
+			return Post(json: post)
+		}
+	}
 
-    override func requestPosts(postCount: Int, var parameters: Dictionary<String, AnyObject>, callback: TMAPICallback) {
-        if let lastPost = dataManager.posts?.last {
-            parameters["before"] = "\(lastPost.timestamp)"
-        }
-        TMAPIClient.sharedInstance().tagged(self.tag, parameters: parameters, callback: callback)
-    }
+	override func requestPosts(postCount: Int, var parameters: Dictionary<String, AnyObject>, callback: TMAPICallback) {
+		if let lastPost = dataManager.posts?.last {
+			parameters["before"] = "\(lastPost.timestamp)"
+		}
+		TMAPIClient.sharedInstance().tagged(self.tag, parameters: parameters, callback: callback)
+	}
 }

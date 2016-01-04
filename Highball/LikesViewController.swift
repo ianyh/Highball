@@ -11,28 +11,28 @@ import TMTumblrSDK
 import UIKit
 
 class LikesViewController: PostsViewController {
-    override init() {
-        super.init()
+	override init() {
+		super.init()
 
-        navigationItem.title = "Likes"
-    }
+		navigationItem.title = "Likes"
+	}
 
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+	required init?(coder aDecoder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
 
-    override func postsFromJSON(json: JSON) -> Array<Post> {
-        guard let postsJSON = json["liked_posts"].array else {
-            return []
-        }
+	override func postsFromJSON(json: JSON) -> Array<Post> {
+		guard let postsJSON = json["liked_posts"].array else {
+			return []
+		}
 
-        return postsJSON.map { (post) -> (Post) in
-            return Post(json: post)
-        }
-    }
+		return postsJSON.map { (post) -> (Post) in
+			return Post(json: post)
+		}
+	}
 
-    override func requestPosts(postCount: Int, var parameters: Dictionary<String, AnyObject>, callback: TMAPICallback) {
-        parameters["offset"] = postCount
-        TMAPIClient.sharedInstance().likes(parameters, callback: callback)
-    }
+	override func requestPosts(postCount: Int, var parameters: Dictionary<String, AnyObject>, callback: TMAPICallback) {
+		parameters["offset"] = postCount
+		TMAPIClient.sharedInstance().likes(parameters, callback: callback)
+	}
 }

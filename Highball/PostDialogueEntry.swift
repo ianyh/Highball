@@ -11,26 +11,26 @@ import SwiftyJSON
 import UIKit
 
 class PostDialogueEntry {
-    private let json: JSON
-    let formattedString: NSAttributedString
+	private let json: JSON
+	let formattedString: NSAttributedString
 
-    required init(json: JSON) {
-        self.json = json
+	required init(json: JSON) {
+		self.json = json
 
-        let label = self.json["label"].string!
-        let phrase = self.json["phrase"].string!
-        var labelAttributes = Dictionary<String, AnyObject>()
-        var phraseAttributes = Dictionary<String, AnyObject>()
-        let attributedString = NSMutableAttributedString(string: "\(label) \(phrase)")
+		let label = self.json["label"].string!
+		let phrase = self.json["phrase"].string!
+		var labelAttributes = Dictionary<String, AnyObject>()
+		var phraseAttributes = Dictionary<String, AnyObject>()
+		let attributedString = NSMutableAttributedString(string: "\(label) \(phrase)")
 
-        labelAttributes[NSFontAttributeName] = UIFont(name: "Courier-Bold", size: 14)
-        phraseAttributes[NSFontAttributeName] = UIFont(name: "Courier", size: 14)
+		labelAttributes[NSFontAttributeName] = UIFont(name: "Courier-Bold", size: 14)
+		phraseAttributes[NSFontAttributeName] = UIFont(name: "Courier", size: 14)
 
-        // swiftlint:disable legacy_constructor
-        attributedString.setAttributes(labelAttributes, range: NSMakeRange(0, label.characters.count))
-        attributedString.setAttributes(phraseAttributes, range: NSMakeRange(label.characters.count, phrase.characters.count + 1))
-        // swiftlint:enable legacy_constructor
+		// swiftlint:disable legacy_constructor
+		attributedString.setAttributes(labelAttributes, range: NSMakeRange(0, label.characters.count))
+		attributedString.setAttributes(phraseAttributes, range: NSMakeRange(label.characters.count, phrase.characters.count + 1))
+		// swiftlint:enable legacy_constructor
 
-        self.formattedString = attributedString
-    }
+		self.formattedString = attributedString
+	}
 }

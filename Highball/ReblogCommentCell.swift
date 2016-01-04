@@ -9,14 +9,14 @@
 import UIKit
 
 class ReblogCommentCell: UITableViewCell {
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: .Subtitle, reuseIdentifier: reuseIdentifier)
+	override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+		super.init(style: .Subtitle, reuseIdentifier: reuseIdentifier)
 
-        textLabel?.numberOfLines = 0
-        detailTextLabel?.numberOfLines = 0
-    }
+		textLabel?.numberOfLines = 0
+		detailTextLabel?.numberOfLines = 0
+	}
 
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+	required init?(coder aDecoder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
 }

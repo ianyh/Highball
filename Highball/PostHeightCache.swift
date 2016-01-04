@@ -9,26 +9,26 @@
 import UIKit
 
 class PostHeightCache {
-    private var bodyHeightCache: [Int: CGFloat] = [:]
-    private var secondaryBodyHeightCache: [Int: CGFloat] = [:]
+	private var bodyHeightCache: [Int: CGFloat] = [:]
+	private var secondaryBodyHeightCache: [Int: CGFloat] = [:]
 
-    init() {
+	init() {
 
-    }
+	}
 
-    func setBodyHeight(height: CGFloat?, forPost post: Post) {
-        bodyHeightCache[post.id] = height
-    }
+	func setBodyHeight(height: CGFloat?, forPost post: Post) {
+		bodyHeightCache[post.id] = height
+	}
 
-    func bodyHeightForPost(post: Post) -> CGFloat? {
-        return bodyHeightCache[post.id]
-    }
+	func bodyHeightForPost(post: Post) -> CGFloat? {
+		return bodyHeightCache[post.id]
+	}
 
-    func setSecondaryBodyHeight(height: CGFloat?, forPost post: Post) {
-        secondaryBodyHeightCache[post.id] = height
-    }
+	func setSecondaryBodyHeight(height: CGFloat?, forPost post: Post) {
+		secondaryBodyHeightCache[post.id] = height
+	}
 
-    func secondaryBodyHeightForPost(post: Post) -> CGFloat? {
-        return secondaryBodyHeightCache[post.id]
-    }
+	func secondaryBodyHeightForPost(post: Post) -> CGFloat? {
+		return secondaryBodyHeightCache[post.id]
+	}
 }
