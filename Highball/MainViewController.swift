@@ -74,6 +74,19 @@ class MainViewController: UITabBarController {
 	private func resetStatusBarFrame() {
 		statusBarBackgroundView.frame = UIApplication.sharedApplication().statusBarFrame
 	}
+
+	override func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
+		guard
+			let navigationController = selectedViewController as? UINavigationController,
+			let tableViewController = navigationController.viewControllers.last as? UITableViewController
+		else {
+			return
+		}
+
+		let tableView = tableViewController.tableView
+
+		tableView.setContentOffset(CGPoint(x: 0, y: -tableView.contentInset.top), animated: true)
+	}
 }
 
 extension MainViewController: HistoryViewControllerDelegate {
