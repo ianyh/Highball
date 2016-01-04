@@ -286,7 +286,26 @@ extension PostsViewController: PostsDataManagerDelegate {
             completion()
             if let indexSet = indexSet {
                 self.tableViewAdapter?.resetCache()
-                self.tableView.insertSections(indexSet, withRowAnimation: .None)
+                let originalCellIndexPath = self.tableView.indexPathsForVisibleRows?.first
+
+                // Gross
+                UIView.setAnimationsEnabled(false)
+                self.tableView.insertSections(indexSet, withRowAnimation: UITableViewRowAnimation.None)
+                UIView.setAnimationsEnabled(true)
+
+                guard indexSet.firstIndex == 0 else {
+                    return
+                }
+
+                if let originalCellIndexPath = originalCellIndexPath {
+                    let originalRow = originalCellIndexPath.row
+                    let newSection = originalCellIndexPath.section + indexSet.count
+                    let newIndexPath = NSIndexPath(forRow: originalRow, inSection: newSection)
+                    self.tableView.scrollToRowAtIndexPath(newIndexPath, atScrollPosition: .Top, animated: false)
+
+                    let newOffset = self.tableView.contentOffset.y - (self.refreshControl?.frame.height ?? 0)
+                    self.tableView.contentOffset = CGPoint(x: 0, y: newOffset)
+                }
             } else {
                 self.tableView.reloadData()
             }

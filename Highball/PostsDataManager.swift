@@ -30,7 +30,8 @@ class PostsDataManager {
     private var secondaryHeightCalculators: [Int: HeightCalculator] = [:]
 
     var posts: Array<Post>!
-    var topID: Int? = nil
+    var topID: Int?
+    var cursor: Int?
 
     var loadingTop = false
     var loadingBottom = false
@@ -54,7 +55,7 @@ class PostsDataManager {
     }
 
     func loadTop(width: CGFloat) {
-        if loadingTop {
+        if loadingTop || loadingBottom {
             return
         }
 
@@ -64,11 +65,7 @@ class PostsDataManager {
         var parameters: [String: AnyObject]
 
         if let topID = topID {
-            var sinceID = topID
-            if let firstPost = posts.first {
-                sinceID = firstPost.id
-            }
-            parameters = ["since_id": "\(sinceID)", "reblog_info": "true"]
+            parameters = ["since_id": "\(topID)", "reblog_info": "true"]
             reloadCompletion = { posts in
                 if self.posts.count > 0 {
                     self.posts = posts + self.posts
@@ -81,8 +78,9 @@ class PostsDataManager {
             }
         } else {
             parameters = ["reblog_info": "true"]
-            reloadCompletion = { posts in
+            reloadCompletion = { (posts: [Post]) in
                 self.posts = posts
+                self.cursor = posts.last?.id
             }
         }
 
@@ -98,7 +96,13 @@ class PostsDataManager {
                     dispatch_async(dispatch_get_main_queue()) {
                         self.processPosts(posts, width: width)
                         dispatch_async(dispatch_get_main_queue()) {
-                            self.delegate.dataManagerDidReload(self, indexSet: nil) {
+                            var indexSet: NSIndexSet?
+                            if self.topID != nil {
+                                // swiftlint:disable legacy_constructor
+                                indexSet = NSIndexSet(indexesInRange: NSMakeRange(0, posts.count))
+                                // swiftlint:enable legacy_constructor
+                            }
+                            self.delegate.dataManagerDidReload(self, indexSet: indexSet) {
                                 reloadCompletion(posts)
                             }
                         }
@@ -115,12 +119,12 @@ class PostsDataManager {
 
         guard
             let posts = posts,
-            let lastPost = posts.last
+            let cursor = cursor
         else {
             return
         }
 
-        let parameters = ["before_id" : "\(lastPost.id)", "reblog_info" : "true"]
+        let parameters = ["before_id" : "\(cursor)", "reblog_info" : "true"]
 
         loadingBottom = true
         delegate.dataManager(self, requestPostsWithCount: posts.count, parameters: parameters) { response, error in
@@ -142,6 +146,7 @@ class PostsDataManager {
 
                             self.delegate.dataManagerDidReload(self, indexSet: indexSet) {
                                 self.posts.appendContentsOf(posts)
+                                self.cursor = posts.last?.id
                             }
                         }
                     }
