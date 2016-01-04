@@ -12,10 +12,20 @@ import UIKit
 
 class MainViewController: UITabBarController {
     private var statusBarBackgroundView: UIView!
+    private var observer: AnyObject!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        observer = NSNotificationCenter.defaultCenter().addObserverForName(AccountDidChangeNotification, object: nil, queue: nil) { [unowned self] _ in
+            self.reset()
+        }
+
         reset()
+    }
+
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(observer)
     }
 
     func reset() {
@@ -57,6 +67,8 @@ class MainViewController: UITabBarController {
         }
 
         resetStatusBarFrame()
+
+        selectedIndex = 0
     }
 
     private func resetStatusBarFrame() {

@@ -8,6 +8,10 @@
 
 import UIKit
 
+// swiftlint:disable variable_name
+public let AccountDidChangeNotification = "AccountDidChangeNotification"
+// swiftlint:enable variable_name
+
 class AccountsViewController: UITableViewController {
     private enum Section: Int {
         case Accounts
@@ -78,10 +82,17 @@ class AccountsViewController: UITableViewController {
         case .Accounts:
             let account = accounts[indexPath.row]
             AccountsService.loginToAccount(account) {
-                if let navigationController = self.presentingViewController as? UINavigationController {
-                    navigationController.viewControllers = [DashboardViewController()]
+                let alertController = UIAlertController(title: "Switch Account?", message: "Are you sure you want to switch to \(account.blog.name)", preferredStyle: .ActionSheet)
+                let action = UIAlertAction(title: "Yes", style: .Destructive) { _ in
+                    let notification = NSNotification(name: AccountDidChangeNotification, object: nil)
+                    NSNotificationCenter.defaultCenter().postNotification(notification)
                 }
-                self.tableView.reloadData()
+                let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+
+                alertController.addAction(action)
+                alertController.addAction(cancelAction)
+
+                self.presentViewController(alertController, animated: true, completion: nil)
             }
         case .AddAccount:
             AccountsService.authenticateNewAccount(fromViewController: self) { (account) -> () in
