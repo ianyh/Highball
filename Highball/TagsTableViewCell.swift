@@ -51,7 +51,7 @@ class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollecti
 	var delegate: TagsTableViewCellDelegate?
 	var tags: [String]? {
 		didSet {
-			collectionView.contentOffset = CGPoint(x: collectionView.contentInset.left, y: 0)
+			collectionView.contentOffset = CGPoint(x: -collectionView.contentInset.left, y: 0)
 		}
 	}
 
