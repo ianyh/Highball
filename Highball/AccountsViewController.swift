@@ -68,7 +68,7 @@ class AccountsViewController: UITableViewController {
 
 			return cell
 		case .AddAccount:
-			let cell = tableView.dequeueReusableCellWithIdentifier(UITableViewCell.cellIdentifier)!
+			let cell = tableView.dequeueReusableCellWithIdentifier(UITableViewCell.cellIdentifier, forIndexPath: indexPath)
 
 			cell.textLabel?.text = "Add account"
 			cell.accessoryType = .None
@@ -81,7 +81,7 @@ class AccountsViewController: UITableViewController {
 		switch Section(rawValue: indexPath.section)! {
 		case .Accounts:
 			let account = accounts[indexPath.row]
-			AccountsService.loginToAccount(account) {
+			AccountsService.loginToAccount(account) { account in
 				let alertController = UIAlertController(title: "Switch Account?", message: "Are you sure you want to switch to \(account.blog.name)", preferredStyle: .ActionSheet)
 				let action = UIAlertAction(title: "Yes", style: .Destructive) { _ in
 					let notification = NSNotification(name: AccountDidChangeNotification, object: nil)
@@ -95,7 +95,7 @@ class AccountsViewController: UITableViewController {
 				self.presentViewController(alertController, animated: true, completion: nil)
 			}
 		case .AddAccount:
-			AccountsService.authenticateNewAccount(fromViewController: self) { (account) -> () in
+			AccountsService.authenticateNewAccount(fromViewController: self) { account in
 				self.accounts = AccountsService.accounts()
 				self.tableView.reloadData()
 			}
@@ -112,9 +112,23 @@ class AccountsViewController: UITableViewController {
 		}
 
 		let account = accounts[indexPath.row]
-		AccountsService.deleteAccount(account, fromViewController: self) {
-			self.accounts = AccountsService.accounts()
-			self.tableView.reloadData()
+		let alertController = UIAlertController(title: "Delete Account?", message: "Are you sure youw ant to delete \(account.blog.name)", preferredStyle: .ActionSheet)
+		let deleteAction = UIAlertAction(title: "Yes", style: .Destructive) { _ in
+			AccountsService.deleteAccount(account, fromViewController: self) { changedAccount in
+				if changedAccount {
+					let notification = NSNotification(name: AccountDidChangeNotification, object: nil)
+					NSNotificationCenter.defaultCenter().postNotification(notification)
+				} else {
+					self.accounts = AccountsService.accounts()
+					self.tableView.reloadData()
+				}
+			}
 		}
+		let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+
+		alertController.addAction(deleteAction)
+		alertController.addAction(cancelAction)
+
+		presentViewController(alertController, animated: true, completion: nil)
 	}
 }

@@ -37,27 +37,7 @@ struct AccountsService {
 
 	static var account: Account!
 
-	static func start(fromViewController viewController: UIViewController, completion: () -> ()) {
-		if let lastAccount = lastAccount() {
-			loginToAccount(lastAccount, completion: completion)
-			return
-		}
-
-		guard let firstAccount = accounts().first else {
-			authenticateNewAccount(fromViewController: viewController) { account in
-				if let account = account {
-					self.loginToAccount(account, completion: completion)
-				} else {
-					self.start(fromViewController: viewController, completion: completion)
-				}
-			}
-			return
-		}
-
-		loginToAccount(firstAccount, completion: completion)
-	}
-
-	static func accounts() -> Array<Account> {
+	static func accounts() -> [Account] {
 		return accountDictionaries().map { (accountDictionary) -> Account in
 			let blogData = accountDictionary[self.accountBlogDataKey]! as! NSData
 			let blog = NSKeyedUnarchiver.unarchiveObjectWithData(blogData) as! Blog
@@ -84,7 +64,27 @@ struct AccountsService {
 		)
 	}
 
-	static func loginToAccount(account: Account, completion: () -> ()) {
+	static func start(fromViewController viewController: UIViewController, completion: (Account) -> ()) {
+		if let lastAccount = lastAccount() {
+			loginToAccount(lastAccount, completion: completion)
+			return
+		}
+
+		guard let firstAccount = accounts().first else {
+			authenticateNewAccount(fromViewController: viewController) { account in
+				if let account = account {
+					self.loginToAccount(account, completion: completion)
+				} else {
+					self.start(fromViewController: viewController, completion: completion)
+				}
+			}
+			return
+		}
+
+		loginToAccount(firstAccount, completion: completion)
+	}
+
+	static func loginToAccount(account: Account, completion: (Account) -> ()) {
 		self.account = account
 		let accountDictionary = [
 			accountBlogDataKey : NSKeyedArchiver.archivedDataWithRootObject(account.blog),
@@ -97,7 +97,9 @@ struct AccountsService {
 
 		NSUserDefaults.standardUserDefaults().setObject(accountDictionary, forKey: lastAccountDefaultsKey)
 
-		dispatch_async(dispatch_get_main_queue(), completion)
+		dispatch_async(dispatch_get_main_queue()) {
+			completion(account)
+		}
 	}
 
 	static func authenticateNewAccount(fromViewController viewController: UIViewController, completion: (account: Account?) -> ()) {
@@ -163,10 +165,10 @@ struct AccountsService {
 		)
 	}
 
-	static func deleteAccount(account: Account, fromViewController viewController: UIViewController, completion: () -> ()) {
+	static func deleteAccount(account: Account, fromViewController viewController: UIViewController, completion: (changedAccount: Bool) -> ()) {
 		let accountDictionaries = accounts()
-			.filter { $0 != nil }
-			.map { existingAccount -> Dictionary<String, AnyObject> in
+			.filter { !($0 == account) }
+			.map { existingAccount -> [String: AnyObject] in
 				return [
 					self.accountBlogDataKey : NSKeyedArchiver.archivedDataWithRootObject(existingAccount.blog),
 					self.accountOAuthTokenKey : existingAccount.token,
@@ -179,15 +181,19 @@ struct AccountsService {
 		if self.account == account {
 			self.account = nil
 			NSUserDefaults.standardUserDefaults().removeObjectForKey(lastAccountDefaultsKey)
-			start(fromViewController: viewController, completion: completion)
-		} else {
-			dispatch_async(dispatch_get_main_queue(), completion)
+			start(fromViewController: viewController) { _ in
+				completion(changedAccount: true)
+			}
+		}
+
+		dispatch_async(dispatch_get_main_queue()) {
+			completion(changedAccount: false)
 		}
 	}
 
-	private static func accountDictionaries() -> Array<Dictionary<String, AnyObject>> {
+	private static func accountDictionaries() -> [[String: AnyObject]] {
 		let userDefaults = NSUserDefaults.standardUserDefaults()
-		if let accountDictionaries = userDefaults.arrayForKey(self.accountsDefaultsKey) as? [[String: AnyObject]] {
+		if let accountDictionaries = userDefaults.arrayForKey(accountsDefaultsKey) as? [[String: AnyObject]] {
 			return accountDictionaries
 		} else {
 			return []

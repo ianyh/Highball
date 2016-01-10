@@ -72,8 +72,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		window?.tintColor = UIColor.flatSkyBlueColorDark().lightenByPercentage(0.5)
 		window?.makeKeyAndVisible()
 
-		AccountsService.start(fromViewController: tabBarController!) {
-		}
+		AccountsService.start(fromViewController: tabBarController!) { _ in }
 
 		return true
 	}

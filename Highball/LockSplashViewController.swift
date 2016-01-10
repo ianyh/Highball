@@ -66,7 +66,7 @@ class LockSplashViewController: VENTouchLockSplashViewController, UITableViewDat
 			}
 		}
 
-		AccountsService.loginToAccount(account) {
+		AccountsService.loginToAccount(account) { _ in
 			if let mainViewController = self.presentingViewController as? MainViewController {
 				mainViewController.reset()
 			}
