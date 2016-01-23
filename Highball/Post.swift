@@ -94,7 +94,7 @@ class Post {
 	}
 
 	func videoURL() -> NSURL? {
-		guard self.type != "video" else {
+		guard self.type == "video" else {
 			return nil
 		}
 
