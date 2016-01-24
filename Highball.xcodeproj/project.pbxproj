@@ -52,6 +52,9 @@
 		40CFDAB81C349F84008FBF9A /* TextReblogTableViewAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CFDAB71C349F84008FBF9A /* TextReblogTableViewAdapter.swift */; };
 		40CFDABD1C34BA33008FBF9A /* PostsTableViewAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CFDABC1C34BA33008FBF9A /* PostsTableViewAdapter.swift */; };
 		40CFDABF1C34BB17008FBF9A /* PostHeightCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CFDABE1C34BB17008FBF9A /* PostHeightCache.swift */; };
+		40DB21251C556195007AD3DD /* FollowedBlogsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40DB21241C556195007AD3DD /* FollowedBlogsViewController.swift */; };
+		40DB21271C5561B7007AD3DD /* FollowedBlogsDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40DB21261C5561B7007AD3DD /* FollowedBlogsDataManager.swift */; };
+		40DB21291C5571FF007AD3DD /* FollowedBlogsTableViewAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40DB21281C5571FF007AD3DD /* FollowedBlogsTableViewAdapter.swift */; };
 		40DF7DB21A7672E900CE3D4C /* VideoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40DF7DB11A7672E900CE3D4C /* VideoTableViewCell.swift */; };
 		40DF7DB41A79919900CE3D4C /* VideoPlayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40DF7DB31A79919900CE3D4C /* VideoPlayController.swift */; };
 		40F75A821C31D68800EC86DE /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F75A811C31D68800EC86DE /* MainViewController.swift */; };
@@ -139,6 +142,9 @@
 		40CFDAB71C349F84008FBF9A /* TextReblogTableViewAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextReblogTableViewAdapter.swift; sourceTree = "<group>"; };
 		40CFDABC1C34BA33008FBF9A /* PostsTableViewAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsTableViewAdapter.swift; sourceTree = "<group>"; };
 		40CFDABE1C34BB17008FBF9A /* PostHeightCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostHeightCache.swift; sourceTree = "<group>"; };
+		40DB21241C556195007AD3DD /* FollowedBlogsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowedBlogsViewController.swift; sourceTree = "<group>"; };
+		40DB21261C5561B7007AD3DD /* FollowedBlogsDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowedBlogsDataManager.swift; sourceTree = "<group>"; };
+		40DB21281C5571FF007AD3DD /* FollowedBlogsTableViewAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowedBlogsTableViewAdapter.swift; sourceTree = "<group>"; };
 		40DF7DB11A7672E900CE3D4C /* VideoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoTableViewCell.swift; sourceTree = "<group>"; };
 		40DF7DB31A79919900CE3D4C /* VideoPlayController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlayController.swift; sourceTree = "<group>"; };
 		40F75A811C31D68800EC86DE /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -294,7 +300,6 @@
 				405D65991C34C4E500968B3B /* PostsDataManager.swift */,
 				4050698519AA76BD0066ECE3 /* DashboardViewController.swift */,
 				40731BB919FDCAD300F6978D /* LikesViewController.swift */,
-				40B609521A99234B0089E431 /* BlogViewController.swift */,
 				4074B6601A99269C00774E00 /* TagViewController.swift */,
 			);
 			name = Posts;
@@ -319,6 +324,7 @@
 		40A11E6619B518B500B91843 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				40DB21231C556156007AD3DD /* Blogs */,
 				4058C46B1C42E9D800B19D26 /* Reblog */,
 				403040E11C37250D001EFC9E /* Post */,
 				405D659F1C34D73B00968B3B /* Posts */,
@@ -331,6 +337,17 @@
 				405D65A01C34DC1800968B3B /* WebViewCache.swift */,
 			);
 			name = Controllers;
+			sourceTree = "<group>";
+		};
+		40DB21231C556156007AD3DD /* Blogs */ = {
+			isa = PBXGroup;
+			children = (
+				40B609521A99234B0089E431 /* BlogViewController.swift */,
+				40DB21241C556195007AD3DD /* FollowedBlogsViewController.swift */,
+				40DB21261C5561B7007AD3DD /* FollowedBlogsDataManager.swift */,
+				40DB21281C5571FF007AD3DD /* FollowedBlogsTableViewAdapter.swift */,
+			);
+			name = Blogs;
 			sourceTree = "<group>";
 		};
 		A3D296309A504A00AFFABE53 /* Frameworks */ = {
@@ -525,7 +542,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"SwiftLint does not exist, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint autocorrect\n    swiftlint\nelse\n    echo \"SwiftLint does not exist, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 		73E8195EFC37404C93E412AA /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -581,6 +598,7 @@
 				402D979919F1E442003DCD55 /* TextReblogViewController.swift in Sources */,
 				40F75A871C3219CD00EC86DE /* ReblogCommentCell.swift in Sources */,
 				402A20961A3D2C510007CCFF /* TitleTableViewCell.swift in Sources */,
+				40DB21251C556195007AD3DD /* FollowedBlogsViewController.swift in Sources */,
 				40F75A851C31FA4100EC86DE /* HistoryViewController.swift in Sources */,
 				4074B6611A99269C00774E00 /* TagViewController.swift in Sources */,
 				40778B9E19B160DD00F8EE13 /* PostPhoto.swift in Sources */,
@@ -588,8 +606,10 @@
 				40DF7DB21A7672E900CE3D4C /* VideoTableViewCell.swift in Sources */,
 				40F75A821C31D68800EC86DE /* MainViewController.swift in Sources */,
 				40FF6D4319B940C6008119A3 /* Blog.swift in Sources */,
+				40DB21291C5571FF007AD3DD /* FollowedBlogsTableViewAdapter.swift in Sources */,
 				403F53DD19AFB5DF00FF8F3B /* ContentTableViewCell.swift in Sources */,
 				40778BAA19B24BA500F8EE13 /* PostQuestionTableViewCell.swift in Sources */,
+				40DB21271C5561B7007AD3DD /* FollowedBlogsDataManager.swift in Sources */,
 				40CFDABD1C34BA33008FBF9A /* PostsTableViewAdapter.swift in Sources */,
 				40C78D1519BD29330002EB78 /* ReblogTransitionAnimator.swift in Sources */,
 				40CFDAB61C34990F008FBF9A /* ReuseIdentifiers.swift in Sources */,

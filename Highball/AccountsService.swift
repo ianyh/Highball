@@ -133,7 +133,7 @@ struct AccountsService {
 					}
 
 					let json = JSON(response)
-					let blogs = json["user"]["blogs"].array!.map { Blog(json: $0) }
+					let blogs = json["user"]["blogs"].array!.map { UserBlog(json: $0) }
 					let primaryBlog = blogs.filter { $0.primary }.first
 					let account = Account(
 						blog: primaryBlog!,
