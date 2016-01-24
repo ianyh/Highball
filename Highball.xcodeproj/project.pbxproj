@@ -222,6 +222,7 @@
 				D4D551E0097D85FC10AC31E4 /* Pods */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 1;
 		};
 		4050697C19AA76BD0066ECE3 /* Products */ = {
 			isa = PBXGroup;
