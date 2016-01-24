@@ -30,26 +30,31 @@ class MainViewController: UITabBarController {
 
 	func reset() {
 		let dashboardViewController = UINavigationController(rootViewController: DashboardViewController())
-		let likesViewController = UINavigationController(rootViewController: LikesViewController())
 		let historyViewController = UINavigationController(rootViewController: HistoryViewController(delegate: self))
+		let likesViewController = UINavigationController(rootViewController: LikesViewController())
+		let followedBlogsViewController = UINavigationController(rootViewController: FollowedBlogsViewController())
 		let settingsViewController = UINavigationController(rootViewController: SettingsViewController())
 
 		dashboardViewController.tabBarItem.title = "Dashboard"
 		dashboardViewController.tabBarItem.image = FAKFontAwesome.homeIconWithSize(28.0).imageWithSize(CGSize(width: 28, height: 28))
 
+		historyViewController.tabBarItem.title = "History"
+		historyViewController.tabBarItem.image = FAKFontAwesome.historyIconWithSize(22.0).imageWithSize(CGSize(width: 24, height: 24))
+
 		likesViewController.tabBarItem.title = "Likes"
 		likesViewController.tabBarItem.image = FAKFontAwesome.heartIconWithSize(22.0).imageWithSize(CGSize(width: 24, height: 24))
 
-		historyViewController.tabBarItem.title = "History"
-		historyViewController.tabBarItem.image = FAKFontAwesome.historyIconWithSize(22.0).imageWithSize(CGSize(width: 24, height: 24))
+		followedBlogsViewController.tabBarItem.title = "Followed"
+		followedBlogsViewController.tabBarItem.image = FAKFontAwesome.usersIconWithSize(22.0).imageWithSize(CGSize(width: 24, height: 24))
 
 		settingsViewController.tabBarItem.title = "Settings"
 		settingsViewController.tabBarItem.image = FAKFontAwesome.cogsIconWithSize(22.0).imageWithSize(CGSize(width: 24, height: 24))
 
 		viewControllers = [
 			dashboardViewController,
-			likesViewController,
 			historyViewController,
+			likesViewController,
+			followedBlogsViewController,
 			settingsViewController
 		]
 
