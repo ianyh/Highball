@@ -185,6 +185,7 @@
 		403040E11C37250D001EFC9E /* Post */ = {
 			isa = PBXGroup;
 			children = (
+				40A11E6719B518DD00B91843 /* ImagesViewController.swift */,
 				403040E41C373D66001EFC9E /* PostViewHeightCalculator.swift */,
 				403040E81C388775001EFC9E /* PostSectionAdapter.swift */,
 			);
@@ -274,6 +275,16 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		4058C46B1C42E9D800B19D26 /* Reblog */ = {
+			isa = PBXGroup;
+			children = (
+				40FF6D4419B9F656008119A3 /* QuickReblogViewController.swift */,
+				402D979819F1E442003DCD55 /* TextReblogViewController.swift */,
+				40CFDAB71C349F84008FBF9A /* TextReblogTableViewAdapter.swift */,
+			);
+			name = Reblog;
+			sourceTree = "<group>";
+		};
 		405D659F1C34D73B00968B3B /* Posts */ = {
 			isa = PBXGroup;
 			children = (
@@ -307,12 +318,9 @@
 		40A11E6619B518B500B91843 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				4058C46B1C42E9D800B19D26 /* Reblog */,
 				403040E11C37250D001EFC9E /* Post */,
 				405D659F1C34D73B00968B3B /* Posts */,
-				40A11E6719B518DD00B91843 /* ImagesViewController.swift */,
-				40FF6D4419B9F656008119A3 /* QuickReblogViewController.swift */,
-				402D979819F1E442003DCD55 /* TextReblogViewController.swift */,
-				40CFDAB71C349F84008FBF9A /* TextReblogTableViewAdapter.swift */,
 				40080E8D1A0F042B00D883AE /* SettingsViewController.swift */,
 				40080E8F1A0F11DD00D883AE /* LockSplashViewController.swift */,
 				40F8CE951A41111300609ABF /* AccountsViewController.swift */,
@@ -516,7 +524,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint\n    echo ''\nelse\n    echo \"SwiftLint does not exist, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"SwiftLint does not exist, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 		73E8195EFC37404C93E412AA /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

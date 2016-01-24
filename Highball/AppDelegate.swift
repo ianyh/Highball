@@ -20,76 +20,71 @@ import OAuthSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    var window: UIWindow?
-    var tabBarController: UITabBarController?
-    var reachability: Reachability!
+	var window: UIWindow?
+	var tabBarController: UITabBarController?
+	var reachability: Reachability!
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
-        reachability = Reachability.reachabilityForLocalWiFi()
-        reachability.startNotifier()
+	func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
+		reachability = Reachability.reachabilityForLocalWiFi()
+		reachability.startNotifier()
 
-        TMAPIClient.sharedInstance().OAuthConsumerKey = "YhlYiD2dAUE6UH01ugPKQafm2XESBWsaOYPz7xV0q53SDn3ChU"
-        TMAPIClient.sharedInstance().OAuthConsumerSecret = "ONVNS5UCfZMMhrekfjBknUXgjQ5I2J1a0aVDCfso2mfRcC4nEF"
+		TMAPIClient.sharedInstance().OAuthConsumerKey = "YhlYiD2dAUE6UH01ugPKQafm2XESBWsaOYPz7xV0q53SDn3ChU"
+		TMAPIClient.sharedInstance().OAuthConsumerSecret = "ONVNS5UCfZMMhrekfjBknUXgjQ5I2J1a0aVDCfso2mfRcC4nEF"
 
-        let imageCache = PINRemoteImageManager.sharedImageManager().cache.diskCache
-        let cache = PINCache.sharedCache().diskCache
+		let imageCache = PINRemoteImageManager.sharedImageManager().cache.diskCache
+		let cache = PINCache.sharedCache().diskCache
 
-        // Only keep cache for 12 hours
-        imageCache.ageLimit = 43200
-        cache.ageLimit = 43200
-        // Only keep up to 500 mb cache
-        imageCache.byteLimit = 524288000
-        cache.byteLimit = 524288000
+		// Only keep cache for 12 hours
+		imageCache.ageLimit = 43200
+		cache.ageLimit = 43200
+		// Only keep up to 500 mb cache
+		imageCache.byteLimit = 524288000
+		cache.byteLimit = 524288000
 
-        tabBarController = window?.rootViewController as? UITabBarController
+		tabBarController = window?.rootViewController as? UITabBarController
 
-        if let bundleInfoDictionary = NSBundle.mainBundle().infoDictionary {
-            if bundleInfoDictionary["HBCrashlyticsAPIKey"] != nil {
-                Fabric.with([Crashlytics.self])
-            }
-        }
+		if let bundleInfoDictionary = NSBundle.mainBundle().infoDictionary {
+			if bundleInfoDictionary["HBCrashlyticsAPIKey"] != nil {
+				Fabric.with([Crashlytics.self])
+			}
+		}
 
-        VENTouchLock.sharedInstance().backgroundLockVisible = false
-        VENTouchLock.sharedInstance().setKeychainService(
-            "com.highball.Highball",
-            keychainAccount: "com.highball",
-            touchIDReason: "Scan fingerprint to open.",
-            passcodeAttemptLimit: UInt.max,
-            splashViewControllerClass: LockSplashViewController.classForCoder()
-        )
+		VENTouchLock.sharedInstance().backgroundLockVisible = false
+		VENTouchLock.sharedInstance().setKeychainService(
+			"com.highball.Highball",
+			keychainAccount: "com.highball",
+			touchIDReason: "Scan fingerprint to open.",
+			passcodeAttemptLimit: UInt.max,
+			splashViewControllerClass: LockSplashViewController.classForCoder()
+		)
 
-        UIApplication.sharedApplication().statusBarStyle = .LightContent
+		UIApplication.sharedApplication().statusBarStyle = .LightContent
 
-        let backgroundColor = UIColor.flatSkyBlueColorDark().lightenByPercentage(0.5)
+		let backgroundColor = UIColor.flatSkyBlueColorDark().lightenByPercentage(0.5)
 
-        UINavigationBar.appearance().barTintColor = backgroundColor
-        UINavigationBar.appearance().tintColor = UIColor.whiteColor()
-        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+		UINavigationBar.appearance().barTintColor = backgroundColor
+		UINavigationBar.appearance().tintColor = UIColor.whiteColor()
+		UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
 
-        UITabBar.appearance().tintColor = backgroundColor
+		UITabBar.appearance().tintColor = backgroundColor
 
-        window?.rootViewController?.setStatusBarStyle(.LightContent)
-        window?.tintColor = UIColor.flatSkyBlueColorDark().lightenByPercentage(0.5)
-        window?.makeKeyAndVisible()
+		window?.rootViewController?.setStatusBarStyle(.LightContent)
+		window?.tintColor = UIColor.flatSkyBlueColorDark().lightenByPercentage(0.5)
+		window?.makeKeyAndVisible()
 
-        AccountsService.start(fromViewController: tabBarController!) {
-//            self.tabBarController?.viewControllers = [
-//                UINavigationController(rootViewController: DashboardViewController()),
-//                UINavigationController(rootViewController: SettingsViewController())
-//            ]
-        }
+		AccountsService.start(fromViewController: tabBarController!) { _ in }
 
-        return true
-    }
+		return true
+	}
 
-    func application(application: UIApplication, handleOpenURL url: NSURL) -> Bool {
-        if url.host == "oauth-callback" {
-            OAuthSwift.handleOpenURL(url)
-        }
-        return true
-    }
+	func application(application: UIApplication, handleOpenURL url: NSURL) -> Bool {
+		if url.host == "oauth-callback" {
+			OAuthSwift.handleOpenURL(url)
+		}
+		return true
+	}
 
-    func applicationDidReceiveMemoryWarning(application: UIApplication) {
-        AnimatedImageCache.clearCache()
-    }
+	func applicationDidReceiveMemoryWarning(application: UIApplication) {
+		AnimatedImageCache.clearCache()
+	}
 }
