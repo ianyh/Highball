@@ -29,7 +29,7 @@ class FollowedBlogsViewController: UITableViewController {
 		tableViewAdapter = FollowedBlogsTableViewAdapter(tableView: tableView, delegate: self)
 
 		refreshControl = UIRefreshControl()
-		refreshControl?.addTarget(self, action: "refresh:", forControlEvents: .ValueChanged)
+		refreshControl?.addTarget(self, action: #selector(FollowedBlogsViewController.refresh(_:)), forControlEvents: .ValueChanged)
 	}
 
 	override func viewDidAppear(animated: Bool) {

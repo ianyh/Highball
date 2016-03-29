@@ -49,13 +49,13 @@ class TextReblogViewController: SLKTextViewController {
 		navigationItem.leftBarButtonItem = UIBarButtonItem(
 			barButtonSystemItem: .Cancel,
 			target: self,
-			action: "cancel"
+			action: #selector(TextReblogViewController.cancel)
 		)
 		navigationItem.rightBarButtonItem = UIBarButtonItem(
 			title: reblogTitle,
 			style: .Done,
 			target: self,
-			action: "reblog"
+			action: #selector(TextReblogViewController.reblog)
 		)
 
 		navigationController?.view.backgroundColor = UIColor.clearColor()

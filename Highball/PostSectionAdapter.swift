@@ -83,114 +83,146 @@ struct PostSectionAdapter {
 
 		switch post.type {
 		case "photo":
-			if row == numbersOfRows() - 2 {
-				let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
-				cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
-				return cell
-			}
-			let cell = tableView.dequeueReusableCellWithIdentifier(PhotosetRowTableViewCell.cellIdentifier) as! PhotosetRowTableViewCell!
-			let postPhotos = post.photos
-
-			cell.contentWidth = tableView.frame.size.width
-
-			if postPhotos.count == 1 {
-				cell.images = postPhotos
-			} else {
-				let photosetLayoutRows = post.layoutRows
-				var photosIndexStart = 0
-				for photosetLayoutRow in photosetLayoutRows.layoutRows[0..<row] {
-					photosIndexStart += photosetLayoutRow
-				}
-				let photosetLayoutRow = photosetLayoutRows.layoutRows[row]
-
-				cell.images = Array(postPhotos[(photosIndexStart)..<(photosIndexStart + photosetLayoutRow)])
-			}
-
-			return cell
+			return photoCellWithTableView(tableView, atRow: row)
 		case "text":
-			switch PostViewSections.TextRow(rawValue: row)! {
-			case .Title:
-				let cell = tableView.dequeueReusableCellWithIdentifier(TitleTableViewCell.cellIdentifier) as! TitleTableViewCell!
-				cell.titleLabel.text = post.title
-				return cell
-			case .Body:
-				let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
-				cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
-				return cell
-			}
+			return textCellWithTableView(tableView, atRow: row)
 		case "answer":
-			switch PostViewSections.AnswerRow(rawValue: row)! {
-			case .Question:
-				let cell = tableView.dequeueReusableCellWithIdentifier(PostQuestionTableViewCell.cellIdentifier) as! PostQuestionTableViewCell!
-				cell.post = post
-				return cell
-			case .Answer:
-				let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
-				cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
-				return cell
-			}
+			return answerCellWithTableView(tableView, atRow: row)
 		case "quote":
-			switch PostViewSections.QuoteRow(rawValue: row)! {
-			case .Quote:
-				let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
-				cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
-				return cell
-			case .Source:
-				let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
-				cell.content = post.htmlSecondaryBodyWithWidth(tableView.frame.size.width)
-				return cell
-			}
+			return quoteCellWithTableView(tableView, atRow: row)
 		case "link":
-			switch PostViewSections.LinkRow(rawValue: row)! {
-			case .Link:
-				let cell = tableView.dequeueReusableCellWithIdentifier(PostLinkTableViewCell.cellIdentifier) as! PostLinkTableViewCell!
-				cell.post = post
-				return cell
-			case .Description:
-				let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
-				cell.content = post.htmlBodyWithWidth(tableView.frame.width)
-				return cell
-			}
+			return linkCellWithTableView(tableView, atRow: row)
 		case "chat":
-			if row == 0 {
-				let cell = tableView.dequeueReusableCellWithIdentifier(TitleTableViewCell.cellIdentifier) as! TitleTableViewCell!
-				cell.titleLabel.text = post.title
-				return cell
-			}
-			let dialogueEntry = post.dialogueEntries[row - 1]
-			let cell = tableView.dequeueReusableCellWithIdentifier(PostDialogueEntryTableViewCell.cellIdentifier) as! PostDialogueEntryTableViewCell!
-			cell.dialogueEntry = dialogueEntry
-			return cell
+			return chatCellWithTableView(tableView, atRow: row)
 		case "video":
-			switch PostViewSections.VideoRow(rawValue: row)! {
-			case .Player:
-				switch post.videoType! {
-				case "youtube":
-					let cell = tableView.dequeueReusableCellWithIdentifier(YoutubeTableViewCell.cellIdentifier) as! YoutubeTableViewCell!
-					cell.post = post
-					return cell
-				default:
-					let cell = tableView.dequeueReusableCellWithIdentifier(VideoTableViewCell.cellIdentifier) as! VideoTableViewCell!
-					cell.post = post
-					return cell
-				}
-			case .Caption:
-				let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
-				cell.content = post.htmlBodyWithWidth(tableView.frame.width)
-				return cell
-			}
+			return videoCellWithTableView(tableView, atRow: row)
 		case "audio":
-			let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
-			switch PostViewSections.AudioRow(rawValue: row)! {
-			case .Player:
-				cell.content = post.htmlSecondaryBodyWithWidth(tableView.frame.width)
-			case .Caption:
-				cell.content = post.htmlBodyWithWidth(tableView.frame.width)
-			}
-			return cell
+			return audioCellWithTableView(tableView, atRow: row)
 		default:
 			return tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier)!
 		}
+	}
+
+	private func photoCellWithTableView(tableView: UITableView, atRow row: Int) -> UITableViewCell {
+		if row == numbersOfRows() - 2 {
+			let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
+			cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
+			return cell
+		}
+		let cell = tableView.dequeueReusableCellWithIdentifier(PhotosetRowTableViewCell.cellIdentifier) as! PhotosetRowTableViewCell!
+		let postPhotos = post.photos
+
+		cell.contentWidth = tableView.frame.size.width
+
+		if postPhotos.count == 1 {
+			cell.images = postPhotos
+		} else {
+			let photosetLayoutRows = post.layoutRows
+			var photosIndexStart = 0
+			for photosetLayoutRow in photosetLayoutRows.layoutRows[0..<row] {
+				photosIndexStart += photosetLayoutRow
+			}
+			let photosetLayoutRow = photosetLayoutRows.layoutRows[row]
+
+			cell.images = Array(postPhotos[(photosIndexStart)..<(photosIndexStart + photosetLayoutRow)])
+		}
+
+		return cell
+	}
+
+	private func textCellWithTableView(tableView: UITableView, atRow row: Int) -> UITableViewCell {
+		switch PostViewSections.TextRow(rawValue: row)! {
+		case .Title:
+			let cell = tableView.dequeueReusableCellWithIdentifier(TitleTableViewCell.cellIdentifier) as! TitleTableViewCell!
+			cell.titleLabel.text = post.title
+			return cell
+		case .Body:
+			let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
+			cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
+			return cell
+		}
+	}
+
+	private func answerCellWithTableView(tableView: UITableView, atRow row: Int) -> UITableViewCell {
+		switch PostViewSections.AnswerRow(rawValue: row)! {
+		case .Question:
+			let cell = tableView.dequeueReusableCellWithIdentifier(PostQuestionTableViewCell.cellIdentifier) as! PostQuestionTableViewCell!
+			cell.post = post
+			return cell
+		case .Answer:
+			let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
+			cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
+			return cell
+		}
+	}
+
+	private func quoteCellWithTableView(tableView: UITableView, atRow row: Int) -> UITableViewCell {
+		switch PostViewSections.QuoteRow(rawValue: row)! {
+		case .Quote:
+			let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
+			cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
+			return cell
+		case .Source:
+			let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
+			cell.content = post.htmlSecondaryBodyWithWidth(tableView.frame.size.width)
+			return cell
+		}
+	}
+
+	private func linkCellWithTableView(tableView: UITableView, atRow row: Int) -> UITableViewCell {
+		switch PostViewSections.LinkRow(rawValue: row)! {
+		case .Link:
+			let cell = tableView.dequeueReusableCellWithIdentifier(PostLinkTableViewCell.cellIdentifier) as! PostLinkTableViewCell!
+			cell.post = post
+			return cell
+		case .Description:
+			let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
+			cell.content = post.htmlBodyWithWidth(tableView.frame.width)
+			return cell
+		}
+	}
+
+	private func chatCellWithTableView(tableView: UITableView, atRow row: Int) -> UITableViewCell {
+		if row == 0 {
+			let cell = tableView.dequeueReusableCellWithIdentifier(TitleTableViewCell.cellIdentifier) as! TitleTableViewCell!
+			cell.titleLabel.text = post.title
+			return cell
+		}
+		let dialogueEntry = post.dialogueEntries[row - 1]
+		let cell = tableView.dequeueReusableCellWithIdentifier(PostDialogueEntryTableViewCell.cellIdentifier) as! PostDialogueEntryTableViewCell!
+		cell.dialogueEntry = dialogueEntry
+		return cell
+	}
+
+	private func videoCellWithTableView(tableView: UITableView, atRow row: Int) -> UITableViewCell {
+		switch PostViewSections.VideoRow(rawValue: row)! {
+		case .Player:
+			switch post.videoType! {
+			case "youtube":
+				let cell = tableView.dequeueReusableCellWithIdentifier(YoutubeTableViewCell.cellIdentifier) as! YoutubeTableViewCell!
+				cell.post = post
+				return cell
+			default:
+				let cell = tableView.dequeueReusableCellWithIdentifier(VideoTableViewCell.cellIdentifier) as! VideoTableViewCell!
+				cell.post = post
+				return cell
+			}
+		case .Caption:
+			let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
+			cell.content = post.htmlBodyWithWidth(tableView.frame.width)
+			return cell
+		}
+	}
+
+	private func audioCellWithTableView(tableView: UITableView, atRow row: Int) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
+		switch PostViewSections.AudioRow(rawValue: row)! {
+		case .Player:
+			cell.content = post.htmlSecondaryBodyWithWidth(tableView.frame.width)
+		case .Caption:
+			cell.content = post.htmlBodyWithWidth(tableView.frame.width)
+		}
+		return cell
 	}
 
 	func tableView(tableView: UITableView, heightForCellAtRow row: Int, bodyHeight: CGFloat?, secondaryBodyHeight: CGFloat?) -> CGFloat {

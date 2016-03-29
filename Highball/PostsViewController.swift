@@ -52,7 +52,7 @@ class PostsViewController: UITableViewController {
 			delegate: self
 		)
 
-		longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: Selector("didLongPress:"))
+		longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(PostsViewController.didLongPress(_:)))
 		longPressGestureRecognizer.delegate = self
 		longPressGestureRecognizer.minimumPressDuration = 0.3
 
@@ -68,12 +68,12 @@ class PostsViewController: UITableViewController {
 
 		view.addGestureRecognizer(longPressGestureRecognizer)
 
-		panGestureRecognizer = UIPanGestureRecognizer(target: self, action: Selector("didPan:"))
+		panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(PostsViewController.didPan(_:)))
 		panGestureRecognizer.delegate = self
 		view.addGestureRecognizer(panGestureRecognizer)
 
 		refreshControl = UIRefreshControl()
-		refreshControl?.addTarget(self, action: "refresh:", forControlEvents: .ValueChanged)
+		refreshControl?.addTarget(self, action: #selector(PostsViewController.refresh(_:)), forControlEvents: .ValueChanged)
 	}
 
 	override func viewDidAppear(animated: Bool) {
@@ -125,100 +125,108 @@ class PostsViewController: UITableViewController {
 extension PostsViewController {
 	func didLongPress(sender: UILongPressGestureRecognizer) {
 		if sender.state == UIGestureRecognizerState.Began {
-			tableView.scrollEnabled = false
-			let point = sender.locationInView(navigationController!.tabBarController!.view)
-			let collectionViewPoint = sender.locationInView(tableView)
-			if let indexPath = tableView.indexPathForRowAtPoint(collectionViewPoint) {
-				if let _ = tableView.cellForRowAtIndexPath(indexPath) {
-					let post = dataManager.posts[indexPath.section]
-					let viewController = QuickReblogViewController()
-
-					viewController.startingPoint = point
-					viewController.post = post
-					viewController.transitioningDelegate = self
-					viewController.modalPresentationStyle = UIModalPresentationStyle.Custom
-
-					viewController.view.bounds = navigationController!.tabBarController!.view.bounds
-
-					navigationController!.tabBarController!.view.addSubview(viewController.view)
-
-					viewController.view.layoutIfNeeded()
-					viewController.viewDidAppear(false)
-
-					reblogViewController = viewController
-				}
-			}
+			longPressDidBegin(sender)
 		} else if sender.state == UIGestureRecognizerState.Ended {
-			tableView.scrollEnabled = true
+			longPressDidEnd(sender)
+		}
+	}
 
-			defer {
-				reblogViewController = nil
+	func longPressDidBegin(gestureRecognizer: UILongPressGestureRecognizer) {
+		tableView.scrollEnabled = false
+		let point = gestureRecognizer.locationInView(navigationController!.tabBarController!.view)
+		let collectionViewPoint = gestureRecognizer.locationInView(tableView)
+		if let indexPath = tableView.indexPathForRowAtPoint(collectionViewPoint) {
+			if let _ = tableView.cellForRowAtIndexPath(indexPath) {
+				let post = dataManager.posts[indexPath.section]
+				let viewController = QuickReblogViewController()
+
+				viewController.startingPoint = point
+				viewController.post = post
+				viewController.transitioningDelegate = self
+				viewController.modalPresentationStyle = UIModalPresentationStyle.Custom
+
+				viewController.view.bounds = navigationController!.tabBarController!.view.bounds
+
+				navigationController!.tabBarController!.view.addSubview(viewController.view)
+
+				viewController.view.layoutIfNeeded()
+				viewController.viewDidAppear(false)
+
+				reblogViewController = viewController
 			}
+		}
+	}
 
-			guard let viewController = reblogViewController else {
-				return
-			}
+	func longPressDidEnd(gestureRecognizer: UILongPressGestureRecognizer) {
+		tableView.scrollEnabled = true
 
-			let point = viewController.startingPoint
-			let collectionViewPoint = tableView.convertPoint(point, fromView: navigationController!.tabBarController!.view)
+		defer {
+			reblogViewController = nil
+		}
 
-			defer {
-				viewController.view.removeFromSuperview()
-			}
+		guard let viewController = reblogViewController else {
+			return
+		}
 
-			guard
-				let indexPath = tableView.indexPathForRowAtPoint(collectionViewPoint),
-				let cell = tableView.cellForRowAtIndexPath(indexPath),
-				let quickReblogAction = viewController.reblogAction()
+		let point = viewController.startingPoint
+		let collectionViewPoint = tableView.convertPoint(point, fromView: navigationController!.tabBarController!.view)
+
+		defer {
+			viewController.view.removeFromSuperview()
+		}
+
+		guard
+			let indexPath = tableView.indexPathForRowAtPoint(collectionViewPoint),
+			let cell = tableView.cellForRowAtIndexPath(indexPath),
+			let quickReblogAction = viewController.reblogAction()
 			else {
-					return
+				return
+		}
+		let post = dataManager.posts[indexPath.section]
+
+		switch quickReblogAction {
+		case .Reblog(let reblogType):
+			let reblogViewController = TextReblogViewController(
+				post: post,
+				reblogType: reblogType,
+				blogName: AccountsService.account.blog.name,
+				bodyHeight: postHeightCache.bodyHeightForPost(post),
+				secondaryBodyHeight: postHeightCache.secondaryBodyHeightForPost(post)
+			)
+			let sourceRect = view.convertRect(cell.bounds, fromView: cell)
+			let presentationViewController = reblogViewController.controllerToPresent(fromView: view, rect: sourceRect)
+
+			self.presentViewController(presentationViewController, animated: true, completion: nil)
+		case .Share:
+			let extensionItemSource = XExtensionItemSource(URL: NSURL(string: post.urlString)!)
+			var additionalAttachments: [AnyObject] = post.photos.map { $0.urlWithWidth(CGFloat.max) }
+
+			if let photosetCell = cell as? PhotosetRowTableViewCell, let image = photosetCell.imageAtPoint(view.convertPoint(point, toView: cell)) {
+				additionalAttachments.append(image)
 			}
-			let post = dataManager.posts[indexPath.section]
 
-			switch quickReblogAction {
-			case .Reblog(let reblogType):
-				let reblogViewController = TextReblogViewController(
-					post: post,
-					reblogType: reblogType,
-					blogName: AccountsService.account.blog.name,
-					bodyHeight: postHeightCache.bodyHeightForPost(post),
-					secondaryBodyHeight: postHeightCache.secondaryBodyHeightForPost(post)
-				)
-				let sourceRect = view.convertRect(cell.bounds, fromView: cell)
-				let presentationViewController = reblogViewController.controllerToPresent(fromView: view, rect: sourceRect)
+			extensionItemSource.additionalAttachments = additionalAttachments
 
-				self.presentViewController(presentationViewController, animated: true, completion: nil)
-			case .Share:
-				let extensionItemSource = XExtensionItemSource(URL: NSURL(string: post.urlString)!)
-				var additionalAttachments: [AnyObject] = post.photos.map { $0.urlWithWidth(CGFloat.max) }
+			let activityViewController = UIActivityViewController(activityItems: [extensionItemSource], applicationActivities: nil)
+			activityViewController.popoverPresentationController?.sourceView = cell
+			activityViewController.popoverPresentationController?.sourceRect = CGRect(origin: cell.center, size: CGSize(width: 1, height: 1))
 
-				if let photosetCell = cell as? PhotosetRowTableViewCell, let image = photosetCell.imageAtPoint(view.convertPoint(point, toView: cell)) {
-					additionalAttachments.append(image)
-				}
-
-				extensionItemSource.additionalAttachments = additionalAttachments
-
-				let activityViewController = UIActivityViewController(activityItems: [extensionItemSource], applicationActivities: nil)
-				activityViewController.popoverPresentationController?.sourceView = cell
-				activityViewController.popoverPresentationController?.sourceRect = CGRect(origin: cell.center, size: CGSize(width: 1, height: 1))
-
-				presentViewController(activityViewController, animated: true, completion: nil)
-			case .Like:
-				if post.liked.boolValue {
-					TMAPIClient.sharedInstance().unlike("\(post.id)", reblogKey: post.reblogKey) { (response, error) in
-						if let error = error {
-							self.presentError(error)
-						} else {
-							post.liked = false
-						}
+			presentViewController(activityViewController, animated: true, completion: nil)
+		case .Like:
+			if post.liked.boolValue {
+				TMAPIClient.sharedInstance().unlike("\(post.id)", reblogKey: post.reblogKey) { (response, error) in
+					if let error = error {
+						self.presentError(error)
+					} else {
+						post.liked = false
 					}
-				} else {
-					TMAPIClient.sharedInstance().like("\(post.id)", reblogKey: post.reblogKey) { (response, error) in
-						if let error = error {
-							self.presentError(error)
-						} else {
-							post.liked = true
-						}
+				}
+			} else {
+				TMAPIClient.sharedInstance().like("\(post.id)", reblogKey: post.reblogKey) { (response, error) in
+					if let error = error {
+						self.presentError(error)
+					} else {
+						post.liked = true
 					}
 				}
 			}

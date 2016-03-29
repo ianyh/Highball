@@ -24,7 +24,7 @@ class BlogViewController: PostsViewController {
 			image: followIcon.imageWithSize(CGSize(width: 30, height: 30)),
 			style: UIBarButtonItemStyle.Plain,
 			target: self,
-			action: Selector("follow:")
+			action: #selector(BlogViewController.follow(_:))
 		)
 		navigationItem.title = blogName
 	}
