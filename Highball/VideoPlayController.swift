@@ -29,10 +29,10 @@ class VideoPlayController: UIViewController {
 
 		backgroundButton.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.75)
 		backgroundButton.setTitle("", forState: .Normal)
-		backgroundButton.addTarget(self, action: Selector("cancel"), forControlEvents: .TouchUpInside)
+		backgroundButton.addTarget(self, action: #selector(VideoPlayController.cancel), forControlEvents: .TouchUpInside)
 
 		playButton.setTitle("Play", forState: .Normal)
-		playButton.addTarget(self, action: Selector("play"), forControlEvents: .TouchUpInside)
+		playButton.addTarget(self, action: #selector(MPMediaPlayback.play), forControlEvents: .TouchUpInside)
 
 		volumeView.alpha = 1.0
 

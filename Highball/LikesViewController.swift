@@ -31,8 +31,9 @@ class LikesViewController: PostsViewController {
 		}
 	}
 
-	override func requestPosts(postCount: Int, var parameters: Dictionary<String, AnyObject>, callback: TMAPICallback) {
-		parameters["offset"] = postCount
-		TMAPIClient.sharedInstance().likes(parameters, callback: callback)
+	override func requestPosts(postCount: Int, parameters: Dictionary<String, AnyObject>, callback: TMAPICallback) {
+		var mutableParameters = parameters
+		mutableParameters["offset"] = postCount
+		TMAPIClient.sharedInstance().likes(mutableParameters, callback: callback)
 	}
 }

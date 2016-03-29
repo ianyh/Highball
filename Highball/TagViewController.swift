@@ -33,10 +33,11 @@ final class TagViewController: PostsViewController {
 		}
 	}
 
-	override func requestPosts(postCount: Int, var parameters: Dictionary<String, AnyObject>, callback: TMAPICallback) {
+	override func requestPosts(postCount: Int, parameters: Dictionary<String, AnyObject>, callback: TMAPICallback) {
+		var mutableParameters = parameters
 		if let lastPost = dataManager.posts?.last {
-			parameters["before"] = "\(lastPost.timestamp)"
+			mutableParameters["before"] = "\(lastPost.timestamp)"
 		}
-		TMAPIClient.sharedInstance().tagged(self.tag, parameters: parameters, callback: callback)
+		TMAPIClient.sharedInstance().tagged(self.tag, parameters: mutableParameters, callback: callback)
 	}
 }

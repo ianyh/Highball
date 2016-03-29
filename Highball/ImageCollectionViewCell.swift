@@ -66,7 +66,7 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
 			failedImageView.edges == imageView.edges
 		}
 
-		let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: Selector("onTap:"))
+		let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ImageCollectionViewCell.onTap(_:)))
 
 		addGestureRecognizer(tapGestureRecognizer)
 	}
@@ -75,7 +75,7 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
 		super.layoutSubviews()
 
 		let imageSize = contentView.frame.size
-		let imageFrame = CGRect(origin: CGPointZero, size: imageSize)
+		let imageFrame = CGRect(origin: CGPoint.zero, size: imageSize)
 
 		imageView.frame = imageFrame
 	}

@@ -122,7 +122,7 @@ class Post {
 				return nil
 			}
 
-			urlStringRange.endIndex--
+			urlStringRange.endIndex = urlStringRange.endIndex.predecessor()
 
 			return NSURL(string: metaString.substringWithRange(urlStringRange))
 		case "youtube":

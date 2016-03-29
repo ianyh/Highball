@@ -19,7 +19,7 @@ class DashboardViewController: PostsViewController {
 
 		NSNotificationCenter.defaultCenter().addObserver(
 			self,
-			selector: Selector("applicationWillResignActive:"),
+			selector: #selector(UIApplicationDelegate.applicationWillResignActive(_:)),
 			name: UIApplicationWillResignActiveNotification,
 			object: nil
 		)
@@ -109,7 +109,7 @@ class DashboardViewController: PostsViewController {
 			image: upArrowImage,
 			style: .Plain,
 			target: self,
-			action: Selector("bookmarks:event:")
+			action: #selector(DashboardViewController.bookmarks(_:event:))
 		)
 
 		dataManager.topID = bookmarkID

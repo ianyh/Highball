@@ -106,7 +106,7 @@ class PostHeaderView: UITableViewHeaderFooterView {
 		timeLabel.font = UIFont.systemFontOfSize(14)
 
 		let button = UIButton(type: .System)
-		button.addTarget(self, action: Selector("tap:"), forControlEvents: UIControlEvents.TouchUpInside)
+		button.addTarget(self, action: #selector(PostHeaderView.tap(_:)), forControlEvents: UIControlEvents.TouchUpInside)
 
 		let borderView = UIView()
 		borderView.backgroundColor = UIColor.grayColor()

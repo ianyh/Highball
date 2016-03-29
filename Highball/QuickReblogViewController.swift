@@ -146,29 +146,23 @@ class QuickReblogViewController: UIViewController {
 		view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.3)
 
 		backgroundButton = UIButton(type: .System)
-		backgroundButton.addTarget(self, action: Selector("exit:"), forControlEvents: .TouchUpInside)
 
 		startButton = UIButton(type: .System)
 		startButton.setImage(UIImage(named: "Reblog"), forState: .Normal)
 		startButton.tintColor = UIColor.grayColor()
-		startButton.addTarget(self, action: Selector("exit:"), forControlEvents: .TouchUpInside)
 		startButton.sizeToFit()
 
 		reblogButton = UIButton(type: .System)
 		reblogButton.setImage(FAKIonIcons.iosLoopStrongIconWithSize(25).imageWithSize(CGSize(width: 25, height: 25)), forState: .Normal)
-		reblogButton.addTarget(self, action: Selector("reblog:"), forControlEvents: .TouchUpInside)
 
 		queueButton = UIButton(type: .System)
 		queueButton.setImage(FAKIonIcons.iosListOutlineIconWithSize(25).imageWithSize(CGSize(width: 25, height: 25)), forState: .Normal)
-		queueButton.addTarget(self, action: Selector("queue:"), forControlEvents: .TouchUpInside)
 
 		shareButton = UIButton(type: .System)
 		shareButton.setImage(FAKIonIcons.iosUploadOutlineIconWithSize(25).imageWithSize(CGSize(width: 25, height: 25)), forState: .Normal)
-		shareButton.addTarget(self, action: Selector("schedule:"), forControlEvents: .TouchUpInside)
 
 		likeButton = UIButton(type: .System)
 		likeButton.setImage(FAKIonIcons.iosHeartOutlineIconWithSize(25).imageWithSize(CGSize(width: 25, height: 25)), forState: .Normal)
-		likeButton.addTarget(self, action: Selector("like:"), forControlEvents: .TouchUpInside)
 
 		view.addSubview(backgroundButton)
 		view.addSubview(startButton)
