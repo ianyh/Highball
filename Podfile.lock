@@ -4,6 +4,17 @@ PODS:
   - ChameleonFramework/Default (2.0.6)
   - Crashlytics (3.4.1):
     - Fabric (~> 1.6.0)
+  - DTCoreText (1.6.17):
+    - DTFoundation/Core (~> 1.7.5)
+    - DTFoundation/DTAnimatedGIF (~> 1.7.5)
+    - DTFoundation/DTHTMLParser (~> 1.7.5)
+    - DTFoundation/UIKit (~> 1.7.5)
+  - DTFoundation/Core (1.7.9)
+  - DTFoundation/DTAnimatedGIF (1.7.9)
+  - DTFoundation/DTHTMLParser (1.7.9):
+    - DTFoundation/Core
+  - DTFoundation/UIKit (1.7.9):
+    - DTFoundation/Core
   - Fabric (1.6.1)
   - FLAnimatedImage (1.0.10)
   - FontAwesomeKit (2.1.9):
@@ -68,6 +79,7 @@ PODS:
 DEPENDENCIES:
   - ChameleonFramework (~> 2.0)
   - Crashlytics
+  - DTCoreText (~> 1.6)
   - Fabric
   - FontAwesomeKit (from `https://github.com/PrideChung/FontAwesomeKit.git`)
   - FormatterKit/TimeIntervalFormatter (~> 1.8)
@@ -96,6 +108,8 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   ChameleonFramework: a6b466873ff9a4ce3a5196c20bccf1a97ad9f446
   Crashlytics: 41574a245bc6ae10c55d57f385ebd2004e5bee05
+  DTCoreText: 3ea8bba23dd2141ba18adb227a7dd33a822df1c4
+  DTFoundation: 70a0765e3596f82dd421832e95c65e2166eb3102
   Fabric: bf0ceb04e7c924090efc5f8c55e4fbcca189e0a0
   FLAnimatedImage: e16a1e1cef08e4c509b47e4acbe3923f65c16135
   FontAwesomeKit: 0cd610453ce270f34ad17378c68de98aad0e05ef
@@ -116,6 +130,6 @@ SPEC CHECKSUMS:
   XCDYouTubeKit: a4a1a60faa7bc97744a1184501e82ef10ca15897
   XExtensionItem: ce626520bbca225930b9c8e2283b226df431af3f
 
-PODFILE CHECKSUM: 4ed1c7ecfc55e3ed696b8ccf9ddbae53b17ca5f9
+PODFILE CHECKSUM: dd542dbfa42cc73cc8b8914691acdc6c8ada901c
 
 COCOAPODS: 1.0.0.beta.6

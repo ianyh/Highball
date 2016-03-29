@@ -9,6 +9,7 @@ target 'Highball' do
   pod 'Crashlytics'
   
   pod 'ChameleonFramework', '~> 2.0'
+  pod 'DTCoreText', '~> 1.6'
   pod 'FontAwesomeKit', git: 'https://github.com/PrideChung/FontAwesomeKit.git'
   pod 'FormatterKit/TimeIntervalFormatter', '~> 1.8'
   pod 'OAuthSwift', '~> 0.5'
