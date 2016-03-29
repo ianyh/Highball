@@ -13,6 +13,7 @@ import UIKit
 class MainViewController: UITabBarController {
 	private var statusBarBackgroundView: UIView!
 	private var observer: AnyObject!
+	private var cachedSelectedIndex: Int = 0
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -84,13 +85,16 @@ class MainViewController: UITabBarController {
 		guard
 			let navigationController = selectedViewController as? UINavigationController,
 			let tableViewController = navigationController.viewControllers.last as? UITableViewController
+			where selectedIndex == tabBar.items?.indexOf(item)
 		else {
 			return
 		}
 
+		cachedSelectedIndex = selectedIndex
+
 		let tableView = tableViewController.tableView
 
-		tableView.setContentOffset(CGPoint(x: 0, y: -tableView.contentInset.top), animated: true)
+		tableViewController.tableView.setContentOffset(CGPoint(x: 0, y: -tableView.contentInset.top), animated: true)
 	}
 }
 
@@ -101,6 +105,7 @@ extension MainViewController: HistoryViewControllerDelegate {
 		dashboardViewController.popToRootViewControllerAnimated(false)
 		(dashboardViewController.topViewController as! DashboardViewController).gotoBookmark(selectedId)
 
+		cachedSelectedIndex = 0
 		selectedIndex = 0
 	}
 }
