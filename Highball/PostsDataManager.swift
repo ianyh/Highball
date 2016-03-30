@@ -159,7 +159,7 @@ class PostsDataManager {
 		for post in posts {
 			heightComputationQueue.addOperationWithBlock() {
 				let webView = self.webViewCache.popWebView()
-				let heightCalculator = HeightCalculator(post: post, width: width, webView: webView)
+				let heightCalculator = HeightCalculator(post: post, width: width)
 
 				self.heightCalculators[post.id] = heightCalculator
 
@@ -172,7 +172,7 @@ class PostsDataManager {
 			}
 			heightComputationQueue.addOperationWithBlock() {
 				let webView = self.webViewCache.popWebView()
-				let heightCalculator = HeightCalculator(post: post, width: width, webView: webView)
+				let heightCalculator = HeightCalculator(post: post, width: width)
 
 				self.secondaryHeightCalculators[post.id] = heightCalculator
 
