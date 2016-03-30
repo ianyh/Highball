@@ -10,7 +10,6 @@ import Fabric
 import Crashlytics
 
 import UIKit
-import WebKit
 import TMTumblrSDK
 import PINCache
 import PINRemoteImage
