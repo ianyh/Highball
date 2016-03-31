@@ -39,4 +39,25 @@ struct HeightCalculator {
 			completion(height: layoutFrame.frame.height + 20)
 		}
 	}
+
+	func calculateBodyHeightAtIndex(index: Int, completion: (height: CGFloat?) -> ()) {
+		let htmlStringMethod = post.bodies[index].htmlStringWithTumblrStyle(0)// secondary ? Post.htmlSecondaryBodyWithWidth : Post.htmlBodyWithWidth
+
+		guard let data = htmlStringMethod.dataUsingEncoding(NSUTF8StringEncoding) else {
+			dispatch_async(dispatch_get_main_queue()) {
+				completion(height: nil)
+			}
+			return
+		}
+
+		let attributedString = NSAttributedString(HTMLData: data, options: [DTDefaultHeadIndent: 0, DTDefaultFirstLineHeadIndent: 0], documentAttributes: nil)
+		let layouter = DTCoreTextLayouter(attributedString: attributedString)
+		let maxRect = CGRect(x: 0, y: 0, width: width - 30, height: CGFloat(CGFLOAT_HEIGHT_UNKNOWN))
+		let entireString = NSMakeRange(0, attributedString.length)
+		let layoutFrame = layouter.layoutFrameWithRect(maxRect, range: entireString)
+
+		dispatch_async(dispatch_get_main_queue()) {
+			completion(height: layoutFrame.frame.height + 20)
+		}
+	}
 }

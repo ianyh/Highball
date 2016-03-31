@@ -469,7 +469,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "source ./bin/CrashlyticsKeys.sh\nif [ -n \"$CRASHLYTICS_API_KEY\" -a -n \"$CRASHLYTICS_APP_KEY\" ]; then\n    /usr/libexec/PlistBuddy -c \"Add :HBCrashlyticsAPIKey string '$CRASHLYTICS_API_KEY'\" Highball/Info.plist\n    /usr/libexec/PlistBuddy -c \"Add :HBCrashlyticsAppKey string '$CRASHLYTICS_APP_KEY'\" Highball/Info.plist\n    /usr/libexec/PlistBuddy -c \"Add :Fabric:APIKey string '$CRASHLYTICS_API_KEY'\" Highball/Info.plist\nfi\n";
+			shellScript = "source ./bin/CrashlyticsKeys.sh\nif [ -n \"$CRASHLYTICS_API_KEY\" -a -n \"$CRASHLYTICS_APP_KEY\" ]; then\nif [ -n \"/usr/libexec/PlistBuddy -c 'Read :HBCrashlyticsAPIKey' Highball/Info.plist\" ]; then\n    /usr/libexec/PlistBuddy -c \"Add :HBCrashlyticsAPIKey string '$CRASHLYTICS_API_KEY'\" Highball/Info.plist\n    /usr/libexec/PlistBuddy -c \"Add :HBCrashlyticsAppKey string '$CRASHLYTICS_APP_KEY'\" Highball/Info.plist\n    /usr/libexec/PlistBuddy -c \"Add :Fabric:APIKey string '$CRASHLYTICS_API_KEY'\" Highball/Info.plist\nfi\nfi\n";
 		};
 		40A11E6519B4D97800B91843 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;

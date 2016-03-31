@@ -27,6 +27,7 @@ class PostsDataManager {
 
 	private var heightCalculators: [Int: HeightCalculator] = [:]
 	private var secondaryHeightCalculators: [Int: HeightCalculator] = [:]
+	private var bodyHeightCalculators: [String: HeightCalculator] = [:]
 
 	var posts: Array<Post>!
 	var topID: Int?
@@ -42,7 +43,8 @@ class PostsDataManager {
 	var computingHeights: Bool {
 		return heightComputationQueue.operationCount > 0 ||
 			heightCalculators.count > 0 ||
-			secondaryHeightCalculators.count > 0
+			secondaryHeightCalculators.count > 0 ||
+			bodyHeightCalculators.count > 0
 	}
 
 	init(postHeightCache: PostHeightCache, delegate: PostsDataManagerDelegate) {
@@ -75,7 +77,7 @@ class PostsDataManager {
 				}
 			}
 		} else {
-			parameters = ["reblog_info": "true"]
+			parameters = ["reblog_info": "true", "type": "text"]
 			reloadCompletion = { (posts: [Post]) in
 				self.posts = posts
 				self.cursor = posts.last?.id
@@ -175,6 +177,18 @@ class PostsDataManager {
 					self.secondaryHeightCalculators[post.id] = nil
 					self.postHeightCache.setSecondaryBodyHeight(height, forPost: post)
 					self.delegate.dataManagerDidComputeHeight(self)
+				}
+			}
+			for (index, _) in post.bodies.enumerate() {
+				heightComputationQueue.addOperationWithBlock() { height in
+					let heightCalculator = HeightCalculator(post: post, width: width)
+					let key = "\(post.id):\(index)"
+					self.bodyHeightCalculators[key] = heightCalculator
+					heightCalculator.calculateBodyHeightAtIndex(index) { height in
+						self.bodyHeightCalculators[key] = nil
+						self.postHeightCache.setBodyHeight(height, forPost: post, atIndex: index)
+						self.delegate.dataManagerDidComputeHeight(self)
+					}
 				}
 			}
 		}

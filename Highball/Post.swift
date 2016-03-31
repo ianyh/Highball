@@ -42,6 +42,8 @@ class Post {
 	let videoHeight: Float?
 	var liked = false
 
+	let bodies: [String]
+
 	init(json: JSON) {
 		self.json = json
 		self.id = json["id"].int!
@@ -70,6 +72,12 @@ class Post {
 		self.videoWidth = json["thumbnail_width"].float
 		self.videoHeight = json["thumbnail_height"].float
 		self.liked = json["liked"].bool!
+		if let trail = json["trail"].array {
+			self.bodies = trail.map { $0["content"].string }.filter { $0 != nil }.map { $0! }
+		} else {
+			self.bodies = []
+		}
+		print(self.bodies)
 	}
 
 	func htmlBodyWithWidth(width: CGFloat) -> String? {
@@ -92,6 +100,10 @@ class Post {
 
 		return stringToStyle?.htmlStringWithTumblrStyle(width)
 	}
+
+//	func htmlBodyAtIndex(index: Int) -> String? {
+//		return bodies[index].htmlStringWithTumblrStyle(<#T##width: CGFloat##CGFloat#>)
+//	}
 
 	func videoURL() -> NSURL? {
 		guard self.type == "video" else {

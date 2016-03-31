@@ -12,6 +12,7 @@ struct PostViewHeightCalculator {
 	let width: CGFloat
 	let bodyHeight: CGFloat?
 	let secondaryBodyHeight: CGFloat?
+	let bodyHeights: [String: CGFloat]
 
 	func heightForPost(post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
 		if row == sectionRowCount - 1 {
@@ -74,15 +75,16 @@ struct PostViewHeightCalculator {
 	}
 
 	private func textHeightWithPost(post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
-		switch PostViewSections.TextRow(rawValue: row)! {
+		switch PostViewSections.TextRow.textRowFromRow(row) {
 		case .Title:
 			if let title = post.title {
 				let height = TitleTableViewCell.heightForTitle(title, width: width)
 				return height
 			}
 			return 0
-		case .Body:
-			return bodyHeight ?? 0
+		case .Body(let index):
+			let key = "\(post.id):\(index)"
+			return bodyHeights[key] ?? 0
 		}
 	}
 

@@ -9,9 +9,17 @@
 import UIKit
 
 struct PostViewSections {
-	enum TextRow: Int {
+	enum TextRow {
 		case Title
-		case Body
+		case Body(row: Int)
+
+		static func textRowFromRow(row: Int) -> TextRow {
+			if row == 0 {
+				return .Title
+			} else {
+				return .Body(row: row - 1)
+			}
+		}
 	}
 
 	enum AnswerRow: Int {
@@ -54,7 +62,7 @@ struct PostSectionAdapter {
 			}
 			rowCount = post.layoutRows.layoutRows.count + 1
 		case "text":
-			rowCount = 2
+			rowCount = 1 + post.bodies.count
 		case "answer":
 			rowCount = 2
 		case "quote":
@@ -131,14 +139,15 @@ struct PostSectionAdapter {
 	}
 
 	private func textCellWithTableView(tableView: UITableView, atRow row: Int) -> UITableViewCell {
-		switch PostViewSections.TextRow(rawValue: row)! {
+		switch PostViewSections.TextRow.textRowFromRow(row) {
 		case .Title:
 			let cell = tableView.dequeueReusableCellWithIdentifier(TitleTableViewCell.cellIdentifier) as! TitleTableViewCell!
 			cell.titleLabel.text = post.title
 			return cell
-		case .Body:
+		case .Body(let index):
+			let content = post.bodies[index]
 			let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
-			cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
+			cell.content = content.htmlStringWithTumblrStyle(0) //post.htmlBodyWithWidth(tableView.frame.size.width)
 			return cell
 		}
 	}
@@ -225,8 +234,8 @@ struct PostSectionAdapter {
 		return cell
 	}
 
-	func tableView(tableView: UITableView, heightForCellAtRow row: Int, bodyHeight: CGFloat?, secondaryBodyHeight: CGFloat?) -> CGFloat {
-		let heightCalculator = PostViewHeightCalculator(width: tableView.frame.width, bodyHeight: bodyHeight, secondaryBodyHeight: secondaryBodyHeight)
+	func tableView(tableView: UITableView, heightForCellAtRow row: Int, bodyHeight: CGFloat?, secondaryBodyHeight: CGFloat?, bodyHeights: [String: CGFloat]) -> CGFloat {
+		let heightCalculator = PostViewHeightCalculator(width: tableView.frame.width, bodyHeight: bodyHeight, secondaryBodyHeight: secondaryBodyHeight, bodyHeights: bodyHeights)
 		let height = heightCalculator.heightForPost(post, atRow: row, sectionRowCount: numbersOfRows())
 
 		return height

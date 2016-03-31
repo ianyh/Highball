@@ -119,7 +119,7 @@ extension PostsTableViewAdapter: UITableViewDelegate {
 		let sectionAdapter = PostSectionAdapter(post: post)
 		let bodyHeight = postHeightCache.bodyHeightForPost(post)
 		let secondaryBodyHeight = postHeightCache.secondaryBodyHeightForPost(post)
-		let height = sectionAdapter.tableView(tableView, heightForCellAtRow: indexPath.row, bodyHeight: bodyHeight, secondaryBodyHeight: secondaryBodyHeight)
+		let height = sectionAdapter.tableView(tableView, heightForCellAtRow: indexPath.row, bodyHeight: bodyHeight, secondaryBodyHeight: secondaryBodyHeight, bodyHeights: postHeightCache.bodiesHeightCache)
 
 		heightCache[indexPath] = height
 

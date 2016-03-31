@@ -44,7 +44,7 @@ class ContentTableViewCell: WCFastCell, DTAttributedTextContentViewDelegate, DTL
 		contentView.addSubview(contentTextView)
 
 		constrain(contentTextView, contentView) { contentTextView, contentView in
-			contentTextView.edges == inset(contentView.edges, 15, 10)
+			contentTextView.edges == inset(contentView.edges, 10, 4)
 		}
 	}
 
