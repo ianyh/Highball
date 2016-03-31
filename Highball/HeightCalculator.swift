@@ -41,7 +41,7 @@ struct HeightCalculator {
 	}
 
 	func calculateBodyHeightAtIndex(index: Int, completion: (height: CGFloat?) -> ()) {
-		let htmlStringMethod = post.bodies[index].htmlStringWithTumblrStyle(0)// secondary ? Post.htmlSecondaryBodyWithWidth : Post.htmlBodyWithWidth
+		let htmlStringMethod = post.bodies[index].htmlStringWithTumblrStyle(0)
 
 		guard let data = htmlStringMethod.dataUsingEncoding(NSUTF8StringEncoding) else {
 			dispatch_async(dispatch_get_main_queue()) {
@@ -57,7 +57,7 @@ struct HeightCalculator {
 		let layoutFrame = layouter.layoutFrameWithRect(maxRect, range: entireString)
 
 		dispatch_async(dispatch_get_main_queue()) {
-			completion(height: layoutFrame.frame.height + 20)
+			completion(height: layoutFrame.frame.height + 36)
 		}
 	}
 }

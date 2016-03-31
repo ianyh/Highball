@@ -60,7 +60,8 @@ struct PostSectionAdapter {
 			if postPhotos.count == 1 {
 				rowCount = 2
 			}
-			rowCount = post.layoutRows.layoutRows.count + 1
+			rowCount = post.layoutRows.layoutRows.count
+			rowCount += post.bodies.count
 		case "text":
 			rowCount = 1 + post.bodies.count
 		case "answer":
@@ -112,9 +113,10 @@ struct PostSectionAdapter {
 	}
 
 	private func photoCellWithTableView(tableView: UITableView, atRow row: Int) -> UITableViewCell {
-		if row == numbersOfRows() - 2 {
+		if row >= numbersOfRows() - 1 - post.bodies.count {
 			let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
-			cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
+			cell.username = post.usernames[numbersOfRows() - 2 - row]
+			cell.content = post.bodies[numbersOfRows() - 2 - row].htmlStringWithTumblrStyle(tableView.frame.size.width)
 			return cell
 		}
 		let cell = tableView.dequeueReusableCellWithIdentifier(PhotosetRowTableViewCell.cellIdentifier) as! PhotosetRowTableViewCell!
@@ -145,9 +147,9 @@ struct PostSectionAdapter {
 			cell.titleLabel.text = post.title
 			return cell
 		case .Body(let index):
-			let content = post.bodies[index]
 			let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
-			cell.content = content.htmlStringWithTumblrStyle(0) //post.htmlBodyWithWidth(tableView.frame.size.width)
+			cell.username = post.usernames[index]
+			cell.content = post.bodies[index].htmlStringWithTumblrStyle(0)
 			return cell
 		}
 	}

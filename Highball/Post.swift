@@ -43,6 +43,7 @@ class Post {
 	var liked = false
 
 	let bodies: [String]
+	let usernames: [String]
 
 	init(json: JSON) {
 		self.json = json
@@ -77,7 +78,11 @@ class Post {
 		} else {
 			self.bodies = []
 		}
-		print(self.bodies)
+		if let trail = json["trail"].array {
+			self.usernames = trail.map { $0["blog"]["name"].string }.filter { $0 != nil }.map { $0! }
+		} else {
+			self.usernames = []
+		}
 	}
 
 	func htmlBodyWithWidth(width: CGFloat) -> String? {

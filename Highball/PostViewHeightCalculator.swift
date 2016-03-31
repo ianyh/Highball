@@ -42,8 +42,9 @@ struct PostViewHeightCalculator {
 	}
 
 	private func photoHeightWithPost(post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
-		if row == sectionRowCount - 2 {
-			return bodyHeight ?? 0
+		if row >= sectionRowCount - 1 - post.bodies.count {
+			let key = "\(post.id):\(sectionRowCount - 1 - row)"
+			return bodyHeights[key] ?? 0
 		}
 
 		let postPhotos = post.photos

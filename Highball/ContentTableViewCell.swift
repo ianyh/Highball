@@ -12,7 +12,13 @@ import DTCoreText
 import WCFastCell
 
 class ContentTableViewCell: WCFastCell, DTAttributedTextContentViewDelegate, DTLazyImageViewDelegate {
-	var contentTextView: DTAttributedTextContentView!
+	private(set) var usernameLabel: UILabel!
+	private(set) var contentTextView: DTAttributedTextContentView!
+	var username: String? {
+		didSet {
+			usernameLabel.text = username
+		}
+	}
 	var content: String? {
 		didSet {
 			if let content = content {
@@ -20,6 +26,8 @@ class ContentTableViewCell: WCFastCell, DTAttributedTextContentViewDelegate, DTL
 				let htmlStringBuilder = DTHTMLAttributedStringBuilder(HTML: data, options: [DTDefaultHeadIndent: 0, DTDefaultFirstLineHeadIndent: 0], documentAttributes: nil)
 				let attributedString = htmlStringBuilder.generatedAttributedString()
 				contentTextView.attributedString = attributedString
+			} else {
+				contentTextView.attributedString = NSAttributedString()
 			}
 		}
 	}
@@ -38,14 +46,34 @@ class ContentTableViewCell: WCFastCell, DTAttributedTextContentViewDelegate, DTL
 	}
 
 	func setUpCell() {
+		usernameLabel = UILabel()
 		contentTextView = DTAttributedTextContentView()
+
+		usernameLabel.backgroundColor = UIColor.blackColor()
+		usernameLabel.font = UIFont.boldSystemFontOfSize(16)
+		usernameLabel.textColor = UIColor.whiteColor()
+
 		contentTextView.delegate = self
 
+		contentView.addSubview(usernameLabel)
 		contentView.addSubview(contentTextView)
 
-		constrain(contentTextView, contentView) { contentTextView, contentView in
-			contentTextView.edges == inset(contentView.edges, 10, 4)
+		constrain(usernameLabel, contentTextView, contentView) { usernameLabel, contentTextView, contentView in
+			usernameLabel.top == contentView.top + 4
+			usernameLabel.right == contentView.right - 10
+			usernameLabel.left == contentView.left + 10
+			usernameLabel.height == 24
+
+			contentTextView.top == usernameLabel.bottom + 4
+			contentTextView.right == contentView.right - 10
+			contentTextView.bottom == contentView.bottom - 4
+			contentTextView.left == contentView.left + 10
 		}
+	}
+
+	override func prepareForReuse() {
+		username = nil
+		content = nil
 	}
 
 	func attributedTextContentView(attributedTextContentView: DTAttributedTextContentView!, viewForAttachment attachment: DTTextAttachment!, frame: CGRect) -> UIView! {
