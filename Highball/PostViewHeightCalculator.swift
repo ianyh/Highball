@@ -133,11 +133,12 @@ struct PostViewHeightCalculator {
 	}
 
 	private func videoHeightWithPost(post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
-		switch PostViewSections.VideoRow(rawValue: row)! {
+		switch PostViewSections.VideoRow.videoRowFromRow(row) {
 		case .Player:
 			return post.videoHeightWidthWidth(width) ?? 320
-		case .Caption:
-			return bodyHeight ?? 0
+		case .Caption(let index):
+			let key = "\(post.id):\(index)"
+			return bodyHeights[key] ?? 0
 		}
 	}
 

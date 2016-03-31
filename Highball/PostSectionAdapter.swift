@@ -37,9 +37,17 @@ struct PostViewSections {
 		case Description
 	}
 
-	enum VideoRow: Int {
+	enum VideoRow {
 		case Player
-		case Caption
+		case Caption(row: Int)
+
+		static func videoRowFromRow(row: Int) -> VideoRow {
+			if row == 0 {
+				return .Player
+			} else {
+				return .Caption(row: row - 1)
+			}
+		}
 	}
 
 	enum AudioRow: Int {
@@ -206,7 +214,7 @@ struct PostSectionAdapter {
 	}
 
 	private func videoCellWithTableView(tableView: UITableView, atRow row: Int) -> UITableViewCell {
-		switch PostViewSections.VideoRow(rawValue: row)! {
+		switch PostViewSections.VideoRow.videoRowFromRow(row) {
 		case .Player:
 			switch post.videoType! {
 			case "youtube":
@@ -218,9 +226,10 @@ struct PostSectionAdapter {
 				cell.post = post
 				return cell
 			}
-		case .Caption:
+		case .Caption(let index):
 			let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
-			cell.content = post.htmlBodyWithWidth(tableView.frame.width)
+			cell.username = post.usernames[index]
+			cell.content = post.bodies[index].htmlStringWithTumblrStyle(0)
 			return cell
 		}
 	}
