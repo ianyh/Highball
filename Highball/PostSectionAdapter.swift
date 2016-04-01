@@ -32,9 +32,17 @@ struct PostViewSections {
 		case Source
 	}
 
-	enum LinkRow: Int {
+	enum LinkRow {
 		case Link
-		case Description
+		case Description(row: Int)
+
+		static func linkRowFromRow(row: Int) -> LinkRow {
+			if row == 0 {
+				return .Link
+			} else {
+				return .Description(row: row - 1)
+			}
+		}
 	}
 
 	enum VideoRow {
@@ -85,7 +93,7 @@ struct PostSectionAdapter {
 		case "quote":
 			rowCount = 2
 		case "link":
-			rowCount = 2
+			rowCount = 1 + post.bodies.count
 		case "chat":
 			rowCount = 1 + post.dialogueEntries.count
 		case "video":
@@ -197,14 +205,15 @@ struct PostSectionAdapter {
 	}
 
 	private func linkCellWithTableView(tableView: UITableView, atRow row: Int) -> UITableViewCell {
-		switch PostViewSections.LinkRow(rawValue: row)! {
+		switch PostViewSections.LinkRow.linkRowFromRow(row) {
 		case .Link:
 			let cell = tableView.dequeueReusableCellWithIdentifier(PostLinkTableViewCell.cellIdentifier) as! PostLinkTableViewCell!
 			cell.post = post
 			return cell
-		case .Description:
+		case .Description(let index):
 			let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
-			cell.content = post.htmlBodyWithWidth(tableView.frame.width)
+			cell.username = post.usernames[index]
+			cell.content = post.bodies[index].htmlStringWithTumblrStyle(0)
 			return cell
 		}
 	}

@@ -110,11 +110,12 @@ struct PostViewHeightCalculator {
 	}
 
 	private func linkHeightWithPost(post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
-		switch PostViewSections.LinkRow(rawValue: row)! {
+		switch PostViewSections.LinkRow.linkRowFromRow(row) {
 		case .Link:
 			return PostLinkTableViewCell.heightForPost(post, width: width)
-		case .Description:
-			return bodyHeight ?? 0
+		case .Description(let index):
+			let key = "\(post.id):\(index)"
+			return bodyHeights[key] ?? 0
 		}
 	}
 
