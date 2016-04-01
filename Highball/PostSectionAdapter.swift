@@ -50,9 +50,17 @@ struct PostViewSections {
 		}
 	}
 
-	enum AudioRow: Int {
+	enum AudioRow {
 		case Player
-		case Caption
+		case Caption(row: Int)
+
+		static func audioRowFromRow(row: Int) -> AudioRow {
+			if row == 0 {
+				return .Player
+			} else {
+				return .Caption(row: row - 1)
+			}
+		}
 	}
 }
 
@@ -81,9 +89,9 @@ struct PostSectionAdapter {
 		case "chat":
 			rowCount = 1 + post.dialogueEntries.count
 		case "video":
-			rowCount = 2
+			rowCount = 1 + post.bodies.count
 		case "audio":
-			rowCount = 2
+			rowCount = 1 + post.bodies.count
 		default:
 			rowCount = 0
 		}
@@ -236,11 +244,12 @@ struct PostSectionAdapter {
 
 	private func audioCellWithTableView(tableView: UITableView, atRow row: Int) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
-		switch PostViewSections.AudioRow(rawValue: row)! {
+		switch PostViewSections.AudioRow.audioRowFromRow(row) {
 		case .Player:
 			cell.content = post.htmlSecondaryBodyWithWidth(tableView.frame.width)
-		case .Caption:
-			cell.content = post.htmlBodyWithWidth(tableView.frame.width)
+		case .Caption(let index):
+			cell.username = post.usernames[index]
+			cell.content = post.bodies[index].htmlStringWithTumblrStyle(0)
 		}
 		return cell
 	}

@@ -143,11 +143,12 @@ struct PostViewHeightCalculator {
 	}
 
 	private func audioHeightWithPost(post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
-		switch PostViewSections.AudioRow(rawValue: row)! {
+		switch PostViewSections.AudioRow.audioRowFromRow(row) {
 		case .Player:
 			return secondaryBodyHeight ?? 0
-		case .Caption:
-			return bodyHeight ?? 0
+		case .Caption(let index):
+			let key = "\(post.id):\(index)"
+			return bodyHeights[key] ?? 0
 		}
 	}
 }
