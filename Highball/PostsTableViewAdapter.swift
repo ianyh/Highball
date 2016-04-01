@@ -21,6 +21,7 @@ class PostsTableViewAdapter: NSObject {
 	private let delegate: PostsTableViewAdapterDelegate
 
 	private var heightCache: [NSIndexPath: CGFloat] = [:]
+	private var urlWidthCache: [String: CGFloat] = [:]
 
 	init(tableView: UITableView, postHeightCache: PostHeightCache, delegate: PostsTableViewAdapterDelegate) {
 		self.tableView = tableView
@@ -59,6 +60,7 @@ class PostsTableViewAdapter: NSObject {
 
 	func resetCache() {
 		heightCache.removeAll()
+		urlWidthCache.removeAll()
 	}
 
 	private func posts() -> [Post] {
@@ -102,6 +104,18 @@ extension PostsTableViewAdapter: UITableViewDataSource {
 		if let cell = cell as? TagsTableViewCell {
 			cell.delegate = self
 		} else if let cell = cell as? ContentTableViewCell {
+			cell.widthForURL = { [weak self] url in
+				return self?.urlWidthCache[url]
+			}
+			cell.widthDidChange = { [weak self] url, width, height in
+				if self?.urlWidthCache[url] == nil {
+					let bodyHeight = self?.postHeightCache.bodyHeight(post, atIndex: indexPath.row - 1) ?? 0
+					self?.postHeightCache.setBodyHeight(bodyHeight + height, forPost: post, atIndex: indexPath.row - 1)
+					self?.heightCache[indexPath] = nil
+					self?.urlWidthCache[url] = width
+				}
+				self?.tableView.reloadData()
+			}
 			cell.linkHandler = linkTapHandler
 		}
 
@@ -191,7 +205,10 @@ extension PostsTableViewAdapter: UITableViewDelegate {
 		if let cell = cell as? PhotosetRowTableViewCell {
 			cell.cancelDownloads()
 		} else if let cell = cell as? ContentTableViewCell {
+			cell.username = nil
 			cell.content = nil
+			cell.widthForURL = nil
+			cell.widthDidChange = nil
 		}
 	}
 

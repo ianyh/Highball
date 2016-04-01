@@ -139,6 +139,7 @@ struct PostSectionAdapter {
 	private func photoCellWithTableView(tableView: UITableView, atRow row: Int) -> UITableViewCell {
 		if row >= numbersOfRows() - 1 - post.bodies.count {
 			let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
+			cell.width = tableView.bounds.width
 			cell.username = post.usernames[numbersOfRows() - 2 - row]
 			cell.content = post.bodies[numbersOfRows() - 2 - row].htmlStringWithTumblrStyle(tableView.frame.size.width)
 			return cell
@@ -172,6 +173,7 @@ struct PostSectionAdapter {
 			return cell
 		case .Body(let index):
 			let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
+			cell.width = tableView.bounds.width
 			cell.username = post.usernames[index]
 			cell.content = post.bodies[index].htmlStringWithTumblrStyle(0)
 			return cell
@@ -186,6 +188,7 @@ struct PostSectionAdapter {
 			return cell
 		case .Answer:
 			let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
+			cell.width = tableView.bounds.width
 			cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
 			return cell
 		}
@@ -195,10 +198,12 @@ struct PostSectionAdapter {
 		switch PostViewSections.QuoteRow(rawValue: row)! {
 		case .Quote:
 			let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
+			cell.width = tableView.bounds.width
 			cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
 			return cell
 		case .Source:
 			let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
+			cell.width = tableView.bounds.width
 			cell.content = post.htmlSecondaryBodyWithWidth(tableView.frame.size.width)
 			return cell
 		}
@@ -212,6 +217,7 @@ struct PostSectionAdapter {
 			return cell
 		case .Description(let index):
 			let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
+			cell.width = tableView.bounds.width
 			cell.username = post.usernames[index]
 			cell.content = post.bodies[index].htmlStringWithTumblrStyle(0)
 			return cell
@@ -245,6 +251,7 @@ struct PostSectionAdapter {
 			}
 		case .Caption(let index):
 			let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
+			cell.width = tableView.bounds.width
 			cell.username = post.usernames[index]
 			cell.content = post.bodies[index].htmlStringWithTumblrStyle(0)
 			return cell
@@ -255,8 +262,10 @@ struct PostSectionAdapter {
 		let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
 		switch PostViewSections.AudioRow.audioRowFromRow(row) {
 		case .Player:
+			cell.width = tableView.bounds.width
 			cell.content = post.htmlSecondaryBodyWithWidth(tableView.frame.width)
 		case .Caption(let index):
+			cell.width = tableView.bounds.width
 			cell.username = post.usernames[index]
 			cell.content = post.bodies[index].htmlStringWithTumblrStyle(0)
 		}
