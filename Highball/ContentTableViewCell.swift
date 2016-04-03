@@ -26,8 +26,8 @@ class ContentTableViewCell: WCFastCell, DTAttributedTextContentViewDelegate {
 		didSet {
 			if let content = content {
 				let data = content.dataUsingEncoding(NSUTF8StringEncoding)
-				let maxSize = CGSize(width: width - 20, height: CGFloat(CGFLOAT_HEIGHT_UNKNOWN))
-				let htmlStringBuilder = DTHTMLAttributedStringBuilder(HTML: data, options: [DTMaxImageSize: NSValue(CGSize: maxSize), DTDefaultHeadIndent: 0, DTDefaultFirstLineHeadIndent: 0], documentAttributes: nil)
+				let stringBuilderOptions = [DTDefaultHeadIndent: 0, DTDefaultFirstLineHeadIndent: 0]
+				let htmlStringBuilder = DTHTMLAttributedStringBuilder(HTML: data, options: stringBuilderOptions, documentAttributes: nil)
 				let attributedString = htmlStringBuilder.generatedAttributedString()
 				contentTextView.attributedString = attributedString
 				usernameLabel.superview?.hidden = (content.characters.count == 0)
@@ -115,11 +115,10 @@ class ContentTableViewCell: WCFastCell, DTAttributedTextContentViewDelegate {
 		let rect = CGRect(x: frame.origin.x, y: frame.origin.y, width: 2, height: frame.height)
 		let path = UIBezierPath(rect: rect)
 
-		CGContextSetFillColorWithColor(context, UIColor.blackColor().CGColor)
+		CGContextSetFillColorWithColor(context, UIColor.grayColor().CGColor)
 		CGContextAddPath(context, path.CGPath)
 		CGContextFillPath(context)
 
-//		textBlock.backgroundColor = UIColor.randomFlatColor()
 		return false
 	}
 

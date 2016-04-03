@@ -32,7 +32,9 @@ struct HeightCalculator {
 		let attributedString = NSAttributedString(HTMLData: data, options: [DTDefaultHeadIndent: 0, DTDefaultFirstLineHeadIndent: 0], documentAttributes: nil)
 		let layouter = DTCoreTextLayouter(attributedString: attributedString)
 		let maxRect = CGRect(x: 0, y: 0, width: width - 30, height: CGFloat(CGFLOAT_HEIGHT_UNKNOWN))
+		// swiftlint:disable legacy_constructor
 		let entireString = NSMakeRange(0, attributedString.length)
+		// swiftlint:enable legacy_constructor
 		let layoutFrame = layouter.layoutFrameWithRect(maxRect, range: entireString)
 
 		dispatch_async(dispatch_get_main_queue()) {
@@ -53,7 +55,9 @@ struct HeightCalculator {
 		let attributedString = NSAttributedString(HTMLData: data, options: [DTDefaultHeadIndent: 0, DTDefaultFirstLineHeadIndent: 0], documentAttributes: nil)
 		let layouter = DTCoreTextLayouter(attributedString: attributedString)
 		let maxRect = CGRect(x: 0, y: 0, width: width - 20, height: CGFloat(CGFLOAT_HEIGHT_UNKNOWN))
+		// swiftlint:disable legacy_constructor
 		let entireString = NSMakeRange(0, attributedString.length)
+		// swiftlint:enable legacy_constructor
 		let layoutFrame = layouter.layoutFrameWithRect(maxRect, range: entireString)
 
 		dispatch_async(dispatch_get_main_queue()) {
