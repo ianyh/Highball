@@ -109,11 +109,14 @@ extension PostsTableViewAdapter: UITableViewDataSource {
 			}
 			cell.widthDidChange = { [weak self] url, width, height in
 				if self?.urlWidthCache[url] == nil {
-					self?.postHeightCache.setBodyComponentHeight(height, forPost: post, atIndex: indexPath.row - 1, withKey: url)
 					self?.heightCache[indexPath] = nil
 					self?.urlWidthCache[url] = width
 				}
-				self?.tableView.reloadData()
+				if height != self?.postHeightCache.bodyComponentHeightForPost(post, atIndex: indexPath.row - 1, withKey: url) {
+					self?.postHeightCache.setBodyComponentHeight(height, forPost: post, atIndex: indexPath.row - 1, withKey: url)
+					self?.tableView.reloadData()
+				}
+
 			}
 			cell.linkHandler = linkTapHandler
 		}

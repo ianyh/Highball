@@ -9,9 +9,11 @@
 import UIKit
 import Cartography
 import DTCoreText
+import FLAnimatedImage
+import PINRemoteImage
 import WCFastCell
 
-class ContentTableViewCell: WCFastCell, DTAttributedTextContentViewDelegate, DTLazyImageViewDelegate {
+class ContentTableViewCell: WCFastCell, DTAttributedTextContentViewDelegate {
 	private(set) var usernameLabel: UILabel!
 	private(set) var contentTextView: DTAttributedTextContentView!
 	var width: CGFloat = 375
@@ -28,8 +30,10 @@ class ContentTableViewCell: WCFastCell, DTAttributedTextContentViewDelegate, DTL
 				let htmlStringBuilder = DTHTMLAttributedStringBuilder(HTML: data, options: [DTMaxImageSize: NSValue(CGSize: maxSize), DTDefaultHeadIndent: 0, DTDefaultFirstLineHeadIndent: 0], documentAttributes: nil)
 				let attributedString = htmlStringBuilder.generatedAttributedString()
 				contentTextView.attributedString = attributedString
+				usernameLabel.superview?.hidden = (content.characters.count == 0)
 			} else {
 				contentTextView.attributedString = NSAttributedString(string: "")
+				usernameLabel.superview?.hidden = true
 			}
 		}
 	}
@@ -74,13 +78,13 @@ class ContentTableViewCell: WCFastCell, DTAttributedTextContentViewDelegate, DTL
 			usernameContainerView.top == contentView.top
 			usernameContainerView.right <= contentView.right
 			usernameContainerView.left == contentView.left
-			usernameContainerView.height == 24
+			usernameContainerView.height == 24 ~ 750
 
 			usernameLabel.edges == inset(usernameContainerView.edges, 10, 4)
 
 			contentTextView.top == usernameContainerView.bottom + 4
 			contentTextView.right == contentView.right - 10
-			contentTextView.bottom == contentView.bottom - 4
+			contentTextView.bottom == contentView.bottom - 4 ~ 750
 			contentTextView.left == contentView.left + 10
 		}
 	}
@@ -94,9 +98,14 @@ class ContentTableViewCell: WCFastCell, DTAttributedTextContentViewDelegate, DTL
 
 	func attributedTextContentView(attributedTextContentView: DTAttributedTextContentView!, viewForAttachment attachment: DTTextAttachment!, frame: CGRect) -> UIView! {
 		if let attachment = attachment as? DTImageTextAttachment {
-			let imageView = DTLazyImageView(frame: frame)
-			imageView.delegate = self
-			imageView.url = attachment.contentURL
+			let imageView = FLAnimatedImageView(frame: frame)
+			imageView.pin_setImageFromURL(attachment.contentURL) { result in
+				if let image = result.image {
+					self.imageView(imageView, withURL: attachment.contentURL, didChangeImageSize: image.size)
+				} else if let animatedImage = result.animatedImage {
+					self.imageView(imageView, withURL: attachment.contentURL, didChangeImageSize: animatedImage.size)
+				}
+			}
 			return imageView
 		}
 		return nil
@@ -115,25 +124,18 @@ class ContentTableViewCell: WCFastCell, DTAttributedTextContentViewDelegate, DTL
 	}
 
 
-	func lazyImageView(lazyImageView: DTLazyImageView!, didChangeImageSize size: CGSize) {
-		let url = lazyImageView.url
+	func imageView(imageView: FLAnimatedImageView, withURL url: NSURL, didChangeImageSize size: CGSize) {
 		let pred = NSPredicate(format: "contentURL == %@", url)
 
 		// update all attachments that matching this URL
 		if let attachments = contentTextView.layoutFrame?.textAttachmentsWithPredicate(pred) as? [DTTextAttachment] {
 			for attachment in attachments {
-				if let width = widthForURL?(url: attachment.contentURL.absoluteString) {
-					let scaledSize = CGSize(width: width, height: floor(size.height * width / size.width))
-					attachment.originalSize = size
-					attachment.displaySize = scaledSize
-				} else {
-					let width = min(size.width, self.width - 20)
-					let scaledSize = CGSize(width: width, height: floor(size.height * width / size.width))
-					attachment.originalSize = size
-					attachment.displaySize = scaledSize
+				let width = widthForURL?(url: attachment.contentURL.absoluteString) ?? min(size.width, self.width - 20)
+				let scaledSize = CGSize(width: width, height: floor(size.height * width / size.width))
+				attachment.originalSize = size
+				attachment.displaySize = scaledSize
 
-					widthDidChange?(url: attachment.contentURL.absoluteString, width: scaledSize.width, height: scaledSize.height)
-				}
+				widthDidChange?(url: attachment.contentURL.absoluteString, width: scaledSize.width, height: scaledSize.height)
 			}
 		}
 

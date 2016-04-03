@@ -80,12 +80,7 @@ struct PostSectionAdapter {
 
 		switch post.type {
 		case "photo":
-			let postPhotos = post.photos
-			if postPhotos.count == 1 {
-				rowCount = 2
-			}
-			rowCount = post.layoutRows.layoutRows.count
-			rowCount += post.bodies.count
+			rowCount = post.layoutRows.layoutRows.count + post.bodies.count
 		case "text":
 			rowCount = 1 + post.bodies.count
 		case "answer":

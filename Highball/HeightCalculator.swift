@@ -52,7 +52,7 @@ struct HeightCalculator {
 
 		let attributedString = NSAttributedString(HTMLData: data, options: [DTDefaultHeadIndent: 0, DTDefaultFirstLineHeadIndent: 0], documentAttributes: nil)
 		let layouter = DTCoreTextLayouter(attributedString: attributedString)
-		let maxRect = CGRect(x: 0, y: 0, width: width - 30, height: CGFloat(CGFLOAT_HEIGHT_UNKNOWN))
+		let maxRect = CGRect(x: 0, y: 0, width: width - 20, height: CGFloat(CGFLOAT_HEIGHT_UNKNOWN))
 		let entireString = NSMakeRange(0, attributedString.length)
 		let layoutFrame = layouter.layoutFrameWithRect(maxRect, range: entireString)
 

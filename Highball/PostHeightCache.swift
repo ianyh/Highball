@@ -54,6 +54,11 @@ class PostHeightCache {
 		}
 	}
 
+	func bodyComponentHeightForPost(post: Post, atIndex index: Int, withKey key: String) -> CGFloat? {
+		let postKey = "\(post.id):\(index)"
+		return bodiesComponentsHeightCache[postKey]?[key]
+	}
+
 	func bodyHeight(post: Post, atIndex index: Int) -> CGFloat? {
 		let key = "\(post.id):\(index)"
 		var height = bodiesHeightCache[key] ?? 0
