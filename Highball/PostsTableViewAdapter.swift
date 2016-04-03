@@ -21,6 +21,7 @@ class PostsTableViewAdapter: NSObject {
 	private let delegate: PostsTableViewAdapterDelegate
 
 	private var heightCache: [NSIndexPath: CGFloat] = [:]
+	private var urlWidthCache: [String: CGFloat] = [:]
 
 	init(tableView: UITableView, postHeightCache: PostHeightCache, delegate: PostsTableViewAdapterDelegate) {
 		self.tableView = tableView
@@ -59,6 +60,7 @@ class PostsTableViewAdapter: NSObject {
 
 	func resetCache() {
 		heightCache.removeAll()
+		urlWidthCache.removeAll()
 	}
 
 	private func posts() -> [Post] {
@@ -102,6 +104,20 @@ extension PostsTableViewAdapter: UITableViewDataSource {
 		if let cell = cell as? TagsTableViewCell {
 			cell.delegate = self
 		} else if let cell = cell as? ContentTableViewCell {
+			cell.widthForURL = { [weak self] url in
+				return self?.urlWidthCache[url]
+			}
+			cell.widthDidChange = { [weak self] url, width, height in
+				if self?.urlWidthCache[url] == nil {
+					self?.heightCache[indexPath] = nil
+					self?.urlWidthCache[url] = width
+				}
+				if height != self?.postHeightCache.bodyComponentHeightForPost(post, atIndex: indexPath.row - 1, withKey: url) {
+					self?.postHeightCache.setBodyComponentHeight(height, forPost: post, atIndex: indexPath.row - 1, withKey: url)
+					self?.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
+				}
+
+			}
 			cell.linkHandler = linkTapHandler
 		}
 
@@ -117,9 +133,7 @@ extension PostsTableViewAdapter: UITableViewDelegate {
 
 		let post = posts()[indexPath.section]
 		let sectionAdapter = PostSectionAdapter(post: post)
-		let bodyHeight = postHeightCache.bodyHeightForPost(post)
-		let secondaryBodyHeight = postHeightCache.secondaryBodyHeightForPost(post)
-		let height = sectionAdapter.tableView(tableView, heightForCellAtRow: indexPath.row, bodyHeight: bodyHeight, secondaryBodyHeight: secondaryBodyHeight)
+		let height = sectionAdapter.tableView(tableView, heightForCellAtRow: indexPath.row, postHeightCache: postHeightCache)
 
 		heightCache[indexPath] = height
 
@@ -191,7 +205,10 @@ extension PostsTableViewAdapter: UITableViewDelegate {
 		if let cell = cell as? PhotosetRowTableViewCell {
 			cell.cancelDownloads()
 		} else if let cell = cell as? ContentTableViewCell {
+			cell.username = nil
 			cell.content = nil
+			cell.widthForURL = nil
+			cell.widthDidChange = nil
 		}
 	}
 

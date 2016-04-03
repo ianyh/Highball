@@ -6,90 +6,62 @@
 //  Copyright © 2015 ianynda. All rights reserved.
 //
 
+import DTCoreText
 import Foundation
 import SwiftyJSON
-import WebKit
-
-private class WebViewDelegate: NSObject, WKNavigationDelegate {
-	private let webView: WKWebView
-
-	private var completion: ((CGFloat) -> ())?
-
-	init(webView: WKWebView) {
-		self.webView = webView
-		super.init()
-		webView.navigationDelegate = self
-	}
-
-	func calculateHeightWithHTMLString(htmlString: String, completion: (CGFloat) -> ()) {
-		self.completion = completion
-
-		webView.loadHTMLString(htmlString, baseURL: nil)
-	}
-
-	@objc func webView(webView: WKWebView, didFinishNavigation navigation: WKNavigation!) {
-		webView.getDocumentHeight { height in
-			self.completion!(height)
-		}
-	}
-
-	@objc func webView(webView: WKWebView, didFailNavigation navigation: WKNavigation!, withError error: NSError) {
-		self.completion!(0)
-	}
-}
 
 struct HeightCalculator {
 	private let post: Post
 	private let width: CGFloat
-	private let webView: WKWebView
 
-	private let webViewDelegate: WebViewDelegate
-
-	init(post: Post, width: CGFloat, webView: WKWebView) {
+	init(post: Post, width: CGFloat) {
 		self.post = post
 		self.width = width
-		self.webView = webView
-		webViewDelegate = WebViewDelegate(webView: webView)
-
-		webView.frame = CGRect(x: 0, y: 0, width: width, height: 1)
 	}
 
 	func calculateHeight(secondary: Bool = false, completion: (height: CGFloat?) -> ()) {
 		let htmlStringMethod = secondary ? Post.htmlSecondaryBodyWithWidth : Post.htmlBodyWithWidth
 
-		guard let content = htmlStringMethod(post)(width) else {
+		guard let content = htmlStringMethod(post)(width), let data = content.dataUsingEncoding(NSUTF8StringEncoding) else {
 			dispatch_async(dispatch_get_main_queue()) {
 				completion(height: nil)
 			}
 			return
 		}
 
-		webViewDelegate.calculateHeightWithHTMLString(content) { height in
-			completion(height: height)
+		let attributedString = NSAttributedString(HTMLData: data, options: [DTDefaultHeadIndent: 0, DTDefaultFirstLineHeadIndent: 0], documentAttributes: nil)
+		let layouter = DTCoreTextLayouter(attributedString: attributedString)
+		let maxRect = CGRect(x: 0, y: 0, width: width - 30, height: CGFloat(CGFLOAT_HEIGHT_UNKNOWN))
+		// swiftlint:disable legacy_constructor
+		let entireString = NSMakeRange(0, attributedString.length)
+		// swiftlint:enable legacy_constructor
+		let layoutFrame = layouter.layoutFrameWithRect(maxRect, range: entireString)
+
+		dispatch_async(dispatch_get_main_queue()) {
+			completion(height: layoutFrame.frame.height + 20)
 		}
 	}
-}
 
-private extension WKWebView {
-	func getDocumentHeight(completion: (CGFloat) -> ()) {
-		let javascriptString = "" +
-			"var body = document.body;" +
-			"var html = document.documentElement;" +
-			"Math.max(" +
-			"   body.scrollHeight," +
-			"   body.offsetHeight," +
-			"   html.clientHeight," +
-			"   html.offsetHeight" +
-			");"
-		evaluateJavaScript(javascriptString) { result, error in
-			if let error = error {
-				print(error)
-				completion(0)
-			} else if let result = result, let height = JSON(result).int {
-				completion(CGFloat(height))
-			} else {
-				completion(0)
+	func calculateBodyHeightAtIndex(index: Int, completion: (height: CGFloat?) -> ()) {
+		let htmlStringMethod = post.bodies[index].htmlStringWithTumblrStyle(0)
+
+		guard let data = htmlStringMethod.dataUsingEncoding(NSUTF8StringEncoding) else {
+			dispatch_async(dispatch_get_main_queue()) {
+				completion(height: nil)
 			}
+			return
+		}
+
+		let attributedString = NSAttributedString(HTMLData: data, options: [DTDefaultHeadIndent: 0, DTDefaultFirstLineHeadIndent: 0], documentAttributes: nil)
+		let layouter = DTCoreTextLayouter(attributedString: attributedString)
+		let maxRect = CGRect(x: 0, y: 0, width: width - 20, height: CGFloat(CGFLOAT_HEIGHT_UNKNOWN))
+		// swiftlint:disable legacy_constructor
+		let entireString = NSMakeRange(0, attributedString.length)
+		// swiftlint:enable legacy_constructor
+		let layoutFrame = layouter.layoutFrameWithRect(maxRect, range: entireString)
+
+		dispatch_async(dispatch_get_main_queue()) {
+			completion(height: ceil(layoutFrame.frame.height) + 34)
 		}
 	}
 }

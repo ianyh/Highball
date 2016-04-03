@@ -12,7 +12,6 @@ import SafariServices
 import SwiftyJSON
 import TMTumblrSDK
 import UIKit
-import WebKit
 import XExtensionItem
 
 class PostsViewController: UITableViewController {
@@ -22,7 +21,6 @@ class PostsViewController: UITableViewController {
 	private var panGestureRecognizer: UIPanGestureRecognizer!
 	private var reblogViewController: QuickReblogViewController?
 
-	private var webViewCache = WebViewCache()
 	var postHeightCache = PostHeightCache()
 
 	var tableViewAdapter: PostsTableViewAdapter?
@@ -33,7 +31,6 @@ class PostsViewController: UITableViewController {
 	init() {
 		super.init(style: .Plain)
 		self.dataManager = PostsDataManager(
-			webViewCache: webViewCache,
 			postHeightCache: postHeightCache,
 			delegate: self
 		)
@@ -190,8 +187,7 @@ extension PostsViewController {
 				post: post,
 				reblogType: reblogType,
 				blogName: AccountsService.account.blog.name,
-				bodyHeight: postHeightCache.bodyHeightForPost(post),
-				secondaryBodyHeight: postHeightCache.secondaryBodyHeightForPost(post)
+				postHeightCache: postHeightCache
 			)
 			let sourceRect = view.convertRect(cell.bounds, fromView: cell)
 			let presentationViewController = reblogViewController.controllerToPresent(fromView: view, rect: sourceRect)

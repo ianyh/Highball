@@ -27,7 +27,6 @@
 		4050698B19AA76BD0066ECE3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4050698A19AA76BD0066ECE3 /* Images.xcassets */; };
 		4050699719AA76BD0066ECE3 /* HighballTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4050699619AA76BD0066ECE3 /* HighballTests.swift */; };
 		405D659A1C34C4E500968B3B /* PostsDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 405D65991C34C4E500968B3B /* PostsDataManager.swift */; };
-		405D65A11C34DC1800968B3B /* WebViewCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 405D65A01C34DC1800968B3B /* WebViewCache.swift */; };
 		406690651A5A17A1006345B0 /* TagsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 406690641A5A17A1006345B0 /* TagsTableViewCell.swift */; };
 		40731BB819FDC38900F6978D /* PostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731BB719FDC38900F6978D /* PostsViewController.swift */; };
 		40731BBA19FDCAD300F6978D /* LikesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731BB919FDCAD300F6978D /* LikesViewController.swift */; };
@@ -101,7 +100,6 @@
 		4050699619AA76BD0066ECE3 /* HighballTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighballTests.swift; sourceTree = "<group>"; };
 		405069A019AA77E80066ECE3 /* Highball-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Highball-Bridging-Header.h"; sourceTree = "<group>"; };
 		405D65991C34C4E500968B3B /* PostsDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsDataManager.swift; sourceTree = "<group>"; };
-		405D65A01C34DC1800968B3B /* WebViewCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewCache.swift; sourceTree = "<group>"; };
 		406690641A5A17A1006345B0 /* TagsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsTableViewCell.swift; sourceTree = "<group>"; };
 		40731BB719FDC38900F6978D /* PostsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsViewController.swift; sourceTree = "<group>"; };
 		40731BB919FDCAD300F6978D /* LikesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikesViewController.swift; sourceTree = "<group>"; };
@@ -328,7 +326,6 @@
 				40DF7DB31A79919900CE3D4C /* VideoPlayController.swift */,
 				40F75A811C31D68800EC86DE /* MainViewController.swift */,
 				40F75A841C31FA4100EC86DE /* HistoryViewController.swift */,
-				405D65A01C34DC1800968B3B /* WebViewCache.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -472,7 +469,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "source ./bin/CrashlyticsKeys.sh\nif [ -n \"$CRASHLYTICS_API_KEY\" -a -n \"$CRASHLYTICS_APP_KEY\" ]; then\n    /usr/libexec/PlistBuddy -c \"Add :HBCrashlyticsAPIKey string '$CRASHLYTICS_API_KEY'\" Highball/Info.plist\n    /usr/libexec/PlistBuddy -c \"Add :HBCrashlyticsAppKey string '$CRASHLYTICS_APP_KEY'\" Highball/Info.plist\n    /usr/libexec/PlistBuddy -c \"Add :Fabric:APIKey string '$CRASHLYTICS_API_KEY'\" Highball/Info.plist\nfi\n";
+			shellScript = "source ./bin/CrashlyticsKeys.sh\nif [ -n \"$CRASHLYTICS_API_KEY\" -a -n \"$CRASHLYTICS_APP_KEY\" ]; then\nif [ -n \"/usr/libexec/PlistBuddy -c 'Read :HBCrashlyticsAPIKey' Highball/Info.plist\" ]; then\n    /usr/libexec/PlistBuddy -c \"Add :HBCrashlyticsAPIKey string '$CRASHLYTICS_API_KEY'\" Highball/Info.plist\n    /usr/libexec/PlistBuddy -c \"Add :HBCrashlyticsAppKey string '$CRASHLYTICS_APP_KEY'\" Highball/Info.plist\n    /usr/libexec/PlistBuddy -c \"Add :Fabric:APIKey string '$CRASHLYTICS_API_KEY'\" Highball/Info.plist\nfi\nfi\n";
 		};
 		40A11E6519B4D97800B91843 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -578,7 +575,6 @@
 				4050698619AA76BD0066ECE3 /* DashboardViewController.swift in Sources */,
 				40FF6D4519B9F656008119A3 /* QuickReblogViewController.swift in Sources */,
 				403F53DB19AECFEF00FF8F3B /* PhotosetRowTableViewCell.swift in Sources */,
-				405D65A11C34DC1800968B3B /* WebViewCache.swift in Sources */,
 				408C7D2119B384C800EFC410 /* PostDialogueEntry.swift in Sources */,
 				4008591B1B7EBA05009DF207 /* NSDate+Relative.swift in Sources */,
 				40B609531A99234B0089E431 /* BlogViewController.swift in Sources */,

@@ -10,8 +10,7 @@ import UIKit
 
 struct PostViewHeightCalculator {
 	let width: CGFloat
-	let bodyHeight: CGFloat?
-	let secondaryBodyHeight: CGFloat?
+	let postHeightCache: PostHeightCache
 
 	func heightForPost(post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
 		if row == sectionRowCount - 1 {
@@ -41,7 +40,8 @@ struct PostViewHeightCalculator {
 	}
 
 	private func photoHeightWithPost(post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
-		if row == sectionRowCount - 2 {
+		if row >= sectionRowCount - 1 - post.bodies.count {
+			let bodyHeight = postHeightCache.bodyHeight(post, atIndex: sectionRowCount - 2 - row)
 			return bodyHeight ?? 0
 		}
 
@@ -74,15 +74,15 @@ struct PostViewHeightCalculator {
 	}
 
 	private func textHeightWithPost(post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
-		switch PostViewSections.TextRow(rawValue: row)! {
+		switch PostViewSections.TextRow.textRowFromRow(row) {
 		case .Title:
 			if let title = post.title {
 				let height = TitleTableViewCell.heightForTitle(title, width: width)
 				return height
 			}
 			return 0
-		case .Body:
-			return bodyHeight ?? 0
+		case .Body(let index):
+			return postHeightCache.bodyHeight(post, atIndex: index) ?? 0
 		}
 	}
 
@@ -92,7 +92,7 @@ struct PostViewHeightCalculator {
 			let height = PostQuestionTableViewCell.heightForPost(post, width: width)
 			return height
 		case .Answer:
-			return bodyHeight ?? 0
+			return postHeightCache.bodyHeightForPost(post) ?? 0
 		}
 
 	}
@@ -100,18 +100,18 @@ struct PostViewHeightCalculator {
 	private func quoteHeightWithPost(post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
 		switch PostViewSections.QuoteRow(rawValue: row)! {
 		case .Quote:
-			return bodyHeight ?? 0
+			return postHeightCache.bodyHeightForPost(post) ?? 0
 		case .Source:
-			return secondaryBodyHeight ?? 0
+			return postHeightCache.secondaryBodyHeightForPost(post) ?? 0
 		}
 	}
 
 	private func linkHeightWithPost(post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
-		switch PostViewSections.LinkRow(rawValue: row)! {
+		switch PostViewSections.LinkRow.linkRowFromRow(row) {
 		case .Link:
 			return PostLinkTableViewCell.heightForPost(post, width: width)
-		case .Description:
-			return bodyHeight ?? 0
+		case .Description(let index):
+			return postHeightCache.bodyHeight(post, atIndex: index) ?? 0
 		}
 	}
 
@@ -130,20 +130,20 @@ struct PostViewHeightCalculator {
 	}
 
 	private func videoHeightWithPost(post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
-		switch PostViewSections.VideoRow(rawValue: row)! {
+		switch PostViewSections.VideoRow.videoRowFromRow(row) {
 		case .Player:
 			return post.videoHeightWidthWidth(width) ?? 320
-		case .Caption:
-			return bodyHeight ?? 0
+		case .Caption(let index):
+			return postHeightCache.bodyHeight(post, atIndex: index) ?? 0
 		}
 	}
 
 	private func audioHeightWithPost(post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
-		switch PostViewSections.AudioRow(rawValue: row)! {
+		switch PostViewSections.AudioRow.audioRowFromRow(row) {
 		case .Player:
-			return secondaryBodyHeight ?? 0
-		case .Caption:
-			return bodyHeight ?? 0
+			return postHeightCache.secondaryBodyHeightForPost(post) ?? 0
+		case .Caption(let index):
+			return postHeightCache.bodyHeight(post, atIndex: index) ?? 0
 		}
 	}
 }

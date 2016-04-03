@@ -22,12 +22,12 @@ class PostsDataManager {
 	private let heightComputationQueue: NSOperationQueue!
 	private let postParseQueue = dispatch_queue_create("postParseQueue", nil)
 
-	private let webViewCache: WebViewCache
 	private let postHeightCache: PostHeightCache
 	private let delegate: PostsDataManagerDelegate
 
 	private var heightCalculators: [Int: HeightCalculator] = [:]
 	private var secondaryHeightCalculators: [Int: HeightCalculator] = [:]
+	private var bodyHeightCalculators: [String: HeightCalculator] = [:]
 
 	var posts: Array<Post>!
 	var topID: Int?
@@ -43,11 +43,11 @@ class PostsDataManager {
 	var computingHeights: Bool {
 		return heightComputationQueue.operationCount > 0 ||
 			heightCalculators.count > 0 ||
-			secondaryHeightCalculators.count > 0
+			secondaryHeightCalculators.count > 0 ||
+			bodyHeightCalculators.count > 0
 	}
 
-	init(webViewCache: WebViewCache, postHeightCache: PostHeightCache, delegate: PostsDataManagerDelegate) {
-		self.webViewCache = webViewCache
+	init(postHeightCache: PostHeightCache, delegate: PostsDataManagerDelegate) {
 		self.postHeightCache = postHeightCache
 		self.delegate = delegate
 		self.heightComputationQueue = NSOperationQueue()
@@ -77,7 +77,7 @@ class PostsDataManager {
 				}
 			}
 		} else {
-			parameters = ["reblog_info": "true"]
+			parameters = ["reblog_info": "true", "type": "text"]
 			reloadCompletion = { (posts: [Post]) in
 				self.posts = posts
 				self.cursor = posts.last?.id
@@ -158,29 +158,37 @@ class PostsDataManager {
 	func processPosts(posts: [Post], width: CGFloat) {
 		for post in posts {
 			heightComputationQueue.addOperationWithBlock() {
-				let webView = self.webViewCache.popWebView()
-				let heightCalculator = HeightCalculator(post: post, width: width, webView: webView)
+				let heightCalculator = HeightCalculator(post: post, width: width)
 
 				self.heightCalculators[post.id] = heightCalculator
 
 				heightCalculator.calculateHeight { height in
-					self.webViewCache.pushWebView(webView)
 					self.heightCalculators[post.id] = nil
 					self.postHeightCache.setBodyHeight(height, forPost: post)
 					self.delegate.dataManagerDidComputeHeight(self)
 				}
 			}
 			heightComputationQueue.addOperationWithBlock() {
-				let webView = self.webViewCache.popWebView()
-				let heightCalculator = HeightCalculator(post: post, width: width, webView: webView)
+				let heightCalculator = HeightCalculator(post: post, width: width)
 
 				self.secondaryHeightCalculators[post.id] = heightCalculator
 
 				heightCalculator.calculateHeight(true) { height in
-					self.webViewCache.pushWebView(webView)
 					self.secondaryHeightCalculators[post.id] = nil
 					self.postHeightCache.setSecondaryBodyHeight(height, forPost: post)
 					self.delegate.dataManagerDidComputeHeight(self)
+				}
+			}
+			for (index, _) in post.bodies.enumerate() {
+				heightComputationQueue.addOperationWithBlock() { height in
+					let heightCalculator = HeightCalculator(post: post, width: width)
+					let key = "\(post.id):\(index)"
+					self.bodyHeightCalculators[key] = heightCalculator
+					heightCalculator.calculateBodyHeightAtIndex(index) { height in
+						self.bodyHeightCalculators[key] = nil
+						self.postHeightCache.setBodyHeight(height, forPost: post, atIndex: index)
+						self.delegate.dataManagerDidComputeHeight(self)
+					}
 				}
 			}
 		}

@@ -9,9 +9,17 @@
 import UIKit
 
 struct PostViewSections {
-	enum TextRow: Int {
+	enum TextRow {
 		case Title
-		case Body
+		case Body(row: Int)
+
+		static func textRowFromRow(row: Int) -> TextRow {
+			if row == 0 {
+				return .Title
+			} else {
+				return .Body(row: row - 1)
+			}
+		}
 	}
 
 	enum AnswerRow: Int {
@@ -24,19 +32,43 @@ struct PostViewSections {
 		case Source
 	}
 
-	enum LinkRow: Int {
+	enum LinkRow {
 		case Link
-		case Description
+		case Description(row: Int)
+
+		static func linkRowFromRow(row: Int) -> LinkRow {
+			if row == 0 {
+				return .Link
+			} else {
+				return .Description(row: row - 1)
+			}
+		}
 	}
 
-	enum VideoRow: Int {
+	enum VideoRow {
 		case Player
-		case Caption
+		case Caption(row: Int)
+
+		static func videoRowFromRow(row: Int) -> VideoRow {
+			if row == 0 {
+				return .Player
+			} else {
+				return .Caption(row: row - 1)
+			}
+		}
 	}
 
-	enum AudioRow: Int {
+	enum AudioRow {
 		case Player
-		case Caption
+		case Caption(row: Int)
+
+		static func audioRowFromRow(row: Int) -> AudioRow {
+			if row == 0 {
+				return .Player
+			} else {
+				return .Caption(row: row - 1)
+			}
+		}
 	}
 }
 
@@ -48,25 +80,21 @@ struct PostSectionAdapter {
 
 		switch post.type {
 		case "photo":
-			let postPhotos = post.photos
-			if postPhotos.count == 1 {
-				rowCount = 2
-			}
-			rowCount = post.layoutRows.layoutRows.count + 1
+			rowCount = post.layoutRows.layoutRows.count + post.bodies.count
 		case "text":
-			rowCount = 2
+			rowCount = 1 + post.bodies.count
 		case "answer":
 			rowCount = 2
 		case "quote":
 			rowCount = 2
 		case "link":
-			rowCount = 2
+			rowCount = 1 + post.bodies.count
 		case "chat":
 			rowCount = 1 + post.dialogueEntries.count
 		case "video":
-			rowCount = 2
+			rowCount = 1 + post.bodies.count
 		case "audio":
-			rowCount = 2
+			rowCount = 1 + post.bodies.count
 		default:
 			rowCount = 0
 		}
@@ -104,9 +132,11 @@ struct PostSectionAdapter {
 	}
 
 	private func photoCellWithTableView(tableView: UITableView, atRow row: Int) -> UITableViewCell {
-		if row == numbersOfRows() - 2 {
+		if row >= numbersOfRows() - 1 - post.bodies.count {
 			let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
-			cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
+			cell.width = tableView.bounds.width
+			cell.username = post.usernames[numbersOfRows() - 2 - row]
+			cell.content = post.bodies[numbersOfRows() - 2 - row].htmlStringWithTumblrStyle(tableView.frame.size.width)
 			return cell
 		}
 		let cell = tableView.dequeueReusableCellWithIdentifier(PhotosetRowTableViewCell.cellIdentifier) as! PhotosetRowTableViewCell!
@@ -131,14 +161,16 @@ struct PostSectionAdapter {
 	}
 
 	private func textCellWithTableView(tableView: UITableView, atRow row: Int) -> UITableViewCell {
-		switch PostViewSections.TextRow(rawValue: row)! {
+		switch PostViewSections.TextRow.textRowFromRow(row) {
 		case .Title:
 			let cell = tableView.dequeueReusableCellWithIdentifier(TitleTableViewCell.cellIdentifier) as! TitleTableViewCell!
 			cell.titleLabel.text = post.title
 			return cell
-		case .Body:
+		case .Body(let index):
 			let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
-			cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
+			cell.width = tableView.bounds.width
+			cell.username = post.usernames[index]
+			cell.content = post.bodies[index].htmlStringWithTumblrStyle(0)
 			return cell
 		}
 	}
@@ -151,6 +183,7 @@ struct PostSectionAdapter {
 			return cell
 		case .Answer:
 			let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
+			cell.width = tableView.bounds.width
 			cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
 			return cell
 		}
@@ -160,24 +193,28 @@ struct PostSectionAdapter {
 		switch PostViewSections.QuoteRow(rawValue: row)! {
 		case .Quote:
 			let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
+			cell.width = tableView.bounds.width
 			cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
 			return cell
 		case .Source:
 			let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
+			cell.width = tableView.bounds.width
 			cell.content = post.htmlSecondaryBodyWithWidth(tableView.frame.size.width)
 			return cell
 		}
 	}
 
 	private func linkCellWithTableView(tableView: UITableView, atRow row: Int) -> UITableViewCell {
-		switch PostViewSections.LinkRow(rawValue: row)! {
+		switch PostViewSections.LinkRow.linkRowFromRow(row) {
 		case .Link:
 			let cell = tableView.dequeueReusableCellWithIdentifier(PostLinkTableViewCell.cellIdentifier) as! PostLinkTableViewCell!
 			cell.post = post
 			return cell
-		case .Description:
+		case .Description(let index):
 			let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
-			cell.content = post.htmlBodyWithWidth(tableView.frame.width)
+			cell.width = tableView.bounds.width
+			cell.username = post.usernames[index]
+			cell.content = post.bodies[index].htmlStringWithTumblrStyle(0)
 			return cell
 		}
 	}
@@ -195,7 +232,7 @@ struct PostSectionAdapter {
 	}
 
 	private func videoCellWithTableView(tableView: UITableView, atRow row: Int) -> UITableViewCell {
-		switch PostViewSections.VideoRow(rawValue: row)! {
+		switch PostViewSections.VideoRow.videoRowFromRow(row) {
 		case .Player:
 			switch post.videoType! {
 			case "youtube":
@@ -207,26 +244,31 @@ struct PostSectionAdapter {
 				cell.post = post
 				return cell
 			}
-		case .Caption:
+		case .Caption(let index):
 			let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
-			cell.content = post.htmlBodyWithWidth(tableView.frame.width)
+			cell.width = tableView.bounds.width
+			cell.username = post.usernames[index]
+			cell.content = post.bodies[index].htmlStringWithTumblrStyle(0)
 			return cell
 		}
 	}
 
 	private func audioCellWithTableView(tableView: UITableView, atRow row: Int) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
-		switch PostViewSections.AudioRow(rawValue: row)! {
+		switch PostViewSections.AudioRow.audioRowFromRow(row) {
 		case .Player:
+			cell.width = tableView.bounds.width
 			cell.content = post.htmlSecondaryBodyWithWidth(tableView.frame.width)
-		case .Caption:
-			cell.content = post.htmlBodyWithWidth(tableView.frame.width)
+		case .Caption(let index):
+			cell.width = tableView.bounds.width
+			cell.username = post.usernames[index]
+			cell.content = post.bodies[index].htmlStringWithTumblrStyle(0)
 		}
 		return cell
 	}
 
-	func tableView(tableView: UITableView, heightForCellAtRow row: Int, bodyHeight: CGFloat?, secondaryBodyHeight: CGFloat?) -> CGFloat {
-		let heightCalculator = PostViewHeightCalculator(width: tableView.frame.width, bodyHeight: bodyHeight, secondaryBodyHeight: secondaryBodyHeight)
+	func tableView(tableView: UITableView, heightForCellAtRow row: Int, postHeightCache: PostHeightCache) -> CGFloat {
+		let heightCalculator = PostViewHeightCalculator(width: tableView.bounds.width, postHeightCache: postHeightCache)
 		let height = heightCalculator.heightForPost(post, atRow: row, sectionRowCount: numbersOfRows())
 
 		return height
