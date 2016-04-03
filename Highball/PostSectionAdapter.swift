@@ -272,8 +272,8 @@ struct PostSectionAdapter {
 		return cell
 	}
 
-	func tableView(tableView: UITableView, heightForCellAtRow row: Int, bodyHeight: CGFloat?, secondaryBodyHeight: CGFloat?, bodyHeights: [String: CGFloat]) -> CGFloat {
-		let heightCalculator = PostViewHeightCalculator(width: tableView.frame.width, bodyHeight: bodyHeight, secondaryBodyHeight: secondaryBodyHeight, bodyHeights: bodyHeights)
+	func tableView(tableView: UITableView, heightForCellAtRow row: Int, postHeightCache: PostHeightCache) -> CGFloat {
+		let heightCalculator = PostViewHeightCalculator(width: tableView.frame.width, postHeightCache: postHeightCache)
 		let height = heightCalculator.heightForPost(post, atRow: row, sectionRowCount: numbersOfRows())
 
 		return height

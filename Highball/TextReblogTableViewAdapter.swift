@@ -15,9 +15,7 @@ class TextReblogTableViewAdapter: NSObject {
 
 	private let tableView: UITableView
 	private let post: Post
-	private let bodyHeight: CGFloat?
-	private let secondaryBodyHeight: CGFloat?
-	private let bodyHeights: [String: CGFloat]
+	private let postHeightCache: PostHeightCache
 
 	private let sectionAdapter: PostSectionAdapter
 
@@ -30,12 +28,10 @@ class TextReblogTableViewAdapter: NSObject {
 		}
 	}
 
-	init(tableView: UITableView, post: Post, bodyHeight: CGFloat?, secondaryBodyHeight: CGFloat?, bodyHeights: [String: CGFloat]) {
+	init(tableView: UITableView, post: Post, postHeightCache: PostHeightCache) {
 		self.tableView = tableView
 		self.post = post
-		self.bodyHeight = bodyHeight
-		self.secondaryBodyHeight = secondaryBodyHeight
-		self.bodyHeights = bodyHeights
+		self.postHeightCache = postHeightCache
 
 		self.sectionAdapter = PostSectionAdapter(post: post)
 
@@ -123,7 +119,7 @@ extension TextReblogTableViewAdapter: UITableViewDelegate {
 		switch Section(rawValue: indexPath.section)! {
 		case .Post:
 			let adjustedRow = sectionAdapter.numbersOfRows() - indexPath.row - 1
-			return sectionAdapter.tableView(tableView, heightForCellAtRow: adjustedRow, bodyHeight: bodyHeight, secondaryBodyHeight: secondaryBodyHeight, bodyHeights: bodyHeights)
+			return sectionAdapter.tableView(tableView, heightForCellAtRow: adjustedRow, postHeightCache: postHeightCache)
 		case .Comment:
 			return 30
 		}
@@ -133,7 +129,7 @@ extension TextReblogTableViewAdapter: UITableViewDelegate {
 		switch Section(rawValue: indexPath.section)! {
 		case .Post:
 			let adjustedRow = sectionAdapter.numbersOfRows() - indexPath.row - 1
-			return sectionAdapter.tableView(tableView, heightForCellAtRow: adjustedRow, bodyHeight: bodyHeight, secondaryBodyHeight: secondaryBodyHeight, bodyHeights: bodyHeights)
+			return sectionAdapter.tableView(tableView, heightForCellAtRow: adjustedRow, postHeightCache: postHeightCache)
 		case .Comment:
 			return UITableViewAutomaticDimension
 		}

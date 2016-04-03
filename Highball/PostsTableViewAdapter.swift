@@ -109,8 +109,7 @@ extension PostsTableViewAdapter: UITableViewDataSource {
 			}
 			cell.widthDidChange = { [weak self] url, width, height in
 				if self?.urlWidthCache[url] == nil {
-					let bodyHeight = self?.postHeightCache.bodyHeight(post, atIndex: indexPath.row - 1) ?? 0
-					self?.postHeightCache.setBodyHeight(bodyHeight + height, forPost: post, atIndex: indexPath.row - 1)
+					self?.postHeightCache.setBodyComponentHeight(height, forPost: post, atIndex: indexPath.row - 1, withKey: url)
 					self?.heightCache[indexPath] = nil
 					self?.urlWidthCache[url] = width
 				}
@@ -131,9 +130,7 @@ extension PostsTableViewAdapter: UITableViewDelegate {
 
 		let post = posts()[indexPath.section]
 		let sectionAdapter = PostSectionAdapter(post: post)
-		let bodyHeight = postHeightCache.bodyHeightForPost(post)
-		let secondaryBodyHeight = postHeightCache.secondaryBodyHeightForPost(post)
-		let height = sectionAdapter.tableView(tableView, heightForCellAtRow: indexPath.row, bodyHeight: bodyHeight, secondaryBodyHeight: secondaryBodyHeight, bodyHeights: postHeightCache.bodiesHeightCache)
+		let height = sectionAdapter.tableView(tableView, heightForCellAtRow: indexPath.row, postHeightCache: postHeightCache)
 
 		heightCache[indexPath] = height
 

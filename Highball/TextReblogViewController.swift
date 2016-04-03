@@ -16,20 +16,16 @@ class TextReblogViewController: SLKTextViewController {
 	let reblogType: ReblogType
 	let post: Post
 	let blogName: String
-	let bodyHeight: CGFloat?
-	let secondaryBodyHeight: CGFloat?
-	let bodyHeights: [String: CGFloat]
+	let postHeightCache: PostHeightCache
 
 	private var reblogging = false
 	private var tableViewAdapter: TextReblogTableViewAdapter!
 
-	init(post: Post, reblogType: ReblogType, blogName: String, bodyHeight: CGFloat?, secondaryBodyHeight: CGFloat?, bodyHeights: [String: CGFloat]) {
+	init(post: Post, reblogType: ReblogType, blogName: String, postHeightCache: PostHeightCache) {
 		self.post = post
 		self.reblogType = reblogType
 		self.blogName = blogName
-		self.bodyHeight = bodyHeight
-		self.secondaryBodyHeight = secondaryBodyHeight
-		self.bodyHeights = bodyHeights
+		self.postHeightCache = postHeightCache
 		super.init(tableViewStyle: .Plain)
 	}
 
@@ -63,7 +59,7 @@ class TextReblogViewController: SLKTextViewController {
 		navigationController?.view.backgroundColor = UIColor.clearColor()
 		view.backgroundColor = UIColor.clearColor()
 
-		tableViewAdapter = TextReblogTableViewAdapter(tableView: tableView, post: post, bodyHeight: bodyHeight, secondaryBodyHeight: secondaryBodyHeight, bodyHeights: [:])
+		tableViewAdapter = TextReblogTableViewAdapter(tableView: tableView, post: post, postHeightCache: postHeightCache)
 
 		textInputbar.rightButton.setTitle("Add", forState: .Normal)
 		textInputbar.autoHideRightButton = false

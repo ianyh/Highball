@@ -49,25 +49,36 @@ class ContentTableViewCell: WCFastCell, DTAttributedTextContentViewDelegate, DTL
 	}
 
 	func setUpCell() {
+		let usernameContainerView = UIView()
+
 		usernameLabel = UILabel()
 		contentTextView = DTAttributedTextContentView()
 
-		usernameLabel.backgroundColor = UIColor.blackColor()
+		usernameContainerView.backgroundColor = UIColor.blackColor()
+
 		usernameLabel.font = UIFont.boldSystemFontOfSize(16)
 		usernameLabel.textColor = UIColor.whiteColor()
 
 		contentTextView.delegate = self
 
-		contentView.addSubview(usernameLabel)
+		usernameContainerView.addSubview(usernameLabel)
+		contentView.addSubview(usernameContainerView)
 		contentView.addSubview(contentTextView)
 
-		constrain(usernameLabel, contentTextView, contentView) { usernameLabel, contentTextView, contentView in
-			usernameLabel.top == contentView.top + 4
-			usernameLabel.right == contentView.right - 10
-			usernameLabel.left == contentView.left + 10
-			usernameLabel.height == 24
+		constrain([usernameContainerView, usernameLabel, contentTextView, contentView]) { views in
+			let usernameContainerView = views[0]
+			let usernameLabel = views[1]
+			let contentTextView = views[2]
+			let contentView = views[3]
 
-			contentTextView.top == usernameLabel.bottom + 4
+			usernameContainerView.top == contentView.top
+			usernameContainerView.right <= contentView.right
+			usernameContainerView.left == contentView.left
+			usernameContainerView.height == 24
+
+			usernameLabel.edges == inset(usernameContainerView.edges, 10, 4)
+
+			contentTextView.top == usernameContainerView.bottom + 4
 			contentTextView.right == contentView.right - 10
 			contentTextView.bottom == contentView.bottom - 4
 			contentTextView.left == contentView.left + 10
