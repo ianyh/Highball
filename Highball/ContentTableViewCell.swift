@@ -10,16 +10,55 @@ import UIKit
 import Cartography
 import DTCoreText
 import FLAnimatedImage
+import PINCache
 import PINRemoteImage
+import TMTumblrSDK
 import WCFastCell
 
 class ContentTableViewCell: WCFastCell, DTAttributedTextContentViewDelegate {
+	private let avatarLoadQueue = dispatch_queue_create("avatarLoadQueue", nil)
+	private(set) var avatarImageView: UIImageView!
 	private(set) var usernameLabel: UILabel!
 	private(set) var contentTextView: DTAttributedTextContentView!
 	var width: CGFloat = 375
-	var username: String? {
+	var trailData: PostTrailData? {
 		didSet {
-			usernameLabel.text = username
+			avatarImageView.image = UIImage(named: "Placeholder")
+
+			guard let trailData = trailData else {
+				return
+			}
+
+			PINCache.sharedCache().objectForKey("avatar:\(trailData.username)") { cache, key, object in
+				if let data = object as? NSData {
+					dispatch_async(self.avatarLoadQueue) {
+						let image = UIImage(data: data)
+						dispatch_async(dispatch_get_main_queue()) {
+							self.avatarImageView.image = image
+						}
+					}
+				} else {
+					TMAPIClient.sharedInstance().avatar(trailData.username, size: 80) { response, error in
+						if let error = error {
+							print(error)
+						} else {
+							guard let data = response as? NSData else {
+								return
+							}
+							PINCache.sharedCache().setObject(data, forKey: "avatar:\(trailData.username)", block: nil)
+							dispatch_async(self.avatarLoadQueue) {
+								let image = UIImage(data: data)
+								dispatch_async(dispatch_get_main_queue()) {
+									self.avatarImageView.image = image
+								}
+							}
+						}
+					}
+				}
+			}
+
+			usernameLabel.text = trailData.username
+			content = trailData.content.htmlStringWithTumblrStyle(0)
 		}
 	}
 	var content: String? {
@@ -55,10 +94,16 @@ class ContentTableViewCell: WCFastCell, DTAttributedTextContentViewDelegate {
 	func setUpCell() {
 		let usernameContainerView = UIView()
 
+		avatarImageView = UIImageView()
 		usernameLabel = UILabel()
 		contentTextView = DTAttributedTextContentView()
 
 		usernameContainerView.backgroundColor = UIColor.blackColor()
+
+		avatarImageView.clipsToBounds = true
+		avatarImageView.contentMode = .ScaleAspectFit
+		avatarImageView.layer.cornerRadius = 4
+		avatarImageView.backgroundColor = UIColor.redColor()
 
 		usernameLabel.font = UIFont.boldSystemFontOfSize(16)
 		usernameLabel.textColor = UIColor.whiteColor()
@@ -66,22 +111,33 @@ class ContentTableViewCell: WCFastCell, DTAttributedTextContentViewDelegate {
 		contentTextView.delegate = self
 		contentTextView.edgeInsets = UIEdgeInsetsZero
 
+		usernameContainerView.addSubview(avatarImageView)
 		usernameContainerView.addSubview(usernameLabel)
 		contentView.addSubview(usernameContainerView)
 		contentView.addSubview(contentTextView)
 
-		constrain([usernameContainerView, usernameLabel, contentTextView, contentView]) { views in
+		constrain([usernameContainerView, avatarImageView, usernameLabel, contentTextView, contentView]) { views in
 			let usernameContainerView = views[0]
-			let usernameLabel = views[1]
-			let contentTextView = views[2]
-			let contentView = views[3]
+			let avatarImageView = views[1]
+			let usernameLabel = views[2]
+			let contentTextView = views[3]
+			let contentView = views[4]
 
 			usernameContainerView.top == contentView.top
 			usernameContainerView.right <= contentView.right
 			usernameContainerView.left == contentView.left
 			usernameContainerView.height == 24 ~ 750
 
-			usernameLabel.edges == inset(usernameContainerView.edges, 10, 4)
+			avatarImageView.top == usernameContainerView.top + 4
+			avatarImageView.bottom == usernameContainerView.bottom - 4
+			avatarImageView.left == usernameContainerView.left + 10
+			avatarImageView.height == 16
+			avatarImageView.width == avatarImageView.height
+
+			usernameLabel.top  == usernameContainerView.top + 4
+			usernameLabel.right == usernameContainerView.right - 10
+			usernameLabel.bottom == usernameContainerView.bottom - 4
+			usernameLabel.left == avatarImageView.right + 4
 
 			contentTextView.top == usernameContainerView.bottom + 4
 			contentTextView.right == contentView.right - 10
@@ -91,8 +147,6 @@ class ContentTableViewCell: WCFastCell, DTAttributedTextContentViewDelegate {
 	}
 
 	override func prepareForReuse() {
-		username = nil
-		content = nil
 		widthDidChange = nil
 		widthForURL = nil
 	}

@@ -179,7 +179,7 @@ class PostsDataManager {
 					self.delegate.dataManagerDidComputeHeight(self)
 				}
 			}
-			for (index, _) in post.bodies.enumerate() {
+			for (index, _) in post.trailData.enumerate() {
 				heightComputationQueue.addOperationWithBlock() { height in
 					let heightCalculator = HeightCalculator(post: post, width: width)
 					let key = "\(post.id):\(index)"

@@ -43,7 +43,8 @@ struct HeightCalculator {
 	}
 
 	func calculateBodyHeightAtIndex(index: Int, completion: (height: CGFloat?) -> ()) {
-		let htmlStringMethod = post.bodies[index].htmlStringWithTumblrStyle(0)
+		let trailData = post.trailData[index]
+		let htmlStringMethod = trailData.content.htmlStringWithTumblrStyle(0)
 
 		guard let data = htmlStringMethod.dataUsingEncoding(NSUTF8StringEncoding) else {
 			dispatch_async(dispatch_get_main_queue()) {

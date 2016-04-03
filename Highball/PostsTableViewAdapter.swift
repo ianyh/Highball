@@ -205,7 +205,6 @@ extension PostsTableViewAdapter: UITableViewDelegate {
 		if let cell = cell as? PhotosetRowTableViewCell {
 			cell.cancelDownloads()
 		} else if let cell = cell as? ContentTableViewCell {
-			cell.username = nil
 			cell.content = nil
 			cell.widthForURL = nil
 			cell.widthDidChange = nil

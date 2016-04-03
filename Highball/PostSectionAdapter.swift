@@ -80,21 +80,21 @@ struct PostSectionAdapter {
 
 		switch post.type {
 		case "photo":
-			rowCount = post.layoutRows.layoutRows.count + post.bodies.count
+			rowCount = post.layoutRows.layoutRows.count + post.trailData.count
 		case "text":
-			rowCount = 1 + post.bodies.count
+			rowCount = 1 + post.trailData.count
 		case "answer":
 			rowCount = 2
 		case "quote":
 			rowCount = 2
 		case "link":
-			rowCount = 1 + post.bodies.count
+			rowCount = 1 + post.trailData.count
 		case "chat":
 			rowCount = 1 + post.dialogueEntries.count
 		case "video":
-			rowCount = 1 + post.bodies.count
+			rowCount = 1 + post.trailData.count
 		case "audio":
-			rowCount = 1 + post.bodies.count
+			rowCount = 1 + post.trailData.count
 		default:
 			rowCount = 0
 		}
@@ -132,11 +132,11 @@ struct PostSectionAdapter {
 	}
 
 	private func photoCellWithTableView(tableView: UITableView, atRow row: Int) -> UITableViewCell {
-		if row >= numbersOfRows() - 1 - post.bodies.count {
+		if row >= numbersOfRows() - 1 - post.trailData.count {
 			let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
+			let trailData = post.trailData[numbersOfRows() - 2 - row]
 			cell.width = tableView.bounds.width
-			cell.username = post.usernames[numbersOfRows() - 2 - row]
-			cell.content = post.bodies[numbersOfRows() - 2 - row].htmlStringWithTumblrStyle(tableView.frame.size.width)
+			cell.trailData = trailData
 			return cell
 		}
 		let cell = tableView.dequeueReusableCellWithIdentifier(PhotosetRowTableViewCell.cellIdentifier) as! PhotosetRowTableViewCell!
@@ -168,9 +168,9 @@ struct PostSectionAdapter {
 			return cell
 		case .Body(let index):
 			let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
+			let trailData = post.trailData[index]
 			cell.width = tableView.bounds.width
-			cell.username = post.usernames[index]
-			cell.content = post.bodies[index].htmlStringWithTumblrStyle(0)
+			cell.trailData = trailData
 			return cell
 		}
 	}
@@ -212,9 +212,9 @@ struct PostSectionAdapter {
 			return cell
 		case .Description(let index):
 			let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
+			let trailData = post.trailData[index]
 			cell.width = tableView.bounds.width
-			cell.username = post.usernames[index]
-			cell.content = post.bodies[index].htmlStringWithTumblrStyle(0)
+			cell.trailData = trailData
 			return cell
 		}
 	}
@@ -246,9 +246,9 @@ struct PostSectionAdapter {
 			}
 		case .Caption(let index):
 			let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
+			let trailData = post.trailData[index]
 			cell.width = tableView.bounds.width
-			cell.username = post.usernames[index]
-			cell.content = post.bodies[index].htmlStringWithTumblrStyle(0)
+			cell.trailData = trailData
 			return cell
 		}
 	}
@@ -260,9 +260,9 @@ struct PostSectionAdapter {
 			cell.width = tableView.bounds.width
 			cell.content = post.htmlSecondaryBodyWithWidth(tableView.frame.width)
 		case .Caption(let index):
+			let trailData = post.trailData[index]
 			cell.width = tableView.bounds.width
-			cell.username = post.usernames[index]
-			cell.content = post.bodies[index].htmlStringWithTumblrStyle(0)
+			cell.trailData = trailData
 		}
 		return cell
 	}
