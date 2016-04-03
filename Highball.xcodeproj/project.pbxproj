@@ -60,6 +60,7 @@
 		40F75A871C3219CD00EC86DE /* ReblogCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F75A861C3219CD00EC86DE /* ReblogCommentCell.swift */; };
 		40F8CE961A41111300609ABF /* AccountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F8CE951A41111300609ABF /* AccountsViewController.swift */; };
 		40F8CE9A1A41143000609ABF /* AccountsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F8CE991A41143000609ABF /* AccountsService.swift */; };
+		40F9F4041CB1DA8200989D5B /* PostTrailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F9F4031CB1DA8200989D5B /* PostTrailData.swift */; };
 		40FF6D4319B940C6008119A3 /* Blog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FF6D4219B940C6008119A3 /* Blog.swift */; };
 		40FF6D4519B9F656008119A3 /* QuickReblogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FF6D4419B9F656008119A3 /* QuickReblogViewController.swift */; };
 /* End PBXBuildFile section */
@@ -133,6 +134,7 @@
 		40F75A861C3219CD00EC86DE /* ReblogCommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReblogCommentCell.swift; sourceTree = "<group>"; };
 		40F8CE951A41111300609ABF /* AccountsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsViewController.swift; sourceTree = "<group>"; };
 		40F8CE991A41143000609ABF /* AccountsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsService.swift; sourceTree = "<group>"; };
+		40F9F4031CB1DA8200989D5B /* PostTrailData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostTrailData.swift; sourceTree = "<group>"; };
 		40FF6D4219B940C6008119A3 /* Blog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Blog.swift; sourceTree = "<group>"; };
 		40FF6D4419B9F656008119A3 /* QuickReblogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickReblogViewController.swift; sourceTree = "<group>"; };
 		440C4C4D5E0A7451B7FA466E /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -309,6 +311,7 @@
 				40CFDAB31C344931008FBF9A /* HeightCalculator.swift */,
 				40CFDABE1C34BB17008FBF9A /* PostHeightCache.swift */,
 				403040DF1C37211A001EFC9E /* PhotosetLayoutRows.swift */,
+				40F9F4031CB1DA8200989D5B /* PostTrailData.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -583,6 +586,7 @@
 				40CFDABF1C34BB17008FBF9A /* PostHeightCache.swift in Sources */,
 				408C7D1F19B36F7400EFC410 /* PostLinkTableViewCell.swift in Sources */,
 				405D659A1C34C4E500968B3B /* PostsDataManager.swift in Sources */,
+				40F9F4041CB1DA8200989D5B /* PostTrailData.swift in Sources */,
 				40DF7DB41A79919900CE3D4C /* VideoPlayController.swift in Sources */,
 				40F8CE9A1A41143000609ABF /* AccountsService.swift in Sources */,
 				40F8CE961A41111300609ABF /* AccountsViewController.swift in Sources */,
