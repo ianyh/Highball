@@ -90,7 +90,7 @@ class PostHeaderView: UITableViewHeaderFooterView {
 		backgroundView = blurView
 
 		avatarImageView = UIImageView()
-		avatarImageView.layer.cornerRadius = 20
+		avatarImageView.layer.cornerRadius = 4
 		avatarImageView.clipsToBounds = true
 
 		usernameLabel = UILabel()
@@ -123,8 +123,8 @@ class PostHeaderView: UITableViewHeaderFooterView {
 		constrain(avatarImageView, contentView) { avatarImageView, contentView in
 			avatarImageView.centerY == contentView.centerY
 			avatarImageView.left == contentView.left + 4
-			avatarImageView.width == 40
-			avatarImageView.height == 40
+			avatarImageView.width == 36
+			avatarImageView.height == 36
 		}
 
 		constrain(usernameLabel, avatarImageView, contentView) { usernameLabel, avatarImageView, contentView in

@@ -64,6 +64,7 @@ class ContentTableViewCell: WCFastCell, DTAttributedTextContentViewDelegate {
 		usernameLabel.textColor = UIColor.whiteColor()
 
 		contentTextView.delegate = self
+		contentTextView.edgeInsets = UIEdgeInsetsZero
 
 		usernameContainerView.addSubview(usernameLabel)
 		contentView.addSubview(usernameContainerView)
