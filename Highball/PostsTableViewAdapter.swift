@@ -114,7 +114,7 @@ extension PostsTableViewAdapter: UITableViewDataSource {
 				}
 				if height != self?.postHeightCache.bodyComponentHeightForPost(post, atIndex: indexPath.row - 1, withKey: url) {
 					self?.postHeightCache.setBodyComponentHeight(height, forPost: post, atIndex: indexPath.row - 1, withKey: url)
-					self?.tableView.reloadData()
+					self?.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
 				}
 
 			}
