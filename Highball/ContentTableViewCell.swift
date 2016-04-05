@@ -127,7 +127,7 @@ class ContentTableViewCell: WCFastCell, DTAttributedTextContentViewDelegate {
 			avatarImageView.top == usernameContainerView.top + 4
 			avatarImageView.bottom == usernameContainerView.bottom - 4
 			avatarImageView.left == usernameContainerView.left + 6
-			avatarImageView.height == 24
+			avatarImageView.height == 24 ~ 500
 			avatarImageView.width == avatarImageView.height
 
 			usernameLabel.top  == usernameContainerView.top + 4
@@ -137,7 +137,7 @@ class ContentTableViewCell: WCFastCell, DTAttributedTextContentViewDelegate {
 
 			contentTextView.top == usernameContainerView.bottom + 4
 			contentTextView.right == contentView.right - 10
-			contentTextView.bottom == contentView.bottom - 4 ~ 750
+			contentTextView.bottom == contentView.bottom - 4
 			contentTextView.left == contentView.left + 10
 		}
 	}
