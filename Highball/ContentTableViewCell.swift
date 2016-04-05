@@ -26,6 +26,8 @@ class ContentTableViewCell: WCFastCell, DTAttributedTextContentViewDelegate {
 			avatarImageView.image = UIImage(named: "Placeholder")
 
 			guard let trailData = trailData else {
+				usernameLabel.text = nil
+				content = nil
 				return
 			}
 
@@ -98,6 +100,8 @@ class ContentTableViewCell: WCFastCell, DTAttributedTextContentViewDelegate {
 		usernameLabel = UILabel()
 		contentTextView = DTAttributedTextContentView()
 
+		usernameContainerView.backgroundColor = UIColor.whiteColor()
+
 		avatarImageView.clipsToBounds = true
 		avatarImageView.contentMode = .ScaleAspectFit
 		avatarImageView.layer.cornerRadius = 4
@@ -105,12 +109,12 @@ class ContentTableViewCell: WCFastCell, DTAttributedTextContentViewDelegate {
 		usernameLabel.font = UIFont.boldSystemFontOfSize(16)
 
 		contentTextView.delegate = self
-		contentTextView.edgeInsets = UIEdgeInsetsZero
+		contentTextView.edgeInsets = UIEdgeInsets(top: 4, left: 10, bottom: 4, right: 10)
 
 		usernameContainerView.addSubview(avatarImageView)
 		usernameContainerView.addSubview(usernameLabel)
-		contentView.addSubview(usernameContainerView)
 		contentView.addSubview(contentTextView)
+		contentView.addSubview(usernameContainerView)
 
 		constrain([usernameContainerView, avatarImageView, usernameLabel, contentTextView, contentView]) { views in
 			let usernameContainerView = views[0]
@@ -135,14 +139,17 @@ class ContentTableViewCell: WCFastCell, DTAttributedTextContentViewDelegate {
 			usernameLabel.bottom == usernameContainerView.bottom - 4
 			usernameLabel.left == avatarImageView.right + 4
 
-			contentTextView.top == usernameContainerView.bottom + 4
-			contentTextView.right == contentView.right - 10
-			contentTextView.bottom == contentView.bottom - 4
-			contentTextView.left == contentView.left + 10
+			contentTextView.top == usernameContainerView.bottom
+			contentTextView.right == contentView.right
+			contentTextView.bottom == contentView.bottom
+			contentTextView.left == contentView.left
 		}
+
+		layoutIfNeeded()
 	}
 
 	override func prepareForReuse() {
+		super.prepareForReuse()
 		widthDidChange = nil
 		widthForURL = nil
 	}
@@ -172,7 +179,6 @@ class ContentTableViewCell: WCFastCell, DTAttributedTextContentViewDelegate {
 
 		return false
 	}
-
 
 	func imageView(imageView: FLAnimatedImageView, withURL url: NSURL, didChangeImageSize size: CGSize) {
 		let pred = NSPredicate(format: "contentURL == %@", url)
