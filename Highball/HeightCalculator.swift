@@ -62,7 +62,7 @@ struct HeightCalculator {
 		let layoutFrame = layouter.layoutFrameWithRect(maxRect, range: entireString)
 
 		dispatch_async(dispatch_get_main_queue()) {
-			completion(height: ceil(layoutFrame.frame.height + 32))
+			completion(height: ceil(layoutFrame.frame.height + 40))
 		}
 	}
 }

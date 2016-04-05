@@ -98,14 +98,11 @@ class ContentTableViewCell: WCFastCell, DTAttributedTextContentViewDelegate {
 		usernameLabel = UILabel()
 		contentTextView = DTAttributedTextContentView()
 
-		usernameContainerView.backgroundColor = UIColor.blackColor()
-
 		avatarImageView.clipsToBounds = true
 		avatarImageView.contentMode = .ScaleAspectFit
 		avatarImageView.layer.cornerRadius = 4
 
 		usernameLabel.font = UIFont.boldSystemFontOfSize(16)
-		usernameLabel.textColor = UIColor.whiteColor()
 
 		contentTextView.delegate = self
 		contentTextView.edgeInsets = UIEdgeInsetsZero
@@ -125,12 +122,12 @@ class ContentTableViewCell: WCFastCell, DTAttributedTextContentViewDelegate {
 			usernameContainerView.top == contentView.top
 			usernameContainerView.right <= contentView.right
 			usernameContainerView.left == contentView.left
-			usernameContainerView.height == 24 ~ 750
+			usernameContainerView.height == 32 ~ 750
 
 			avatarImageView.top == usernameContainerView.top + 4
 			avatarImageView.bottom == usernameContainerView.bottom - 4
-			avatarImageView.left == usernameContainerView.left + 10
-			avatarImageView.height == 16
+			avatarImageView.left == usernameContainerView.left + 6
+			avatarImageView.height == 24
 			avatarImageView.width == avatarImageView.height
 
 			usernameLabel.top  == usernameContainerView.top + 4
