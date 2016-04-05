@@ -22,9 +22,17 @@ struct PostViewSections {
 		}
 	}
 
-	enum AnswerRow: Int {
+	enum AnswerRow {
 		case Question
-		case Answer
+		case Answer(row: Int)
+
+		static func answerRowFromRow(row: Int) -> AnswerRow {
+			if row == 0 {
+				return .Question
+			} else {
+				return .Answer(row: row - 1)
+			}
+		}
 	}
 
 	enum QuoteRow: Int {
@@ -176,15 +184,16 @@ struct PostSectionAdapter {
 	}
 
 	private func answerCellWithTableView(tableView: UITableView, atRow row: Int) -> UITableViewCell {
-		switch PostViewSections.AnswerRow(rawValue: row)! {
+		switch PostViewSections.AnswerRow.answerRowFromRow(row) {
 		case .Question:
 			let cell = tableView.dequeueReusableCellWithIdentifier(PostQuestionTableViewCell.cellIdentifier) as! PostQuestionTableViewCell!
 			cell.post = post
 			return cell
-		case .Answer:
+		case .Answer(let index):
 			let cell = tableView.dequeueReusableCellWithIdentifier(ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
+			let trailData = post.trailData[index]
 			cell.width = tableView.bounds.width
-			cell.content = post.htmlBodyWithWidth(tableView.frame.size.width)
+			cell.trailData = trailData
 			return cell
 		}
 	}

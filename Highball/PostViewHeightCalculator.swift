@@ -87,12 +87,12 @@ struct PostViewHeightCalculator {
 	}
 
 	private func answerHeightWithPost(post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
-		switch PostViewSections.AnswerRow(rawValue: row)! {
+		switch PostViewSections.AnswerRow.answerRowFromRow(row) {
 		case .Question:
 			let height = PostQuestionTableViewCell.heightForPost(post, width: width)
 			return height
-		case .Answer:
-			return postHeightCache.bodyHeightForPost(post) ?? 0
+		case .Answer(let index):
+			return postHeightCache.bodyHeight(post, atIndex: index) ?? 0
 		}
 
 	}
