@@ -93,8 +93,16 @@ class MainViewController: UITabBarController {
 		cachedSelectedIndex = selectedIndex
 
 		let tableView = tableViewController.tableView
+		let currentContentOffsetY = tableView.contentOffset.y
+		let newContentOffsetY = { () -> CGFloat in
+			if currentContentOffsetY == -tableView.contentInset.top {
+				return tableView.contentSize.height - tableView.bounds.size.height - tableView.contentInset.top + tableView.contentInset.bottom
+			} else {
+				return -tableView.contentInset.top
+			}
+		}()
 
-		tableViewController.tableView.setContentOffset(CGPoint(x: 0, y: -tableView.contentInset.top), animated: true)
+		tableViewController.tableView.setContentOffset(CGPoint(x: 0, y: newContentOffsetY), animated: true)
 	}
 }
 
