@@ -2,8 +2,8 @@ PODS:
   - ChameleonFramework (2.0.6):
     - ChameleonFramework/Default (= 2.0.6)
   - ChameleonFramework/Default (2.0.6)
-  - Crashlytics (3.4.1):
-    - Fabric (~> 1.6.0)
+  - Crashlytics (3.7.0):
+    - Fabric (~> 1.6.3)
   - DTCoreText (1.6.17):
     - DTFoundation/Core (~> 1.7.5)
     - DTFoundation/DTAnimatedGIF (~> 1.7.5)
@@ -15,7 +15,7 @@ PODS:
     - DTFoundation/Core
   - DTFoundation/UIKit (1.7.9):
     - DTFoundation/Core
-  - Fabric (1.6.1)
+  - Fabric (1.6.7)
   - FLAnimatedImage (1.0.10)
   - FontAwesomeKit (2.1.9):
     - FontAwesomeKit/Core (= 2.1.9)
@@ -68,7 +68,7 @@ PODS:
   - VENTouchLock (1.11.0):
     - SSKeychain (~> 1.0)
   - WCFastCell (1.1)
-  - XCDYouTubeKit (2.4.3)
+  - XCDYouTubeKit (2.5.1)
   - XExtensionItem (0.9.3):
     - XExtensionItem/Core (= 0.9.3)
     - XExtensionItem/Tumblr (= 0.9.3)
@@ -107,10 +107,10 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   ChameleonFramework: a6b466873ff9a4ce3a5196c20bccf1a97ad9f446
-  Crashlytics: 41574a245bc6ae10c55d57f385ebd2004e5bee05
+  Crashlytics: c3a2333dea9e2733d2777f730910321fc9e25c0d
   DTCoreText: 3ea8bba23dd2141ba18adb227a7dd33a822df1c4
   DTFoundation: 70a0765e3596f82dd421832e95c65e2166eb3102
-  Fabric: bf0ceb04e7c924090efc5f8c55e4fbcca189e0a0
+  Fabric: caf7580c725e64db144f610ac65cd60956911dc7
   FLAnimatedImage: e16a1e1cef08e4c509b47e4acbe3923f65c16135
   FontAwesomeKit: 0cd610453ce270f34ad17378c68de98aad0e05ef
   FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4
@@ -127,7 +127,7 @@ SPEC CHECKSUMS:
   TMTumblrSDK: fec72b7eed921db0b2ec472b2c851d472ab41f3a
   VENTouchLock: f3145d6fbff243d6692dfb1107b88db06dc216c9
   WCFastCell: 3e20a0c711d27307584bdbd359a44a714e991151
-  XCDYouTubeKit: a4a1a60faa7bc97744a1184501e82ef10ca15897
+  XCDYouTubeKit: ee78997dc92d1055f11459d95c492dae1dba909d
   XExtensionItem: ce626520bbca225930b9c8e2283b226df431af3f
 
 PODFILE CHECKSUM: dd542dbfa42cc73cc8b8914691acdc6c8ada901c
