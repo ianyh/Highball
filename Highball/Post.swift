@@ -75,7 +75,6 @@ class Post {
 			if let trail = json["trail"].array {
 				return trail.map { trailElement -> PostTrailData? in
 					if let name = trailElement["blog"]["name"].string, let content = trailElement["content"].string {
-						print(trailElement)
 						return PostTrailData(username: name, content: content)
 					} else {
 						return nil

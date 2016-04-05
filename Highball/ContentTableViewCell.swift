@@ -65,11 +65,11 @@ class ContentTableViewCell: WCFastCell, DTAttributedTextContentViewDelegate {
 		didSet {
 			if let content = content {
 				let data = content.dataUsingEncoding(NSUTF8StringEncoding)
-				let stringBuilderOptions = [DTDefaultHeadIndent: 0, DTDefaultFirstLineHeadIndent: 0]
+				let stringBuilderOptions = [DTDefaultHeadIndent: 0, DTDefaultFirstLineHeadIndent: 0, DTDocumentPreserveTrailingSpaces: false, DTUseiOS6Attributes: true]
 				let htmlStringBuilder = DTHTMLAttributedStringBuilder(HTML: data, options: stringBuilderOptions, documentAttributes: nil)
-				let attributedString = htmlStringBuilder.generatedAttributedString()
+				let attributedString = htmlStringBuilder.generatedAttributedString().attributedStringByTrimmingNewlines()
 				contentTextView.attributedString = attributedString
-				usernameLabel.superview?.hidden = (content.characters.count == 0)
+				usernameLabel.superview?.hidden = (attributedString.string.characters.count == 0)
 			} else {
 				contentTextView.attributedString = NSAttributedString(string: "")
 				usernameLabel.superview?.hidden = true
@@ -103,7 +103,6 @@ class ContentTableViewCell: WCFastCell, DTAttributedTextContentViewDelegate {
 		avatarImageView.clipsToBounds = true
 		avatarImageView.contentMode = .ScaleAspectFit
 		avatarImageView.layer.cornerRadius = 4
-		avatarImageView.backgroundColor = UIColor.redColor()
 
 		usernameLabel.font = UIFont.boldSystemFontOfSize(16)
 		usernameLabel.textColor = UIColor.whiteColor()
