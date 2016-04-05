@@ -92,7 +92,7 @@ struct PostSectionAdapter {
 		case "text":
 			rowCount = 1 + post.trailData.count
 		case "answer":
-			rowCount = 2
+			rowCount = 1 + post.trailData.count
 		case "quote":
 			rowCount = 2
 		case "link":
