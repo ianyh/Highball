@@ -29,17 +29,7 @@ struct HeightCalculator {
 			return
 		}
 
-		let attributedString = NSAttributedString(HTMLData: data, options: [DTDefaultHeadIndent: 0, DTDefaultFirstLineHeadIndent: 0, DTDocumentPreserveTrailingSpaces: false, DTUseiOS6Attributes: true], documentAttributes: nil)
-		let layouter = DTCoreTextLayouter(attributedString: attributedString.attributedStringByTrimmingNewlines())
-		let maxRect = CGRect(x: 0, y: 0, width: width - 20, height: CGFloat(CGFLOAT_HEIGHT_UNKNOWN))
-		// swiftlint:disable legacy_constructor
-		let entireString = NSMakeRange(0, attributedString.length)
-		// swiftlint:enable legacy_constructor
-		let layoutFrame = layouter.layoutFrameWithRect(maxRect, range: entireString)
-
-		dispatch_async(dispatch_get_main_queue()) {
-			completion(height: ceil(layoutFrame.frame.height + 40))
-		}
+		calculateHeightWithAttributedStringData(data, completion: completion)
 	}
 
 	func calculateBodyHeightAtIndex(index: Int, completion: (height: CGFloat?) -> ()) {
@@ -53,13 +43,23 @@ struct HeightCalculator {
 			return
 		}
 
-		let attributedString = NSAttributedString(HTMLData: data, options: [DTDefaultHeadIndent: 0, DTDefaultFirstLineHeadIndent: 0, DTDocumentPreserveTrailingSpaces: false, DTUseiOS6Attributes: true], documentAttributes: nil)
-		let layouter = DTCoreTextLayouter(attributedString: attributedString.attributedStringByTrimmingNewlines())
+		calculateHeightWithAttributedStringData(data, completion: completion)
+	}
+
+	func calculateHeightWithAttributedStringData(data: NSData, completion: (height: CGFloat?) -> ()) {
+		let stringBuilderOptions = [DTDefaultHeadIndent: 0, DTDefaultFirstLineHeadIndent: 0, DTDocumentPreserveTrailingSpaces: false, DTUseiOS6Attributes: true]
+		let attributedString = NSAttributedString(HTMLData: data, options: stringBuilderOptions, documentAttributes: nil).attributedStringByTrimmingNewlines()
+		let layouter = DTCoreTextLayouter(attributedString: attributedString)
 		let maxRect = CGRect(x: 0, y: 0, width: width - 20, height: CGFloat(CGFLOAT_HEIGHT_UNKNOWN))
 		// swiftlint:disable legacy_constructor
 		let entireString = NSMakeRange(0, attributedString.length)
 		// swiftlint:enable legacy_constructor
-		let layoutFrame = layouter.layoutFrameWithRect(maxRect, range: entireString)
+		guard let layoutFrame = layouter.layoutFrameWithRect(maxRect, range: entireString) else {
+			dispatch_async(dispatch_get_main_queue()) {
+				completion(height: nil)
+			}
+			return
+		}
 
 		dispatch_async(dispatch_get_main_queue()) {
 			completion(height: ceil(layoutFrame.frame.height + 40))
