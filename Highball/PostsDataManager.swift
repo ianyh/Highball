@@ -77,7 +77,7 @@ class PostsDataManager {
 				}
 			}
 		} else {
-			parameters = ["reblog_info": "true", "type": "text"]
+			parameters = ["reblog_info": "true"]
 			reloadCompletion = { (posts: [Post]) in
 				self.posts = posts
 				self.cursor = posts.last?.id
