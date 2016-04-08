@@ -51,6 +51,7 @@
 		40CFDAB81C349F84008FBF9A /* TextReblogTableViewAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CFDAB71C349F84008FBF9A /* TextReblogTableViewAdapter.swift */; };
 		40CFDABD1C34BA33008FBF9A /* PostsTableViewAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CFDABC1C34BA33008FBF9A /* PostsTableViewAdapter.swift */; };
 		40CFDABF1C34BB17008FBF9A /* PostHeightCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CFDABE1C34BB17008FBF9A /* PostHeightCache.swift */; };
+		40D374B01CB9F07B008CB51A /* PostContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D374AF1CB9F07B008CB51A /* PostContent.swift */; };
 		40DB21251C556195007AD3DD /* FollowedBlogsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40DB21241C556195007AD3DD /* FollowedBlogsViewController.swift */; };
 		40DB21271C5561B7007AD3DD /* FollowedBlogsDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40DB21261C5561B7007AD3DD /* FollowedBlogsDataManager.swift */; };
 		40DB21291C5571FF007AD3DD /* FollowedBlogsTableViewAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40DB21281C5571FF007AD3DD /* FollowedBlogsTableViewAdapter.swift */; };
@@ -126,6 +127,7 @@
 		40CFDAB71C349F84008FBF9A /* TextReblogTableViewAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextReblogTableViewAdapter.swift; sourceTree = "<group>"; };
 		40CFDABC1C34BA33008FBF9A /* PostsTableViewAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsTableViewAdapter.swift; sourceTree = "<group>"; };
 		40CFDABE1C34BB17008FBF9A /* PostHeightCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostHeightCache.swift; sourceTree = "<group>"; };
+		40D374AF1CB9F07B008CB51A /* PostContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostContent.swift; sourceTree = "<group>"; };
 		40DB21241C556195007AD3DD /* FollowedBlogsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowedBlogsViewController.swift; sourceTree = "<group>"; };
 		40DB21261C5561B7007AD3DD /* FollowedBlogsDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowedBlogsDataManager.swift; sourceTree = "<group>"; };
 		40DB21281C5571FF007AD3DD /* FollowedBlogsTableViewAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowedBlogsTableViewAdapter.swift; sourceTree = "<group>"; };
@@ -315,6 +317,7 @@
 				40CFDABE1C34BB17008FBF9A /* PostHeightCache.swift */,
 				403040DF1C37211A001EFC9E /* PhotosetLayoutRows.swift */,
 				40F9F4031CB1DA8200989D5B /* PostTrailData.swift */,
+				40D374AF1CB9F07B008CB51A /* PostContent.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -570,6 +573,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40D374B01CB9F07B008CB51A /* PostContent.swift in Sources */,
 				40A11E6819B518DD00B91843 /* ImagesViewController.swift in Sources */,
 				408C7D2319B387A500EFC410 /* PostDialogueEntryTableViewCell.swift in Sources */,
 				403040E01C37211A001EFC9E /* PhotosetLayoutRows.swift in Sources */,

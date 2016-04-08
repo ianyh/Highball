@@ -290,4 +290,38 @@ struct PostSectionAdapter {
 
 		return view
 	}
+
+	func setBodyComponentHeight(height: CGFloat, forPost post: Post, atIndexPath indexPath: NSIndexPath, withKey key: String, inHeightCache postHeightCache: PostHeightCache) -> Bool {
+		let row = indexPath.row
+		let heightIndex = { () -> Int in
+			switch post.type {
+			case "photo":
+				return self.numbersOfRows() - 2 - row
+			case "text":
+				return row - 1
+			case "answer":
+				return row - 1
+			case "quote":
+				return 0
+			case "link":
+				return row - 1
+			case "chat":
+				return row - 1
+			case "video":
+				return row - 1
+			case "audio":
+				return row - 1
+			default:
+				return 0
+			}
+		}()
+
+		guard height != postHeightCache.bodyComponentHeightForPost(post, atIndex: heightIndex, withKey: key) else {
+			return false
+		}
+
+		postHeightCache.setBodyComponentHeight(height, forPost: post, atIndex: heightIndex, withKey: key)
+
+		return true
+	}
 }

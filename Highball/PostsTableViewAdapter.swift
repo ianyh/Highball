@@ -6,6 +6,7 @@
 //  Copyright © 2015 ianynda. All rights reserved.
 //
 
+import FLAnimatedImage
 import SafariServices
 import UIKit
 
@@ -22,6 +23,7 @@ class PostsTableViewAdapter: NSObject {
 
 	private var heightCache: [NSIndexPath: CGFloat] = [:]
 	private var urlWidthCache: [String: CGFloat] = [:]
+	private var urlImageViewCache: [String: FLAnimatedImageView] = [:]
 
 	init(tableView: UITableView, postHeightCache: PostHeightCache, delegate: PostsTableViewAdapterDelegate) {
 		self.tableView = tableView
@@ -60,7 +62,7 @@ class PostsTableViewAdapter: NSObject {
 
 	func resetCache() {
 		heightCache.removeAll()
-		urlWidthCache.removeAll()
+		urlImageViewCache.removeAll()
 	}
 
 	private func posts() -> [Post] {
@@ -84,19 +86,19 @@ extension PostsTableViewAdapter: UITableViewDataSource {
 		let post = posts()[indexPath.section]
 		let sectionAdapter = PostSectionAdapter(post: post)
 		let cell = sectionAdapter.tableView(tableView, cellForRow: indexPath.row)
-		let linkTapHandler = { (url: NSURL) in
-			guard let host = url.host else {
+		let linkTapHandler = { [weak self] (url: NSURL) in
+			guard let host = url.host, let strongSelf = self else {
 				return
 			}
 
 			let username = host.characters.split { $0 == "." }
 			if username.count == 3 && String(username[1]) == "tumblr" {
 				let blogViewController = BlogViewController(blogName: String(username[0]))
-				self.delegate.adapter(self, didEmitViewController: blogViewController, forPresentation: false)
+				strongSelf.delegate.adapter(strongSelf, didEmitViewController: blogViewController, forPresentation: false)
 				return
 			}
 
-			self.delegate.adapter(self, didEmitViewController: SFSafariViewController(URL: url), forPresentation: false)
+			strongSelf.delegate.adapter(strongSelf, didEmitViewController: SFSafariViewController(URL: url), forPresentation: false)
 		}
 
 		cell.selectionStyle = .None
@@ -107,18 +109,20 @@ extension PostsTableViewAdapter: UITableViewDataSource {
 			cell.widthForURL = { [weak self] url in
 				return self?.urlWidthCache[url]
 			}
-			cell.widthDidChange = { [weak self] url, width, height in
-				if self?.urlWidthCache[url] == nil {
-					self?.heightCache[indexPath] = nil
-					self?.urlWidthCache[url] = width
-				}
-				if height != self?.postHeightCache.bodyComponentHeightForPost(post, atIndex: indexPath.row - 1, withKey: url) {
-					self?.postHeightCache.setBodyComponentHeight(height, forPost: post, atIndex: indexPath.row - 1, withKey: url)
+			cell.imageViewForURL = { [weak self] url in
+				return self?.urlImageViewCache[url]
+			}
+			cell.widthDidChange = { [weak self] url, width, height, imageView in
+				self?.urlWidthCache[url] = width
+				self?.urlImageViewCache[url] = imageView
+				let set = sectionAdapter.setBodyComponentHeight(height, forPost: post, atIndexPath: indexPath, withKey: url, inHeightCache: self!.postHeightCache)
+				if set {
 					dispatch_async(dispatch_get_main_queue()) {
-						self?.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+						self?.heightCache[indexPath] = nil
+						self?.tableView.beginUpdates()
+						self?.tableView.endUpdates()
 					}
 				}
-
 			}
 			cell.linkHandler = linkTapHandler
 		}
@@ -147,24 +151,28 @@ extension PostsTableViewAdapter: UITableViewDelegate {
 		let sectionAdapter = PostSectionAdapter(post: post)
 		let view = sectionAdapter.tableViewHeaderView(tableView) as! PostHeaderView
 
-		view.tapHandler = { post, view in
+		view.tapHandler = { [weak self] post, view in
+			guard let strongSelf = self else {
+				return
+			}
+
 			if let rebloggedBlogName = post.rebloggedBlogName {
 				let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-				alertController.popoverPresentationController?.sourceView = self.tableView
-				alertController.popoverPresentationController?.sourceRect = self.tableView.convertRect(view.bounds, fromView: view)
+				alertController.popoverPresentationController?.sourceView = strongSelf.tableView
+				alertController.popoverPresentationController?.sourceRect = strongSelf.tableView.convertRect(view.bounds, fromView: view)
 				alertController.addAction(UIAlertAction(title: post.blogName, style: .Default) { _ in
 					let blogViewController = BlogViewController(blogName: post.blogName)
-					self.delegate.adapter(self, didEmitViewController: blogViewController, forPresentation: false)
+					strongSelf.delegate.adapter(strongSelf, didEmitViewController: blogViewController, forPresentation: false)
 				})
 				alertController.addAction(UIAlertAction(title: rebloggedBlogName, style: .Default) { _ in
 					let blogViewController = BlogViewController(blogName: rebloggedBlogName)
-					self.delegate.adapter(self, didEmitViewController: blogViewController, forPresentation: false)
+					strongSelf.delegate.adapter(strongSelf, didEmitViewController: blogViewController, forPresentation: false)
 				})
 				alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-				self.delegate.adapter(self, didEmitViewController: alertController, forPresentation: true)
+				strongSelf.delegate.adapter(strongSelf, didEmitViewController: alertController, forPresentation: true)
 			} else {
 				let blogViewController = BlogViewController(blogName: post.blogName)
-				self.delegate.adapter(self, didEmitViewController: blogViewController, forPresentation: false)
+				strongSelf.delegate.adapter(strongSelf, didEmitViewController: blogViewController, forPresentation: false)
 			}
 		}
 		return view
@@ -207,9 +215,10 @@ extension PostsTableViewAdapter: UITableViewDelegate {
 		if let cell = cell as? PhotosetRowTableViewCell {
 			cell.cancelDownloads()
 		} else if let cell = cell as? ContentTableViewCell {
-			cell.content = nil
+			cell.trailData = nil
 			cell.widthForURL = nil
 			cell.widthDidChange = nil
+			cell.linkHandler = nil
 		}
 	}
 
