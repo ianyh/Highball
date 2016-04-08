@@ -5,6 +5,7 @@ disabled_rules:
         - force_cast
         - force_try
         - variable_name
+        - legacy_constructor
 included:
         - Highball
 line_length: 200
