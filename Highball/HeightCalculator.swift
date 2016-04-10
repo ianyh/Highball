@@ -6,9 +6,9 @@
 //  Copyright © 2015 ianynda. All rights reserved.
 //
 
-import DTCoreText
 import Foundation
 import SwiftyJSON
+import YYText
 
 struct HeightCalculator {
 	private let post: Post
@@ -34,7 +34,7 @@ struct HeightCalculator {
 
 	func calculateBodyHeightAtIndex(index: Int, completion: (height: CGFloat?) -> ()) {
 		let trailData = post.trailData[index]
-		let htmlStringMethod = trailData.content.htmlStringWithTumblrStyle(0)
+		let htmlStringMethod = trailData.content.htmlStringWithTumblrStyle(width)
 
 		guard let data = htmlStringMethod.dataUsingEncoding(NSUTF8StringEncoding) else {
 			dispatch_async(dispatch_get_main_queue()) {
@@ -47,22 +47,12 @@ struct HeightCalculator {
 	}
 
 	func calculateHeightWithAttributedStringData(data: NSData, completion: (height: CGFloat?) -> ()) {
-		let stringBuilderOptions = [DTDefaultHeadIndent: 0, DTDefaultFirstLineHeadIndent: 0, DTDocumentPreserveTrailingSpaces: false, DTUseiOS6Attributes: true]
-		let attributedString = NSAttributedString(HTMLData: data, options: stringBuilderOptions, documentAttributes: nil).attributedStringByTrimmingNewlines()
-		let layouter = DTCoreTextLayouter(attributedString: attributedString)
-		let maxRect = CGRect(x: 0, y: 0, width: width - 20, height: CGFloat(CGFLOAT_HEIGHT_UNKNOWN))
-		// swiftlint:disable legacy_constructor
-		let entireString = NSMakeRange(0, attributedString.length)
-		// swiftlint:enable legacy_constructor
-		guard let layoutFrame = layouter.layoutFrameWithRect(maxRect, range: entireString) else {
-			dispatch_async(dispatch_get_main_queue()) {
-				completion(height: nil)
-			}
-			return
-		}
+		let postContent = PostContent(htmlData: data)
+		let textLayout = YYTextLayout(containerSize: CGSize(width: width - 20, height: CGFloat.max), text: postContent.attributedStringForDisplay())
+		let size = textLayout!.textBoundingSize
 
 		dispatch_async(dispatch_get_main_queue()) {
-			completion(height: ceil(layoutFrame.frame.height + 40))
+			completion(height: ceil(size.height + 40))
 		}
 	}
 }

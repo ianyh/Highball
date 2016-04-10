@@ -15,7 +15,7 @@ enum ReblogType {
 	case Queue
 }
 
-class Post {
+struct Post {
 	private let json: JSON
 	let id: Int
 	let type: String
@@ -73,7 +73,7 @@ class Post {
 		self.liked = json["liked"].bool!
 		self.trailData = { () -> [PostTrailData] in
 			if let trail = json["trail"].array {
-				return trail.map { trailElement -> PostTrailData? in
+				var elements = trail.map { trailElement -> PostTrailData? in
 					if let name = trailElement["blog"]["name"].string, let content = trailElement["content"].string {
 						return PostTrailData(username: name, content: content)
 					} else {
@@ -82,6 +82,8 @@ class Post {
 				}
 				.filter { $0 != nil }
 				.map { $0! }
+				elements = elements.reverse()
+				return elements
 			} else {
 				return []
 			}
@@ -171,7 +173,7 @@ class Post {
 }
 
 extension Post {
-	class func bodyStringFromJSON(json: JSON) -> String? {
+	static func bodyStringFromJSON(json: JSON) -> String? {
 		guard let type = json["type"].string else {
 			return nil
 		}
@@ -204,7 +206,7 @@ extension Post {
 		return nil
 	}
 
-	class func secondaryBodyStringFromJSON(json: JSON) -> String? {
+	static func secondaryBodyStringFromJSON(json: JSON) -> String? {
 		guard let type = json["type"].string else {
 			return nil
 		}

@@ -75,6 +75,7 @@ PODS:
   - XExtensionItem/Core (0.9.3)
   - XExtensionItem/Tumblr (0.9.3):
     - XExtensionItem/Core
+  - YYText (1.0.4)
 
 DEPENDENCIES:
   - ChameleonFramework (~> 2.0)
@@ -95,6 +96,7 @@ DEPENDENCIES:
   - WCFastCell (~> 1.1)
   - XCDYouTubeKit (~> 2.4)
   - XExtensionItem (~> 0.9)
+  - YYText (~> 1.0)
 
 EXTERNAL SOURCES:
   FontAwesomeKit:
@@ -129,7 +131,8 @@ SPEC CHECKSUMS:
   WCFastCell: 3e20a0c711d27307584bdbd359a44a714e991151
   XCDYouTubeKit: ee78997dc92d1055f11459d95c492dae1dba909d
   XExtensionItem: ce626520bbca225930b9c8e2283b226df431af3f
+  YYText: 41761822986179828a27ccf82aa97c7b5483c2e2
 
-PODFILE CHECKSUM: dd542dbfa42cc73cc8b8914691acdc6c8ada901c
+PODFILE CHECKSUM: 8567405fcbb06f12c2038bf15803fa3e00b50e35
 
 COCOAPODS: 1.0.0.beta.6

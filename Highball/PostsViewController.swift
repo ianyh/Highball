@@ -179,7 +179,7 @@ extension PostsViewController {
 			else {
 				return
 		}
-		let post = dataManager.posts[indexPath.section]
+		var post = dataManager.posts[indexPath.section]
 
 		switch quickReblogAction {
 		case .Reblog(let reblogType):
