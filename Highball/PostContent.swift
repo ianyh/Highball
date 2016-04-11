@@ -26,7 +26,7 @@ public struct PostContent {
 		attributedString = htmlStringBuilder.generatedAttributedString().attributedStringByTrimmingNewlines()
 	}
 
-	public func attributedStringForDisplay() -> NSAttributedString {
+	public func attributedStringForDisplayWithLinkHandler(linkHandler: ((NSURL) -> ())?) -> NSAttributedString {
 		let mutableAttributedString = attributedString.mutableCopy() as! NSMutableAttributedString
 		let entireStringRange = NSMakeRange(0, attributedString.length)
 		let options = NSAttributedStringEnumerationOptions.Reverse
@@ -45,6 +45,18 @@ public struct PostContent {
 				} else {
 					mutableAttributedString.replaceCharactersInRange(range, withString: "")
 				}
+			} else if let link = attributes[NSLinkAttributeName] {
+				let linkURL = (link as? NSURL) ?? NSURL(string: link as! String)!
+
+				mutableAttributedString.yy_setUnderlineStyle(.StyleSingle, range: range)
+				mutableAttributedString.yy_setTextHighlightRange(
+					range,
+					color: UIColor.blueColor(),
+					backgroundColor: nil,
+					tapAction: { containerView, text, range, rect in
+						linkHandler?(linkURL)
+					}
+				)
 			}
 		}
 

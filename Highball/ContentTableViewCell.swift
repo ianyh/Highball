@@ -17,9 +17,11 @@ import YYText
 
 class ContentTableViewCell: WCFastCell {
 	private let avatarLoadQueue = dispatch_queue_create("avatarLoadQueue", nil)
+
 	private(set) var avatarImageView: UIImageView!
 	private(set) var usernameLabel: UILabel!
 	private(set) var textView: YYTextView!
+
 	var width: CGFloat = 375
 	private var postContent: PostContent?
 	var trailData: PostTrailData? {
@@ -79,11 +81,15 @@ class ContentTableViewCell: WCFastCell {
 
 						postContent.setImageView(imageView, withSize: scaledSize, forAttachmentURL: contentURL)
 
-						self.textView.attributedText = postContent.attributedStringForDisplay()
+						self.textView.attributedText = postContent.attributedStringForDisplayWithLinkHandler() { url in
+							self.linkHandler?(url)
+						}
 						self.widthDidChange?(url: contentURL.absoluteString, width: scaledSize.width, height: scaledSize.height, imageView: imageView)
 					}
 				}
-				textView.attributedText = postContent.attributedStringForDisplay()
+				textView.attributedText = postContent.attributedStringForDisplayWithLinkHandler() { url in
+					self.linkHandler?(url)
+				}
 				usernameLabel.superview?.hidden = (postContent.attributedString.string.characters.count == 0)
 			} else {
 				textView.attributedText = NSAttributedString(string: "")

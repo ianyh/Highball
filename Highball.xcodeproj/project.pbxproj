@@ -180,6 +180,7 @@
 		400859191B7EB9EB009DF207 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				403F53DE19AFCEB800FF8F3B /* String+HTML.swift */,
 				4008591A1B7EBA05009DF207 /* NSDate+Relative.swift */,
 				40CFDAB51C34990F008FBF9A /* ReuseIdentifiers.swift */,
 				40CE13D81CB3377100847A94 /* NSAttributedString+Trim.swift */,
@@ -246,7 +247,6 @@
 				40778B9A19B15F7D00F8EE13 /* Models */,
 				4048DF7819AAB597000524F7 /* Views */,
 				4050698019AA76BD0066ECE3 /* AppDelegate.swift */,
-				403F53DE19AFCEB800FF8F3B /* String+HTML.swift */,
 				4050698A19AA76BD0066ECE3 /* Images.xcassets */,
 				409030C71C306C42008E786F /* Main.storyboard */,
 				408D5B6D1B7D6AA300C787FA /* Launch Screen.xib */,
