@@ -125,6 +125,13 @@ extension PostsTableViewAdapter: UITableViewDataSource {
 				}
 			}
 			cell.linkHandler = linkTapHandler
+			cell.usernameTapHandler = { [weak self] username in
+				guard let strongSelf = self else {
+					return
+				}
+				let blogViewController = BlogViewController(blogName: username)
+				strongSelf.delegate.adapter(strongSelf, didEmitViewController: blogViewController, forPresentation: false)
+			}
 		}
 
 		return cell

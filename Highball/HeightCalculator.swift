@@ -48,7 +48,8 @@ struct HeightCalculator {
 
 	func calculateHeightWithAttributedStringData(data: NSData, completion: (height: CGFloat?) -> ()) {
 		let postContent = PostContent(htmlData: data)
-		let textLayout = YYTextLayout(containerSize: CGSize(width: width - 20, height: CGFloat.max), text: postContent.attributedStringForDisplay())
+		let string = postContent.attributedStringForDisplayWithLinkHandler(nil)
+		let textLayout = YYTextLayout(containerSize: CGSize(width: width - 20, height: CGFloat.max), text: string)
 		let size = textLayout!.textBoundingSize
 
 		dispatch_async(dispatch_get_main_queue()) {
