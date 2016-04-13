@@ -99,6 +99,7 @@ class ContentTableViewCell: WCFastCell {
 	}
 
 	var linkHandler: ((NSURL) -> ())?
+	var usernameTapHandler: ((String) -> ())?
 	var widthDidChange: ((url: String, width: CGFloat, height: CGFloat, imageView: FLAnimatedImageView) -> ())?
 	var widthForURL: ((url: String) -> CGFloat?)?
 	var imageViewForURL: ((url: String) -> FLAnimatedImageView?)?
@@ -117,12 +118,15 @@ class ContentTableViewCell: WCFastCell {
 		contentView.clipsToBounds = true
 
 		let usernameContainerView = UIView()
+		let usernameButton = UIButton(type: .System)
 
 		avatarImageView = UIImageView()
 		usernameLabel = UILabel()
 		textView = YYTextView()
 
 		usernameContainerView.backgroundColor = UIColor.whiteColor()
+
+		usernameButton.addTarget(self, action: #selector(ContentTableViewCell.handleUsernameTap(_:)), forControlEvents: .TouchUpInside)
 
 		avatarImageView.clipsToBounds = true
 		avatarImageView.contentMode = .ScaleAspectFit
@@ -137,20 +141,24 @@ class ContentTableViewCell: WCFastCell {
 
 		usernameContainerView.addSubview(avatarImageView)
 		usernameContainerView.addSubview(usernameLabel)
+		usernameContainerView.addSubview(usernameButton)
 		contentView.addSubview(textView)
 		contentView.addSubview(usernameContainerView)
 
-		constrain([usernameContainerView, avatarImageView, usernameLabel, textView, contentView]) { views in
+		constrain([usernameContainerView, usernameButton, avatarImageView, usernameLabel, textView, contentView]) { views in
 			let usernameContainerView = views[0]
-			let avatarImageView = views[1]
-			let usernameLabel = views[2]
-			let textView = views[3]
-			let contentView = views[4]
+			let usernameButton = views[1]
+			let avatarImageView = views[2]
+			let usernameLabel = views[3]
+			let textView = views[4]
+			let contentView = views[5]
 
 			usernameContainerView.top == contentView.top
 			usernameContainerView.right <= contentView.right
 			usernameContainerView.left == contentView.left
 			usernameContainerView.height == 32
+
+			usernameButton.edges == usernameContainerView.edges
 
 			avatarImageView.top == usernameContainerView.top + 4
 			avatarImageView.bottom == usernameContainerView.bottom - 4
@@ -177,4 +185,11 @@ class ContentTableViewCell: WCFastCell {
 		widthDidChange = nil
 		widthForURL = nil
 	}
+
+    func handleUsernameTap(sender: AnyObject) {
+        guard let username = trailData?.username else {
+            return
+        }
+        usernameTapHandler?(username)
+    }
 }
