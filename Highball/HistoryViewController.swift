@@ -38,9 +38,8 @@ class HistoryViewController: UITableViewController {
 		bookmarks = NSUserDefaults.standardUserDefaults().arrayForKey("HIBookmarks:\(AccountsService.account.blog.url)") as? [[String: AnyObject]]
 		bookmarks = bookmarks?
 			.sort { bookmarkA, bookmarkB in
-				guard
-					let dateA = bookmarkA["date"] as? NSDate,
-					let dateB = bookmarkB["date"] as? NSDate
+				guard let dateA = bookmarkA["date"] as? NSDate,
+					dateB = bookmarkB["date"] as? NSDate
 				else {
 					return false
 				}

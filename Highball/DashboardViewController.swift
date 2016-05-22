@@ -60,10 +60,9 @@ class DashboardViewController: PostsViewController {
 	}
 
 	func bookmark() {
-		guard
-			let indexPaths = tableView.indexPathsForVisibleRows,
-			let firstIndexPath = indexPaths.first,
-			let account = AccountsService.account
+		guard let indexPaths = tableView.indexPathsForVisibleRows,
+			firstIndexPath = indexPaths.first,
+			account = AccountsService.account
 		else {
 			return
 		}

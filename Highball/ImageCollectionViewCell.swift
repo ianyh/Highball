@@ -91,9 +91,8 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
 	}
 
 	func loadPhoto() {
-		guard
-			let photo = photo,
-			let contentWidth = contentWidth
+		guard let photo = photo,
+			contentWidth = contentWidth
 		else {
 			return
 		}

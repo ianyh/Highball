@@ -31,7 +31,7 @@ class PostPhoto {
 		var sizes = [json["original_size"]]
 		sizes.appendContentsOf(json["alt_sizes"].arrayValue.sort { $0["width"].int! > $1["width"].int! })
 		self.sizes = sizes
-		if let width = json["original_size"]["width"].float, let height = json["original_size"]["height"].float {
+		if let width = json["original_size"]["width"].float, height = json["original_size"]["height"].float {
 			self.widthToHeightRatio = width / height
 		} else {
 			self.widthToHeightRatio = 1.0
@@ -40,7 +40,7 @@ class PostPhoto {
 
 	func urlWithWidth(width: CGFloat) -> NSURL {
 		let appDelegate = UIApplication.sharedApplication().delegate
-		if let delegate = appDelegate as? AppDelegate, let reachability = delegate.reachability {
+		if let delegate = appDelegate as? AppDelegate, reachability = delegate.reachability {
 			if reachability.isReachableViaWiFi() {
 				return NSURL(string: sizes.first!["url"].stringValue)!
 			}

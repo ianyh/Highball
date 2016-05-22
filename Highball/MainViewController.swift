@@ -82,9 +82,8 @@ class MainViewController: UITabBarController {
 	}
 
 	override func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
-		guard
-			let navigationController = selectedViewController as? UINavigationController,
-			let tableViewController = navigationController.viewControllers.last as? UITableViewController
+		guard let navigationController = selectedViewController as? UINavigationController,
+			tableViewController = navigationController.viewControllers.last as? UITableViewController
 			where selectedIndex == tabBar.items?.indexOf(item)
 		else {
 			return

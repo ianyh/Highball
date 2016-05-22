@@ -12,10 +12,7 @@ import XCDYouTubeKit
 
 class YoutubeTableViewCell: VideoTableViewCell {
 	override func loadVideo() {
-		guard
-			let post = post,
-			let videoURL = post.videoURL()
-		else {
+		guard let post = post, videoURL = post.videoURL() else {
 			return
 		}
 

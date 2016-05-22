@@ -32,10 +32,7 @@ class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
 				loadVideo()
 			}
 
-			guard
-				let thumbnailURLString = post.thumbnailURLString,
-				let thumbnailURL = NSURL(string: thumbnailURLString)
-			else {
+			guard let thumbnailURLString = post.thumbnailURLString, thumbnailURL = NSURL(string: thumbnailURLString) else {
 				return
 			}
 
@@ -55,10 +52,7 @@ class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
 	}
 	var urlString: String? {
 		didSet {
-			guard
-				let urlString = urlString,
-				let url = NSURL(string: urlString)
-			else {
+			guard let urlString = urlString, url = NSURL(string: urlString) else {
 				return
 			}
 
@@ -109,10 +103,7 @@ class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
 	}
 
 	func loadVideo() {
-		guard
-			let post = post,
-			let url = post.videoURL()?.absoluteString
-		else {
+		guard let post = post, url = post.videoURL()?.absoluteString else {
 			return
 		}
 
