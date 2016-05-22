@@ -16,6 +16,7 @@ class DashboardViewController: PostsViewController {
 		super.init()
 
 		navigationItem.title = "Dashboard"
+		updateRightBarButtonItem()
 
 		NSNotificationCenter.defaultCenter().addObserver(
 			self,
@@ -95,27 +96,65 @@ class DashboardViewController: PostsViewController {
 			self.tableViewAdapter?.resetCache()
 			self.tableView.reloadData()
 			self.dataManager.loadTop(self.tableView.frame.width)
+			self.updateRightBarButtonItem()
 		})
 		alertController.addAction(UIAlertAction(title: "No", style: .Cancel, handler: nil))
 		presentViewController(alertController, animated: true, completion: nil)
 	}
 
 	func gotoBookmark(bookmarkID: Int) {
-		let upArrow = FAKIonIcons.iosArrowUpIconWithSize(30)
-		let upArrowImage = upArrow.imageWithSize(CGSize(width: 30, height: 30))
-
-		navigationItem.rightBarButtonItem = UIBarButtonItem(
-			image: upArrowImage,
-			style: .Plain,
-			target: self,
-			action: #selector(DashboardViewController.bookmarks(_:event:))
-		)
-
 		dataManager.topID = bookmarkID
 		dataManager.cursor = bookmarkID
 		dataManager.posts = []
 		dataManager.loadMore(tableView.frame.width)
 		tableViewAdapter?.resetCache()
 		tableView.reloadData()
+
+		updateRightBarButtonItem()
+	}
+
+	func presentHistory() {
+		let historyViewController = HistoryViewController(delegate: self)
+		let navigationController = UINavigationController(rootViewController: historyViewController)
+
+		presentViewController(navigationController, animated: true, completion: nil)
+	}
+
+	internal func updateRightBarButtonItem() {
+		if dataManager.topID == nil {
+			let historyIcon = FAKIonIcons.iosClockOutlineIconWithSize(30.0)
+			let historyIconImage = historyIcon.imageWithSize(CGSize(width: 30, height: 30))
+
+			navigationItem.rightBarButtonItem = UIBarButtonItem(
+				image: historyIconImage,
+				style: .Plain,
+				target: self,
+				action: #selector(presentHistory)
+			)
+		} else {
+			let upArrow = FAKIonIcons.iosArrowUpIconWithSize(30)
+			let upArrowImage = upArrow.imageWithSize(CGSize(width: 30, height: 30))
+
+			navigationItem.rightBarButtonItem = UIBarButtonItem(
+				image: upArrowImage,
+				style: .Plain,
+				target: self,
+				action: #selector(DashboardViewController.bookmarks(_:event:))
+			)
+		}
+	}
+}
+
+extension DashboardViewController: HistoryViewControllerDelegate {
+	func historyViewController(historyViewController: HistoryViewController, didFinishWithId selectedId: Int?) {
+		defer {
+			dismissViewControllerAnimated(true, completion: nil)
+		}
+
+		guard let selectedId = selectedId else {
+			return
+		}
+
+		gotoBookmark(selectedId)
 	}
 }
