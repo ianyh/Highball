@@ -9,7 +9,7 @@
 import UIKit
 
 protocol HistoryViewControllerDelegate {
-	func historyViewController(historyViewController: HistoryViewController, selectedId: Int)
+	func historyViewController(historyViewController: HistoryViewController, didFinishWithId selectedId: Int?)
 }
 
 class HistoryViewController: UITableViewController {
@@ -20,6 +20,11 @@ class HistoryViewController: UITableViewController {
 		self.delegate = delegate
 		super.init(style: .Plain)
 		navigationItem.title = "History"
+		navigationItem.leftBarButtonItem = UIBarButtonItem(
+			barButtonSystemItem: .Cancel,
+			target: self,
+			action: #selector(cancel(_:))
+		)
 	}
 
 	required init?(coder aDecoder: NSCoder) {
@@ -38,9 +43,8 @@ class HistoryViewController: UITableViewController {
 		bookmarks = NSUserDefaults.standardUserDefaults().arrayForKey("HIBookmarks:\(AccountsService.account.blog.url)") as? [[String: AnyObject]]
 		bookmarks = bookmarks?
 			.sort { bookmarkA, bookmarkB in
-				guard
-					let dateA = bookmarkA["date"] as? NSDate,
-					let dateB = bookmarkB["date"] as? NSDate
+				guard let dateA = bookmarkA["date"] as? NSDate,
+					dateB = bookmarkB["date"] as? NSDate
 				else {
 					return false
 				}
@@ -76,6 +80,10 @@ class HistoryViewController: UITableViewController {
 			return
 		}
 
-		delegate.historyViewController(self, selectedId: bookmarkID)
+		delegate.historyViewController(self, didFinishWithId: bookmarkID)
+	}
+
+	func cancel(sender: AnyObject) {
+		delegate.historyViewController(self, didFinishWithId: nil)
 	}
 }

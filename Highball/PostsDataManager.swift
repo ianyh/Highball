@@ -117,10 +117,7 @@ class PostsDataManager {
 			return
 		}
 
-		guard
-			let posts = posts,
-			let cursor = cursor
-		else {
+		guard let posts = posts, cursor = cursor else {
 			return
 		}
 

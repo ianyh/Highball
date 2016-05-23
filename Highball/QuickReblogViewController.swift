@@ -80,7 +80,7 @@ class QuickReblogViewController: UIViewController {
 					button.layer.pop_addAnimation(opacityAnimation, forKey: opacityAnimation.name)
 				}
 
-				let onLeft = startButton.center.x < CGRectGetMidX(view.bounds)
+				let onLeft = startButton.center.x < view.bounds.midX
 				let center = view.convertPoint(startButton.center, toView: nil)
 				let distanceFromTop = center.y + 50
 				let distanceFromBottom = UIScreen.mainScreen().bounds.height - center.y - 50
@@ -211,10 +211,7 @@ class QuickReblogViewController: UIViewController {
 
 extension QuickReblogViewController {
 	func updateWithPoint(point: CGPoint) {
-		guard
-			let view = view.hitTest(point, withEvent: nil),
-			let button = view as? UIButton
-		else {
+		guard let view = view.hitTest(point, withEvent: nil), button = view as? UIButton else {
 			return
 		}
 

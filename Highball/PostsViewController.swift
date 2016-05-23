@@ -172,12 +172,11 @@ extension PostsViewController {
 			viewController.view.removeFromSuperview()
 		}
 
-		guard
-			let indexPath = tableView.indexPathForRowAtPoint(collectionViewPoint),
-			let cell = tableView.cellForRowAtIndexPath(indexPath),
-			let quickReblogAction = viewController.reblogAction()
-			else {
-				return
+		guard let indexPath = tableView.indexPathForRowAtPoint(collectionViewPoint),
+			cell = tableView.cellForRowAtIndexPath(indexPath),
+			quickReblogAction = viewController.reblogAction()
+		else {
+			return
 		}
 		var post = dataManager.posts[indexPath.section]
 
@@ -197,7 +196,7 @@ extension PostsViewController {
 			let extensionItemSource = XExtensionItemSource(URL: NSURL(string: post.urlString)!)
 			var additionalAttachments: [AnyObject] = post.photos.map { $0.urlWithWidth(CGFloat.max) }
 
-			if let photosetCell = cell as? PhotosetRowTableViewCell, let image = photosetCell.imageAtPoint(view.convertPoint(point, toView: cell)) {
+			if let photosetCell = cell as? PhotosetRowTableViewCell, image = photosetCell.imageAtPoint(view.convertPoint(point, toView: cell)) {
 				additionalAttachments.append(image)
 			}
 

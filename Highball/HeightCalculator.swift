@@ -22,7 +22,7 @@ struct HeightCalculator {
 	func calculateHeight(secondary: Bool = false, completion: (height: CGFloat?) -> ()) {
 		let htmlStringMethod = secondary ? Post.htmlSecondaryBodyWithWidth : Post.htmlBodyWithWidth
 
-		guard let content = htmlStringMethod(post)(width), let data = content.dataUsingEncoding(NSUTF8StringEncoding) else {
+		guard let content = htmlStringMethod(post)(width), data = content.dataUsingEncoding(NSUTF8StringEncoding) else {
 			dispatch_async(dispatch_get_main_queue()) {
 				completion(height: nil)
 			}

@@ -16,9 +16,8 @@ class ReblogTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning 
 	}
 
 	func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-		guard
-			let fromViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey),
-			let toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)
+		guard let fromViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey),
+			toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)
 		else {
 			return
 		}

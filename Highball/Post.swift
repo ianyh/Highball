@@ -74,7 +74,7 @@ struct Post {
 		self.trailData = { () -> [PostTrailData] in
 			if let trail = json["trail"].array {
 				var elements = trail.map { trailElement -> PostTrailData? in
-					if let name = trailElement["blog"]["name"].string, let content = trailElement["content"].string {
+					if let name = trailElement["blog"]["name"].string, content = trailElement["content"].string {
 						return PostTrailData(username: name, content: content)
 					} else {
 						return nil
@@ -122,12 +122,11 @@ struct Post {
 
 		switch videoType {
 		case "vine":
-			guard
-				let permalinkURLString = permalinkURLString,
-				let permalinkURL = NSURL(string: permalinkURLString),
-				let documentData = NSData(contentsOfURL: permalinkURL),
-				let document = NSString(data: documentData, encoding: NSASCIIStringEncoding) as? String,
-				let metaStringRange = document.rangeOfString("twitter:player:stream.*?content=\".*?\"", options: .RegularExpressionSearch)
+			guard let permalinkURLString = permalinkURLString,
+				permalinkURL = NSURL(string: permalinkURLString),
+				documentData = NSData(contentsOfURL: permalinkURL),
+				document = NSString(data: documentData, encoding: NSASCIIStringEncoding) as? String,
+				metaStringRange = document.rangeOfString("twitter:player:stream.*?content=\".*?\"", options: .RegularExpressionSearch)
 			else {
 				return nil
 			}
@@ -161,10 +160,7 @@ struct Post {
 			return nil
 		}
 
-		guard
-			let videoWidth = videoWidth,
-			let videoHeight = videoHeight
-		else {
+		guard let videoWidth = videoWidth, videoHeight = videoHeight else {
 			return nil
 		}
 

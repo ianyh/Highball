@@ -32,10 +32,7 @@ class PhotosetRowTableViewCell: WCFastCell {
 	}
 
 	private func updateImages() {
-		guard
-			let images = images,
-			let contentWidth = contentWidth
-		else {
+		guard let images = images, contentWidth = contentWidth else {
 			return
 		}
 
@@ -141,10 +138,7 @@ class PhotosetRowTableViewCell: WCFastCell {
 	}
 
 	func imageAtPoint(point: CGPoint) -> UIImage? {
-		guard
-			let view = self.hitTest(point, withEvent: nil),
-			let imageView = view as? UIImageView
-		else {
+		guard let view = self.hitTest(point, withEvent: nil), imageView = view as? UIImageView else {
 			return nil
 		}
 

@@ -87,7 +87,7 @@ extension PostsTableViewAdapter: UITableViewDataSource {
 		let sectionAdapter = PostSectionAdapter(post: post)
 		let cell = sectionAdapter.tableView(tableView, cellForRow: indexPath.row)
 		let linkTapHandler = { [weak self] (url: NSURL) in
-			guard let host = url.host, let strongSelf = self else {
+			guard let host = url.host, strongSelf = self else {
 				return
 			}
 

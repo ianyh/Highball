@@ -31,7 +31,6 @@ class MainViewController: UITabBarController {
 
 	func reset() {
 		let dashboardViewController = UINavigationController(rootViewController: DashboardViewController())
-		let historyViewController = UINavigationController(rootViewController: HistoryViewController(delegate: self))
 		let likesViewController = UINavigationController(rootViewController: LikesViewController())
 		let followedBlogsViewController = UINavigationController(rootViewController: FollowedBlogsViewController())
 		let settingsViewController = UINavigationController(rootViewController: SettingsViewController())
@@ -39,8 +38,6 @@ class MainViewController: UITabBarController {
 		dashboardViewController.tabBarItem.title = "Dashboard"
 		dashboardViewController.tabBarItem.image = FAKFontAwesome.homeIconWithSize(28.0).imageWithSize(CGSize(width: 28, height: 28))
 
-		historyViewController.tabBarItem.title = "History"
-		historyViewController.tabBarItem.image = FAKFontAwesome.historyIconWithSize(22.0).imageWithSize(CGSize(width: 24, height: 24))
 
 		likesViewController.tabBarItem.title = "Likes"
 		likesViewController.tabBarItem.image = FAKFontAwesome.heartIconWithSize(22.0).imageWithSize(CGSize(width: 24, height: 24))
@@ -53,7 +50,6 @@ class MainViewController: UITabBarController {
 
 		viewControllers = [
 			dashboardViewController,
-			historyViewController,
 			likesViewController,
 			followedBlogsViewController,
 			settingsViewController
@@ -82,9 +78,8 @@ class MainViewController: UITabBarController {
 	}
 
 	override func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
-		guard
-			let navigationController = selectedViewController as? UINavigationController,
-			let tableViewController = navigationController.viewControllers.last as? UITableViewController
+		guard let navigationController = selectedViewController as? UINavigationController,
+			tableViewController = navigationController.viewControllers.last as? UITableViewController
 			where selectedIndex == tabBar.items?.indexOf(item)
 		else {
 			return
@@ -103,17 +98,5 @@ class MainViewController: UITabBarController {
 		}()
 
 		tableViewController.tableView.setContentOffset(CGPoint(x: 0, y: newContentOffsetY), animated: true)
-	}
-}
-
-extension MainViewController: HistoryViewControllerDelegate {
-	func historyViewController(historyViewController: HistoryViewController, selectedId: Int) {
-		let dashboardViewController = viewControllers![0] as! UINavigationController
-
-		dashboardViewController.popToRootViewControllerAnimated(false)
-		(dashboardViewController.topViewController as! DashboardViewController).gotoBookmark(selectedId)
-
-		cachedSelectedIndex = 0
-		selectedIndex = 0
 	}
 }
