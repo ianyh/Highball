@@ -9,11 +9,11 @@ PODS:
     - DTFoundation/DTAnimatedGIF (~> 1.7.5)
     - DTFoundation/DTHTMLParser (~> 1.7.5)
     - DTFoundation/UIKit (~> 1.7.5)
-  - DTFoundation/Core (1.7.9)
-  - DTFoundation/DTAnimatedGIF (1.7.9)
-  - DTFoundation/DTHTMLParser (1.7.9):
+  - DTFoundation/Core (1.7.10)
+  - DTFoundation/DTAnimatedGIF (1.7.10)
+  - DTFoundation/DTHTMLParser (1.7.10):
     - DTFoundation/Core
-  - DTFoundation/UIKit (1.7.9):
+  - DTFoundation/UIKit (1.7.10):
     - DTFoundation/Core
   - Fabric (1.6.7)
   - FLAnimatedImage (1.0.10)
@@ -111,7 +111,7 @@ SPEC CHECKSUMS:
   ChameleonFramework: a6b466873ff9a4ce3a5196c20bccf1a97ad9f446
   Crashlytics: c3a2333dea9e2733d2777f730910321fc9e25c0d
   DTCoreText: 3ea8bba23dd2141ba18adb227a7dd33a822df1c4
-  DTFoundation: 70a0765e3596f82dd421832e95c65e2166eb3102
+  DTFoundation: 3b6b1b817d2a7fb02e7eaf2596c922a68145bd43
   Fabric: caf7580c725e64db144f610ac65cd60956911dc7
   FLAnimatedImage: e16a1e1cef08e4c509b47e4acbe3923f65c16135
   FontAwesomeKit: 0cd610453ce270f34ad17378c68de98aad0e05ef
