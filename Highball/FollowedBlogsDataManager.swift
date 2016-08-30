@@ -50,7 +50,7 @@ class FollowedBlogsDataManager {
 				}
 			} else {
 				dispatch_async(dispatch_get_main_queue()) {
-					let moreBlogs = JSON(response)["blogs"].array!.map { Blog(json: $0) }
+					let moreBlogs = JSON(response)["blogs"].array!.map { Blog.from($0.dictionaryObject!)! }
 					self.blogCount = JSON(response)["total_blogs"].int
 					self.blogs.appendContentsOf(moreBlogs)
 					self.loadMore()

@@ -40,7 +40,7 @@ class HistoryViewController: UITableViewController {
 	override func viewWillAppear(animated: Bool) {
 		super.viewWillAppear(animated)
 
-		bookmarks = NSUserDefaults.standardUserDefaults().arrayForKey("HIBookmarks:\(AccountsService.account.blog.url)") as? [[String: AnyObject]]
+		bookmarks = NSUserDefaults.standardUserDefaults().arrayForKey("HIBookmarks:\(AccountsService.account.primaryBlog.url)") as? [[String: AnyObject]]
 		bookmarks = bookmarks?
 			.sort { bookmarkA, bookmarkB in
 				guard let dateA = bookmarkA["date"] as? NSDate,

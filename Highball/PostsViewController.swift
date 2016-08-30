@@ -185,7 +185,7 @@ extension PostsViewController {
 			let reblogViewController = TextReblogViewController(
 				post: post,
 				reblogType: reblogType,
-				blogName: AccountsService.account.blog.name,
+				blogName: AccountsService.account.primaryBlog.name,
 				postHeightCache: postHeightCache
 			)
 			let sourceRect = view.convertRect(cell.bounds, fromView: cell)

@@ -30,6 +30,11 @@ class MainViewController: UITabBarController {
 	}
 
 	func reset() {
+		guard AccountsService.account != nil else {
+			viewControllers = [UINavigationController()]
+			return
+		}
+
 		let dashboardViewController = UINavigationController(rootViewController: DashboardViewController())
 		let likesViewController = UINavigationController(rootViewController: LikesViewController())
 		let followedBlogsViewController = UINavigationController(rootViewController: FollowedBlogsViewController())
@@ -37,7 +42,6 @@ class MainViewController: UITabBarController {
 
 		dashboardViewController.tabBarItem.title = "Dashboard"
 		dashboardViewController.tabBarItem.image = FAKFontAwesome.homeIconWithSize(28.0).imageWithSize(CGSize(width: 28, height: 28))
-
 
 		likesViewController.tabBarItem.title = "Likes"
 		likesViewController.tabBarItem.image = FAKFontAwesome.heartIconWithSize(22.0).imageWithSize(CGSize(width: 24, height: 24))

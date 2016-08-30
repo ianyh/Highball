@@ -69,7 +69,7 @@ class DashboardViewController: PostsViewController {
 		}
 
 		let userDefaults = NSUserDefaults.standardUserDefaults()
-		let bookmarksKey = "HIBookmarks:\(account.blog.url)"
+		let bookmarksKey = "HIBookmarks:\(account.primaryBlog.url)"
 		let postIndex = firstIndexPath.section > 0 ? firstIndexPath.section - 1 : firstIndexPath.section
 		let post = dataManager.posts[postIndex]
 		var bookmarks: [[String: AnyObject]] = userDefaults.arrayForKey(bookmarksKey) as? [[String: AnyObject]] ?? []

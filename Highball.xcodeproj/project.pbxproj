@@ -28,6 +28,8 @@
 		4050699719AA76BD0066ECE3 /* HighballTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4050699619AA76BD0066ECE3 /* HighballTests.swift */; };
 		405D659A1C34C4E500968B3B /* PostsDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 405D65991C34C4E500968B3B /* PostsDataManager.swift */; };
 		406690651A5A17A1006345B0 /* TagsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 406690641A5A17A1006345B0 /* TagsTableViewCell.swift */; };
+		406F38EF1D7514520046CE1D /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 406F38EE1D7514520046CE1D /* Account.swift */; };
+		406F38F31D751F2E0046CE1D /* Blog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 406F38F21D751F2E0046CE1D /* Blog.swift */; };
 		40731BB819FDC38900F6978D /* PostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731BB719FDC38900F6978D /* PostsViewController.swift */; };
 		40731BBA19FDCAD300F6978D /* LikesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731BB919FDCAD300F6978D /* LikesViewController.swift */; };
 		4074B6611A99269C00774E00 /* TagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4074B6601A99269C00774E00 /* TagViewController.swift */; };
@@ -63,7 +65,7 @@
 		40F8CE961A41111300609ABF /* AccountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F8CE951A41111300609ABF /* AccountsViewController.swift */; };
 		40F8CE9A1A41143000609ABF /* AccountsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F8CE991A41143000609ABF /* AccountsService.swift */; };
 		40F9F4041CB1DA8200989D5B /* PostTrailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F9F4031CB1DA8200989D5B /* PostTrailData.swift */; };
-		40FF6D4319B940C6008119A3 /* Blog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FF6D4219B940C6008119A3 /* Blog.swift */; };
+		40FF6D4319B940C6008119A3 /* UserBlog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FF6D4219B940C6008119A3 /* UserBlog.swift */; };
 		40FF6D4519B9F656008119A3 /* QuickReblogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FF6D4419B9F656008119A3 /* QuickReblogViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -104,6 +106,8 @@
 		405069A019AA77E80066ECE3 /* Highball-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Highball-Bridging-Header.h"; sourceTree = "<group>"; };
 		405D65991C34C4E500968B3B /* PostsDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsDataManager.swift; sourceTree = "<group>"; };
 		406690641A5A17A1006345B0 /* TagsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsTableViewCell.swift; sourceTree = "<group>"; };
+		406F38EE1D7514520046CE1D /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
+		406F38F21D751F2E0046CE1D /* Blog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Blog.swift; sourceTree = "<group>"; };
 		40731BB719FDC38900F6978D /* PostsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsViewController.swift; sourceTree = "<group>"; };
 		40731BB919FDCAD300F6978D /* LikesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikesViewController.swift; sourceTree = "<group>"; };
 		4074B6601A99269C00774E00 /* TagViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagViewController.swift; sourceTree = "<group>"; };
@@ -139,7 +143,7 @@
 		40F8CE951A41111300609ABF /* AccountsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsViewController.swift; sourceTree = "<group>"; };
 		40F8CE991A41143000609ABF /* AccountsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsService.swift; sourceTree = "<group>"; };
 		40F9F4031CB1DA8200989D5B /* PostTrailData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostTrailData.swift; sourceTree = "<group>"; };
-		40FF6D4219B940C6008119A3 /* Blog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Blog.swift; sourceTree = "<group>"; };
+		40FF6D4219B940C6008119A3 /* UserBlog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserBlog.swift; sourceTree = "<group>"; };
 		40FF6D4419B9F656008119A3 /* QuickReblogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickReblogViewController.swift; sourceTree = "<group>"; };
 		440C4C4D5E0A7451B7FA466E /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EC024F7DABBCBE3005FA9BF /* Pods-Highball.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Highball.release.xcconfig"; path = "Pods/Target Support Files/Pods-Highball/Pods-Highball.release.xcconfig"; sourceTree = "<group>"; };
@@ -310,7 +314,7 @@
 				40778B9B19B15F9C00F8EE13 /* Post.swift */,
 				40778B9D19B160DD00F8EE13 /* PostPhoto.swift */,
 				408C7D2019B384C800EFC410 /* PostDialogueEntry.swift */,
-				40FF6D4219B940C6008119A3 /* Blog.swift */,
+				40FF6D4219B940C6008119A3 /* UserBlog.swift */,
 				40F8CE991A41143000609ABF /* AccountsService.swift */,
 				402033581A6C785400BA136C /* AnimatedImageCache.swift */,
 				40CFDAB31C344931008FBF9A /* HeightCalculator.swift */,
@@ -318,6 +322,8 @@
 				403040DF1C37211A001EFC9E /* PhotosetLayoutRows.swift */,
 				40F9F4031CB1DA8200989D5B /* PostTrailData.swift */,
 				40D374AF1CB9F07B008CB51A /* PostContent.swift */,
+				406F38EE1D7514520046CE1D /* Account.swift */,
+				406F38F21D751F2E0046CE1D /* Blog.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -369,15 +375,15 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4050699A19AA76BD0066ECE3 /* Build configuration list for PBXNativeTarget "Highball" */;
 			buildPhases = (
-				AF23FBDE1313EF60F80F9ACC /* 📦 Check Pods Manifest.lock */,
+				AF23FBDE1313EF60F80F9ACC /* [CP] Check Pods Manifest.lock */,
 				40CFDABB1C34AFA6008FBF9A /* ShellScript */,
 				40A11E5E19B4CBA500B91843 /* ShellScript */,
 				4050697719AA76BD0066ECE3 /* Sources */,
 				4050697819AA76BD0066ECE3 /* Frameworks */,
 				4050697919AA76BD0066ECE3 /* Resources */,
 				40A11E6519B4D97800B91843 /* Run Script */,
-				609937D854C51302751484C6 /* 📦 Embed Pods Frameworks */,
-				EEB2CFC028303143C112A93D /* 📦 Copy Pods Resources */,
+				609937D854C51302751484C6 /* [CP] Embed Pods Frameworks */,
+				EEB2CFC028303143C112A93D /* [CP] Copy Pods Resources */,
 				40D2533A1CAB646D00C028CE /* ShellScript */,
 			);
 			buildRules = (
@@ -521,14 +527,14 @@
 			shellPath = /bin/sh;
 			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
 		};
-		609937D854C51302751484C6 /* 📦 Embed Pods Frameworks */ = {
+		609937D854C51302751484C6 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -536,14 +542,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Highball/Pods-Highball-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		AF23FBDE1313EF60F80F9ACC /* 📦 Check Pods Manifest.lock */ = {
+		AF23FBDE1313EF60F80F9ACC /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -551,14 +557,14 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		EEB2CFC028303143C112A93D /* 📦 Copy Pods Resources */ = {
+		EEB2CFC028303143C112A93D /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -583,6 +589,7 @@
 				40080E901A0F11DD00D883AE /* LockSplashViewController.swift in Sources */,
 				4050698619AA76BD0066ECE3 /* DashboardViewController.swift in Sources */,
 				40FF6D4519B9F656008119A3 /* QuickReblogViewController.swift in Sources */,
+				406F38EF1D7514520046CE1D /* Account.swift in Sources */,
 				403F53DB19AECFEF00FF8F3B /* PhotosetRowTableViewCell.swift in Sources */,
 				408C7D2119B384C800EFC410 /* PostDialogueEntry.swift in Sources */,
 				4008591B1B7EBA05009DF207 /* NSDate+Relative.swift in Sources */,
@@ -608,12 +615,13 @@
 				402A20961A3D2C510007CCFF /* TitleTableViewCell.swift in Sources */,
 				40DB21251C556195007AD3DD /* FollowedBlogsViewController.swift in Sources */,
 				40F75A851C31FA4100EC86DE /* HistoryViewController.swift in Sources */,
+				406F38F31D751F2E0046CE1D /* Blog.swift in Sources */,
 				4074B6611A99269C00774E00 /* TagViewController.swift in Sources */,
 				40778B9E19B160DD00F8EE13 /* PostPhoto.swift in Sources */,
 				40CFDAB81C349F84008FBF9A /* TextReblogTableViewAdapter.swift in Sources */,
 				40DF7DB21A7672E900CE3D4C /* VideoTableViewCell.swift in Sources */,
 				40F75A821C31D68800EC86DE /* MainViewController.swift in Sources */,
-				40FF6D4319B940C6008119A3 /* Blog.swift in Sources */,
+				40FF6D4319B940C6008119A3 /* UserBlog.swift in Sources */,
 				40DB21291C5571FF007AD3DD /* FollowedBlogsTableViewAdapter.swift in Sources */,
 				403F53DD19AFB5DF00FF8F3B /* ContentTableViewCell.swift in Sources */,
 				40778BAA19B24BA500F8EE13 /* PostQuestionTableViewCell.swift in Sources */,

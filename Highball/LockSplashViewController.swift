@@ -44,7 +44,7 @@ class LockSplashViewController: VENTouchLockSplashViewController, UITableViewDat
 		let account = accounts[indexPath.row]
 		let cell = tableView.dequeueReusableCellWithIdentifier(UITableViewCell.cellIdentifier)!
 
-		cell.textLabel?.text = account.blog.name
+		cell.textLabel?.text = account.name
 
 		if let currentAccount = AccountsService.account {
 			if account == currentAccount {
