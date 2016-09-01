@@ -7,8 +7,14 @@
 //
 
 import Foundation
+import Mapper
 
-public struct PostTrailData {
-	let username: String
-	let content: String
+public struct PostTrailData: Mappable {
+	public let username: String
+	public let content: String
+
+	public init(map: Mapper) throws {
+		username = try map.from("blog.name")
+		content = try map.from("content")
+	}
 }

@@ -88,7 +88,7 @@ struct PostSectionAdapter {
 
 		switch post.type {
 		case "photo":
-			rowCount = post.layoutRows.layoutRows.count + post.trailData.count
+			rowCount = post.layout.rows.count + post.trailData.count
 		case "text":
 			rowCount = 1 + post.trailData.count
 		case "answer":
@@ -155,12 +155,12 @@ struct PostSectionAdapter {
 		if postPhotos.count == 1 {
 			cell.images = postPhotos
 		} else {
-			let photosetLayoutRows = post.layoutRows
+			let photosetLayout = post.layout
 			var photosIndexStart = 0
-			for photosetLayoutRow in photosetLayoutRows.layoutRows[0..<row] {
+			for photosetLayoutRow in photosetLayout.rows[0..<row] {
 				photosIndexStart += photosetLayoutRow
 			}
-			let photosetLayoutRow = photosetLayoutRows.layoutRows[row]
+			let photosetLayoutRow = photosetLayout.rows[row]
 
 			cell.images = Array(postPhotos[(photosIndexStart)..<(photosIndexStart + photosetLayoutRow)])
 		}
@@ -243,7 +243,7 @@ struct PostSectionAdapter {
 	private func videoCellWithTableView(tableView: UITableView, atRow row: Int) -> UITableViewCell {
 		switch PostViewSections.VideoRow.videoRowFromRow(row) {
 		case .Player:
-			switch post.videoType! {
+			switch post.video!.type {
 			case "youtube":
 				let cell = tableView.dequeueReusableCellWithIdentifier(YoutubeTableViewCell.cellIdentifier) as! YoutubeTableViewCell!
 				cell.post = post

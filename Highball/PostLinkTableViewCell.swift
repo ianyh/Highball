@@ -17,12 +17,12 @@ class PostLinkTableViewCell: WCFastCell {
 
 	var post: Post? {
 		didSet {
-			guard let post = post, url = NSURL(string: post.urlString) else {
+			guard let post = post else {
 				return
 			}
 
 			self.titleLabel.text = post.title
-			self.urlLabel.text = url.host
+			self.urlLabel.text = post.url.host
 		}
 	}
 

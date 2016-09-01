@@ -7,6 +7,7 @@
 //
 
 import FontAwesomeKit
+import Mapper
 import SwiftyJSON
 import TMTumblrSDK
 import UIKit
@@ -47,9 +48,7 @@ class DashboardViewController: PostsViewController {
 			return []
 		}
 
-		return postsJSON.map { post -> Post in
-			return Post(json: post)
-		}
+		return postsJSON.map { Post.from($0.dictionaryObject!) }.flatMap { $0 }
 	}
 
 	override func requestPosts(postCount: Int, parameters: [String: AnyObject], callback: TMAPICallback) {

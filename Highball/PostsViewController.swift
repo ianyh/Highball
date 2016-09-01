@@ -14,21 +14,21 @@ import TMTumblrSDK
 import UIKit
 import XExtensionItem
 
-class PostsViewController: UITableViewController {
+public class PostsViewController: UITableViewController {
 	private let requiredRefreshDistance: CGFloat = 60
 
 	private var longPressGestureRecognizer: UILongPressGestureRecognizer!
 	private var panGestureRecognizer: UIPanGestureRecognizer!
 	private var reblogViewController: QuickReblogViewController?
 
-	var postHeightCache = PostHeightCache()
+	public var postHeightCache = PostHeightCache()
 
-	var tableViewAdapter: PostsTableViewAdapter?
-	var dataManager: PostsDataManager!
+	public var tableViewAdapter: PostsTableViewAdapter?
+	public var dataManager: PostsDataManager!
 
 	private var loadingCompletion: (() -> ())?
 
-	init() {
+	public init() {
 		super.init(style: .Plain)
 		self.dataManager = PostsDataManager(
 			postHeightCache: postHeightCache,
@@ -36,11 +36,11 @@ class PostsViewController: UITableViewController {
 		)
 	}
 
-	required init?(coder aDecoder: NSCoder) {
+	public required init?(coder aDecoder: NSCoder) {
 		fatalError()
 	}
 
-	override func viewDidLoad() {
+	public override func viewDidLoad() {
 		super.viewDidLoad()
 
 		tableViewAdapter = PostsTableViewAdapter(
@@ -73,7 +73,7 @@ class PostsViewController: UITableViewController {
 		refreshControl?.addTarget(self, action: #selector(PostsViewController.refresh(_:)), forControlEvents: .ValueChanged)
 	}
 
-	override func viewDidAppear(animated: Bool) {
+	public override func viewDidAppear(animated: Bool) {
 		super.viewDidAppear(animated)
 
 		guard !dataManager.hasPosts else {
@@ -83,14 +83,14 @@ class PostsViewController: UITableViewController {
 		dataManager.loadTop(tableView.frame.width)
 	}
 
-	func refresh(sender: UIRefreshControl) {
+	public func refresh(sender: UIRefreshControl) {
 		dataManager.loadTop(tableView.frame.width)
 	}
 
-	func postsFromJSON(json: JSON) -> [Post] { return [] }
-	func requestPosts(postCount: Int, parameters: [String: AnyObject], callback: TMAPICallback) { NSException().raise() }
+	public func postsFromJSON(json: JSON) -> [Post] { return [] }
+	public func requestPosts(postCount: Int, parameters: [String: AnyObject], callback: TMAPICallback) { NSException().raise() }
 
-	func presentError(error: NSError) {
+	public func presentError(error: NSError) {
 		let alertController = UIAlertController(title: "Error", message: "Hit an error trying to load posts. \(error.localizedDescription)", preferredStyle: .Alert)
 		let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
 
@@ -101,7 +101,7 @@ class PostsViewController: UITableViewController {
 		print(error)
 	}
 
-	func reloadTable() {
+	public func reloadTable() {
 		guard !dataManager.computingHeights else {
 			return
 		}
@@ -119,8 +119,8 @@ class PostsViewController: UITableViewController {
 }
 
 // MARK: Quick Reblog
-extension PostsViewController {
-	func didLongPress(sender: UILongPressGestureRecognizer) {
+public extension PostsViewController {
+	public func didLongPress(sender: UILongPressGestureRecognizer) {
 		if sender.state == UIGestureRecognizerState.Began {
 			longPressDidBegin(sender)
 		} else if sender.state == UIGestureRecognizerState.Ended {
@@ -128,7 +128,7 @@ extension PostsViewController {
 		}
 	}
 
-	func longPressDidBegin(gestureRecognizer: UILongPressGestureRecognizer) {
+	public func longPressDidBegin(gestureRecognizer: UILongPressGestureRecognizer) {
 		tableView.scrollEnabled = false
 		let point = gestureRecognizer.locationInView(navigationController!.tabBarController!.view)
 		let collectionViewPoint = gestureRecognizer.locationInView(tableView)
@@ -154,7 +154,7 @@ extension PostsViewController {
 		}
 	}
 
-	func longPressDidEnd(gestureRecognizer: UILongPressGestureRecognizer) {
+	public func longPressDidEnd(gestureRecognizer: UILongPressGestureRecognizer) {
 		tableView.scrollEnabled = true
 
 		defer {
@@ -193,7 +193,7 @@ extension PostsViewController {
 
 			self.presentViewController(presentationViewController, animated: true, completion: nil)
 		case .Share:
-			let extensionItemSource = XExtensionItemSource(URL: NSURL(string: post.urlString)!)
+			let extensionItemSource = XExtensionItemSource(URL: post.url)
 			var additionalAttachments: [AnyObject] = post.photos.map { $0.urlWithWidth(CGFloat.max) }
 
 			if let photosetCell = cell as? PhotosetRowTableViewCell, image = photosetCell.imageAtPoint(view.convertPoint(point, toView: cell)) {
@@ -239,14 +239,14 @@ extension PostsViewController {
 
 // MARK: UIGestureRecognizerDelegate
 extension PostsViewController: UIGestureRecognizerDelegate {
-	func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+	public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
 		return true
 	}
 }
 
 // MARK: UIViewControllerTransitioningDelegate
 extension PostsViewController: UIViewControllerTransitioningDelegate {
-	func animationControllerForPresentedController(
+	public func animationControllerForPresentedController(
 		presented: UIViewController,
 		presentingController presenting: UIViewController,
 		sourceController source: UIViewController
@@ -254,7 +254,7 @@ extension PostsViewController: UIViewControllerTransitioningDelegate {
 		return ReblogTransitionAnimator()
 	}
 
-	func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+	public func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
 		let animator = ReblogTransitionAnimator()
 
 		animator.presenting = false
@@ -265,26 +265,26 @@ extension PostsViewController: UIViewControllerTransitioningDelegate {
 
 // MARK: TagsTableViewCellDelegate
 extension PostsViewController: TagsTableViewCellDelegate {
-	func tagsTableViewCell(cell: TagsTableViewCell, didSelectTag tag: String) {
+	public func tagsTableViewCell(cell: TagsTableViewCell, didSelectTag tag: String) {
 		navigationController?.pushViewController(TagViewController(tag: tag), animated: true)
 	}
 }
 
 // MARK: PostsDataManagerDelegate
 extension PostsViewController: PostsDataManagerDelegate {
-	func dataManager(dataManager: PostsDataManager, requestPostsWithCount postCount: Int, parameters: [String : AnyObject], callback: TMAPICallback) {
+	public func dataManager(dataManager: PostsDataManager, requestPostsWithCount postCount: Int, parameters: [String : AnyObject], callback: TMAPICallback) {
 		requestPosts(postCount, parameters: parameters, callback: callback)
 	}
 
-	func dataManager(dataManager: PostsDataManager, postsFromJSON json: JSON) -> [Post] {
+	public func dataManager(dataManager: PostsDataManager, postsFromJSON json: JSON) -> [Post] {
 		return postsFromJSON(json)
 	}
 
-	func dataManager(dataManager: PostsDataManager, didEncounterError error: NSError) {
+	public func dataManager(dataManager: PostsDataManager, didEncounterError error: NSError) {
 		presentError(error)
 	}
 
-	func dataManagerDidReload(dataManager: PostsDataManager, indexSet: NSIndexSet?, completion: () -> ()) {
+	public func dataManagerDidReload(dataManager: PostsDataManager, indexSet: NSIndexSet?, completion: () -> ()) {
 		loadingCompletion = {
 			completion()
 			if let indexSet = indexSet {
@@ -316,17 +316,17 @@ extension PostsViewController: PostsDataManagerDelegate {
 		reloadTable()
 	}
 
-	func dataManagerDidComputeHeight(dataManager: PostsDataManager) {
+	public func dataManagerDidComputeHeight(dataManager: PostsDataManager) {
 		reloadTable()
 	}
 }
 
 extension PostsViewController: PostsTableViewAdapterDelegate {
-	func postsForAdapter(adapter: PostsTableViewAdapter) -> [Post] {
+	public func postsForAdapter(adapter: PostsTableViewAdapter) -> [Post] {
 		return dataManager.posts ?? []
 	}
 
-	func adapter(adapter: PostsTableViewAdapter, didEmitViewController viewController: UIViewController, forPresentation presented: Bool) {
+	public func adapter(adapter: PostsTableViewAdapter, didEmitViewController viewController: UIViewController, forPresentation presented: Bool) {
 		if presented {
 			presentViewController(viewController, animated: true, completion: nil)
 		} else {
@@ -334,7 +334,7 @@ extension PostsViewController: PostsTableViewAdapterDelegate {
 		}
 	}
 
-	func adapterDidEncounterLoadMoreBoundary(adapter: PostsTableViewAdapter) {
+	public func adapterDidEncounterLoadMoreBoundary(adapter: PostsTableViewAdapter) {
 		dataManager.loadMore(tableView.frame.width)
 	}
 }

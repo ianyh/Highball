@@ -22,7 +22,7 @@ public struct AccountsService {
 			return []
 		}
 
-		return Array(realm.objects(Account))
+		return try! realm.objects(AccountObject).map { $0 }
 	}
 
 	public static func lastAccount() -> Account? {
@@ -36,7 +36,7 @@ public struct AccountsService {
 			return nil
 		}
 
-		guard let account = realm.objectForPrimaryKey(Account.self, key: accountName) else {
+		guard let account = realm.objectForPrimaryKey(AccountObject.self, key: accountName) else {
 			return nil
 		}
 
@@ -115,8 +115,8 @@ public struct AccountsService {
 						return
 					}
 
-					let blogs = blogsJSON.map { blogJSON -> UserBlog in
-						let blog = UserBlog()
+					let blogs = blogsJSON.map { blogJSON -> UserBlogObject in
+						let blog = UserBlogObject()
 						blog.name = blogJSON["name"].stringValue
 						blog.url = blogJSON["url"].stringValue
 						blog.title = blogJSON["title"].stringValue
@@ -124,11 +124,11 @@ public struct AccountsService {
 						return blog
 					}
 
-					account = Account()
-					account!.name = json["name"].stringValue
-					account!.token = TMAPIClient.sharedInstance().OAuthToken
-					account!.tokenSecret = TMAPIClient.sharedInstance().OAuthTokenSecret
-					account!.blogs.appendContentsOf(blogs)
+					let accountObject = AccountObject()
+					accountObject.name = json["name"].stringValue
+					accountObject.token = TMAPIClient.sharedInstance().OAuthToken
+					accountObject.tokenSecret = TMAPIClient.sharedInstance().OAuthTokenSecret
+					accountObject.blogObjects.appendContentsOf(blogs)
 
 					guard let realm = try? Realm() else {
 						return
@@ -136,19 +136,19 @@ public struct AccountsService {
 
 					do {
 						try realm.write {
-							realm.add(account!, update: true)
+							realm.add(accountObject, update: true)
 						}
 					} catch {
 						print(error)
 						return
 					}
 
+					account = accountObject
+
 					self.account = currentAccount
 
 					TMAPIClient.sharedInstance().OAuthToken = currentAccount?.token
 					TMAPIClient.sharedInstance().OAuthTokenSecret = currentAccount?.tokenSecret
-
-					completion(account: account)
 				}
 			},
 			failure: { (error) in

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Mapper
 import SwiftyJSON
 import UIKit
 
@@ -15,86 +16,71 @@ enum ReblogType {
 	case Queue
 }
 
-struct Post {
-	private let json: JSON
-	let id: Int
-	let type: String
-	let blogName: String
-	let rebloggedBlogName: String?
-	let reblogKey: String
-	let timestamp: Int
-	let urlString: String
-	let shortURLString: String
-	let tags: [String]
-	let photos: [PostPhoto]
-	let layoutRows: PhotosetLayoutRows
-	let dialogueEntries: [PostDialogueEntry]
-	let body: String?
-	let secondaryBody: String?
-	let asker: String?
-	let question: String?
-	let title: String?
-	let thumbnailURLString: String?
-	let permalinkURLString: String?
-	let videoType: String?
-	let videoURLString: String?
-	let videoWidth: Float?
-	let videoHeight: Float?
-	var liked = false
-	let trailData: [PostTrailData]
+public struct Post: Mappable {
+	public let id: Int
+	public let type: String
+	public let blogName: String
+	public let rebloggedBlogName: String?
+	public let reblogKey: String
+	public let timestamp: Int
+	public let url: NSURL
+	public let shortURL: NSURL
+	public let tags: [String]
+	public let photos: [PostPhoto]
+	public let layout: PhotosetLayout
+	public let dialogueEntries: [PostDialogueEntry]
+	public let body: String?
+	public let secondaryBody: String?
+	public let asker: String?
+	public let question: String?
+	public let title: String?
+	public let permalinkURL: NSURL?
+	public let video: PostVideo?
+	public var liked = false
+	public let trailData: [PostTrailData]
 
-	init(json: JSON) {
-		self.json = json
-		self.id = json["id"].int!
-		self.type = json["type"].string!
-		self.blogName = json["blog_name"].string!
-		self.rebloggedBlogName = json["reblogged_from_name"].string
-		self.reblogKey = json["reblog_key"].string!
-		self.timestamp = json["timestamp"].int!
-		self.urlString = json["post_url"].string!
-		self.shortURLString = json["short_url"].string!
-		self.tags = json["tags"].array?.map { "#\($0)" } ?? []
-		self.photos = json["photos"].array?.map { PostPhoto(json: $0) } ?? []
-		self.layoutRows = PhotosetLayoutRows(photos: self.photos, layoutString: json["photoset_layout"].string)
-		self.dialogueEntries = json["dialogue"].array?.map { PostDialogueEntry(json: $0) } ?? []
+	public init(map: Mapper) throws {
+		id = try map.from("id")
+		type = try map.from("type")
+		blogName = try map.from("blog_name")
+		rebloggedBlogName = map.optionalFrom("reblogged_from_name")
+		reblogKey = try map.from("reblog_key")
+		timestamp = try map.from("timestamp")
+		url = try map.from("post_url")
+		shortURL = try map.from("short_url")
 
-		self.body = Post.bodyStringFromJSON(json)
-		self.secondaryBody = Post.secondaryBodyStringFromJSON(json)
+		let tagStrings: [String] = map.optionalFrom("tags") ?? []
+		tags = tagStrings.map { "#\($0)" }
 
-		self.asker = json["asking_name"].string
-		self.question = json["question"].string
-		self.title = json["title"].string
-		self.thumbnailURLString = json["thumbnail_url"].string
-		self.permalinkURLString = json["permalink_url"].string
-		self.videoType = json["video_type"].string
-		self.videoURLString = json["video_url"].string
-		self.videoWidth = json["thumbnail_width"].float
-		self.videoHeight = json["thumbnail_height"].float
-		self.liked = json["liked"].bool!
-		self.trailData = { () -> [PostTrailData] in
-			if let trail = json["trail"].array {
-				var elements = trail.map { trailElement -> PostTrailData? in
-					if let name = trailElement["blog"]["name"].string, content = trailElement["content"].string {
-						return PostTrailData(username: name, content: content)
-					} else {
-						return nil
-					}
-				}
-				.filter { $0 != nil }
-				.map { $0! }
-				elements = elements.reverse()
-				return elements
-			} else {
-				return []
-			}
-		}()
+		photos = map.optionalFrom("photos") ?? []
+
+		let layoutString: String? = map.optionalFrom("photoset_layout")
+		layout = PhotosetLayout(photos: photos, layoutString: layoutString)
+
+		dialogueEntries = map.optionalFrom("dialogue") ?? []
+
+		body = Post.bodyStringFromMap(map)
+		secondaryBody = Post.secondaryBodyStringFromMap(map)
+
+		asker = map.optionalFrom("asking_name")
+		question = map.optionalFrom("question")
+
+		title = map.optionalFrom("title")
+
+		permalinkURL = map.optionalFrom("permalink_url")
+
+		video = try? PostVideo(map: map)
+
+		liked = try map.from("liked")
+
+		trailData = map.optionalFrom("trail")?.reverse() ?? []
 	}
 
-	func htmlBodyWithWidth(width: CGFloat) -> String? {
+	public func htmlBodyWithWidth(width: CGFloat) -> String? {
 		return body?.htmlStringWithTumblrStyle(width)
 	}
 
-	func htmlSecondaryBodyWithWidth(width: CGFloat) -> String? {
+	public func htmlSecondaryBodyWithWidth(width: CGFloat) -> String? {
 		guard let secondaryBody = secondaryBody else {
 			return nil
 		}
@@ -111,19 +97,18 @@ struct Post {
 		return stringToStyle?.htmlStringWithTumblrStyle(width)
 	}
 
-	func videoURL() -> NSURL? {
+	public func videoURL() -> NSURL? {
 		guard self.type == "video" else {
 			return nil
 		}
 
-		guard let videoType = self.videoType else {
+		guard let videoType = video?.type else {
 			return nil
 		}
 
 		switch videoType {
 		case "vine":
-			guard let permalinkURLString = permalinkURLString,
-				permalinkURL = NSURL(string: permalinkURLString),
+			guard let permalinkURL = permalinkURL,
 				documentData = NSData(contentsOfURL: permalinkURL),
 				document = NSString(data: documentData, encoding: NSASCIIStringEncoding) as? String,
 				metaStringRange = document.rangeOfString("twitter:player:stream.*?content=\".*?\"", options: .RegularExpressionSearch)
@@ -143,24 +128,18 @@ struct Post {
 
 			return NSURL(string: metaString.substringWithRange(urlStringRange))
 		case "youtube":
-			if let permalinkURLString = permalinkURLString {
-				return NSURL(string: permalinkURLString)
-			}
+			return permalinkURL
 		default:
-			if let videoURLString = videoURLString {
-				return NSURL(string: videoURLString)
-			}
+			return video?.url
 		}
-
-		return nil
 	}
 
-	func videoHeightWidthWidth(width: CGFloat) -> CGFloat? {
+	public func videoHeightWidthWidth(width: CGFloat) -> CGFloat? {
 		guard self.type != "video" else {
 			return nil
 		}
 
-		guard let videoWidth = videoWidth, videoHeight = videoHeight else {
+		guard let videoWidth = video?.width, videoHeight = video?.height else {
 			return nil
 		}
 
@@ -168,9 +147,9 @@ struct Post {
 	}
 }
 
-extension Post {
-	static func bodyStringFromJSON(json: JSON) -> String? {
-		guard let type = json["type"].string else {
+public extension Post {
+	public static func bodyStringFromMap(map: Mapper) -> String? {
+		guard let type: String = map.optionalFrom("type") else {
 			return nil
 		}
 
@@ -178,19 +157,19 @@ extension Post {
 
 		switch type {
 		case "photo":
-			bodyString = json["caption"].string
+			bodyString = map.optionalFrom("caption")
 		case "text":
-			bodyString = json["body"].string
+			bodyString = map.optionalFrom("body")
 		case "answer":
-			bodyString = json["answer"].string
+			bodyString = map.optionalFrom("answer")
 		case "quote":
-			bodyString = json["text"].string
+			bodyString = map.optionalFrom("text")
 		case "link":
-			bodyString = json["description"].string
+			bodyString = map.optionalFrom("description")
 		case "video":
-			bodyString = json["caption"].string
+			bodyString = map.optionalFrom("caption")
 		case "audio":
-			bodyString = json["caption"].string
+			bodyString = map.optionalFrom("caption")
 		default:
 			bodyString = nil
 		}
@@ -202,17 +181,18 @@ extension Post {
 		return nil
 	}
 
-	static func secondaryBodyStringFromJSON(json: JSON) -> String? {
-		guard let type = json["type"].string else {
+	public static func secondaryBodyStringFromMap(map: Mapper) -> String? {
+		guard let type: String = map.optionalFrom("type") else {
 			return nil
 		}
+
 		var secondaryBodyString: String?
 
 		switch type {
 		case "quote":
-			secondaryBodyString = json["source"].string
+			secondaryBodyString = map.optionalFrom("source")
 		case "audio":
-			secondaryBodyString = json["player"].string
+			secondaryBodyString = map.optionalFrom("player")
 		default:
 			secondaryBodyString = nil
 		}

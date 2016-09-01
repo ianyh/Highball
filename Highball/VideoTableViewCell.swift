@@ -32,7 +32,7 @@ class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
 				loadVideo()
 			}
 
-			guard let thumbnailURLString = post.thumbnailURLString, thumbnailURL = NSURL(string: thumbnailURLString) else {
+			guard let thumbnailURL = post.video?.thumbnailURL else {
 				return
 			}
 

@@ -52,12 +52,12 @@ struct PostViewHeightCalculator {
 		if postPhotos.count == 1 {
 			images = postPhotos
 		} else {
-			let photosetLayoutRows = post.layoutRows
+			let photosetLayout = post.layout
 			var photosIndexStart = 0
-			for photosetLayoutRow in photosetLayoutRows.layoutRows[0..<row] {
+			for photosetLayoutRow in photosetLayout.rows[0..<row] {
 				photosIndexStart += photosetLayoutRow
 			}
-			let photosetLayoutRow = photosetLayoutRows.layoutRows[row]
+			let photosetLayoutRow = photosetLayout.rows[row]
 
 			images = Array(postPhotos[(photosIndexStart)..<(photosIndexStart + photosetLayoutRow)])
 		}

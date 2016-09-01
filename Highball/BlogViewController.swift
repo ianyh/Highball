@@ -42,9 +42,7 @@ class BlogViewController: PostsViewController {
 			return []
 		}
 
-		return postsJSON.map { (post) -> (Post) in
-			return Post(json: post)
-		}
+		return postsJSON.map { Post.from($0.dictionaryObject!) }.flatMap { $0 }
 	}
 
 	override func requestPosts(postCount: Int, parameters: Dictionary<String, AnyObject>, callback: TMAPICallback) {

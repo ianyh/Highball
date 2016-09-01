@@ -8,14 +8,31 @@
 
 import RealmSwift
 
-public class Account: Object {
+public protocol Account {
+	var name: String! { get }
+	var token: String! { get }
+	var tokenSecret: String! { get }
+	var blogs: [UserBlog] { get }
+}
+
+public extension Account {
+	public var primaryBlog: UserBlog {
+		return blogs.filter { $0.isPrimary }.first!
+	}
+}
+
+public func == (lhs: Account, rhs: Account) -> Bool {
+	return lhs.name == rhs.name
+}
+
+public class AccountObject: Object {
 	public dynamic var name: String!
 	public dynamic var token: String!
 	public dynamic var tokenSecret: String!
-	public let blogs = List<UserBlog>()
+	public let blogObjects = List<UserBlogObject>()
 
-	public var primaryBlog: UserBlog {
-		return blogs.filter { $0.isPrimary }.first!
+	public var blogs: [UserBlog] {
+		return Array(blogObjects)
 	}
 
 	public override static func primaryKey() -> String {
@@ -23,6 +40,8 @@ public class Account: Object {
 	}
 
 	public override static func ignoredProperties() -> [String] {
-		return ["primaryBlog"]
+		return ["blogs"]
 	}
 }
+
+extension AccountObject: Account {}

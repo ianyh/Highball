@@ -10,7 +10,7 @@ import SwiftyJSON
 import TMTumblrSDK
 import UIKit
 
-protocol PostsDataManagerDelegate {
+public protocol PostsDataManagerDelegate {
 	func dataManager(dataManager: PostsDataManager, requestPostsWithCount postCount: Int, parameters: [String: AnyObject], callback: TMAPICallback)
 	func dataManager(dataManager: PostsDataManager, postsFromJSON json: JSON) -> [Post]
 	func dataManagerDidReload(dataManager: PostsDataManager, indexSet: NSIndexSet?, completion: () -> ())
@@ -18,7 +18,7 @@ protocol PostsDataManagerDelegate {
 	func dataManager(dataManager: PostsDataManager, didEncounterError error: NSError)
 }
 
-class PostsDataManager {
+public class PostsDataManager {
 	private let heightComputationQueue: NSOperationQueue!
 	private let postParseQueue = dispatch_queue_create("postParseQueue", nil)
 
@@ -29,32 +29,32 @@ class PostsDataManager {
 	private var secondaryHeightCalculators: [Int: HeightCalculator] = [:]
 	private var bodyHeightCalculators: [String: HeightCalculator] = [:]
 
-	var posts: Array<Post>!
-	var topID: Int?
-	var cursor: Int?
+	public var posts: Array<Post>!
+	public var topID: Int?
+	public var cursor: Int?
 
-	var loadingTop = false
-	var loadingBottom = false
-	var lastPoint: CGPoint?
+	public var loadingTop = false
+	public var loadingBottom = false
+	public var lastPoint: CGPoint?
 
-	var hasPosts: Bool {
+	public var hasPosts: Bool {
 		return self.posts != nil && posts.count > 0
 	}
-	var computingHeights: Bool {
+	public var computingHeights: Bool {
 		return heightComputationQueue.operationCount > 0 ||
 			heightCalculators.count > 0 ||
 			secondaryHeightCalculators.count > 0 ||
 			bodyHeightCalculators.count > 0
 	}
 
-	init(postHeightCache: PostHeightCache, delegate: PostsDataManagerDelegate) {
+	public init(postHeightCache: PostHeightCache, delegate: PostsDataManagerDelegate) {
 		self.postHeightCache = postHeightCache
 		self.delegate = delegate
 		self.heightComputationQueue = NSOperationQueue()
 		self.heightComputationQueue.underlyingQueue = dispatch_get_main_queue()
 	}
 
-	func loadTop(width: CGFloat) {
+	public func loadTop(width: CGFloat) {
 		if loadingTop || loadingBottom {
 			return
 		}
@@ -112,7 +112,7 @@ class PostsDataManager {
 		}
 	}
 
-	func loadMore(width: CGFloat) {
+	public func loadMore(width: CGFloat) {
 		if loadingTop || loadingBottom {
 			return
 		}
@@ -152,7 +152,7 @@ class PostsDataManager {
 		}
 	}
 
-	func processPosts(posts: [Post], width: CGFloat) {
+	public func processPosts(posts: [Post], width: CGFloat) {
 		for post in posts {
 			heightComputationQueue.addOperationWithBlock() {
 				let heightCalculator = HeightCalculator(post: post, width: width)

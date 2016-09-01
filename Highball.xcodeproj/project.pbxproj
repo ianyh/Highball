@@ -47,6 +47,7 @@
 		40A11E6B19B51FF700B91843 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A11E6A19B51FF700B91843 /* ImageCollectionViewCell.swift */; };
 		40B609531A99234B0089E431 /* BlogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B609521A99234B0089E431 /* BlogViewController.swift */; };
 		40C78D1519BD29330002EB78 /* ReblogTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C78D1419BD29330002EB78 /* ReblogTransitionAnimator.swift */; };
+		40CAF2F71D78CDB600B8A027 /* PostVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CAF2F61D78CDB600B8A027 /* PostVideo.swift */; };
 		40CE13D91CB3377100847A94 /* NSAttributedString+Trim.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CE13D81CB3377100847A94 /* NSAttributedString+Trim.swift */; };
 		40CFDAB41C344931008FBF9A /* HeightCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CFDAB31C344931008FBF9A /* HeightCalculator.swift */; };
 		40CFDAB61C34990F008FBF9A /* ReuseIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CFDAB51C34990F008FBF9A /* ReuseIdentifiers.swift */; };
@@ -125,6 +126,7 @@
 		40A11E6A19B51FF700B91843 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		40B609521A99234B0089E431 /* BlogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlogViewController.swift; sourceTree = "<group>"; };
 		40C78D1419BD29330002EB78 /* ReblogTransitionAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReblogTransitionAnimator.swift; sourceTree = "<group>"; };
+		40CAF2F61D78CDB600B8A027 /* PostVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostVideo.swift; sourceTree = "<group>"; };
 		40CE13D81CB3377100847A94 /* NSAttributedString+Trim.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Trim.swift"; sourceTree = "<group>"; };
 		40CFDAB31C344931008FBF9A /* HeightCalculator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeightCalculator.swift; sourceTree = "<group>"; };
 		40CFDAB51C34990F008FBF9A /* ReuseIdentifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReuseIdentifiers.swift; sourceTree = "<group>"; };
@@ -311,19 +313,20 @@
 		40778B9A19B15F7D00F8EE13 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				40778B9B19B15F9C00F8EE13 /* Post.swift */,
-				40778B9D19B160DD00F8EE13 /* PostPhoto.swift */,
-				408C7D2019B384C800EFC410 /* PostDialogueEntry.swift */,
-				40FF6D4219B940C6008119A3 /* UserBlog.swift */,
+				406F38EE1D7514520046CE1D /* Account.swift */,
 				40F8CE991A41143000609ABF /* AccountsService.swift */,
 				402033581A6C785400BA136C /* AnimatedImageCache.swift */,
-				40CFDAB31C344931008FBF9A /* HeightCalculator.swift */,
-				40CFDABE1C34BB17008FBF9A /* PostHeightCache.swift */,
-				403040DF1C37211A001EFC9E /* PhotosetLayoutRows.swift */,
-				40F9F4031CB1DA8200989D5B /* PostTrailData.swift */,
-				40D374AF1CB9F07B008CB51A /* PostContent.swift */,
-				406F38EE1D7514520046CE1D /* Account.swift */,
 				406F38F21D751F2E0046CE1D /* Blog.swift */,
+				40CFDAB31C344931008FBF9A /* HeightCalculator.swift */,
+				403040DF1C37211A001EFC9E /* PhotosetLayoutRows.swift */,
+				40778B9B19B15F9C00F8EE13 /* Post.swift */,
+				40D374AF1CB9F07B008CB51A /* PostContent.swift */,
+				408C7D2019B384C800EFC410 /* PostDialogueEntry.swift */,
+				40CFDABE1C34BB17008FBF9A /* PostHeightCache.swift */,
+				40778B9D19B160DD00F8EE13 /* PostPhoto.swift */,
+				40F9F4031CB1DA8200989D5B /* PostTrailData.swift */,
+				40FF6D4219B940C6008119A3 /* UserBlog.swift */,
+				40CAF2F61D78CDB600B8A027 /* PostVideo.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -580,6 +583,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				40D374B01CB9F07B008CB51A /* PostContent.swift in Sources */,
+				40CAF2F71D78CDB600B8A027 /* PostVideo.swift in Sources */,
 				40A11E6819B518DD00B91843 /* ImagesViewController.swift in Sources */,
 				408C7D2319B387A500EFC410 /* PostDialogueEntryTableViewCell.swift in Sources */,
 				403040E01C37211A001EFC9E /* PhotosetLayoutRows.swift in Sources */,

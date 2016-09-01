@@ -10,13 +10,13 @@ import FLAnimatedImage
 import SafariServices
 import UIKit
 
-protocol PostsTableViewAdapterDelegate {
+public protocol PostsTableViewAdapterDelegate {
 	func postsForAdapter(adapter: PostsTableViewAdapter) -> [Post]
 	func adapterDidEncounterLoadMoreBoundary(adapter: PostsTableViewAdapter)
 	func adapter(adapter: PostsTableViewAdapter, didEmitViewController viewController: UIViewController, forPresentation presented: Bool)
 }
 
-class PostsTableViewAdapter: NSObject {
+public class PostsTableViewAdapter: NSObject {
 	private let tableView: UITableView
 	private let postHeightCache: PostHeightCache
 	private let delegate: PostsTableViewAdapterDelegate
@@ -25,7 +25,7 @@ class PostsTableViewAdapter: NSObject {
 	private var urlWidthCache: [String: CGFloat] = [:]
 	private var urlImageViewCache: [String: FLAnimatedImageView] = [:]
 
-	init(tableView: UITableView, postHeightCache: PostHeightCache, delegate: PostsTableViewAdapterDelegate) {
+	public init(tableView: UITableView, postHeightCache: PostHeightCache, delegate: PostsTableViewAdapterDelegate) {
 		self.tableView = tableView
 		self.postHeightCache = postHeightCache
 		self.delegate = delegate
@@ -60,7 +60,7 @@ class PostsTableViewAdapter: NSObject {
 		tableView.registerClass(PostHeaderView.self, forHeaderFooterViewReuseIdentifier: PostHeaderView.viewIdentifier)
 	}
 
-	func resetCache() {
+	public func resetCache() {
 		heightCache.removeAll()
 		urlImageViewCache.removeAll()
 	}
@@ -71,18 +71,18 @@ class PostsTableViewAdapter: NSObject {
 }
 
 extension PostsTableViewAdapter: UITableViewDataSource {
-	func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+	public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
 		return posts().count ?? 0
 	}
 
-	func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		let post = posts()[section]
 		let sectionAdapter = PostSectionAdapter(post: post)
 
 		return sectionAdapter.numbersOfRows()
 	}
 
-	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+	public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 		let post = posts()[indexPath.section]
 		let sectionAdapter = PostSectionAdapter(post: post)
 		let cell = sectionAdapter.tableView(tableView, cellForRow: indexPath.row)
@@ -139,7 +139,7 @@ extension PostsTableViewAdapter: UITableViewDataSource {
 }
 
 extension PostsTableViewAdapter: UITableViewDelegate {
-	func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+	public func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
 		if let height = heightCache[indexPath] {
 			return height
 		}
@@ -153,7 +153,7 @@ extension PostsTableViewAdapter: UITableViewDelegate {
 		return height
 	}
 
-	func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+	public func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 		let post = posts()[section] as Post
 		let sectionAdapter = PostSectionAdapter(post: post)
 		let view = sectionAdapter.tableViewHeaderView(tableView) as! PostHeaderView
@@ -185,7 +185,7 @@ extension PostsTableViewAdapter: UITableViewDelegate {
 		return view
 	}
 
-	func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+	public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
 		guard let cell = tableView.cellForRowAtIndexPath(indexPath) else {
 			return
 		}
@@ -210,15 +210,11 @@ extension PostsTableViewAdapter: UITableViewDelegate {
 				self.delegate.adapter(self, didEmitViewController: viewController, forPresentation: true)
 			}
 		} else if let _ = cell as? PostLinkTableViewCell {
-			guard let url = NSURL(string: post.urlString) else {
-				return
-			}
-
-			self.delegate.adapter(self, didEmitViewController: SFSafariViewController(URL: url), forPresentation: false)
+			self.delegate.adapter(self, didEmitViewController: SFSafariViewController(URL: post.url), forPresentation: false)
 		}
 	}
 
-	func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+	public func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
 		if let cell = cell as? PhotosetRowTableViewCell {
 			cell.cancelDownloads()
 		} else if let cell = cell as? ContentTableViewCell {
@@ -229,7 +225,7 @@ extension PostsTableViewAdapter: UITableViewDelegate {
 		}
 	}
 
-	func scrollViewDidScroll(scrollView: UIScrollView) {
+	public func scrollViewDidScroll(scrollView: UIScrollView) {
 		let distanceFromBottom = scrollView.contentSize.height - scrollView.frame.size.height - scrollView.contentOffset.y
 
 		if distanceFromBottom < 2000 {
@@ -239,7 +235,7 @@ extension PostsTableViewAdapter: UITableViewDelegate {
 }
 
 extension PostsTableViewAdapter: TagsTableViewCellDelegate {
-	func tagsTableViewCell(cell: TagsTableViewCell, didSelectTag tag: String) {
+	public func tagsTableViewCell(cell: TagsTableViewCell, didSelectTag tag: String) {
 		self.delegate.adapter(self, didEmitViewController: TagViewController(tag: tag), forPresentation: false)
 	}
 }

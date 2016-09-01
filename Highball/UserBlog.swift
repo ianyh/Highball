@@ -9,9 +9,18 @@
 import Foundation
 import RealmSwift
 
-public class UserBlog: Object {
+public protocol UserBlog {
+	var name: String! { get }
+	var url: String! { get }
+	var title: String! { get }
+	var isPrimary: Bool { get }
+}
+
+public class UserBlogObject: Object {
 	public dynamic var name: String!
 	public dynamic var url: String!
 	public dynamic var title: String!
 	public dynamic var isPrimary: Bool = false
 }
+
+extension UserBlogObject: UserBlog {}
