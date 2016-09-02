@@ -23,12 +23,12 @@ public class DashboardPresenter: PostsPresenter {
 	}
 
 	public func bookmarkPostAtIndex(index: Int) {
-		guard let dataManager = dataManager else {
+		guard let dataManager = dataManager, accountName = AccountsService.account?.name else {
 			return
 		}
 
 		let userDefaults = NSUserDefaults.standardUserDefaults()
-		let bookmarksKey = "HIBookmarks:\(AccountsService.account.primaryBlog.url)"
+		let bookmarksKey = "HIBookmarks:\(accountName)"
 		let post = dataManager.posts[index]
 		var bookmarks = userDefaults.arrayForKey(bookmarksKey) as? [[String: AnyObject]] ?? []
 

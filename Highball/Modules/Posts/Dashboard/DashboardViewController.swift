@@ -15,7 +15,7 @@ import UIKit
 public class DashboardViewController: PostsViewController {
 	internal var dashboardPresenter: DashboardPresenter?
 
-	public override weak var presenter: PostsPresenter? {
+	public override var presenter: PostsPresenter? {
 		get {
 			return dashboardPresenter as? PostsPresenter
 		}

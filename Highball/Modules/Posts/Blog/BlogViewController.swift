@@ -12,7 +12,7 @@ import FontAwesomeKit
 public class BlogViewController: PostsViewController {
 	internal var blogPresenter: BlogPresenter?
 
-	public override weak var presenter: PostsPresenter? {
+	public override var presenter: PostsPresenter? {
 		get {
 			return blogPresenter as? PostsPresenter
 		}

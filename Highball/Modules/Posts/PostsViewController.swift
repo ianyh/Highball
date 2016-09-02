@@ -73,7 +73,7 @@ public extension PostsView {
 extension PostsViewController: PostsView {}
 
 public class PostsViewController: UITableViewController {
-	public weak var presenter: PostsPresenter?
+	public var presenter: PostsPresenter?
 
 	private let requiredRefreshDistance: CGFloat = 60
 

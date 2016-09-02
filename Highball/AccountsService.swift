@@ -125,7 +125,7 @@ public struct AccountsService {
 					}
 
 					let accountObject = AccountObject()
-					accountObject.name = json["name"].stringValue
+					accountObject.name = json["user"]["name"].stringValue
 					accountObject.token = TMAPIClient.sharedInstance().OAuthToken
 					accountObject.tokenSecret = TMAPIClient.sharedInstance().OAuthTokenSecret
 					accountObject.blogObjects.appendContentsOf(blogs)
@@ -158,7 +158,23 @@ public struct AccountsService {
 	}
 
 	public static func deleteAccount(account: Account, fromViewController viewController: UIViewController, completion: (changedAccount: Bool) -> ()) {
-		if self.account == account {
+		guard let realm = try? Realm(), accountObject = account as? AccountObject else {
+			return
+		}
+
+		let accountNeedsToChange = self.account == account
+
+		do {
+			try realm.write {
+				realm.delete(accountObject)
+			}
+		} catch {
+			dispatch_async(dispatch_get_main_queue()) {
+				completion(changedAccount: false)
+			}
+		}
+
+		if accountNeedsToChange {
 			self.account = nil
 
 			start(fromViewController: viewController) { _ in

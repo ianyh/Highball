@@ -18,12 +18,12 @@ import VENTouchLock
 import OAuthSwift
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
-	var window: UIWindow?
-	var tabBarController: UITabBarController?
-	var reachability: Reachability!
+public class AppDelegate: UIResponder, UIApplicationDelegate {
+	public var window: UIWindow?
+	public var tabBarController: UITabBarController?
+	public var reachability: Reachability!
 
-	func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
+	public func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
 		reachability = Reachability.reachabilityForLocalWiFi()
 		reachability.startNotifier()
 
@@ -78,14 +78,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		return true
 	}
 
-	func application(application: UIApplication, handleOpenURL url: NSURL) -> Bool {
+	public func application(application: UIApplication, handleOpenURL url: NSURL) -> Bool {
 		if url.host == "oauth-callback" {
 			OAuthSwift.handleOpenURL(url)
 		}
 		return true
 	}
 
-	func applicationDidReceiveMemoryWarning(application: UIApplication) {
+	public func applicationDidReceiveMemoryWarning(application: UIApplication) {
 		AnimatedImageCache.clearCache()
 	}
 }

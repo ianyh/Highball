@@ -32,7 +32,7 @@ public class AccountObject: Object {
 	public let blogObjects = List<UserBlogObject>()
 
 	public var blogs: [UserBlog] {
-		return Array(blogObjects)
+		return blogObjects.map { $0 }
 	}
 
 	public override static func primaryKey() -> String {
