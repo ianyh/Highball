@@ -22,7 +22,7 @@ public struct AccountsService {
 			return []
 		}
 
-		return try! realm.objects(AccountObject).map { $0 }
+		return realm.objects(AccountObject).map { $0 }
 	}
 
 	public static func lastAccount() -> Account? {

@@ -76,8 +76,7 @@ extension FollowedBlogsViewController: FollowedBlogsTableViewAdapterDelegate {
 	}
 
 	func adapter(adapter: FollowedBlogsTableViewAdapter, didSelectBlog blog: Blog) {
-		let blogViewController = BlogViewController(blogName: blog.name)
-
-		navigationController?.pushViewController(blogViewController, animated: true)
+		let blogModule = BlogModule(blogName: blog.name, postHeightCache: PostHeightCache())
+		blogModule.installInNavigationController(navigationController!)
 	}
 }

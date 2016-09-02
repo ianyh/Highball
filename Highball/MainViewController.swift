@@ -35,8 +35,10 @@ class MainViewController: UITabBarController {
 			return
 		}
 
-		let dashboardViewController = UINavigationController(rootViewController: DashboardViewController())
-		let likesViewController = UINavigationController(rootViewController: LikesViewController())
+		let postHeightCache = PostHeightCache()
+
+		let dashboardViewController = UINavigationController(rootViewController: DashboardModule(postHeightCache: postHeightCache).viewController)
+		let likesViewController = UINavigationController(rootViewController: LikesModule(postHeightCache: postHeightCache).viewController)
 		let followedBlogsViewController = UINavigationController(rootViewController: FollowedBlogsViewController())
 		let settingsViewController = UINavigationController(rootViewController: SettingsViewController())
 

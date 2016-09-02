@@ -11,7 +11,7 @@ import Mapper
 import SwiftyJSON
 import UIKit
 
-enum ReblogType {
+public enum ReblogType {
 	case Reblog
 	case Queue
 }

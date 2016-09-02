@@ -8,12 +8,12 @@
 
 import UIKit
 
-struct PostViewSections {
-	enum TextRow {
+public struct PostViewSections {
+	public enum TextRow {
 		case Title
 		case Body(row: Int)
 
-		static func textRowFromRow(row: Int) -> TextRow {
+		public static func textRowFromRow(row: Int) -> TextRow {
 			if row == 0 {
 				return .Title
 			} else {
@@ -22,11 +22,11 @@ struct PostViewSections {
 		}
 	}
 
-	enum AnswerRow {
+	public enum AnswerRow {
 		case Question
 		case Answer(row: Int)
 
-		static func answerRowFromRow(row: Int) -> AnswerRow {
+		public static func answerRowFromRow(row: Int) -> AnswerRow {
 			if row == 0 {
 				return .Question
 			} else {
@@ -35,16 +35,16 @@ struct PostViewSections {
 		}
 	}
 
-	enum QuoteRow: Int {
+	public enum QuoteRow: Int {
 		case Quote
 		case Source
 	}
 
-	enum LinkRow {
+	public enum LinkRow {
 		case Link
 		case Description(row: Int)
 
-		static func linkRowFromRow(row: Int) -> LinkRow {
+		public static func linkRowFromRow(row: Int) -> LinkRow {
 			if row == 0 {
 				return .Link
 			} else {
@@ -53,11 +53,11 @@ struct PostViewSections {
 		}
 	}
 
-	enum VideoRow {
+	public enum VideoRow {
 		case Player
 		case Caption(row: Int)
 
-		static func videoRowFromRow(row: Int) -> VideoRow {
+		public static func videoRowFromRow(row: Int) -> VideoRow {
 			if row == 0 {
 				return .Player
 			} else {
@@ -66,11 +66,11 @@ struct PostViewSections {
 		}
 	}
 
-	enum AudioRow {
+	public enum AudioRow {
 		case Player
 		case Caption(row: Int)
 
-		static func audioRowFromRow(row: Int) -> AudioRow {
+		public static func audioRowFromRow(row: Int) -> AudioRow {
 			if row == 0 {
 				return .Player
 			} else {
@@ -80,10 +80,14 @@ struct PostViewSections {
 	}
 }
 
-struct PostSectionAdapter {
-	let post: Post
+public struct PostSectionAdapter {
+	private let post: Post
 
-	func numbersOfRows() -> Int {
+	public init(post: Post) {
+		self.post = post
+	}
+
+	public func numbersOfRows() -> Int {
 		var rowCount = 0
 
 		switch post.type {
@@ -110,9 +114,9 @@ struct PostSectionAdapter {
 		return rowCount + 1
 	}
 
-	func tableView(tableView: UITableView, cellForRow row: Int) -> UITableViewCell {
+	public func tableView(tableView: UITableView, cellForRow row: Int) -> UITableViewCell {
 		if row == numbersOfRows() - 1 {
-			let cell = tableView.dequeueReusableCellWithIdentifier(TagsTableViewCell.cellIdentifier) as! TagsTableViewCell!
+			let cell = tableView.dequeueReusableCellWithIdentifier(TagsTableViewCell.cellIdentifier) as! TagsTableViewCell
 			cell.tags = post.tags
 			return cell
 		}
@@ -276,14 +280,14 @@ struct PostSectionAdapter {
 		return cell
 	}
 
-	func tableView(tableView: UITableView, heightForCellAtRow row: Int, postHeightCache: PostHeightCache) -> CGFloat {
+	public func tableView(tableView: UITableView, heightForCellAtRow row: Int, postHeightCache: PostHeightCache) -> CGFloat {
 		let heightCalculator = PostViewHeightCalculator(width: tableView.bounds.width, postHeightCache: postHeightCache)
 		let height = heightCalculator.heightForPost(post, atRow: row, sectionRowCount: numbersOfRows())
 
 		return height
 	}
 
-	func tableViewHeaderView(tableView: UITableView) -> UIView? {
+	public func tableViewHeaderView(tableView: UITableView) -> UIView? {
 		let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(PostHeaderView.viewIdentifier) as! PostHeaderView
 
 		view.post = post
@@ -291,12 +295,12 @@ struct PostSectionAdapter {
 		return view
 	}
 
-	func setBodyComponentHeight(height: CGFloat, forPost post: Post, atIndexPath indexPath: NSIndexPath, withKey key: String, inHeightCache postHeightCache: PostHeightCache) -> Bool {
+	public func setBodyComponentHeight(height: CGFloat, forIndexPath indexPath: NSIndexPath, withKey key: String, inHeightCache postHeightCache: PostHeightCache) -> Bool {
 		let row = indexPath.row
 		let heightIndex = { () -> Int in
 			switch post.type {
 			case "photo":
-				return self.numbersOfRows() - 2 - row
+				return numbersOfRows() - 2 - row
 			case "text":
 				return row - 1
 			case "answer":

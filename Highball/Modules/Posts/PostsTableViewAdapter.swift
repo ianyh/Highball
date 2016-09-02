@@ -10,16 +10,22 @@ import FLAnimatedImage
 import SafariServices
 import UIKit
 
-public protocol PostsTableViewAdapterDelegate {
-	func postsForAdapter(adapter: PostsTableViewAdapter) -> [Post]
+public protocol PostsTableViewAdapterDelegate: class {
+	func numberOfPostsForAdapter(adapter: PostsTableViewAdapter) -> Int
+	func postAdapter(adapter: PostsTableViewAdapter, sectionAdapterAtIndex index: Int) -> PostSectionAdapter
 	func adapterDidEncounterLoadMoreBoundary(adapter: PostsTableViewAdapter)
+
+	func adapter(adapter: PostsTableViewAdapter, didSelectImageForPostAtIndex index: Int)
+	func adapter(adapter: PostsTableViewAdapter, didSelectURLForPostAtIndex index: Int)
+	func adapter(adapter: PostsTableViewAdapter, didSelectBlogName blogName: String)
+	func adapter(adapter: PostsTableViewAdapter, didSelectTag tag: String)
 	func adapter(adapter: PostsTableViewAdapter, didEmitViewController viewController: UIViewController, forPresentation presented: Bool)
 }
 
 public class PostsTableViewAdapter: NSObject {
 	private let tableView: UITableView
 	private let postHeightCache: PostHeightCache
-	private let delegate: PostsTableViewAdapterDelegate
+	private weak var delegate: PostsTableViewAdapterDelegate!
 
 	private var heightCache: [NSIndexPath: CGFloat] = [:]
 	private var urlWidthCache: [String: CGFloat] = [:]
@@ -64,27 +70,21 @@ public class PostsTableViewAdapter: NSObject {
 		heightCache.removeAll()
 		urlImageViewCache.removeAll()
 	}
-
-	private func posts() -> [Post] {
-		return delegate.postsForAdapter(self)
-	}
 }
 
 extension PostsTableViewAdapter: UITableViewDataSource {
 	public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-		return posts().count ?? 0
+		return delegate.numberOfPostsForAdapter(self)
 	}
 
 	public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		let post = posts()[section]
-		let sectionAdapter = PostSectionAdapter(post: post)
+		let sectionAdapter = delegate.postAdapter(self, sectionAdapterAtIndex: section)
 
 		return sectionAdapter.numbersOfRows()
 	}
 
 	public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		let post = posts()[indexPath.section]
-		let sectionAdapter = PostSectionAdapter(post: post)
+		let sectionAdapter = delegate.postAdapter(self, sectionAdapterAtIndex: indexPath.section)
 		let cell = sectionAdapter.tableView(tableView, cellForRow: indexPath.row)
 		let linkTapHandler = { [weak self] (url: NSURL) in
 			guard let host = url.host, strongSelf = self else {
@@ -93,8 +93,7 @@ extension PostsTableViewAdapter: UITableViewDataSource {
 
 			let username = host.characters.split { $0 == "." }
 			if username.count == 3 && String(username[1]) == "tumblr" {
-				let blogViewController = BlogViewController(blogName: String(username[0]))
-				strongSelf.delegate.adapter(strongSelf, didEmitViewController: blogViewController, forPresentation: false)
+				strongSelf.delegate.adapter(strongSelf, didSelectBlogName: String(username[0]))
 				return
 			}
 
@@ -113,15 +112,22 @@ extension PostsTableViewAdapter: UITableViewDataSource {
 				return self?.urlImageViewCache[url]
 			}
 			cell.widthDidChange = { [weak self] url, width, height, imageView in
-				self?.urlWidthCache[url] = width
-				self?.urlImageViewCache[url] = imageView
-				let set = sectionAdapter.setBodyComponentHeight(height, forPost: post, atIndexPath: indexPath, withKey: url, inHeightCache: self!.postHeightCache)
-				if set {
-					dispatch_async(dispatch_get_main_queue()) {
-						self?.heightCache[indexPath] = nil
-						self?.tableView.beginUpdates()
-						self?.tableView.endUpdates()
-					}
+				guard let strongSelf = self else {
+					return
+				}
+
+				strongSelf.urlWidthCache[url] = width
+				strongSelf.urlImageViewCache[url] = imageView
+				let set = sectionAdapter.setBodyComponentHeight(height, forIndexPath: indexPath, withKey: url, inHeightCache: strongSelf.postHeightCache)
+
+				guard set else {
+					return
+				}
+
+				dispatch_async(dispatch_get_main_queue()) {
+					strongSelf.heightCache[indexPath] = nil
+					strongSelf.tableView.beginUpdates()
+					strongSelf.tableView.endUpdates()
 				}
 			}
 			cell.linkHandler = linkTapHandler
@@ -129,8 +135,8 @@ extension PostsTableViewAdapter: UITableViewDataSource {
 				guard let strongSelf = self else {
 					return
 				}
-				let blogViewController = BlogViewController(blogName: username)
-				strongSelf.delegate.adapter(strongSelf, didEmitViewController: blogViewController, forPresentation: false)
+
+				strongSelf.delegate.adapter(strongSelf, didSelectBlogName: username)
 			}
 		}
 
@@ -144,8 +150,7 @@ extension PostsTableViewAdapter: UITableViewDelegate {
 			return height
 		}
 
-		let post = posts()[indexPath.section]
-		let sectionAdapter = PostSectionAdapter(post: post)
+		let sectionAdapter = delegate.postAdapter(self, sectionAdapterAtIndex: indexPath.section)
 		let height = sectionAdapter.tableView(tableView, heightForCellAtRow: indexPath.row, postHeightCache: postHeightCache)
 
 		heightCache[indexPath] = height
@@ -154,8 +159,7 @@ extension PostsTableViewAdapter: UITableViewDelegate {
 	}
 
 	public func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-		let post = posts()[section] as Post
-		let sectionAdapter = PostSectionAdapter(post: post)
+		let sectionAdapter = delegate.postAdapter(self, sectionAdapterAtIndex: section)
 		let view = sectionAdapter.tableViewHeaderView(tableView) as! PostHeaderView
 
 		view.tapHandler = { [weak self] post, view in
@@ -168,18 +172,15 @@ extension PostsTableViewAdapter: UITableViewDelegate {
 				alertController.popoverPresentationController?.sourceView = strongSelf.tableView
 				alertController.popoverPresentationController?.sourceRect = strongSelf.tableView.convertRect(view.bounds, fromView: view)
 				alertController.addAction(UIAlertAction(title: post.blogName, style: .Default) { _ in
-					let blogViewController = BlogViewController(blogName: post.blogName)
-					strongSelf.delegate.adapter(strongSelf, didEmitViewController: blogViewController, forPresentation: false)
+					strongSelf.delegate.adapter(strongSelf, didSelectBlogName: post.blogName)
 				})
 				alertController.addAction(UIAlertAction(title: rebloggedBlogName, style: .Default) { _ in
-					let blogViewController = BlogViewController(blogName: rebloggedBlogName)
-					strongSelf.delegate.adapter(strongSelf, didEmitViewController: blogViewController, forPresentation: false)
+					strongSelf.delegate.adapter(strongSelf, didSelectBlogName: rebloggedBlogName)
 				})
 				alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
 				strongSelf.delegate.adapter(strongSelf, didEmitViewController: alertController, forPresentation: true)
 			} else {
-				let blogViewController = BlogViewController(blogName: post.blogName)
-				strongSelf.delegate.adapter(strongSelf, didEmitViewController: blogViewController, forPresentation: false)
+				strongSelf.delegate.adapter(strongSelf, didSelectBlogName: post.blogName)
 			}
 		}
 		return view
@@ -189,13 +190,9 @@ extension PostsTableViewAdapter: UITableViewDelegate {
 		guard let cell = tableView.cellForRowAtIndexPath(indexPath) else {
 			return
 		}
-		let post = posts()[indexPath.section]
 
 		if let _ = cell as? PhotosetRowTableViewCell {
-			let viewController = ImagesViewController()
-			viewController.post = post
-
-			self.delegate.adapter(self, didEmitViewController: viewController, forPresentation: true)
+			delegate.adapter(self, didSelectImageForPostAtIndex: indexPath.section)
 		} else if let videoCell = cell as? VideoPlaybackCell {
 			if videoCell.isPlaying() {
 				videoCell.stop()
@@ -207,10 +204,10 @@ extension PostsTableViewAdapter: UITableViewDelegate {
 				})
 				viewController.modalPresentationStyle = .OverCurrentContext
 				viewController.modalTransitionStyle = .CrossDissolve
-				self.delegate.adapter(self, didEmitViewController: viewController, forPresentation: true)
+				delegate.adapter(self, didEmitViewController: viewController, forPresentation: true)
 			}
 		} else if let _ = cell as? PostLinkTableViewCell {
-			self.delegate.adapter(self, didEmitViewController: SFSafariViewController(URL: post.url), forPresentation: false)
+			delegate.adapter(self, didSelectURLForPostAtIndex: indexPath.section)
 		}
 	}
 
@@ -228,14 +225,16 @@ extension PostsTableViewAdapter: UITableViewDelegate {
 	public func scrollViewDidScroll(scrollView: UIScrollView) {
 		let distanceFromBottom = scrollView.contentSize.height - scrollView.frame.size.height - scrollView.contentOffset.y
 
-		if distanceFromBottom < 2000 {
-			self.delegate.adapterDidEncounterLoadMoreBoundary(self)
+		guard distanceFromBottom < 2000 else {
+			return
 		}
+
+		delegate.adapterDidEncounterLoadMoreBoundary(self)
 	}
 }
 
 extension PostsTableViewAdapter: TagsTableViewCellDelegate {
 	public func tagsTableViewCell(cell: TagsTableViewCell, didSelectTag tag: String) {
-		self.delegate.adapter(self, didEmitViewController: TagViewController(tag: tag), forPresentation: false)
+		delegate.adapter(self, didSelectTag: tag)
 	}
 }

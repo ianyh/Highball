@@ -8,10 +8,10 @@
 
 import FormatterKit
 
-private let formatterKey = "GroundSignalTimeIntervalFormatterKey"
+private let formatterKey = "HighballTimeIntervalFormatterKey"
 
-extension NSDate {
-	func stringWithRelativeFormat() -> String {
+public extension NSDate {
+	public func stringWithRelativeFormat() -> String {
 		var intervalFormatter = NSThread.currentThread().threadDictionary[formatterKey] as? TTTTimeIntervalFormatter
 
 		if intervalFormatter == nil {

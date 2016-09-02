@@ -23,16 +23,11 @@
 		403F53DD19AFB5DF00FF8F3B /* ContentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403F53DC19AFB5DF00FF8F3B /* ContentTableViewCell.swift */; };
 		403F53DF19AFCEB800FF8F3B /* String+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403F53DE19AFCEB800FF8F3B /* String+HTML.swift */; };
 		4050698119AA76BD0066ECE3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4050698019AA76BD0066ECE3 /* AppDelegate.swift */; };
-		4050698619AA76BD0066ECE3 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4050698519AA76BD0066ECE3 /* DashboardViewController.swift */; };
 		4050698B19AA76BD0066ECE3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4050698A19AA76BD0066ECE3 /* Images.xcassets */; };
 		4050699719AA76BD0066ECE3 /* HighballTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4050699619AA76BD0066ECE3 /* HighballTests.swift */; };
-		405D659A1C34C4E500968B3B /* PostsDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 405D65991C34C4E500968B3B /* PostsDataManager.swift */; };
 		406690651A5A17A1006345B0 /* TagsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 406690641A5A17A1006345B0 /* TagsTableViewCell.swift */; };
 		406F38EF1D7514520046CE1D /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 406F38EE1D7514520046CE1D /* Account.swift */; };
 		406F38F31D751F2E0046CE1D /* Blog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 406F38F21D751F2E0046CE1D /* Blog.swift */; };
-		40731BB819FDC38900F6978D /* PostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731BB719FDC38900F6978D /* PostsViewController.swift */; };
-		40731BBA19FDCAD300F6978D /* LikesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40731BB919FDCAD300F6978D /* LikesViewController.swift */; };
-		4074B6611A99269C00774E00 /* TagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4074B6601A99269C00774E00 /* TagViewController.swift */; };
 		40778B9C19B15F9C00F8EE13 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40778B9B19B15F9C00F8EE13 /* Post.swift */; };
 		40778B9E19B160DD00F8EE13 /* PostPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40778B9D19B160DD00F8EE13 /* PostPhoto.swift */; };
 		40778BAA19B24BA500F8EE13 /* PostQuestionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40778BA919B24BA500F8EE13 /* PostQuestionTableViewCell.swift */; };
@@ -45,14 +40,18 @@
 		409D00EB1B28BF5F0097C2EC /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 409D00E61B27522E0097C2EC /* SwiftyJSON.framework */; };
 		40A11E6819B518DD00B91843 /* ImagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A11E6719B518DD00B91843 /* ImagesViewController.swift */; };
 		40A11E6B19B51FF700B91843 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A11E6A19B51FF700B91843 /* ImageCollectionViewCell.swift */; };
-		40B609531A99234B0089E431 /* BlogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B609521A99234B0089E431 /* BlogViewController.swift */; };
 		40C78D1519BD29330002EB78 /* ReblogTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C78D1419BD29330002EB78 /* ReblogTransitionAnimator.swift */; };
 		40CAF2F71D78CDB600B8A027 /* PostVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CAF2F61D78CDB600B8A027 /* PostVideo.swift */; };
+		40CAF2FC1D78ECFC00B8A027 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CAF2FB1D78ECFC00B8A027 /* DashboardViewController.swift */; };
+		40CAF2FE1D78ED2300B8A027 /* PostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CAF2FD1D78ED2300B8A027 /* PostsViewController.swift */; };
+		40CAF3001D78EDA900B8A027 /* PostsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CAF2FF1D78EDA900B8A027 /* PostsPresenter.swift */; };
+		40CAF3021D78EDCF00B8A027 /* PostsDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CAF3011D78EDCF00B8A027 /* PostsDataManager.swift */; };
+		40CAF3041D78EEAC00B8A027 /* DashboardPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CAF3031D78EEAC00B8A027 /* DashboardPresenter.swift */; };
+		40CAF3081D78F37700B8A027 /* DashboardModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CAF3071D78F37700B8A027 /* DashboardModule.swift */; };
 		40CE13D91CB3377100847A94 /* NSAttributedString+Trim.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CE13D81CB3377100847A94 /* NSAttributedString+Trim.swift */; };
 		40CFDAB41C344931008FBF9A /* HeightCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CFDAB31C344931008FBF9A /* HeightCalculator.swift */; };
 		40CFDAB61C34990F008FBF9A /* ReuseIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CFDAB51C34990F008FBF9A /* ReuseIdentifiers.swift */; };
 		40CFDAB81C349F84008FBF9A /* TextReblogTableViewAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CFDAB71C349F84008FBF9A /* TextReblogTableViewAdapter.swift */; };
-		40CFDABD1C34BA33008FBF9A /* PostsTableViewAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CFDABC1C34BA33008FBF9A /* PostsTableViewAdapter.swift */; };
 		40CFDABF1C34BB17008FBF9A /* PostHeightCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CFDABE1C34BB17008FBF9A /* PostHeightCache.swift */; };
 		40D374B01CB9F07B008CB51A /* PostContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D374AF1CB9F07B008CB51A /* PostContent.swift */; };
 		40DB21251C556195007AD3DD /* FollowedBlogsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40DB21241C556195007AD3DD /* FollowedBlogsViewController.swift */; };
@@ -60,6 +59,17 @@
 		40DB21291C5571FF007AD3DD /* FollowedBlogsTableViewAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40DB21281C5571FF007AD3DD /* FollowedBlogsTableViewAdapter.swift */; };
 		40DF7DB21A7672E900CE3D4C /* VideoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40DF7DB11A7672E900CE3D4C /* VideoTableViewCell.swift */; };
 		40DF7DB41A79919900CE3D4C /* VideoPlayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40DF7DB31A79919900CE3D4C /* VideoPlayController.swift */; };
+		40E195731D79DB8E0087C4EF /* BlogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E195721D79DB8E0087C4EF /* BlogViewController.swift */; };
+		40E195751D79DB9D0087C4EF /* BlogPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E195741D79DB9D0087C4EF /* BlogPresenter.swift */; };
+		40E195771D79DDF70087C4EF /* BlogModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E195761D79DDF70087C4EF /* BlogModule.swift */; };
+		40E195791D79DE8B0087C4EF /* Module.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E195781D79DE8B0087C4EF /* Module.swift */; };
+		40E1957C1D79E1A20087C4EF /* LikesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E1957B1D79E1A20087C4EF /* LikesViewController.swift */; };
+		40E1957E1D79E1AF0087C4EF /* LikesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E1957D1D79E1AF0087C4EF /* LikesPresenter.swift */; };
+		40E195801D79E1B50087C4EF /* LikesModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E1957F1D79E1B50087C4EF /* LikesModule.swift */; };
+		40E195831D79E3300087C4EF /* TagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E195821D79E3300087C4EF /* TagViewController.swift */; };
+		40E195851D79E3410087C4EF /* TagPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E195841D79E3410087C4EF /* TagPresenter.swift */; };
+		40E195871D79E3470087C4EF /* TagModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E195861D79E3470087C4EF /* TagModule.swift */; };
+		40E195891D79E7020087C4EF /* PostsTableViewAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E195881D79E7020087C4EF /* PostsTableViewAdapter.swift */; };
 		40F75A821C31D68800EC86DE /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F75A811C31D68800EC86DE /* MainViewController.swift */; };
 		40F75A851C31FA4100EC86DE /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F75A841C31FA4100EC86DE /* HistoryViewController.swift */; };
 		40F75A871C3219CD00EC86DE /* ReblogCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F75A861C3219CD00EC86DE /* ReblogCommentCell.swift */; };
@@ -99,19 +109,14 @@
 		4050697B19AA76BD0066ECE3 /* Highball.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Highball.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4050697F19AA76BD0066ECE3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4050698019AA76BD0066ECE3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		4050698519AA76BD0066ECE3 /* DashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
 		4050698A19AA76BD0066ECE3 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		4050699019AA76BD0066ECE3 /* HighballTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HighballTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4050699519AA76BD0066ECE3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4050699619AA76BD0066ECE3 /* HighballTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighballTests.swift; sourceTree = "<group>"; };
 		405069A019AA77E80066ECE3 /* Highball-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Highball-Bridging-Header.h"; sourceTree = "<group>"; };
-		405D65991C34C4E500968B3B /* PostsDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsDataManager.swift; sourceTree = "<group>"; };
 		406690641A5A17A1006345B0 /* TagsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsTableViewCell.swift; sourceTree = "<group>"; };
 		406F38EE1D7514520046CE1D /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		406F38F21D751F2E0046CE1D /* Blog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Blog.swift; sourceTree = "<group>"; };
-		40731BB719FDC38900F6978D /* PostsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsViewController.swift; sourceTree = "<group>"; };
-		40731BB919FDCAD300F6978D /* LikesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikesViewController.swift; sourceTree = "<group>"; };
-		4074B6601A99269C00774E00 /* TagViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagViewController.swift; sourceTree = "<group>"; };
 		40778B9B19B15F9C00F8EE13 /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		40778B9D19B160DD00F8EE13 /* PostPhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostPhoto.swift; sourceTree = "<group>"; };
 		40778BA919B24BA500F8EE13 /* PostQuestionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostQuestionTableViewCell.swift; sourceTree = "<group>"; };
@@ -124,14 +129,18 @@
 		409D00E61B27522E0097C2EC /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
 		40A11E6719B518DD00B91843 /* ImagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagesViewController.swift; sourceTree = "<group>"; };
 		40A11E6A19B51FF700B91843 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
-		40B609521A99234B0089E431 /* BlogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlogViewController.swift; sourceTree = "<group>"; };
 		40C78D1419BD29330002EB78 /* ReblogTransitionAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReblogTransitionAnimator.swift; sourceTree = "<group>"; };
 		40CAF2F61D78CDB600B8A027 /* PostVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostVideo.swift; sourceTree = "<group>"; };
+		40CAF2FB1D78ECFC00B8A027 /* DashboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
+		40CAF2FD1D78ED2300B8A027 /* PostsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsViewController.swift; sourceTree = "<group>"; };
+		40CAF2FF1D78EDA900B8A027 /* PostsPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsPresenter.swift; sourceTree = "<group>"; };
+		40CAF3011D78EDCF00B8A027 /* PostsDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsDataManager.swift; sourceTree = "<group>"; };
+		40CAF3031D78EEAC00B8A027 /* DashboardPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardPresenter.swift; sourceTree = "<group>"; };
+		40CAF3071D78F37700B8A027 /* DashboardModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardModule.swift; sourceTree = "<group>"; };
 		40CE13D81CB3377100847A94 /* NSAttributedString+Trim.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Trim.swift"; sourceTree = "<group>"; };
 		40CFDAB31C344931008FBF9A /* HeightCalculator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeightCalculator.swift; sourceTree = "<group>"; };
 		40CFDAB51C34990F008FBF9A /* ReuseIdentifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReuseIdentifiers.swift; sourceTree = "<group>"; };
 		40CFDAB71C349F84008FBF9A /* TextReblogTableViewAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextReblogTableViewAdapter.swift; sourceTree = "<group>"; };
-		40CFDABC1C34BA33008FBF9A /* PostsTableViewAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsTableViewAdapter.swift; sourceTree = "<group>"; };
 		40CFDABE1C34BB17008FBF9A /* PostHeightCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostHeightCache.swift; sourceTree = "<group>"; };
 		40D374AF1CB9F07B008CB51A /* PostContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostContent.swift; sourceTree = "<group>"; };
 		40DB21241C556195007AD3DD /* FollowedBlogsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowedBlogsViewController.swift; sourceTree = "<group>"; };
@@ -139,6 +148,17 @@
 		40DB21281C5571FF007AD3DD /* FollowedBlogsTableViewAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowedBlogsTableViewAdapter.swift; sourceTree = "<group>"; };
 		40DF7DB11A7672E900CE3D4C /* VideoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoTableViewCell.swift; sourceTree = "<group>"; };
 		40DF7DB31A79919900CE3D4C /* VideoPlayController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlayController.swift; sourceTree = "<group>"; };
+		40E195721D79DB8E0087C4EF /* BlogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlogViewController.swift; sourceTree = "<group>"; };
+		40E195741D79DB9D0087C4EF /* BlogPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlogPresenter.swift; sourceTree = "<group>"; };
+		40E195761D79DDF70087C4EF /* BlogModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlogModule.swift; sourceTree = "<group>"; };
+		40E195781D79DE8B0087C4EF /* Module.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Module.swift; sourceTree = "<group>"; };
+		40E1957B1D79E1A20087C4EF /* LikesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikesViewController.swift; sourceTree = "<group>"; };
+		40E1957D1D79E1AF0087C4EF /* LikesPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikesPresenter.swift; sourceTree = "<group>"; };
+		40E1957F1D79E1B50087C4EF /* LikesModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikesModule.swift; sourceTree = "<group>"; };
+		40E195821D79E3300087C4EF /* TagViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagViewController.swift; sourceTree = "<group>"; };
+		40E195841D79E3410087C4EF /* TagPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagPresenter.swift; sourceTree = "<group>"; };
+		40E195861D79E3470087C4EF /* TagModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagModule.swift; sourceTree = "<group>"; };
+		40E195881D79E7020087C4EF /* PostsTableViewAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsTableViewAdapter.swift; sourceTree = "<group>"; };
 		40F75A811C31D68800EC86DE /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		40F75A841C31FA4100EC86DE /* HistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		40F75A861C3219CD00EC86DE /* ReblogCommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReblogCommentCell.swift; sourceTree = "<group>"; };
@@ -248,6 +268,7 @@
 		4050697D19AA76BD0066ECE3 /* Highball */ = {
 			isa = PBXGroup;
 			children = (
+				40CAF2F81D78EC2B00B8A027 /* Modules */,
 				400859191B7EB9EB009DF207 /* Extensions */,
 				40A11E6619B518B500B91843 /* Controllers */,
 				40778B9A19B15F7D00F8EE13 /* Models */,
@@ -297,19 +318,6 @@
 			name = Reblog;
 			sourceTree = "<group>";
 		};
-		405D659F1C34D73B00968B3B /* Posts */ = {
-			isa = PBXGroup;
-			children = (
-				40731BB719FDC38900F6978D /* PostsViewController.swift */,
-				40CFDABC1C34BA33008FBF9A /* PostsTableViewAdapter.swift */,
-				405D65991C34C4E500968B3B /* PostsDataManager.swift */,
-				4050698519AA76BD0066ECE3 /* DashboardViewController.swift */,
-				40731BB919FDCAD300F6978D /* LikesViewController.swift */,
-				4074B6601A99269C00774E00 /* TagViewController.swift */,
-			);
-			name = Posts;
-			sourceTree = "<group>";
-		};
 		40778B9A19B15F7D00F8EE13 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -337,7 +345,6 @@
 				40DB21231C556156007AD3DD /* Blogs */,
 				4058C46B1C42E9D800B19D26 /* Reblog */,
 				403040E11C37250D001EFC9E /* Post */,
-				405D659F1C34D73B00968B3B /* Posts */,
 				40080E8D1A0F042B00D883AE /* SettingsViewController.swift */,
 				40080E8F1A0F11DD00D883AE /* LockSplashViewController.swift */,
 				40F8CE951A41111300609ABF /* AccountsViewController.swift */,
@@ -348,15 +355,78 @@
 			name = Controllers;
 			sourceTree = "<group>";
 		};
+		40CAF2F81D78EC2B00B8A027 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				40CAF2F91D78EC6500B8A027 /* Posts */,
+				40E195781D79DE8B0087C4EF /* Module.swift */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		40CAF2F91D78EC6500B8A027 /* Posts */ = {
+			isa = PBXGroup;
+			children = (
+				40CAF3011D78EDCF00B8A027 /* PostsDataManager.swift */,
+				40CAF2FF1D78EDA900B8A027 /* PostsPresenter.swift */,
+				40E195881D79E7020087C4EF /* PostsTableViewAdapter.swift */,
+				40CAF2FD1D78ED2300B8A027 /* PostsViewController.swift */,
+				40E195711D79DB460087C4EF /* Blog */,
+				40CAF2FA1D78EC7700B8A027 /* Dashboard */,
+				40E1957A1D79E15D0087C4EF /* Likes */,
+				40E195811D79E30C0087C4EF /* Tag */,
+			);
+			path = Posts;
+			sourceTree = "<group>";
+		};
+		40CAF2FA1D78EC7700B8A027 /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				40CAF3071D78F37700B8A027 /* DashboardModule.swift */,
+				40CAF3031D78EEAC00B8A027 /* DashboardPresenter.swift */,
+				40CAF2FB1D78ECFC00B8A027 /* DashboardViewController.swift */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
 		40DB21231C556156007AD3DD /* Blogs */ = {
 			isa = PBXGroup;
 			children = (
-				40B609521A99234B0089E431 /* BlogViewController.swift */,
 				40DB21241C556195007AD3DD /* FollowedBlogsViewController.swift */,
 				40DB21261C5561B7007AD3DD /* FollowedBlogsDataManager.swift */,
 				40DB21281C5571FF007AD3DD /* FollowedBlogsTableViewAdapter.swift */,
 			);
 			name = Blogs;
+			sourceTree = "<group>";
+		};
+		40E195711D79DB460087C4EF /* Blog */ = {
+			isa = PBXGroup;
+			children = (
+				40E195761D79DDF70087C4EF /* BlogModule.swift */,
+				40E195741D79DB9D0087C4EF /* BlogPresenter.swift */,
+				40E195721D79DB8E0087C4EF /* BlogViewController.swift */,
+			);
+			path = Blog;
+			sourceTree = "<group>";
+		};
+		40E1957A1D79E15D0087C4EF /* Likes */ = {
+			isa = PBXGroup;
+			children = (
+				40E1957F1D79E1B50087C4EF /* LikesModule.swift */,
+				40E1957D1D79E1AF0087C4EF /* LikesPresenter.swift */,
+				40E1957B1D79E1A20087C4EF /* LikesViewController.swift */,
+			);
+			path = Likes;
+			sourceTree = "<group>";
+		};
+		40E195811D79E30C0087C4EF /* Tag */ = {
+			isa = PBXGroup;
+			children = (
+				40E195861D79E3470087C4EF /* TagModule.swift */,
+				40E195841D79E3410087C4EF /* TagPresenter.swift */,
+				40E195821D79E3300087C4EF /* TagViewController.swift */,
+			);
+			path = Tag;
 			sourceTree = "<group>";
 		};
 		A3D296309A504A00AFFABE53 /* Frameworks */ = {
@@ -583,45 +653,55 @@
 			buildActionMask = 2147483647;
 			files = (
 				40D374B01CB9F07B008CB51A /* PostContent.swift in Sources */,
+				40E195851D79E3410087C4EF /* TagPresenter.swift in Sources */,
 				40CAF2F71D78CDB600B8A027 /* PostVideo.swift in Sources */,
 				40A11E6819B518DD00B91843 /* ImagesViewController.swift in Sources */,
+				40CAF3001D78EDA900B8A027 /* PostsPresenter.swift in Sources */,
 				408C7D2319B387A500EFC410 /* PostDialogueEntryTableViewCell.swift in Sources */,
 				403040E01C37211A001EFC9E /* PhotosetLayoutRows.swift in Sources */,
+				40E195831D79E3300087C4EF /* TagViewController.swift in Sources */,
 				40381A0B1A79A6FA005A2EEE /* YoutubeTableViewCell.swift in Sources */,
 				403040E51C373D66001EFC9E /* PostViewHeightCalculator.swift in Sources */,
 				40A11E6B19B51FF700B91843 /* ImageCollectionViewCell.swift in Sources */,
 				40080E901A0F11DD00D883AE /* LockSplashViewController.swift in Sources */,
-				4050698619AA76BD0066ECE3 /* DashboardViewController.swift in Sources */,
 				40FF6D4519B9F656008119A3 /* QuickReblogViewController.swift in Sources */,
+				40E1957C1D79E1A20087C4EF /* LikesViewController.swift in Sources */,
+				40CAF3041D78EEAC00B8A027 /* DashboardPresenter.swift in Sources */,
+				40E1957E1D79E1AF0087C4EF /* LikesPresenter.swift in Sources */,
 				406F38EF1D7514520046CE1D /* Account.swift in Sources */,
 				403F53DB19AECFEF00FF8F3B /* PhotosetRowTableViewCell.swift in Sources */,
+				40E195771D79DDF70087C4EF /* BlogModule.swift in Sources */,
+				40E195891D79E7020087C4EF /* PostsTableViewAdapter.swift in Sources */,
 				408C7D2119B384C800EFC410 /* PostDialogueEntry.swift in Sources */,
 				4008591B1B7EBA05009DF207 /* NSDate+Relative.swift in Sources */,
-				40B609531A99234B0089E431 /* BlogViewController.swift in Sources */,
-				40731BB819FDC38900F6978D /* PostsViewController.swift in Sources */,
 				4050698119AA76BD0066ECE3 /* AppDelegate.swift in Sources */,
 				403040E91C388775001EFC9E /* PostSectionAdapter.swift in Sources */,
 				40CFDABF1C34BB17008FBF9A /* PostHeightCache.swift in Sources */,
+				40E195801D79E1B50087C4EF /* LikesModule.swift in Sources */,
 				408C7D1F19B36F7400EFC410 /* PostLinkTableViewCell.swift in Sources */,
-				405D659A1C34C4E500968B3B /* PostsDataManager.swift in Sources */,
 				40F9F4041CB1DA8200989D5B /* PostTrailData.swift in Sources */,
 				40DF7DB41A79919900CE3D4C /* VideoPlayController.swift in Sources */,
+				40CAF3021D78EDCF00B8A027 /* PostsDataManager.swift in Sources */,
 				40F8CE9A1A41143000609ABF /* AccountsService.swift in Sources */,
 				40F8CE961A41111300609ABF /* AccountsViewController.swift in Sources */,
 				40CFDAB41C344931008FBF9A /* HeightCalculator.swift in Sources */,
 				403F53DF19AFCEB800FF8F3B /* String+HTML.swift in Sources */,
 				406690651A5A17A1006345B0 /* TagsTableViewCell.swift in Sources */,
 				40778B9C19B15F9C00F8EE13 /* Post.swift in Sources */,
+				40E195731D79DB8E0087C4EF /* BlogViewController.swift in Sources */,
 				40080E8E1A0F042B00D883AE /* SettingsViewController.swift in Sources */,
 				403040EB1C388F91001EFC9E /* PostHeaderView.swift in Sources */,
+				40CAF2FE1D78ED2300B8A027 /* PostsViewController.swift in Sources */,
 				402D979919F1E442003DCD55 /* TextReblogViewController.swift in Sources */,
 				40F75A871C3219CD00EC86DE /* ReblogCommentCell.swift in Sources */,
+				40CAF3081D78F37700B8A027 /* DashboardModule.swift in Sources */,
 				402A20961A3D2C510007CCFF /* TitleTableViewCell.swift in Sources */,
 				40DB21251C556195007AD3DD /* FollowedBlogsViewController.swift in Sources */,
 				40F75A851C31FA4100EC86DE /* HistoryViewController.swift in Sources */,
 				406F38F31D751F2E0046CE1D /* Blog.swift in Sources */,
-				4074B6611A99269C00774E00 /* TagViewController.swift in Sources */,
+				40E195751D79DB9D0087C4EF /* BlogPresenter.swift in Sources */,
 				40778B9E19B160DD00F8EE13 /* PostPhoto.swift in Sources */,
+				40E195871D79E3470087C4EF /* TagModule.swift in Sources */,
 				40CFDAB81C349F84008FBF9A /* TextReblogTableViewAdapter.swift in Sources */,
 				40DF7DB21A7672E900CE3D4C /* VideoTableViewCell.swift in Sources */,
 				40F75A821C31D68800EC86DE /* MainViewController.swift in Sources */,
@@ -630,11 +710,11 @@
 				403F53DD19AFB5DF00FF8F3B /* ContentTableViewCell.swift in Sources */,
 				40778BAA19B24BA500F8EE13 /* PostQuestionTableViewCell.swift in Sources */,
 				40DB21271C5561B7007AD3DD /* FollowedBlogsDataManager.swift in Sources */,
-				40CFDABD1C34BA33008FBF9A /* PostsTableViewAdapter.swift in Sources */,
+				40E195791D79DE8B0087C4EF /* Module.swift in Sources */,
 				40C78D1519BD29330002EB78 /* ReblogTransitionAnimator.swift in Sources */,
 				40CFDAB61C34990F008FBF9A /* ReuseIdentifiers.swift in Sources */,
 				402033591A6C785400BA136C /* AnimatedImageCache.swift in Sources */,
-				40731BBA19FDCAD300F6978D /* LikesViewController.swift in Sources */,
+				40CAF2FC1D78ECFC00B8A027 /* DashboardViewController.swift in Sources */,
 				40CE13D91CB3377100847A94 /* NSAttributedString+Trim.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
