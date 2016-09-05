@@ -56,7 +56,7 @@ class AccountsViewController: UITableViewController {
 			let account = accounts[indexPath.row]
 			let cell = tableView.dequeueReusableCellWithIdentifier(UITableViewCell.cellIdentifier, forIndexPath: indexPath)
 
-			cell.textLabel?.text = account.blog.name
+			cell.textLabel?.text = account.name
 
 			if let currentAccount = AccountsService.account {
 				if account == currentAccount {
@@ -82,7 +82,7 @@ class AccountsViewController: UITableViewController {
 		case .Accounts:
 			let account = accounts[indexPath.row]
 			AccountsService.loginToAccount(account) { account in
-				let alertController = UIAlertController(title: "Switch Account?", message: "Are you sure you want to switch to \(account.blog.name)", preferredStyle: .ActionSheet)
+				let alertController = UIAlertController(title: "Switch Account?", message: "Are you sure you want to switch to \(account.name)", preferredStyle: .ActionSheet)
 				let action = UIAlertAction(title: "Yes", style: .Destructive) { _ in
 					let notification = NSNotification(name: AccountDidChangeNotification, object: nil)
 					NSNotificationCenter.defaultCenter().postNotification(notification)
@@ -112,7 +112,7 @@ class AccountsViewController: UITableViewController {
 		}
 
 		let account = accounts[indexPath.row]
-		let alertController = UIAlertController(title: "Delete Account?", message: "Are you sure youw ant to delete \(account.blog.name)", preferredStyle: .ActionSheet)
+		let alertController = UIAlertController(title: "Delete Account?", message: "Are you sure youw ant to delete \(account.name)", preferredStyle: .ActionSheet)
 		let deleteAction = UIAlertAction(title: "Yes", style: .Destructive) { _ in
 			AccountsService.deleteAccount(account, fromViewController: self) { changedAccount in
 				if changedAccount {

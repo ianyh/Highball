@@ -8,15 +8,15 @@
 
 import UIKit
 
-protocol HistoryViewControllerDelegate {
+public protocol HistoryViewControllerDelegate {
 	func historyViewController(historyViewController: HistoryViewController, didFinishWithId selectedId: Int?)
 }
 
-class HistoryViewController: UITableViewController {
+public class HistoryViewController: UITableViewController {
 	private let delegate: HistoryViewControllerDelegate
 	private var bookmarks: [[String: AnyObject]]?
 
-	init(delegate: HistoryViewControllerDelegate) {
+	public init(delegate: HistoryViewControllerDelegate) {
 		self.delegate = delegate
 		super.init(style: .Plain)
 		navigationItem.title = "History"
@@ -27,20 +27,20 @@ class HistoryViewController: UITableViewController {
 		)
 	}
 
-	required init?(coder aDecoder: NSCoder) {
+	public required init?(coder aDecoder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	override func viewDidLoad() {
+	public override func viewDidLoad() {
 		super.viewDidLoad()
 
 		tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: UITableViewCell.cellIdentifier)
 	}
 
-	override func viewWillAppear(animated: Bool) {
+	public override func viewWillAppear(animated: Bool) {
 		super.viewWillAppear(animated)
 
-		bookmarks = NSUserDefaults.standardUserDefaults().arrayForKey("HIBookmarks:\(AccountsService.account.blog.url)") as? [[String: AnyObject]]
+		bookmarks = NSUserDefaults.standardUserDefaults().arrayForKey("HIBookmarks:\(AccountsService.account.primaryBlog.url)") as? [[String: AnyObject]]
 		bookmarks = bookmarks?
 			.sort { bookmarkA, bookmarkB in
 				guard let dateA = bookmarkA["date"] as? NSDate,
@@ -55,11 +55,11 @@ class HistoryViewController: UITableViewController {
 		tableView.reloadData()
 	}
 
-	override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return bookmarks?.count ?? 0
 	}
 
-	override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+	public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCellWithIdentifier(UITableViewCell.cellIdentifier, forIndexPath: indexPath)
 		let bookmark = bookmarks![indexPath.row]
 
@@ -73,7 +73,7 @@ class HistoryViewController: UITableViewController {
 		return cell
 	}
 
-	override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+	public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
 		let bookmark = bookmarks![indexPath.row]
 
 		guard let bookmarkID = bookmark["id"] as? Int else {
@@ -83,7 +83,7 @@ class HistoryViewController: UITableViewController {
 		delegate.historyViewController(self, didFinishWithId: bookmarkID)
 	}
 
-	func cancel(sender: AnyObject) {
+	public func cancel(sender: AnyObject) {
 		delegate.historyViewController(self, didFinishWithId: nil)
 	}
 }

@@ -6,58 +6,55 @@
 //  Copyright (c) 2014 ianynda. All rights reserved.
 //
 
+import Mapper
 import SwiftyJSON
 import UIKit
 
-class PostPhoto {
-	private let json: JSON
-	let width: CGFloat
-	let height: CGFloat
-	let sizes: Array<JSON>
-	let widthToHeightRatio: Float?
+internal struct Size: Mappable {
+	let width: Double
+	let url: NSURL
 
-	required init(json: JSON) {
-		self.json = json
-		if let width = json["original_size"]["width"].int {
-			self.width = CGFloat(width)
+	init(map: Mapper) throws {
+		width = try map.from("width")
+		url = try map.from("url")
+	}
+}
+
+public struct PostPhoto: Mappable {
+	public let width: CGFloat
+	public let height: CGFloat
+	private let sizes: [Size]
+	public let widthToHeightRatio: Double?
+
+	public init(map: Mapper) throws {
+		let width: Double = map.optionalFrom("original_size.width") ?? 0
+		let height: Double = map.optionalFrom("original_size.height") ?? 0
+
+		self.width = CGFloat(width)
+		self.height = CGFloat(height)
+
+		if width > 0 && height > 0 {
+			widthToHeightRatio = width / height
 		} else {
-			self.width = 0
+			widthToHeightRatio = 1.0
 		}
-		if let height = json["original_size"]["height"].int {
-			self.height = CGFloat(height)
-		} else {
-			self.height = 0
-		}
-		var sizes = [json["original_size"]]
-		sizes.appendContentsOf(json["alt_sizes"].arrayValue.sort { $0["width"].int! > $1["width"].int! })
-		self.sizes = sizes
-		if let width = json["original_size"]["width"].float, height = json["original_size"]["height"].float {
-			self.widthToHeightRatio = width / height
-		} else {
-			self.widthToHeightRatio = 1.0
-		}
+
+		let originalSize: Size = try map.from("original_size")
+		let alternateSizes: [Size] = try map.from("alt_sizes")
+
+		sizes = ([originalSize] + alternateSizes).sort { $0.width > $1.width }
 	}
 
-	func urlWithWidth(width: CGFloat) -> NSURL {
+	public func urlWithWidth(width: CGFloat) -> NSURL {
 		let appDelegate = UIApplication.sharedApplication().delegate
 		if let delegate = appDelegate as? AppDelegate, reachability = delegate.reachability {
 			if reachability.isReachableViaWiFi() {
-				return NSURL(string: sizes.first!["url"].stringValue)!
+				return sizes.first!.url
 			}
 		}
 
-		let largerSizes = sizes.filter {
-			guard let sizeWidth = $0["width"].int else {
-				return false
-			}
+		let largerSizes = sizes.filter { $0.width > Double(width) }
 
-			return CGFloat(sizeWidth) > width
-		}
-
-		if let smallestFittedSize = largerSizes.last {
-			return NSURL(string: smallestFittedSize["url"].stringValue)!
-		} else {
-			return NSURL(string: sizes.first!["url"].stringValue)!
-		}
+		return largerSizes.last?.url ?? sizes.first!.url
 	}
 }

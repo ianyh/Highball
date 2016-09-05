@@ -10,16 +10,16 @@ import Foundation
 import SwiftyJSON
 import YYText
 
-struct HeightCalculator {
+public struct HeightCalculator {
 	private let post: Post
 	private let width: CGFloat
 
-	init(post: Post, width: CGFloat) {
+	public init(post: Post, width: CGFloat) {
 		self.post = post
 		self.width = width
 	}
 
-	func calculateHeight(secondary: Bool = false, completion: (height: CGFloat?) -> ()) {
+	public func calculateHeight(secondary: Bool = false, completion: (height: CGFloat?) -> ()) {
 		let htmlStringMethod = secondary ? Post.htmlSecondaryBodyWithWidth : Post.htmlBodyWithWidth
 
 		guard let content = htmlStringMethod(post)(width), data = content.dataUsingEncoding(NSUTF8StringEncoding) else {
@@ -32,7 +32,7 @@ struct HeightCalculator {
 		calculateHeightWithAttributedStringData(data, completion: completion)
 	}
 
-	func calculateBodyHeightAtIndex(index: Int, completion: (height: CGFloat?) -> ()) {
+	public func calculateBodyHeightAtIndex(index: Int, completion: (height: CGFloat?) -> ()) {
 		let trailData = post.trailData[index]
 		let htmlStringMethod = trailData.content.htmlStringWithTumblrStyle(width)
 
@@ -46,7 +46,7 @@ struct HeightCalculator {
 		calculateHeightWithAttributedStringData(data, completion: completion)
 	}
 
-	func calculateHeightWithAttributedStringData(data: NSData, completion: (height: CGFloat?) -> ()) {
+	public func calculateHeightWithAttributedStringData(data: NSData, completion: (height: CGFloat?) -> ()) {
 		let postContent = PostContent(htmlData: data)
 		let string = postContent.attributedStringForDisplayWithLinkHandler(nil)
 		let textLayout = YYTextLayout(containerSize: CGSize(width: width - 20, height: CGFloat.max), text: string)

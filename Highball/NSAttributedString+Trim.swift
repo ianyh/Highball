@@ -8,8 +8,8 @@
 
 import Foundation
 
-extension NSAttributedString {
-	func attributedStringByTrimmingNewlines() -> NSAttributedString {
+public extension NSAttributedString {
+	public func attributedStringByTrimmingNewlines() -> NSAttributedString {
 		var attributedString = self
 		while attributedString.string.characters.first == "\n" {
 			attributedString = attributedString.attributedSubstringFromRange(NSMakeRange(1, attributedString.string.characters.count - 1))

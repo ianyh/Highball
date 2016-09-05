@@ -6,14 +6,14 @@
 //  Copyright (c) 2015 ianynda. All rights reserved.
 //
 
-import UIKit
 import Cartography
+import UIKit
 
-protocol TagsTableViewCellDelegate {
+public protocol TagsTableViewCellDelegate {
 	func tagsTableViewCell(cell: TagsTableViewCell, didSelectTag tag: String)
 }
 
-class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+public class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 	private class TagCollectionViewCell: UICollectionViewCell {
 		private var tagLabel: UILabel!
 
@@ -48,23 +48,23 @@ class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollecti
 	}
 
 	private var collectionView: UICollectionView!
-	var delegate: TagsTableViewCellDelegate?
-	var tags: [String]? {
+	public var delegate: TagsTableViewCellDelegate?
+	public var tags: [String]? {
 		didSet {
 			collectionView.contentOffset = CGPoint(x: -collectionView.contentInset.left, y: 0)
 		}
 	}
 
-	override required init(style: UITableViewCellStyle, reuseIdentifier: String!) {
+	public override required init(style: UITableViewCellStyle, reuseIdentifier: String!) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
 		setUpCell()
 	}
 
-	required init?(coder aDecoder: NSCoder) {
+	public required init?(coder aDecoder: NSCoder) {
 		fatalError()
 	}
 
-	func setUpCell() {
+	public func setUpCell() {
 		let collectionViewLayout = UICollectionViewFlowLayout()
 		collectionViewLayout.scrollDirection = .Horizontal
 		collectionViewLayout.minimumInteritemSpacing = 5
@@ -89,11 +89,11 @@ class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollecti
 		}
 	}
 
-	func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+	public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		return tags?.count ?? 0
 	}
 
-	func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+	public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
 		let cell = collectionView.dequeueReusableCellWithReuseIdentifier(TagCollectionViewCell.cellIdentifier, forIndexPath: indexPath) as! TagCollectionViewCell
 		let tag = tags![indexPath.row]
 
@@ -102,17 +102,17 @@ class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollecti
 		return cell
 	}
 
-	func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+	public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
 		let tag = tags![indexPath.row]
 
 		return CGSize(width: TagCollectionViewCell.widthForTag(tag), height: collectionView.frame.height)
 	}
 
-	func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+	public func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
 		delegate?.tagsTableViewCell(self, didSelectTag: self.tags![indexPath.row])
 	}
 
-	override func layoutSubviews() {
+	public override func layoutSubviews() {
 		super.layoutSubviews()
 
 		collectionView.reloadData()

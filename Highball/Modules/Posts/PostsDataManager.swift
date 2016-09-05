@@ -10,51 +10,51 @@ import SwiftyJSON
 import TMTumblrSDK
 import UIKit
 
-protocol PostsDataManagerDelegate {
+public protocol PostsDataManagerDelegate: class {
 	func dataManager(dataManager: PostsDataManager, requestPostsWithCount postCount: Int, parameters: [String: AnyObject], callback: TMAPICallback)
-	func dataManager(dataManager: PostsDataManager, postsFromJSON json: JSON) -> [Post]
+	func dataManagerPostsJSONKey(dataManager: PostsDataManager) -> String?
 	func dataManagerDidReload(dataManager: PostsDataManager, indexSet: NSIndexSet?, completion: () -> ())
 	func dataManagerDidComputeHeight(dataManager: PostsDataManager)
 	func dataManager(dataManager: PostsDataManager, didEncounterError error: NSError)
 }
 
-class PostsDataManager {
+public class PostsDataManager {
 	private let heightComputationQueue: NSOperationQueue!
 	private let postParseQueue = dispatch_queue_create("postParseQueue", nil)
 
 	private let postHeightCache: PostHeightCache
-	private let delegate: PostsDataManagerDelegate
+	private weak var delegate: PostsDataManagerDelegate?
 
 	private var heightCalculators: [Int: HeightCalculator] = [:]
 	private var secondaryHeightCalculators: [Int: HeightCalculator] = [:]
 	private var bodyHeightCalculators: [String: HeightCalculator] = [:]
 
-	var posts: Array<Post>!
-	var topID: Int?
-	var cursor: Int?
+	public var posts: Array<Post>!
+	public var topID: Int?
+	public var cursor: Int?
 
-	var loadingTop = false
-	var loadingBottom = false
-	var lastPoint: CGPoint?
+	public var loadingTop = false
+	public var loadingBottom = false
+	public var lastPoint: CGPoint?
 
-	var hasPosts: Bool {
+	public var hasPosts: Bool {
 		return self.posts != nil && posts.count > 0
 	}
-	var computingHeights: Bool {
+	public var computingHeights: Bool {
 		return heightComputationQueue.operationCount > 0 ||
 			heightCalculators.count > 0 ||
 			secondaryHeightCalculators.count > 0 ||
 			bodyHeightCalculators.count > 0
 	}
 
-	init(postHeightCache: PostHeightCache, delegate: PostsDataManagerDelegate) {
+	public init(postHeightCache: PostHeightCache, delegate: PostsDataManagerDelegate) {
 		self.postHeightCache = postHeightCache
 		self.delegate = delegate
 		self.heightComputationQueue = NSOperationQueue()
 		self.heightComputationQueue.underlyingQueue = dispatch_get_main_queue()
 	}
 
-	func loadTop(width: CGFloat) {
+	public func loadTop(width: CGFloat) {
 		if loadingTop || loadingBottom {
 			return
 		}
@@ -84,15 +84,22 @@ class PostsDataManager {
 			}
 		}
 
-		delegate.dataManager(self, requestPostsWithCount: 0, parameters: parameters) { response, error in
+		delegate?.dataManager(self, requestPostsWithCount: 0, parameters: parameters) { response, error in
 			if let error = error {
 				dispatch_async(dispatch_get_main_queue()) {
-					self.delegate.dataManager(self, didEncounterError: error)
+					self.delegate?.dataManager(self, didEncounterError: error)
 					self.loadingTop = false
 				}
 			} else {
 				dispatch_async(self.postParseQueue) {
-					let posts = self.delegate.dataManager(self, postsFromJSON: JSON(response))
+					let posts = { () -> [Post] in
+						if let postsKey = self.delegate?.dataManagerPostsJSONKey(self) {
+							return JSON(response)[postsKey].array?.map { Post.from($0.dictionaryObject!) }.flatMap { $0 } ?? []
+						} else {
+							return JSON(response).array?.map { Post.from($0.dictionaryObject!) }.flatMap { $0 } ?? []
+						}
+					}()
+
 					dispatch_async(dispatch_get_main_queue()) {
 						self.processPosts(posts, width: width)
 						dispatch_async(dispatch_get_main_queue()) {
@@ -102,7 +109,7 @@ class PostsDataManager {
 								indexSet = NSIndexSet(indexesInRange: NSMakeRange(0, posts.count))
 								// swiftlint:enable legacy_constructor
 							}
-							self.delegate.dataManagerDidReload(self, indexSet: indexSet) {
+							self.delegate?.dataManagerDidReload(self, indexSet: indexSet) {
 								reloadCompletion(posts)
 							}
 						}
@@ -112,7 +119,7 @@ class PostsDataManager {
 		}
 	}
 
-	func loadMore(width: CGFloat) {
+	public func loadMore(width: CGFloat) {
 		if loadingTop || loadingBottom {
 			return
 		}
@@ -124,15 +131,22 @@ class PostsDataManager {
 		let parameters = ["before_id" : "\(cursor)", "reblog_info" : "true"]
 
 		loadingBottom = true
-		delegate.dataManager(self, requestPostsWithCount: posts.count, parameters: parameters) { response, error in
+		delegate?.dataManager(self, requestPostsWithCount: posts.count, parameters: parameters) { response, error in
 			if let error = error {
 				dispatch_async(dispatch_get_main_queue()) {
-					self.delegate.dataManager(self, didEncounterError: error)
+					self.delegate?.dataManager(self, didEncounterError: error)
 					self.loadingBottom = false
 				}
 			} else {
 				dispatch_async(self.postParseQueue) {
-					let posts = self.delegate.dataManager(self, postsFromJSON: JSON(response))
+					let posts = { () -> [Post] in
+						if let postsKey = self.delegate?.dataManagerPostsJSONKey(self) {
+							return JSON(response)[postsKey].array?.map { Post.from($0.dictionaryObject!) }.flatMap { $0 } ?? []
+						} else {
+							return JSON(response).array?.map { Post.from($0.dictionaryObject!) }.flatMap { $0 } ?? []
+						}
+					}()
+
 					dispatch_async(dispatch_get_main_queue()) {
 						self.processPosts(posts, width: width)
 						dispatch_async(dispatch_get_main_queue()) {
@@ -141,7 +155,7 @@ class PostsDataManager {
 								indexSet.addIndex(row)
 							}
 
-							self.delegate.dataManagerDidReload(self, indexSet: indexSet) {
+							self.delegate?.dataManagerDidReload(self, indexSet: indexSet) {
 								self.posts.appendContentsOf(posts)
 								self.cursor = posts.last?.id
 							}
@@ -152,7 +166,31 @@ class PostsDataManager {
 		}
 	}
 
-	func processPosts(posts: [Post], width: CGFloat) {
+	public func toggleLikeForPostAtIndex(index: Int) {
+		var post = posts[index]
+
+		if post.liked.boolValue {
+			TMAPIClient.sharedInstance().unlike("\(post.id)", reblogKey: post.reblogKey) { (response, error) in
+				if let error = error {
+					print(error)
+				} else {
+					post.liked = false
+					self.posts[index] = post
+				}
+			}
+		} else {
+			TMAPIClient.sharedInstance().like("\(post.id)", reblogKey: post.reblogKey) { (response, error) in
+				if let error = error {
+					print(error)
+				} else {
+					post.liked = true
+					self.posts[index] = post
+				}
+			}
+		}
+	}
+
+	private func processPosts(posts: [Post], width: CGFloat) {
 		for post in posts {
 			heightComputationQueue.addOperationWithBlock() {
 				let heightCalculator = HeightCalculator(post: post, width: width)
@@ -162,7 +200,7 @@ class PostsDataManager {
 				heightCalculator.calculateHeight { height in
 					self.heightCalculators[post.id] = nil
 					self.postHeightCache.setBodyHeight(height, forPost: post)
-					self.delegate.dataManagerDidComputeHeight(self)
+					self.delegate?.dataManagerDidComputeHeight(self)
 				}
 			}
 			heightComputationQueue.addOperationWithBlock() {
@@ -173,7 +211,7 @@ class PostsDataManager {
 				heightCalculator.calculateHeight(true) { height in
 					self.secondaryHeightCalculators[post.id] = nil
 					self.postHeightCache.setSecondaryBodyHeight(height, forPost: post)
-					self.delegate.dataManagerDidComputeHeight(self)
+					self.delegate?.dataManagerDidComputeHeight(self)
 				}
 			}
 			for (index, _) in post.trailData.enumerate() {
@@ -184,7 +222,7 @@ class PostsDataManager {
 					heightCalculator.calculateBodyHeightAtIndex(index) { height in
 						self.bodyHeightCalculators[key] = nil
 						self.postHeightCache.setBodyHeight(height, forPost: post, atIndex: index)
-						self.delegate.dataManagerDidComputeHeight(self)
+						self.delegate?.dataManagerDidComputeHeight(self)
 					}
 				}
 			}

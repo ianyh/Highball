@@ -8,14 +8,14 @@
 
 import UIKit
 
-extension UITableViewCell {
-	class var cellIdentifier: String { return NSStringFromClass(self) }
+public extension UITableViewCell {
+	public static var cellIdentifier: String { return NSStringFromClass(self) }
 }
 
-extension UICollectionViewCell {
-	class var cellIdentifier: String { return NSStringFromClass(self) }
+public extension UICollectionViewCell {
+	public static var cellIdentifier: String { return NSStringFromClass(self) }
 }
 
-extension UITableViewHeaderFooterView {
-	class var viewIdentifier: String { return NSStringFromClass(self) }
+public extension UITableViewHeaderFooterView {
+	public static var viewIdentifier: String { return NSStringFromClass(self) }
 }

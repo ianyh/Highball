@@ -7,20 +7,19 @@
 //
 
 import Foundation
+import Mapper
 import SwiftyJSON
 import UIKit
 
-class PostDialogueEntry {
-	private let json: JSON
-	let formattedString: NSAttributedString
+public struct PostDialogueEntry: Mappable {
+	public let formattedString: NSAttributedString
 
-	required init(json: JSON) {
-		self.json = json
+	public init(map: Mapper) throws {
+		let label: String = try map.from("label")
+		let phrase: String = try map.from("phrase")
 
-		let label = self.json["label"].string!
-		let phrase = self.json["phrase"].string!
-		var labelAttributes = Dictionary<String, AnyObject>()
-		var phraseAttributes = Dictionary<String, AnyObject>()
+		var labelAttributes: [String: AnyObject] = [:]
+		var phraseAttributes: [String: AnyObject] = [:]
 		let attributedString = NSMutableAttributedString(string: "\(label) \(phrase)")
 
 		labelAttributes[NSFontAttributeName] = UIFont(name: "Courier-Bold", size: 14)
@@ -31,6 +30,6 @@ class PostDialogueEntry {
 		attributedString.setAttributes(phraseAttributes, range: NSMakeRange(label.characters.count, phrase.characters.count + 1))
 		// swiftlint:enable legacy_constructor
 
-		self.formattedString = attributedString
+		formattedString = attributedString
 	}
 }

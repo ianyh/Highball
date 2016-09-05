@@ -9,20 +9,20 @@
 import FLAnimatedImage
 import Foundation
 
-struct AnimatedImageCache {
+public struct AnimatedImageCache {
 	private static var animatedImageCache = NSCache()
 
-	static func setAnimatedImage(animatedImage: FLAnimatedImage?, forKey key: String) {
+	public static func setAnimatedImage(animatedImage: FLAnimatedImage?, forKey key: String) {
 		if let image = animatedImage {
 			animatedImageCache.setObject(image, forKey: key)
 		}
 	}
 
-	static func animatedImageForKey(key: String) -> FLAnimatedImage? {
+	public static func animatedImageForKey(key: String) -> FLAnimatedImage? {
 		return animatedImageCache.objectForKey(key) as? FLAnimatedImage
 	}
 
-	static func clearCache() {
+	public static func clearCache() {
 		animatedImageCache.removeAllObjects()
 	}
 }

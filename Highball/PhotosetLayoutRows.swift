@@ -8,36 +8,36 @@
 
 import Foundation
 
-struct PhotosetLayoutRows {
-	let layoutRows: [Int]
+public struct PhotosetLayout {
+	public let rows: [Int]
 
-	init(photos: [PostPhoto], layoutString: String?) {
+	public init(photos: [PostPhoto], layoutString: String?) {
 		if let layoutString = layoutString {
-			var photosetLayoutRows = Array<Int>()
+			var photosetLayoutRows: [Int] = []
 			for character in layoutString.characters {
 				photosetLayoutRows.append(Int("\(character)")!)
 			}
-			self.layoutRows = photosetLayoutRows
+			rows = photosetLayoutRows
 		} else if photos.count == 0 {
-			self.layoutRows = []
+			rows = []
 		} else if photos.count % 2 == 0 {
 			var layoutRows: [Int] = []
 			for _ in 0...photos.count/2-1 {
 				layoutRows.append(2)
 			}
-			self.layoutRows = layoutRows
+			rows = layoutRows
 		} else if photos.count % 3 == 0 {
 			var layoutRows: [Int] = []
 			for _ in 0...photos.count/3-1 {
 				layoutRows.append(3)
 			}
-			self.layoutRows = layoutRows
+			rows = layoutRows
 		} else {
 			var layoutRows: [Int] = []
 			for _ in 0...photos.count-1 {
 				layoutRows.append(1)
 			}
-			self.layoutRows = layoutRows
+			rows = layoutRows
 		}
 	}
 }

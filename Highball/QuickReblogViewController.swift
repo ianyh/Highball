@@ -12,15 +12,15 @@ import FontAwesomeKit
 import pop
 import UIKit
 
-enum QuickReblogAction {
+public enum QuickReblogAction {
 	case Reblog(ReblogType)
 	case Share
 	case Like
 }
 
-class QuickReblogViewController: UIViewController {
-	var startingPoint: CGPoint!
-	var post: Post!
+public class QuickReblogViewController: UIViewController {
+	public var startingPoint: CGPoint!
+	public var post: Post!
 
 	private let radius: CGFloat = 70
 
@@ -63,7 +63,7 @@ class QuickReblogViewController: UIViewController {
 		}
 	}
 
-	var showingOptions: Bool = false {
+	public var showingOptions: Bool = false {
 		didSet {
 			startButton.layer.pop_removeAllAnimations()
 			reblogButton.layer.pop_removeAllAnimations()
@@ -139,7 +139,7 @@ class QuickReblogViewController: UIViewController {
 		}
 	}
 
-	override func viewDidLoad() {
+	public override func viewDidLoad() {
 		super.viewDidLoad()
 
 		view.opaque = false
@@ -202,7 +202,7 @@ class QuickReblogViewController: UIViewController {
 		startButton.frame = startButtonFrame
 	}
 
-	 override func viewDidAppear(animated: Bool) {
+	 public override func viewDidAppear(animated: Bool) {
 		super.viewDidAppear(animated)
 
 		dispatch_async(dispatch_get_main_queue()) { self.showingOptions = true }
@@ -210,7 +210,7 @@ class QuickReblogViewController: UIViewController {
 }
 
 extension QuickReblogViewController {
-	func updateWithPoint(point: CGPoint) {
+	public func updateWithPoint(point: CGPoint) {
 		guard let view = view.hitTest(point, withEvent: nil), button = view as? UIButton else {
 			return
 		}
@@ -220,7 +220,7 @@ extension QuickReblogViewController {
 		}
 	}
 
-	func reblogAction() -> QuickReblogAction? {
+	public func reblogAction() -> QuickReblogAction? {
 		guard let selectedButton = selectedButton else {
 			return nil
 		}
@@ -239,7 +239,7 @@ extension QuickReblogViewController {
 		}
 	}
 
-	func backgroundColorForButton(button: UIButton) -> (UIColor) {
+	public func backgroundColorForButton(button: UIButton) -> (UIColor) {
 		var backgroundColor: UIColor!
 		switch button {
 		case reblogButton:

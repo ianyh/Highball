@@ -8,44 +8,44 @@
 
 import UIKit
 
-class PostHeightCache {
+public class PostHeightCache {
 	private var bodyHeightCache: [Int: CGFloat] = [:]
 	private var secondaryBodyHeightCache: [Int: CGFloat] = [:]
 	private var bodiesHeightCache: [String: CGFloat] = [:]
 	private var bodiesComponentsHeightCache: [String: [String: CGFloat]] = [:]
 
-	init() {
+	public init() {
 
 	}
 
-	func resetCache() {
+	public func resetCache() {
 		bodyHeightCache.removeAll()
 		secondaryBodyHeightCache.removeAll()
 		bodiesHeightCache.removeAll()
 	}
 
-	func setBodyHeight(height: CGFloat?, forPost post: Post) {
+	public func setBodyHeight(height: CGFloat?, forPost post: Post) {
 		bodyHeightCache[post.id] = height
 	}
 
-	func bodyHeightForPost(post: Post) -> CGFloat? {
+	public func bodyHeightForPost(post: Post) -> CGFloat? {
 		return bodyHeightCache[post.id]
 	}
 
-	func setSecondaryBodyHeight(height: CGFloat?, forPost post: Post) {
+	public func setSecondaryBodyHeight(height: CGFloat?, forPost post: Post) {
 		secondaryBodyHeightCache[post.id] = height
 	}
 
-	func secondaryBodyHeightForPost(post: Post) -> CGFloat? {
+	public func secondaryBodyHeightForPost(post: Post) -> CGFloat? {
 		return secondaryBodyHeightCache[post.id]
 	}
 
-	func setBodyHeight(height: CGFloat?, forPost post: Post, atIndex index: Int) {
+	public func setBodyHeight(height: CGFloat?, forPost post: Post, atIndex index: Int) {
 		let key = "\(post.id):\(index)"
 		bodiesHeightCache[key] = height
 	}
 
-	func setBodyComponentHeight(height: CGFloat, forPost post: Post, atIndex index: Int, withKey key: String) {
+	public func setBodyComponentHeight(height: CGFloat, forPost post: Post, atIndex index: Int, withKey key: String) {
 		let postKey = "\(post.id):\(index)"
 		if bodiesComponentsHeightCache[postKey] != nil {
 			bodiesComponentsHeightCache[postKey]![key] = height
@@ -54,12 +54,12 @@ class PostHeightCache {
 		}
 	}
 
-	func bodyComponentHeightForPost(post: Post, atIndex index: Int, withKey key: String) -> CGFloat? {
+	public func bodyComponentHeightForPost(post: Post, atIndex index: Int, withKey key: String) -> CGFloat? {
 		let postKey = "\(post.id):\(index)"
 		return bodiesComponentsHeightCache[postKey]?[key]
 	}
 
-	func bodyHeight(post: Post, atIndex index: Int) -> CGFloat? {
+	public func bodyHeight(post: Post, atIndex index: Int) -> CGFloat? {
 		let key = "\(post.id):\(index)"
 		var height = bodiesHeightCache[key] ?? 0
 		let componentHeights = bodiesComponentsHeightCache[key] ?? [:]

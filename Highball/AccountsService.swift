@@ -6,65 +6,44 @@
 //  Copyright (c) 2014 ianynda. All rights reserved.
 //
 
-import UIKit
+import OAuthSwift
+import RealmSwift
 import SwiftyJSON
 import TMTumblrSDK
-import OAuthSwift
+import UIKit
 
-struct Account {
-	let blog: Blog
-	let token: String
-	let tokenSecret: String
+public struct AccountsService {
+	private static let lastAccountNameKey = "HILastAccountKey"
 
-	init(blog: Blog, token: String, tokenSecret: String) {
-		self.blog = blog
-		self.token = token
-		self.tokenSecret = tokenSecret
-	}
-}
+	public private(set) static var account: Account!
 
-func == (lhs: Account, rhs: Account) -> Bool {
-	return lhs.token == rhs.token
-}
-
-struct AccountsService {
-	private static let accountsDefaultsKey = "AccountsViewControllerAccountsDefaultsKey"
-	private static let lastAccountDefaultsKey = "lastAccountDefaultsKey"
-
-	private static let accountBlogDataKey = "accountBlogDataKey"
-	private static let accountOAuthTokenKey = "accountOAuthToken"
-	private static let accountOAuthTokenSecretKey = "accountOAuthTokenSecret"
-
-	static var account: Account!
-
-	static func accounts() -> [Account] {
-		return accountDictionaries().map { (accountDictionary) -> Account in
-			let blogData = accountDictionary[self.accountBlogDataKey]! as! NSData
-			let blog = NSKeyedUnarchiver.unarchiveObjectWithData(blogData) as! Blog
-			return Account(
-				blog: blog,
-				token: accountDictionary[self.accountOAuthTokenKey]! as! String,
-				tokenSecret: accountDictionary[self.accountOAuthTokenSecretKey]! as! String
-			)
+	public static func accounts() -> [Account] {
+		guard let realm = try? Realm() else {
+			return []
 		}
+
+		return realm.objects(AccountObject).map { $0 }
 	}
 
-	static func lastAccount() -> Account? {
+	public static func lastAccount() -> Account? {
 		let userDefaults = NSUserDefaults.standardUserDefaults()
-		guard let accountDictionary = userDefaults.dictionaryForKey(lastAccountDefaultsKey) else {
+
+		guard let accountName = userDefaults.stringForKey(lastAccountNameKey) else {
 			return nil
 		}
 
-		let blogData = accountDictionary[self.accountBlogDataKey]! as! NSData
-		let blog = NSKeyedUnarchiver.unarchiveObjectWithData(blogData) as! Blog
-		return Account(
-			blog: blog,
-			token: accountDictionary[self.accountOAuthTokenKey]! as! String,
-			tokenSecret: accountDictionary[self.accountOAuthTokenSecretKey]! as! String
-		)
+		guard let realm = try? Realm() else {
+			return nil
+		}
+
+		guard let account = realm.objectForPrimaryKey(AccountObject.self, key: accountName) else {
+			return nil
+		}
+
+		return account
 	}
 
-	static func start(fromViewController viewController: UIViewController, completion: (Account) -> ()) {
+	public static func start(fromViewController viewController: UIViewController, completion: (Account) -> ()) {
 		if let lastAccount = lastAccount() {
 			loginToAccount(lastAccount, completion: completion)
 			return
@@ -84,25 +63,18 @@ struct AccountsService {
 		loginToAccount(firstAccount, completion: completion)
 	}
 
-	static func loginToAccount(account: Account, completion: (Account) -> ()) {
+	public static func loginToAccount(account: Account, completion: (Account) -> ()) {
 		self.account = account
-		let accountDictionary = [
-			accountBlogDataKey : NSKeyedArchiver.archivedDataWithRootObject(account.blog),
-			accountOAuthTokenKey : account.token,
-			accountOAuthTokenSecretKey : account.tokenSecret
-		]
 
 		TMAPIClient.sharedInstance().OAuthToken = account.token
 		TMAPIClient.sharedInstance().OAuthTokenSecret = account.tokenSecret
-
-		NSUserDefaults.standardUserDefaults().setObject(accountDictionary, forKey: lastAccountDefaultsKey)
 
 		dispatch_async(dispatch_get_main_queue()) {
 			completion(account)
 		}
 	}
 
-	static func authenticateNewAccount(fromViewController viewController: UIViewController, completion: (account: Account?) -> ()) {
+	public static func authenticateNewAccount(fromViewController viewController: UIViewController, completion: (account: Account?) -> ()) {
 		let oauth = OAuth1Swift(
 			consumerKey: TMAPIClient.sharedInstance().OAuthConsumerKey,
 			consumerSecret: TMAPIClient.sharedInstance().OAuthConsumerSecret,
@@ -126,37 +98,57 @@ struct AccountsService {
 				TMAPIClient.sharedInstance().OAuthTokenSecret = credential.oauth_token_secret
 
 				TMAPIClient.sharedInstance().userInfo { response, error in
+					var account: Account?
+
+					defer {
+						completion(account: account)
+					}
+
 					if let error = error {
 						print(error)
-						completion(account: nil)
 						return
 					}
 
 					let json = JSON(response)
-					let blogs = json["user"]["blogs"].array!.map { UserBlog(json: $0) }
-					let primaryBlog = blogs.filter { $0.primary }.first
-					let account = Account(
-						blog: primaryBlog!,
-						token: TMAPIClient.sharedInstance().OAuthToken,
-						tokenSecret: TMAPIClient.sharedInstance().OAuthTokenSecret
-					)
-					var accountDictionaries = self.accountDictionaries()
-					let accountDictionary = [
-						self.accountBlogDataKey : NSKeyedArchiver.archivedDataWithRootObject(account.blog),
-						self.accountOAuthTokenKey : account.token,
-						self.accountOAuthTokenSecretKey : account.tokenSecret
-					]
 
-					accountDictionaries.append(accountDictionary)
+					guard let blogsJSON = json["user"]["blogs"].array else {
+						return
+					}
 
-					NSUserDefaults.standardUserDefaults().setObject(accountDictionaries, forKey: self.accountsDefaultsKey)
+					let blogs = blogsJSON.map { blogJSON -> UserBlogObject in
+						let blog = UserBlogObject()
+						blog.name = blogJSON["name"].stringValue
+						blog.url = blogJSON["url"].stringValue
+						blog.title = blogJSON["title"].stringValue
+						blog.isPrimary = blogJSON["primary"].boolValue
+						return blog
+					}
+
+					let accountObject = AccountObject()
+					accountObject.name = json["name"].stringValue
+					accountObject.token = TMAPIClient.sharedInstance().OAuthToken
+					accountObject.tokenSecret = TMAPIClient.sharedInstance().OAuthTokenSecret
+					accountObject.blogObjects.appendContentsOf(blogs)
+
+					guard let realm = try? Realm() else {
+						return
+					}
+
+					do {
+						try realm.write {
+							realm.add(accountObject, update: true)
+						}
+					} catch {
+						print(error)
+						return
+					}
+
+					account = accountObject
 
 					self.account = currentAccount
 
 					TMAPIClient.sharedInstance().OAuthToken = currentAccount?.token
 					TMAPIClient.sharedInstance().OAuthTokenSecret = currentAccount?.tokenSecret
-
-					completion(account: account)
 				}
 			},
 			failure: { (error) in
@@ -165,22 +157,10 @@ struct AccountsService {
 		)
 	}
 
-	static func deleteAccount(account: Account, fromViewController viewController: UIViewController, completion: (changedAccount: Bool) -> ()) {
-		let accountDictionaries = accounts()
-			.filter { !($0 == account) }
-			.map { existingAccount -> [String: AnyObject] in
-				return [
-					self.accountBlogDataKey : NSKeyedArchiver.archivedDataWithRootObject(existingAccount.blog),
-					self.accountOAuthTokenKey : existingAccount.token,
-					self.accountOAuthTokenSecretKey : existingAccount.tokenSecret
-				]
-			}
-
-		NSUserDefaults.standardUserDefaults().setObject(accountDictionaries, forKey: accountsDefaultsKey)
-
+	public static func deleteAccount(account: Account, fromViewController viewController: UIViewController, completion: (changedAccount: Bool) -> ()) {
 		if self.account == account {
 			self.account = nil
-			NSUserDefaults.standardUserDefaults().removeObjectForKey(lastAccountDefaultsKey)
+
 			start(fromViewController: viewController) { _ in
 				completion(changedAccount: true)
 			}
@@ -188,15 +168,6 @@ struct AccountsService {
 
 		dispatch_async(dispatch_get_main_queue()) {
 			completion(changedAccount: false)
-		}
-	}
-
-	private static func accountDictionaries() -> [[String: AnyObject]] {
-		let userDefaults = NSUserDefaults.standardUserDefaults()
-		if let accountDictionaries = userDefaults.arrayForKey(accountsDefaultsKey) as? [[String: AnyObject]] {
-			return accountDictionaries
-		} else {
-			return []
 		}
 	}
 }
