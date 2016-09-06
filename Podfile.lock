@@ -1,4 +1,5 @@
 PODS:
+  - Alamofire (3.4.1)
   - ChameleonFramework (2.0.6):
     - ChameleonFramework/Default (= 2.0.6)
   - ChameleonFramework/Default (2.0.6)
@@ -84,6 +85,7 @@ PODS:
   - YYText (1.0.4)
 
 DEPENDENCIES:
+  - Alamofire
   - ChameleonFramework (~> 2.0)
   - Crashlytics
   - DTCoreText (~> 1.6)
@@ -116,6 +118,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/PrideChung/FontAwesomeKit.git
 
 SPEC CHECKSUMS:
+  Alamofire: 01a82e2f6c0f860ade35534c8dd88be61bdef40c
   ChameleonFramework: a6b466873ff9a4ce3a5196c20bccf1a97ad9f446
   Crashlytics: c3a2333dea9e2733d2777f730910321fc9e25c0d
   DTCoreText: 3ea8bba23dd2141ba18adb227a7dd33a822df1c4
@@ -144,6 +147,6 @@ SPEC CHECKSUMS:
   XExtensionItem: ce626520bbca225930b9c8e2283b226df431af3f
   YYText: 41761822986179828a27ccf82aa97c7b5483c2e2
 
-PODFILE CHECKSUM: 3fb108eaa3d988fcad47aac5b8fdd6974eb5d131
+PODFILE CHECKSUM: ee956da8780a5f7c5f2860b7efe643150dffc2b9
 
 COCOAPODS: 1.0.1

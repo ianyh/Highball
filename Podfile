@@ -7,7 +7,8 @@ use_frameworks!
 target 'Highball' do
   pod 'Fabric'
   pod 'Crashlytics'
-  
+
+  pod 'Alamofire'
   pod 'ChameleonFramework', '~> 2.0'
   pod 'DTCoreText', '~> 1.6'
   pod 'FontAwesomeKit', git: 'https://github.com/PrideChung/FontAwesomeKit.git'

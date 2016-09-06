@@ -39,7 +39,7 @@ class MainViewController: UITabBarController {
 
 		let dashboardViewController = UINavigationController(rootViewController: DashboardModule(postHeightCache: postHeightCache).viewController)
 		let likesViewController = UINavigationController(rootViewController: LikesModule(postHeightCache: postHeightCache).viewController)
-		let followedBlogsViewController = UINavigationController(rootViewController: FollowedBlogsViewController())
+		let followedBlogsViewController = UINavigationController(rootViewController: ConversationsListModule().viewController)
 		let settingsViewController = UINavigationController(rootViewController: SettingsViewController())
 
 		dashboardViewController.tabBarItem.title = "Dashboard"
@@ -77,6 +77,17 @@ class MainViewController: UITabBarController {
 		resetStatusBarFrame()
 
 		selectedIndex = 0
+//
+//		let webView = UIWebView()
+//		view.addSubview(webView)
+//		webView.frame = view.bounds
+//
+//		let urlRequest = NSMutableURLRequest(URL: NSURL(string: "https://www.tumblr.com/svc/conversations?participant=thatseemsright.tumblr.com&_=1473105812470")!)
+//		urlRequest.addValue("i7Wi4kwmh6ebC8jKpdV4xMUGcFA", forHTTPHeaderField: "X-tumblr-form-key")
+//		urlRequest.addValue("XMLHttpRequest", forHTTPHeaderField: "X-Requested-With")
+//		webView.loadRequest(urlRequest)
+//
+//		webView.delegate = self
 	}
 
 	private func resetStatusBarFrame() {

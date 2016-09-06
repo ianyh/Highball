@@ -12,6 +12,26 @@ import SwiftyJSON
 import TMTumblrSDK
 import UIKit
 
+import Cartography
+
+internal class TestVC: OAuthWebViewController, UIWebViewDelegate {
+	override func viewDidLoad() {
+		super.viewDidLoad()
+
+		let webView = UIWebView()
+		view.addSubview(webView)
+
+		constrain(webView, view) { webView, view in
+			webView.edges == view.edges
+		}
+	}
+
+	override func doHandle(url: NSURL) {
+		(view.subviews.first! as! UIWebView).loadRequest(NSURLRequest(URL: url))
+		super.doHandle(url)
+	}
+}
+
 public struct AccountsService {
 	private static let lastAccountNameKey = "HILastAccountKey"
 
@@ -89,7 +109,7 @@ public struct AccountsService {
 		TMAPIClient.sharedInstance().OAuthToken = nil
 		TMAPIClient.sharedInstance().OAuthTokenSecret = nil
 
-		oauth.authorize_url_handler = SafariURLHandler(viewController: viewController)
+		oauth.authorize_url_handler = TestVC()// SafariURLHandler(viewController: viewController)
 
 		oauth.authorizeWithCallbackURL(
 			NSURL(string: "highball://oauth-callback")!,

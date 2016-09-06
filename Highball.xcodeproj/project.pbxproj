@@ -36,6 +36,15 @@
 		408C7D2319B387A500EFC410 /* PostDialogueEntryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408C7D2219B387A500EFC410 /* PostDialogueEntryTableViewCell.swift */; };
 		408D5B6E1B7D6AA300C787FA /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 408D5B6D1B7D6AA300C787FA /* Launch Screen.xib */; };
 		409030C81C306C42008E786F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 409030C71C306C42008E786F /* Main.storyboard */; };
+		4094F5EE1D7E264000D2FEE6 /* ConversationsListModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4094F5ED1D7E264000D2FEE6 /* ConversationsListModule.swift */; };
+		4094F5F01D7E264600D2FEE6 /* ConversationsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4094F5EF1D7E264600D2FEE6 /* ConversationsListViewController.swift */; };
+		4094F5F21D7E264D00D2FEE6 /* ConversationsListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4094F5F11D7E264D00D2FEE6 /* ConversationsListPresenter.swift */; };
+		4094F5F41D7E272000D2FEE6 /* ConversationsListDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4094F5F31D7E272000D2FEE6 /* ConversationsListDataManager.swift */; };
+		4094F5F61D7E27DD00D2FEE6 /* Conversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4094F5F51D7E27DD00D2FEE6 /* Conversation.swift */; };
+		4094F5F91D7F8D1F00D2FEE6 /* ConversationsChatModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4094F5F81D7F8D1F00D2FEE6 /* ConversationsChatModule.swift */; };
+		4094F5FB1D7F8D2B00D2FEE6 /* ConversationsChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4094F5FA1D7F8D2B00D2FEE6 /* ConversationsChatViewController.swift */; };
+		4094F5FD1D7F8D3500D2FEE6 /* ConversationsChatPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4094F5FC1D7F8D3500D2FEE6 /* ConversationsChatPresenter.swift */; };
+		4094F6011D7F8D4D00D2FEE6 /* ConversationsChatDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4094F6001D7F8D4D00D2FEE6 /* ConversationsChatDataManager.swift */; };
 		409D00E91B28BF5F0097C2EC /* Cartography.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 409D00E51B27522E0097C2EC /* Cartography.framework */; };
 		409D00EB1B28BF5F0097C2EC /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 409D00E61B27522E0097C2EC /* SwiftyJSON.framework */; };
 		40A11E6819B518DD00B91843 /* ImagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A11E6719B518DD00B91843 /* ImagesViewController.swift */; };
@@ -125,6 +134,15 @@
 		408C7D2219B387A500EFC410 /* PostDialogueEntryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostDialogueEntryTableViewCell.swift; sourceTree = "<group>"; };
 		408D5B6D1B7D6AA300C787FA /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		409030C71C306C42008E786F /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		4094F5ED1D7E264000D2FEE6 /* ConversationsListModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationsListModule.swift; sourceTree = "<group>"; };
+		4094F5EF1D7E264600D2FEE6 /* ConversationsListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationsListViewController.swift; sourceTree = "<group>"; };
+		4094F5F11D7E264D00D2FEE6 /* ConversationsListPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationsListPresenter.swift; sourceTree = "<group>"; };
+		4094F5F31D7E272000D2FEE6 /* ConversationsListDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationsListDataManager.swift; sourceTree = "<group>"; };
+		4094F5F51D7E27DD00D2FEE6 /* Conversation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Conversation.swift; sourceTree = "<group>"; };
+		4094F5F81D7F8D1F00D2FEE6 /* ConversationsChatModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationsChatModule.swift; sourceTree = "<group>"; };
+		4094F5FA1D7F8D2B00D2FEE6 /* ConversationsChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationsChatViewController.swift; sourceTree = "<group>"; };
+		4094F5FC1D7F8D3500D2FEE6 /* ConversationsChatPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationsChatPresenter.swift; sourceTree = "<group>"; };
+		4094F6001D7F8D4D00D2FEE6 /* ConversationsChatDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationsChatDataManager.swift; sourceTree = "<group>"; };
 		409D00E51B27522E0097C2EC /* Cartography.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cartography.framework; path = Carthage/Build/iOS/Cartography.framework; sourceTree = "<group>"; };
 		409D00E61B27522E0097C2EC /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
 		40A11E6719B518DD00B91843 /* ImagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagesViewController.swift; sourceTree = "<group>"; };
@@ -325,6 +343,7 @@
 				40F8CE991A41143000609ABF /* AccountsService.swift */,
 				402033581A6C785400BA136C /* AnimatedImageCache.swift */,
 				406F38F21D751F2E0046CE1D /* Blog.swift */,
+				4094F5F51D7E27DD00D2FEE6 /* Conversation.swift */,
 				40CFDAB31C344931008FBF9A /* HeightCalculator.swift */,
 				403040DF1C37211A001EFC9E /* PhotosetLayoutRows.swift */,
 				40778B9B19B15F9C00F8EE13 /* Post.swift */,
@@ -333,10 +352,41 @@
 				40CFDABE1C34BB17008FBF9A /* PostHeightCache.swift */,
 				40778B9D19B160DD00F8EE13 /* PostPhoto.swift */,
 				40F9F4031CB1DA8200989D5B /* PostTrailData.swift */,
-				40FF6D4219B940C6008119A3 /* UserBlog.swift */,
 				40CAF2F61D78CDB600B8A027 /* PostVideo.swift */,
+				40FF6D4219B940C6008119A3 /* UserBlog.swift */,
 			);
 			name = Models;
+			sourceTree = "<group>";
+		};
+		4094F5EB1D7E25C000D2FEE6 /* Conversations */ = {
+			isa = PBXGroup;
+			children = (
+				4094F5F71D7F8CEF00D2FEE6 /* Chat */,
+				4094F5EC1D7E260B00D2FEE6 /* List */,
+			);
+			path = Conversations;
+			sourceTree = "<group>";
+		};
+		4094F5EC1D7E260B00D2FEE6 /* List */ = {
+			isa = PBXGroup;
+			children = (
+				4094F5F31D7E272000D2FEE6 /* ConversationsListDataManager.swift */,
+				4094F5ED1D7E264000D2FEE6 /* ConversationsListModule.swift */,
+				4094F5F11D7E264D00D2FEE6 /* ConversationsListPresenter.swift */,
+				4094F5EF1D7E264600D2FEE6 /* ConversationsListViewController.swift */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
+		4094F5F71D7F8CEF00D2FEE6 /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				4094F6001D7F8D4D00D2FEE6 /* ConversationsChatDataManager.swift */,
+				4094F5F81D7F8D1F00D2FEE6 /* ConversationsChatModule.swift */,
+				4094F5FC1D7F8D3500D2FEE6 /* ConversationsChatPresenter.swift */,
+				4094F5FA1D7F8D2B00D2FEE6 /* ConversationsChatViewController.swift */,
+			);
+			path = Chat;
 			sourceTree = "<group>";
 		};
 		40A11E6619B518B500B91843 /* Controllers */ = {
@@ -358,6 +408,7 @@
 		40CAF2F81D78EC2B00B8A027 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				4094F5EB1D7E25C000D2FEE6 /* Conversations */,
 				40CAF2F91D78EC6500B8A027 /* Posts */,
 				40E195781D79DE8B0087C4EF /* Module.swift */,
 			);
@@ -664,13 +715,16 @@
 				403040E51C373D66001EFC9E /* PostViewHeightCalculator.swift in Sources */,
 				40A11E6B19B51FF700B91843 /* ImageCollectionViewCell.swift in Sources */,
 				40080E901A0F11DD00D883AE /* LockSplashViewController.swift in Sources */,
+				4094F5F21D7E264D00D2FEE6 /* ConversationsListPresenter.swift in Sources */,
 				40FF6D4519B9F656008119A3 /* QuickReblogViewController.swift in Sources */,
 				40E1957C1D79E1A20087C4EF /* LikesViewController.swift in Sources */,
 				40CAF3041D78EEAC00B8A027 /* DashboardPresenter.swift in Sources */,
 				40E1957E1D79E1AF0087C4EF /* LikesPresenter.swift in Sources */,
+				4094F5F41D7E272000D2FEE6 /* ConversationsListDataManager.swift in Sources */,
 				406F38EF1D7514520046CE1D /* Account.swift in Sources */,
 				403F53DB19AECFEF00FF8F3B /* PhotosetRowTableViewCell.swift in Sources */,
 				40E195771D79DDF70087C4EF /* BlogModule.swift in Sources */,
+				4094F5FD1D7F8D3500D2FEE6 /* ConversationsChatPresenter.swift in Sources */,
 				40E195891D79E7020087C4EF /* PostsTableViewAdapter.swift in Sources */,
 				408C7D2119B384C800EFC410 /* PostDialogueEntry.swift in Sources */,
 				4008591B1B7EBA05009DF207 /* NSDate+Relative.swift in Sources */,
@@ -690,6 +744,7 @@
 				40778B9C19B15F9C00F8EE13 /* Post.swift in Sources */,
 				40E195731D79DB8E0087C4EF /* BlogViewController.swift in Sources */,
 				40080E8E1A0F042B00D883AE /* SettingsViewController.swift in Sources */,
+				4094F5F01D7E264600D2FEE6 /* ConversationsListViewController.swift in Sources */,
 				403040EB1C388F91001EFC9E /* PostHeaderView.swift in Sources */,
 				40CAF2FE1D78ED2300B8A027 /* PostsViewController.swift in Sources */,
 				402D979919F1E442003DCD55 /* TextReblogViewController.swift in Sources */,
@@ -697,20 +752,25 @@
 				40CAF3081D78F37700B8A027 /* DashboardModule.swift in Sources */,
 				402A20961A3D2C510007CCFF /* TitleTableViewCell.swift in Sources */,
 				40DB21251C556195007AD3DD /* FollowedBlogsViewController.swift in Sources */,
+				4094F5F61D7E27DD00D2FEE6 /* Conversation.swift in Sources */,
 				40F75A851C31FA4100EC86DE /* HistoryViewController.swift in Sources */,
 				406F38F31D751F2E0046CE1D /* Blog.swift in Sources */,
 				40E195751D79DB9D0087C4EF /* BlogPresenter.swift in Sources */,
+				4094F5F91D7F8D1F00D2FEE6 /* ConversationsChatModule.swift in Sources */,
 				40778B9E19B160DD00F8EE13 /* PostPhoto.swift in Sources */,
 				40E195871D79E3470087C4EF /* TagModule.swift in Sources */,
 				40CFDAB81C349F84008FBF9A /* TextReblogTableViewAdapter.swift in Sources */,
 				40DF7DB21A7672E900CE3D4C /* VideoTableViewCell.swift in Sources */,
 				40F75A821C31D68800EC86DE /* MainViewController.swift in Sources */,
+				4094F5FB1D7F8D2B00D2FEE6 /* ConversationsChatViewController.swift in Sources */,
 				40FF6D4319B940C6008119A3 /* UserBlog.swift in Sources */,
 				40DB21291C5571FF007AD3DD /* FollowedBlogsTableViewAdapter.swift in Sources */,
 				403F53DD19AFB5DF00FF8F3B /* ContentTableViewCell.swift in Sources */,
+				4094F5EE1D7E264000D2FEE6 /* ConversationsListModule.swift in Sources */,
 				40778BAA19B24BA500F8EE13 /* PostQuestionTableViewCell.swift in Sources */,
 				40DB21271C5561B7007AD3DD /* FollowedBlogsDataManager.swift in Sources */,
 				40E195791D79DE8B0087C4EF /* Module.swift in Sources */,
+				4094F6011D7F8D4D00D2FEE6 /* ConversationsChatDataManager.swift in Sources */,
 				40C78D1519BD29330002EB78 /* ReblogTransitionAnimator.swift in Sources */,
 				40CFDAB61C34990F008FBF9A /* ReuseIdentifiers.swift in Sources */,
 				402033591A6C785400BA136C /* AnimatedImageCache.swift in Sources */,
