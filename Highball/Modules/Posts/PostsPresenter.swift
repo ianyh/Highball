@@ -17,7 +17,7 @@ public protocol PostsPresenter: class, PostsDataManagerDelegate {
 
 public extension PostsPresenter {
 	public func viewDidAppear() {
-		guard let dataManager = dataManager where !dataManager.hasPosts else {
+		guard let dataManager = dataManager, !dataManager.hasPosts else {
 			return
 		}
 
@@ -28,8 +28,8 @@ public extension PostsPresenter {
 		refreshPosts()
 	}
 
-	private func refreshPosts() {
-		guard let view = view, dataManager = dataManager else {
+	fileprivate func refreshPosts() {
+		guard let view = view, let dataManager = dataManager else {
 			return
 		}
 
@@ -57,7 +57,7 @@ public extension PostsPresenter {
 	}
 
 	public func resetPosts() {
-		guard let view = view, dataManager = dataManager else {
+		guard let view = view, let dataManager = dataManager else {
 			return
 		}
 
@@ -68,7 +68,7 @@ public extension PostsPresenter {
 }
 
 public extension PostsPresenter {
-	public func dataManagerDidReload(dataManager: PostsDataManager, indexSet: NSIndexSet?, completion: () -> ()) {
+	public func dataManagerDidReload(_ dataManager: PostsDataManager, indexSet: IndexSet?, completion: @escaping () -> ()) {
 		loadingCompletion = { [weak self] in
 			completion()
 			self?.view?.reloadWithNewIndices(indexSet)
@@ -76,11 +76,11 @@ public extension PostsPresenter {
 		reloadTable()
 	}
 
-	public func dataManagerDidComputeHeight(dataManager: PostsDataManager) {
+	public func dataManagerDidComputeHeight(_ dataManager: PostsDataManager) {
 		reloadTable()
 	}
 
-	public func dataManager(dataManager: PostsDataManager, didEncounterError error: NSError) {
+	public func dataManager(_ dataManager: PostsDataManager, didEncounterError error: NSError) {
 		view?.presentMessage("Error", message: "Hit an error trying to load posts. \(error.localizedDescription)")
 	}
 }
@@ -90,16 +90,16 @@ public extension PostsPresenter {
 		return dataManager?.posts?.count ?? 0
 	}
 
-	public func postAtIndex(index: Int) -> Post {
+	public func postAtIndex(_ index: Int) -> Post {
 		return dataManager!.posts[index]
 	}
 
-	public func toggleLikeForPostAtIndex(index: Int) {
+	public func toggleLikeForPostAtIndex(_ index: Int) {
 		dataManager?.toggleLikeForPostAtIndex(index)
 	}
 
 	public func didEncounterLoadMoreBoundary() {
-		guard let dataManager = dataManager, view = view else {
+		guard let dataManager = dataManager, let view = view else {
 			return
 		}
 

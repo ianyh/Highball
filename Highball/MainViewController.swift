@@ -11,14 +11,14 @@ import FontAwesomeKit
 import UIKit
 
 class MainViewController: UITabBarController {
-	private var statusBarBackgroundView: UIView!
-	private var observer: AnyObject!
-	private var cachedSelectedIndex: Int = 0
+	fileprivate var statusBarBackgroundView: UIView!
+	fileprivate var observer: AnyObject!
+	fileprivate var cachedSelectedIndex: Int = 0
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		observer = NSNotificationCenter.defaultCenter().addObserverForName(AccountDidChangeNotification, object: nil, queue: nil) { [unowned self] _ in
+		observer = NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: AccountDidChangeNotification), object: nil, queue: nil) { [unowned self] _ in
 			self.reset()
 		}
 
@@ -26,7 +26,7 @@ class MainViewController: UITabBarController {
 	}
 
 	deinit {
-		NSNotificationCenter.defaultCenter().removeObserver(observer)
+		NotificationCenter.default.removeObserver(observer)
 	}
 
 	func reset() {
@@ -43,16 +43,16 @@ class MainViewController: UITabBarController {
 		let settingsViewController = UINavigationController(rootViewController: SettingsViewController())
 
 		dashboardViewController.tabBarItem.title = "Dashboard"
-		dashboardViewController.tabBarItem.image = FAKFontAwesome.homeIconWithSize(28.0).imageWithSize(CGSize(width: 28, height: 28))
+		dashboardViewController.tabBarItem.image = FAKFontAwesome.homeIcon(withSize: 28.0).image(with: CGSize(width: 28, height: 28))
 
 		likesViewController.tabBarItem.title = "Likes"
-		likesViewController.tabBarItem.image = FAKFontAwesome.heartIconWithSize(22.0).imageWithSize(CGSize(width: 24, height: 24))
+		likesViewController.tabBarItem.image = FAKFontAwesome.heartIcon(withSize: 22.0).image(with: CGSize(width: 24, height: 24))
 
 		followedBlogsViewController.tabBarItem.title = "Followed"
-		followedBlogsViewController.tabBarItem.image = FAKFontAwesome.usersIconWithSize(22.0).imageWithSize(CGSize(width: 24, height: 24))
+		followedBlogsViewController.tabBarItem.image = FAKFontAwesome.usersIcon(withSize: 22.0).image(with: CGSize(width: 24, height: 24))
 
 		settingsViewController.tabBarItem.title = "Settings"
-		settingsViewController.tabBarItem.image = FAKFontAwesome.cogsIconWithSize(22.0).imageWithSize(CGSize(width: 24, height: 24))
+		settingsViewController.tabBarItem.image = FAKFontAwesome.cogsIcon(withSize: 22.0).image(with: CGSize(width: 24, height: 24))
 
 		viewControllers = [
 			dashboardViewController,
@@ -61,12 +61,12 @@ class MainViewController: UITabBarController {
 			settingsViewController
 		]
 
-		statusBarBackgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .ExtraLight))
+		statusBarBackgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .extraLight))
 
 //        view.addSubview(statusBarBackgroundView)
 
-		NSNotificationCenter.defaultCenter().addObserverForName(
-			UIApplicationWillChangeStatusBarFrameNotification,
+		NotificationCenter.default.addObserver(
+			forName: NSNotification.Name.UIApplicationWillChangeStatusBarFrame,
 			object:
 			self,
 			queue: nil
@@ -90,14 +90,13 @@ class MainViewController: UITabBarController {
 //		webView.delegate = self
 	}
 
-	private func resetStatusBarFrame() {
-		statusBarBackgroundView.frame = UIApplication.sharedApplication().statusBarFrame
+	fileprivate func resetStatusBarFrame() {
+		statusBarBackgroundView.frame = UIApplication.shared.statusBarFrame
 	}
 
-	override func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
+	override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
 		guard let navigationController = selectedViewController as? UINavigationController,
-			tableViewController = navigationController.viewControllers.last as? UITableViewController
-			where selectedIndex == tabBar.items?.indexOf(item)
+			let tableViewController = navigationController.viewControllers.last as? UITableViewController, selectedIndex == tabBar.items?.index(of: item)
 		else {
 			return
 		}
@@ -105,12 +104,12 @@ class MainViewController: UITabBarController {
 		cachedSelectedIndex = selectedIndex
 
 		let tableView = tableViewController.tableView
-		let currentContentOffsetY = tableView.contentOffset.y
+		let currentContentOffsetY = tableView?.contentOffset.y
 		let newContentOffsetY = { () -> CGFloat in
-			if currentContentOffsetY == -tableView.contentInset.top {
-				return tableView.contentSize.height - tableView.bounds.size.height - tableView.contentInset.top + tableView.contentInset.bottom
+			if currentContentOffsetY == -tableView!.contentInset.top {
+				return tableView!.contentSize.height - tableView!.bounds.size.height - tableView!.contentInset.top + tableView!.contentInset.bottom
 			} else {
-				return -tableView.contentInset.top
+				return -tableView!.contentInset.top
 			}
 		}()
 

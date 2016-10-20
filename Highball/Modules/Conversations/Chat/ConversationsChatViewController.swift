@@ -10,9 +10,9 @@ import Foundation
 import SlackTextViewController
 
 public protocol ConversationsChatView: class {
-	
+
 }
 
-public class ConversationsChatViewController: SLKTextViewController {
-	public var presenter: ConversationsChatPresenter?
+open class ConversationsChatViewController: SLKTextViewController {
+	open var presenter: ConversationsChatPresenter?
 }

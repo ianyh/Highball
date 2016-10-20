@@ -10,10 +10,30 @@ import Foundation
 import Mapper
 import SwiftyJSON
 import UIKit
+fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 public enum ReblogType {
-	case Reblog
-	case Queue
+	case reblog
+	case queue
 }
 
 public struct Post: Mappable {
@@ -23,8 +43,8 @@ public struct Post: Mappable {
 	public let rebloggedBlogName: String?
 	public let reblogKey: String
 	public let timestamp: Int
-	public let url: NSURL
-	public let shortURL: NSURL
+	public let url: URL
+	public let shortURL: URL
 	public let tags: [String]
 	public let photos: [PostPhoto]
 	public let layout: PhotosetLayout
@@ -34,7 +54,7 @@ public struct Post: Mappable {
 	public let asker: String?
 	public let question: String?
 	public let title: String?
-	public let permalinkURL: NSURL?
+	public let permalinkURL: URL?
 	public let video: PostVideo?
 	public var liked = false
 	public let trailData: [PostTrailData]
@@ -73,14 +93,14 @@ public struct Post: Mappable {
 
 		liked = try map.from("liked")
 
-		trailData = map.optionalFrom("trail")?.reverse() ?? []
+		trailData = map.optionalFrom("trail")?.reversed() ?? []
 	}
 
-	public func htmlBodyWithWidth(width: CGFloat) -> String? {
+	public func htmlBodyWithWidth(_ width: CGFloat) -> String? {
 		return body?.htmlStringWithTumblrStyle(width)
 	}
 
-	public func htmlSecondaryBodyWithWidth(width: CGFloat) -> String? {
+	public func htmlSecondaryBodyWithWidth(_ width: CGFloat) -> String? {
 		guard let secondaryBody = secondaryBody else {
 			return nil
 		}
@@ -97,7 +117,7 @@ public struct Post: Mappable {
 		return stringToStyle?.htmlStringWithTumblrStyle(width)
 	}
 
-	public func videoURL() -> NSURL? {
+	public func videoURL() -> URL? {
 		guard self.type == "video" else {
 			return nil
 		}
@@ -108,38 +128,39 @@ public struct Post: Mappable {
 
 		switch videoType {
 		case "vine":
-			guard let permalinkURL = permalinkURL,
-				documentData = NSData(contentsOfURL: permalinkURL),
-				document = NSString(data: documentData, encoding: NSASCIIStringEncoding) as? String,
-				metaStringRange = document.rangeOfString("twitter:player:stream.*?content=\".*?\"", options: .RegularExpressionSearch)
-			else {
-				return nil
-			}
-
-			let metaString = document.substringWithRange(metaStringRange)
-
-			guard
-				var urlStringRange = metaString.rangeOfString("http.*?\"", options: .RegularExpressionSearch)
-			else {
-				return nil
-			}
-
-			urlStringRange.endIndex = urlStringRange.endIndex.predecessor()
-
-			return NSURL(string: metaString.substringWithRange(urlStringRange))
+//			guard let permalinkURL = permalinkURL,
+//				let documentData = try? Data(contentsOf: permalinkURL),
+//				let document = NSString(data: documentData, encoding: String.Encoding.ascii.rawValue) as? String,
+//				let metaStringRange = document.range(of: "twitter:player:stream.*?content=\".*?\"", options: .regularExpression)
+//			else {
+//				return nil
+//			}
+//
+//			let metaString = document.substring(with: metaStringRange)
+//
+//			guard
+//				var urlStringRange = metaString.range(of: "http.*?\"", options: .regularExpression)
+//			else {
+//				return nil
+//			}
+//
+//			urlStringRange.endIndex = urlStringRange.index(before: urlStringRange.endIndex)
+//
+//			return URL(string: metaString.substring(with: urlStringRange))
+			return nil
 		case "youtube":
 			return permalinkURL
 		default:
-			return video?.url
+			return video?.url as URL?
 		}
 	}
 
-	public func videoHeightWidthWidth(width: CGFloat) -> CGFloat? {
+	public func videoHeightWidthWidth(_ width: CGFloat) -> CGFloat? {
 		guard self.type != "video" else {
 			return nil
 		}
 
-		guard let videoWidth = video?.width, videoHeight = video?.height else {
+		guard let videoWidth = video?.width, let videoHeight = video?.height else {
 			return nil
 		}
 
@@ -148,7 +169,7 @@ public struct Post: Mappable {
 }
 
 public extension Post {
-	public static func bodyStringFromMap(map: Mapper) -> String? {
+	public static func bodyStringFromMap(_ map: Mapper) -> String? {
 		guard let type: String = map.optionalFrom("type") else {
 			return nil
 		}
@@ -181,7 +202,7 @@ public extension Post {
 		return nil
 	}
 
-	public static func secondaryBodyStringFromMap(map: Mapper) -> String? {
+	public static func secondaryBodyStringFromMap(_ map: Mapper) -> String? {
 		guard let type: String = map.optionalFrom("type") else {
 			return nil
 		}

@@ -13,57 +13,57 @@ import pop
 import UIKit
 
 public enum QuickReblogAction {
-	case Reblog(ReblogType)
-	case Share
-	case Like
+	case reblog(ReblogType)
+	case share
+	case like
 }
 
-public class QuickReblogViewController: UIViewController {
-	public var startingPoint: CGPoint!
-	public var post: Post!
+open class QuickReblogViewController: UIViewController {
+	open var startingPoint: CGPoint!
+	open var post: Post!
 
-	private let radius: CGFloat = 70
+	fileprivate let radius: CGFloat = 70
 
-	private var backgroundButton: UIButton!
+	fileprivate var backgroundButton: UIButton!
 
-	private var startButton: UIButton!
+	fileprivate var startButton: UIButton!
 
-	private var reblogButton: UIButton!
-	private var queueButton: UIButton!
-	private var shareButton: UIButton!
-	private var likeButton: UIButton!
+	fileprivate var reblogButton: UIButton!
+	fileprivate var queueButton: UIButton!
+	fileprivate var shareButton: UIButton!
+	fileprivate var likeButton: UIButton!
 
-	private var selectedButton: UIButton? {
+	fileprivate var selectedButton: UIButton? {
 		didSet {
 			for button in [ reblogButton, queueButton, shareButton, likeButton ] {
 				if button == selectedButton {
 					let scaleAnimation = POPBasicAnimation(propertyNamed: kPOPViewScaleXY)
-					scaleAnimation.toValue = NSValue(CGSize: CGSize(width: 1.5, height: 1.5))
-					scaleAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionDefault)
-					button.pop_removeAnimationForKey("selectedScale")
-					button.pop_addAnimation(scaleAnimation, forKey: "selectedScale")
+					scaleAnimation?.toValue = NSValue(cgSize: CGSize(width: 1.5, height: 1.5))
+					scaleAnimation?.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionDefault)
+					button?.pop_removeAnimation(forKey: "selectedScale")
+					button?.pop_add(scaleAnimation, forKey: "selectedScale")
 
 					let backgroundColorAnimation = POPBasicAnimation(propertyNamed: kPOPViewBackgroundColor)
-					backgroundColorAnimation.toValue = backgroundColorForButton(button).CGColor
-					button.pop_removeAnimationForKey("selectedBackgroundColor")
-					button.pop_addAnimation(backgroundColorAnimation, forKey: "selectedBackgroundColor")
+					backgroundColorAnimation?.toValue = backgroundColorForButton(button!).cgColor
+					button?.pop_removeAnimation(forKey: "selectedBackgroundColor")
+					button?.pop_add(backgroundColorAnimation, forKey: "selectedBackgroundColor")
 				} else {
 					let scaleAnimation = POPBasicAnimation(propertyNamed: kPOPViewScaleXY)
-					scaleAnimation.toValue = NSValue(CGSize: CGSize(width: 1, height: 1))
-					scaleAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionDefault)
-					button.pop_removeAnimationForKey("selectedScale")
-					button.pop_addAnimation(scaleAnimation, forKey: "selectedScale")
+					scaleAnimation?.toValue = NSValue(cgSize: CGSize(width: 1, height: 1))
+					scaleAnimation?.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionDefault)
+					button?.pop_removeAnimation(forKey: "selectedScale")
+					button?.pop_add(scaleAnimation, forKey: "selectedScale")
 
 					let backgroundColorAnimation = POPBasicAnimation(propertyNamed: kPOPViewBackgroundColor)
-					backgroundColorAnimation.toValue = backgroundColorForButton(button)
-					button.pop_removeAnimationForKey("selectedBackgroundColor")
-					button.pop_addAnimation(backgroundColorAnimation, forKey: "selectedBackgroundColor")
+					backgroundColorAnimation?.toValue = backgroundColorForButton(button!)
+					button?.pop_removeAnimation(forKey: "selectedBackgroundColor")
+					button?.pop_add(backgroundColorAnimation, forKey: "selectedBackgroundColor")
 				}
 			}
 		}
 	}
 
-	public var showingOptions: Bool = false {
+	open var showingOptions: Bool = false {
 		didSet {
 			startButton.layer.pop_removeAllAnimations()
 			reblogButton.layer.pop_removeAllAnimations()
@@ -74,16 +74,16 @@ public class QuickReblogViewController: UIViewController {
 			if showingOptions {
 				for button in [ reblogButton, queueButton, shareButton, likeButton ] {
 					let opacityAnimation = POPSpringAnimation(propertyNamed: kPOPLayerOpacity)
-					opacityAnimation.toValue = 1
-					opacityAnimation.name = "opacity"
+					opacityAnimation?.toValue = 1
+					opacityAnimation?.name = "opacity"
 
-					button.layer.pop_addAnimation(opacityAnimation, forKey: opacityAnimation.name)
+					button?.layer.pop_add(opacityAnimation, forKey: opacityAnimation?.name)
 				}
 
 				let onLeft = startButton.center.x < view.bounds.midX
-				let center = view.convertPoint(startButton.center, toView: nil)
+				let center = view.convert(startButton.center, to: nil)
 				let distanceFromTop = center.y + 50
-				let distanceFromBottom = UIScreen.mainScreen().bounds.height - center.y - 50
+				let distanceFromBottom = UIScreen.main.bounds.height - center.y - 50
 				var angleFromTop: CGFloat = CGFloat(-M_PI_2) / 3
 				var angleFromBottom: CGFloat = CGFloat(-M_PI_2) / 3
 
@@ -100,7 +100,7 @@ public class QuickReblogViewController: UIViewController {
 				let initialAngle = startAngle + (endAngle - startAngle) / 8
 				let angleInterval = (endAngle - startAngle) / 4
 
-				for (index, button) in [ reblogButton, queueButton, shareButton, likeButton ].enumerate() {
+				for (index, button) in [ reblogButton, queueButton, shareButton, likeButton ].enumerated() {
 					let center = startButton.center
 					let angleOffset = angleInterval * CGFloat(index)
 					let angle = initialAngle + angleOffset
@@ -113,56 +113,56 @@ public class QuickReblogViewController: UIViewController {
 					}
 					let positionAnimation = POPSpringAnimation(propertyNamed: kPOPLayerPosition)
 
-					positionAnimation.toValue = NSValue(CGPoint: CGPoint(x: x, y: y))
-					positionAnimation.springBounciness = 20
-					positionAnimation.name = "move"
-					positionAnimation.beginTime = CACurrentMediaTime() + 0.01
+					positionAnimation?.toValue = NSValue(cgPoint: CGPoint(x: x, y: y))
+					positionAnimation?.springBounciness = 20
+					positionAnimation?.name = "move"
+					positionAnimation?.beginTime = CACurrentMediaTime() + 0.01
 
-					button.layer.position = startButton.center
-					button.layer.pop_addAnimation(positionAnimation, forKey: positionAnimation.name)
+					button?.layer.position = startButton.center
+					button?.layer.pop_add(positionAnimation, forKey: positionAnimation?.name)
 				}
 			} else {
 				for button in [ reblogButton, queueButton, shareButton, likeButton ] {
 					let opacityAnimation = POPSpringAnimation(propertyNamed: kPOPLayerOpacity)
-					opacityAnimation.toValue = 0
-					opacityAnimation.name = "opacity"
+					opacityAnimation?.toValue = 0
+					opacityAnimation?.name = "opacity"
 
-					button.layer.pop_addAnimation(opacityAnimation, forKey: opacityAnimation.name)
+					button?.layer.pop_add(opacityAnimation, forKey: opacityAnimation?.name)
 
 					let positionAnimation = POPSpringAnimation(propertyNamed: kPOPLayerPosition)
-					positionAnimation.toValue = NSValue(CGPoint: startButton.center)
-					positionAnimation.name = "moveReblog"
+					positionAnimation?.toValue = NSValue(cgPoint: startButton.center)
+					positionAnimation?.name = "moveReblog"
 
-					button.layer.pop_addAnimation(positionAnimation, forKey: positionAnimation.name)
+					button?.layer.pop_add(positionAnimation, forKey: positionAnimation?.name)
 				}
 			}
 		}
 	}
 
-	public override func viewDidLoad() {
+	open override func viewDidLoad() {
 		super.viewDidLoad()
 
-		view.opaque = false
-		view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.3)
+		view.isOpaque = false
+		view.backgroundColor = UIColor.black.withAlphaComponent(0.3)
 
-		backgroundButton = UIButton(type: .System)
+		backgroundButton = UIButton(type: .system)
 
-		startButton = UIButton(type: .System)
-		startButton.setImage(UIImage(named: "Reblog"), forState: .Normal)
-		startButton.tintColor = UIColor.grayColor()
+		startButton = UIButton(type: .system)
+		startButton.setImage(UIImage(named: "Reblog"), for: UIControlState())
+		startButton.tintColor = UIColor.gray
 		startButton.sizeToFit()
 
-		reblogButton = UIButton(type: .System)
-		reblogButton.setImage(FAKIonIcons.iosLoopStrongIconWithSize(25).imageWithSize(CGSize(width: 25, height: 25)), forState: .Normal)
+		reblogButton = UIButton(type: .system)
+		reblogButton.setImage(FAKIonIcons.iosLoopStrongIcon(withSize: 25).image(with: CGSize(width: 25, height: 25)), for: UIControlState())
 
-		queueButton = UIButton(type: .System)
-		queueButton.setImage(FAKIonIcons.iosListOutlineIconWithSize(25).imageWithSize(CGSize(width: 25, height: 25)), forState: .Normal)
+		queueButton = UIButton(type: .system)
+		queueButton.setImage(FAKIonIcons.iosListOutlineIcon(withSize: 25).image(with: CGSize(width: 25, height: 25)), for: UIControlState())
 
-		shareButton = UIButton(type: .System)
-		shareButton.setImage(FAKIonIcons.iosUploadOutlineIconWithSize(25).imageWithSize(CGSize(width: 25, height: 25)), forState: .Normal)
+		shareButton = UIButton(type: .system)
+		shareButton.setImage(FAKIonIcons.iosUploadOutlineIcon(withSize: 25).image(with: CGSize(width: 25, height: 25)), for: UIControlState())
 
-		likeButton = UIButton(type: .System)
-		likeButton.setImage(FAKIonIcons.iosHeartOutlineIconWithSize(25).imageWithSize(CGSize(width: 25, height: 25)), forState: .Normal)
+		likeButton = UIButton(type: .system)
+		likeButton.setImage(FAKIonIcons.iosHeartOutlineIcon(withSize: 25).image(with: CGSize(width: 25, height: 25)), for: UIControlState())
 
 		view.addSubview(backgroundButton)
 		view.addSubview(startButton)
@@ -183,14 +183,14 @@ public class QuickReblogViewController: UIViewController {
 		}
 
 		for button in [ reblogButton, queueButton, shareButton, likeButton ] {
-			button.titleEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-			button.titleLabel?.font = UIFont.boldSystemFontOfSize(20)
-			button.tintColor = UIColor.whiteColor()
-			button.backgroundColor = backgroundColorForButton(button)
-			button.layer.cornerRadius = 30
-			button.layer.opacity = 0
-			button.sizeToFit()
-			constrain(button, startButton) { button, startButton in
+			button?.titleEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+			button?.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+			button?.tintColor = UIColor.white
+			button?.backgroundColor = backgroundColorForButton(button!)
+			button?.layer.cornerRadius = 30
+			button?.layer.opacity = 0
+			button?.sizeToFit()
+			constrain(button!, startButton) { button, startButton in
 				button.center == startButton.center
 				button.height == 60
 				button.width == 60
@@ -202,16 +202,16 @@ public class QuickReblogViewController: UIViewController {
 		startButton.frame = startButtonFrame
 	}
 
-	 public override func viewDidAppear(animated: Bool) {
+	 open override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 
-		dispatch_async(dispatch_get_main_queue()) { self.showingOptions = true }
+		DispatchQueue.main.async { self.showingOptions = true }
 	}
 }
 
 extension QuickReblogViewController {
-	public func updateWithPoint(point: CGPoint) {
-		guard let view = view.hitTest(point, withEvent: nil), button = view as? UIButton else {
+	public func updateWithPoint(_ point: CGPoint) {
+		guard let view = view.hitTest(point, with: nil), let button = view as? UIButton else {
 			return
 		}
 
@@ -227,41 +227,41 @@ extension QuickReblogViewController {
 
 		switch selectedButton {
 		case self.reblogButton:
-			return .Reblog(.Reblog)
+			return .reblog(.reblog)
 		case self.queueButton:
-			return .Reblog(.Queue)
+			return .reblog(.queue)
 		case self.shareButton:
-			return .Share
+			return .share
 		case self.likeButton:
-			return .Like
+			return .like
 		default:
 			return nil
 		}
 	}
 
-	public func backgroundColorForButton(button: UIButton) -> (UIColor) {
+	public func backgroundColorForButton(_ button: UIButton) -> (UIColor) {
 		var backgroundColor: UIColor!
 		switch button {
 		case reblogButton:
-			backgroundColor = UIColor.flatBlackColor()
+			backgroundColor = UIColor.flatBlack()
 		case queueButton:
-			backgroundColor = UIColor.flatBlackColor()
+			backgroundColor = UIColor.flatBlack()
 		case shareButton:
-			backgroundColor = UIColor.flatBlackColor()
+			backgroundColor = UIColor.flatBlack()
 		case likeButton:
-			if post.liked.boolValue {
-				backgroundColor = UIColor.flatRedColor()
+			if post.liked {
+				backgroundColor = UIColor.flatRed()
 			} else {
-				backgroundColor = UIColor.flatBlackColor()
+				backgroundColor = UIColor.flatBlack()
 			}
 		default:
-			backgroundColor = UIColor.flatBlackColor()
+			backgroundColor = UIColor.flatBlack()
 		}
 
 		if button == selectedButton {
 			return backgroundColor
 		}
 
-		return backgroundColor.colorWithAlphaComponent(0.75)
+		return backgroundColor.withAlphaComponent(0.75)
 	}
 }

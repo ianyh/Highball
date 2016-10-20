@@ -10,8 +10,8 @@ import Foundation
 
 public struct LikesModule {
 	public let viewController: LikesViewController
-	private let presenter: LikesPresenter
-	private let dataManager: PostsDataManager
+	fileprivate let presenter: LikesPresenter
+	fileprivate let dataManager: PostsDataManager
 
 	public init(postHeightCache: PostHeightCache) {
 		viewController = LikesViewController(postHeightCache: postHeightCache)

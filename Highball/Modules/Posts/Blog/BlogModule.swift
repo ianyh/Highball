@@ -10,8 +10,8 @@ import Foundation
 
 public struct BlogModule {
 	public let viewController: BlogViewController
-	private let presenter: BlogPresenter
-	private let dataManager: PostsDataManager
+	fileprivate let presenter: BlogPresenter
+	fileprivate let dataManager: PostsDataManager
 
 	public init(blogName: String, postHeightCache: PostHeightCache) {
 		viewController = BlogViewController(blogName: blogName, postHeightCache: postHeightCache)

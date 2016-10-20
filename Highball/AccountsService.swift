@@ -26,29 +26,29 @@ internal class TestVC: OAuthWebViewController, UIWebViewDelegate {
 		}
 	}
 
-	override func doHandle(url: NSURL) {
-		(view.subviews.first! as! UIWebView).loadRequest(NSURLRequest(URL: url))
+	override func doHandle(_ url: URL) {
+		(view.subviews.first! as! UIWebView).loadRequest(URLRequest(url: url))
 		super.doHandle(url)
 	}
 }
 
 public struct AccountsService {
-	private static let lastAccountNameKey = "HILastAccountKey"
+	fileprivate static let lastAccountNameKey = "HILastAccountKey"
 
-	public private(set) static var account: Account!
+	public fileprivate(set) static var account: Account!
 
 	public static func accounts() -> [Account] {
 		guard let realm = try? Realm() else {
 			return []
 		}
 
-		return realm.objects(AccountObject).map { $0 }
+		return realm.objects(AccountObject.self).map { $0 }
 	}
 
 	public static func lastAccount() -> Account? {
-		let userDefaults = NSUserDefaults.standardUserDefaults()
+		let userDefaults = UserDefaults.standard
 
-		guard let accountName = userDefaults.stringForKey(lastAccountNameKey) else {
+		guard let accountName = userDefaults.string(forKey: lastAccountNameKey) else {
 			return nil
 		}
 
@@ -56,14 +56,14 @@ public struct AccountsService {
 			return nil
 		}
 
-		guard let account = realm.objectForPrimaryKey(AccountObject.self, key: accountName) else {
+		guard let account = realm.object(ofType: AccountObject.self, forPrimaryKey: accountName as AnyObject) else {
 			return nil
 		}
 
 		return account
 	}
 
-	public static func start(fromViewController viewController: UIViewController, completion: (Account) -> ()) {
+	public static func start(fromViewController viewController: UIViewController, completion: @escaping (Account) -> ()) {
 		if let lastAccount = lastAccount() {
 			loginToAccount(lastAccount, completion: completion)
 			return
@@ -83,21 +83,21 @@ public struct AccountsService {
 		loginToAccount(firstAccount, completion: completion)
 	}
 
-	public static func loginToAccount(account: Account, completion: (Account) -> ()) {
+	public static func loginToAccount(_ account: Account, completion: @escaping (Account) -> ()) {
 		self.account = account
 
-		TMAPIClient.sharedInstance().OAuthToken = account.token
-		TMAPIClient.sharedInstance().OAuthTokenSecret = account.tokenSecret
+		TMAPIClient.sharedInstance().oAuthToken = account.token
+		TMAPIClient.sharedInstance().oAuthTokenSecret = account.tokenSecret
 
-		dispatch_async(dispatch_get_main_queue()) {
+		DispatchQueue.main.async {
 			completion(account)
 		}
 	}
 
-	public static func authenticateNewAccount(fromViewController viewController: UIViewController, completion: (account: Account?) -> ()) {
+	public static func authenticateNewAccount(fromViewController viewController: UIViewController, completion: @escaping (_ account: Account?) -> ()) {
 		let oauth = OAuth1Swift(
-			consumerKey: TMAPIClient.sharedInstance().OAuthConsumerKey,
-			consumerSecret: TMAPIClient.sharedInstance().OAuthConsumerSecret,
+			consumerKey: TMAPIClient.sharedInstance().oAuthConsumerKey,
+			consumerSecret: TMAPIClient.sharedInstance().oAuthConsumerSecret,
 			requestTokenUrl: "https://www.tumblr.com/oauth/request_token",
 			authorizeUrl: "https://www.tumblr.com/oauth/authorize",
 			accessTokenUrl: "https://www.tumblr.com/oauth/access_token"
@@ -106,13 +106,13 @@ public struct AccountsService {
 
 		account = nil
 
-		TMAPIClient.sharedInstance().OAuthToken = nil
-		TMAPIClient.sharedInstance().OAuthTokenSecret = nil
+		TMAPIClient.sharedInstance().oAuthToken = nil
+		TMAPIClient.sharedInstance().oAuthTokenSecret = nil
 
-		oauth.authorize_url_handler = TestVC()// SafariURLHandler(viewController: viewController)
+		oauth.authorizeURLHandler = TestVC()// SafariURLHandler(viewController: viewController)
 
 		oauth.authorizeWithCallbackURL(
-			NSURL(string: "highball://oauth-callback")!,
+			URL(string: "highball://oauth-callback")!,
 			success: { (credential, response, parameters) in
 				TMAPIClient.sharedInstance().OAuthToken = credential.oauth_token
 				TMAPIClient.sharedInstance().OAuthTokenSecret = credential.oauth_token_secret
@@ -177,8 +177,8 @@ public struct AccountsService {
 		)
 	}
 
-	public static func deleteAccount(account: Account, fromViewController viewController: UIViewController, completion: (changedAccount: Bool) -> ()) {
-		guard let realm = try? Realm(), accountObject = account as? AccountObject else {
+	public static func deleteAccount(_ account: Account, fromViewController viewController: UIViewController, completion: @escaping (_ changedAccount: Bool) -> ()) {
+		guard let realm = try? Realm(), let accountObject = account as? AccountObject else {
 			return
 		}
 
@@ -189,8 +189,8 @@ public struct AccountsService {
 				realm.delete(accountObject)
 			}
 		} catch {
-			dispatch_async(dispatch_get_main_queue()) {
-				completion(changedAccount: false)
+			DispatchQueue.main.async {
+				completion(false)
 			}
 		}
 
@@ -198,12 +198,12 @@ public struct AccountsService {
 			self.account = nil
 
 			start(fromViewController: viewController) { _ in
-				completion(changedAccount: true)
+				completion(true)
 			}
 		}
 
-		dispatch_async(dispatch_get_main_queue()) {
-			completion(changedAccount: false)
+		DispatchQueue.main.async {
+			completion(false)
 		}
 	}
 }

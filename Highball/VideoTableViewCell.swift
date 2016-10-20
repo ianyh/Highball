@@ -20,8 +20,8 @@ protocol VideoPlaybackCell {
 }
 
 class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
-	private var player: Player!
-	private var thumbnailImageView: FLAnimatedImageView!
+	fileprivate var player: Player!
+	fileprivate var thumbnailImageView: FLAnimatedImageView!
 	var post: Post? {
 		didSet {
 			guard let post = post else {
@@ -36,13 +36,13 @@ class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
 				return
 			}
 
-			thumbnailImageView.pin_setImageFromURL(thumbnailURL) { result in
-				if result.resultType != .MemoryCache {
+			thumbnailImageView.pin_setImage(from: thumbnailURL as URL) { result in
+				if result?.resultType != .memoryCache {
 					self.thumbnailImageView.alpha = 0
-					UIView.animateWithDuration(
-						0.5,
+					UIView.animate(
+						withDuration: 0.5,
 						delay: 0.1,
-						options: .AllowUserInteraction,
+						options: .allowUserInteraction,
 						animations: { self.thumbnailImageView.alpha = 1.0 },
 						completion: nil
 					)
@@ -52,7 +52,7 @@ class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
 	}
 	var urlString: String? {
 		didSet {
-			guard let urlString = urlString, url = NSURL(string: urlString) else {
+			guard let urlString = urlString, let url = URL(string: urlString) else {
 				return
 			}
 
@@ -75,11 +75,11 @@ class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
 
 		player.stop()
 		thumbnailImageView.animatedImage = nil
-		thumbnailImageView.hidden = false
+		thumbnailImageView.isHidden = false
 		thumbnailImageView.image = nil
 	}
 
-	private func setUpCell() {
+	fileprivate func setUpCell() {
 		player = Player()
 		player.delegate = self
 		player.muted = true
@@ -87,8 +87,8 @@ class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
 
 		thumbnailImageView = FLAnimatedImageView()
 
-		thumbnailImageView.backgroundColor = UIColor.lightGrayColor()
-		thumbnailImageView.contentMode = .ScaleAspectFit
+		thumbnailImageView.backgroundColor = UIColor.lightGray
+		thumbnailImageView.contentMode = .scaleAspectFit
 
 		contentView.addSubview(player.view)
 		contentView.addSubview(thumbnailImageView)
@@ -103,7 +103,7 @@ class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
 	}
 
 	func loadVideo() {
-		guard let post = post, url = post.videoURL()?.absoluteString else {
+		guard let post = post, let url = post.videoURL()?.absoluteString else {
 			return
 		}
 
@@ -111,7 +111,7 @@ class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
 	}
 
 	func isPlaying() -> Bool {
-		return player.playbackState == .Playing
+		return player.playbackState == .playing
 	}
 
 	func play() {
@@ -123,8 +123,8 @@ class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
 		setPlayback(false)
 	}
 
-	private func setPlayback(playback: Bool) {
-		thumbnailImageView.hidden = true
+	fileprivate func setPlayback(_ playback: Bool) {
+		thumbnailImageView.isHidden = true
 		if playback {
 			player.playFromCurrentTime()
 		} else {
@@ -134,23 +134,23 @@ class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
 }
 
 extension VideoTableViewCell: PlayerDelegate {
-	func playerReady(player: Player) {
+	func playerReady(_ player: Player) {
 
 	}
 
-	func playerPlaybackStateDidChange(player: Player) {
+	func playerPlaybackStateDidChange(_ player: Player) {
 
 	}
 
-	func playerBufferingStateDidChange(player: Player) {
+	func playerBufferingStateDidChange(_ player: Player) {
 
 	}
 
-	func playerPlaybackWillStartFromBeginning(player: Player) {
+	func playerPlaybackWillStartFromBeginning(_ player: Player) {
 
 	}
 
-	func playerPlaybackDidEnd(player: Player) {
+	func playerPlaybackDidEnd(_ player: Player) {
 
 	}
 }

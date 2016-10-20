@@ -13,11 +13,11 @@ public protocol Module {
 	associatedtype ViewController: UIViewController
 
 	var viewController: ViewController { get }
-	func installInNavigationController(navigationController: UINavigationController)
+	func installInNavigationController(_ navigationController: UINavigationController)
 }
 
 public extension Module {
-	public func installInNavigationController(navigationController: UINavigationController) {
+	public func installInNavigationController(_ navigationController: UINavigationController) {
 		navigationController.pushViewController(viewController, animated: true)
 	}
 }

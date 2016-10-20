@@ -9,15 +9,15 @@
 import UIKit
 
 protocol FollowedBlogsTableViewAdapterDelegate {
-	func blogsForAdapter(adapter: FollowedBlogsTableViewAdapter) -> [Blog]
-	func adapter(adapter: FollowedBlogsTableViewAdapter, didSelectBlog blog: Blog)
+	func blogsForAdapter(_ adapter: FollowedBlogsTableViewAdapter) -> [Blog]
+	func adapter(_ adapter: FollowedBlogsTableViewAdapter, didSelectBlog blog: Blog)
 }
 
 class FollowedBlogsTableViewAdapter: NSObject {
-	private let tableView: UITableView
-	private let delegate: FollowedBlogsTableViewAdapterDelegate
+	fileprivate let tableView: UITableView
+	fileprivate let delegate: FollowedBlogsTableViewAdapterDelegate
 
-	private var blogs: [Blog] {
+	fileprivate var blogs: [Blog] {
 		return delegate.blogsForAdapter(self)
 	}
 
@@ -30,20 +30,20 @@ class FollowedBlogsTableViewAdapter: NSObject {
 		tableView.dataSource = self
 		tableView.delegate = self
 
-		tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: UITableViewCell.cellIdentifier)
+		tableView.register(UITableViewCell.self, forCellReuseIdentifier: UITableViewCell.cellIdentifier)
 	}
 }
 
 extension FollowedBlogsTableViewAdapter: UITableViewDataSource {
-	func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return blogs.count
 	}
 
-	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		let blog = blogs[indexPath.row]
-		let cell = tableView.dequeueReusableCellWithIdentifier(UITableViewCell.cellIdentifier, forIndexPath: indexPath)
+	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let blog = blogs[(indexPath as NSIndexPath).row]
+		let cell = tableView.dequeueReusableCell(withIdentifier: UITableViewCell.cellIdentifier, for: indexPath)
 
-		cell.accessoryType = .DisclosureIndicator
+		cell.accessoryType = .disclosureIndicator
 		cell.detailTextLabel?.text = blog.title
 		cell.textLabel?.text = blog.name
 
@@ -52,8 +52,8 @@ extension FollowedBlogsTableViewAdapter: UITableViewDataSource {
 }
 
 extension FollowedBlogsTableViewAdapter: UITableViewDelegate {
-	func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		let blog = blogs[indexPath.row]
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		let blog = blogs[(indexPath as NSIndexPath).row]
 
 		delegate.adapter(self, didSelectBlog: blog)
 	}

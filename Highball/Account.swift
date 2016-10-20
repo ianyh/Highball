@@ -25,21 +25,21 @@ public func == (lhs: Account, rhs: Account) -> Bool {
 	return lhs.name == rhs.name
 }
 
-public class AccountObject: Object {
-	public dynamic var name: String!
-	public dynamic var token: String!
-	public dynamic var tokenSecret: String!
-	public let blogObjects = List<UserBlogObject>()
+open class AccountObject: Object {
+	open dynamic var name: String!
+	open dynamic var token: String!
+	open dynamic var tokenSecret: String!
+	open let blogObjects = List<UserBlogObject>()
 
-	public var blogs: [UserBlog] {
+	open var blogs: [UserBlog] {
 		return blogObjects.map { $0 }
 	}
 
-	public override static func primaryKey() -> String {
+	open override static func primaryKey() -> String {
 		return "name"
 	}
 
-	public override static func ignoredProperties() -> [String] {
+	open override static func ignoredProperties() -> [String] {
 		return ["blogs"]
 	}
 }

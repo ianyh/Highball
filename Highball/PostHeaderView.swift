@@ -14,12 +14,12 @@ import TMTumblrSDK
 class PostHeaderView: UITableViewHeaderFooterView {
 	var tapHandler: ((Post, UIView) -> ())?
 
-	private let avatarLoadQueue = dispatch_queue_create("avatarLoadQueue", nil)
-	private var avatarImageView: UIImageView!
-	private var usernameLabel: UILabel!
-	private var topUsernameLabel: UILabel!
-	private var bottomUsernameLabel: UILabel!
-	private var timeLabel: UILabel!
+	fileprivate let avatarLoadQueue = DispatchQueue(label: "avatarLoadQueue", attributes: [])
+	fileprivate var avatarImageView: UIImageView!
+	fileprivate var usernameLabel: UILabel!
+	fileprivate var topUsernameLabel: UILabel!
+	fileprivate var bottomUsernameLabel: UILabel!
+	fileprivate var timeLabel: UILabel!
 
 	var post: Post? {
 		didSet {
@@ -31,11 +31,11 @@ class PostHeaderView: UITableViewHeaderFooterView {
 
 			avatarImageView.image = UIImage(named: "Placeholder")
 
-			PINCache.sharedCache().objectForKey("avatar:\(blogName)") { cache, key, object in
-				if let data = object as? NSData {
-					dispatch_async(self.avatarLoadQueue) {
+			PINCache.shared().object(forKey: "avatar:\(blogName)") { cache, key, object in
+				if let data = object as? Data {
+					self.avatarLoadQueue.async {
 						let image = UIImage(data: data)
-						dispatch_async(dispatch_get_main_queue()) {
+						DispatchQueue.main.async {
 							self.avatarImageView.image = image
 						}
 					}
@@ -44,13 +44,13 @@ class PostHeaderView: UITableViewHeaderFooterView {
 						if let error = error {
 							print(error)
 						} else {
-							guard let data = response as? NSData else {
+							guard let data = response as? Data else {
 								return
 							}
-							PINCache.sharedCache().setObject(data, forKey: "avatar:\(blogName)", block: nil)
-							dispatch_async(self.avatarLoadQueue) {
+							PINCache.shared().setObject(data as NSCoding, forKey: "avatar:\(blogName)")
+							self.avatarLoadQueue.async {
 								let image = UIImage(data: data)
-								dispatch_async(dispatch_get_main_queue()) {
+								DispatchQueue.main.async {
 									self.avatarImageView.image = image
 								}
 							}
@@ -69,7 +69,7 @@ class PostHeaderView: UITableViewHeaderFooterView {
 				bottomUsernameLabel.text = nil
 			}
 
-			timeLabel.text = NSDate(timeIntervalSince1970: NSTimeInterval(post.timestamp)).stringWithRelativeFormat()
+			timeLabel.text = Date(timeIntervalSince1970: TimeInterval(post.timestamp)).stringWithRelativeFormat()
 		}
 	}
 
@@ -83,8 +83,8 @@ class PostHeaderView: UITableViewHeaderFooterView {
 		setUpCell()
 	}
 
-	private func setUpCell() {
-		let blurEffect = UIBlurEffect(style: .ExtraLight)
+	fileprivate func setUpCell() {
+		let blurEffect = UIBlurEffect(style: .extraLight)
 		let blurView = UIVisualEffectView(effect: blurEffect)
 
 		backgroundView = blurView
@@ -94,22 +94,22 @@ class PostHeaderView: UITableViewHeaderFooterView {
 		avatarImageView.clipsToBounds = true
 
 		usernameLabel = UILabel()
-		usernameLabel.font = UIFont.boldSystemFontOfSize(16)
+		usernameLabel.font = UIFont.boldSystemFont(ofSize: 16)
 
 		topUsernameLabel = UILabel()
-		topUsernameLabel.font = UIFont.boldSystemFontOfSize(16)
+		topUsernameLabel.font = UIFont.boldSystemFont(ofSize: 16)
 
 		bottomUsernameLabel = UILabel()
-		bottomUsernameLabel.font = UIFont.systemFontOfSize(12)
+		bottomUsernameLabel.font = UIFont.systemFont(ofSize: 12)
 
 		timeLabel = UILabel()
-		timeLabel.font = UIFont.systemFontOfSize(14)
+		timeLabel.font = UIFont.systemFont(ofSize: 14)
 
-		let button = UIButton(type: .System)
-		button.addTarget(self, action: #selector(PostHeaderView.tap(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+		let button = UIButton(type: .system)
+		button.addTarget(self, action: #selector(PostHeaderView.tap(_:)), for: UIControlEvents.touchUpInside)
 
 		let borderView = UIView()
-		borderView.backgroundColor = UIColor.grayColor()
+		borderView.backgroundColor = UIColor.gray
 		borderView.alpha = 0.5
 
 		contentView.addSubview(avatarImageView)
@@ -163,7 +163,7 @@ class PostHeaderView: UITableViewHeaderFooterView {
 		}
 	}
 
-	func tap(sender: UIButton) {
+	func tap(_ sender: UIButton) {
 		guard let post = post else {
 			return
 		}

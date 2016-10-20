@@ -44,13 +44,13 @@ class PostQuestionTableViewCell: WCFastCell {
 		contentLabel = UILabel()
 
 		bubbleView.backgroundColor = UIColor(white: 245.0/255.0, alpha: 1)
-		bubbleView.layer.borderColor = UIColor(white: 217.0/255.0, alpha: 1).CGColor
+		bubbleView.layer.borderColor = UIColor(white: 217.0/255.0, alpha: 1).cgColor
 		bubbleView.layer.borderWidth = 1
 
-		askerLabel.font = UIFont.systemFontOfSize(14)
+		askerLabel.font = UIFont.systemFont(ofSize: 14)
 		askerLabel.textColor = UIColor(white: 166.0/255.0, alpha: 1)
 
-		contentLabel.font = UIFont.systemFontOfSize(14)
+		contentLabel.font = UIFont.systemFont(ofSize: 14)
 		contentLabel.textColor = UIColor(white: 68.0/255.0, alpha: 1)
 		contentLabel.numberOfLines = 0
 
@@ -77,13 +77,13 @@ class PostQuestionTableViewCell: WCFastCell {
 		}
 	}
 
-	class func heightForPost(post: Post!, width: CGFloat!) -> CGFloat {
+	class func heightForPost(_ post: Post!, width: CGFloat!) -> CGFloat {
 		let question = post.question! as NSString
-		let questionAttributes = [ NSFontAttributeName : UIFont.systemFontOfSize(14) ]
+		let questionAttributes = [ NSFontAttributeName : UIFont.systemFont(ofSize: 14) ]
 		let modifiedWidth = width - 16 - 28
 		let extraHeight: CGFloat = 12 + 20 + 14 + 8
-		let constrainedSize = CGSize(width: modifiedWidth, height: CGFloat.max)
-		let questionRect = question.boundingRectWithSize(constrainedSize, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: questionAttributes, context: nil)
+		let constrainedSize = CGSize(width: modifiedWidth, height: CGFloat.greatestFiniteMagnitude)
+		let questionRect = question.boundingRect(with: constrainedSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: questionAttributes, context: nil)
 
 		return extraHeight + ceil(questionRect.size.height)
 	}

@@ -11,9 +11,9 @@ import MediaPlayer
 import Cartography
 
 class VideoPlayController: UIViewController {
-	private let completion: ((Bool) -> ())
+	fileprivate let completion: ((Bool) -> ())
 
-	init(completion: (Bool) -> ()) {
+	init(completion: @escaping (Bool) -> ()) {
 		self.completion = completion
 		super.init(nibName: nil, bundle: nil)
 	}
@@ -23,16 +23,16 @@ class VideoPlayController: UIViewController {
 	}
 
 	override func viewDidLoad() {
-		let backgroundButton = UIButton(type: .System)
-		let playButton = UIButton(type: .System)
+		let backgroundButton = UIButton(type: .system)
+		let playButton = UIButton(type: .system)
 		let volumeView = MPVolumeView()
 
-		backgroundButton.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.75)
-		backgroundButton.setTitle("", forState: .Normal)
-		backgroundButton.addTarget(self, action: #selector(VideoPlayController.cancel), forControlEvents: .TouchUpInside)
+		backgroundButton.backgroundColor = UIColor.black.withAlphaComponent(0.75)
+		backgroundButton.setTitle("", for: UIControlState())
+		backgroundButton.addTarget(self, action: #selector(VideoPlayController.cancel), for: .touchUpInside)
 
-		playButton.setTitle("Play", forState: .Normal)
-		playButton.addTarget(self, action: #selector(MPMediaPlayback.play), forControlEvents: .TouchUpInside)
+		playButton.setTitle("Play", for: UIControlState())
+		playButton.addTarget(self, action: #selector(MPMediaPlayback.play), for: .touchUpInside)
 
 		volumeView.alpha = 1.0
 
@@ -67,8 +67,8 @@ class VideoPlayController: UIViewController {
 		finish(false)
 	}
 
-	private func finish(play: Bool) {
+	fileprivate func finish(_ play: Bool) {
 		completion(play)
-		dismissViewControllerAnimated(true, completion: nil)
+		dismiss(animated: true, completion: nil)
 	}
 }

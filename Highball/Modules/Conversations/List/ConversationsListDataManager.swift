@@ -11,22 +11,22 @@ import Foundation
 import SwiftyJSON
 
 public protocol ConversationsListDataManagerDelegate: class {
-	func listDataManagerDidReload(dataManager: ConversationsListDataManager)
+	func listDataManagerDidReload(_ dataManager: ConversationsListDataManager)
 }
 
-public class ConversationsListDataManager {
-	public weak var delegate: ConversationsListDataManagerDelegate?
+open class ConversationsListDataManager {
+	open weak var delegate: ConversationsListDataManagerDelegate?
 
-	public private(set) var conversations: [Conversation] = []
+	open fileprivate(set) var conversations: [Conversation] = []
 
-	public func reloadData() {
+	open func reloadData() {
 		let headers = [
 			"X-tumblr-form-key": "i7Wi4kwmh6ebC8jKpdV4xMUGcFA",
 			"X-Requested-With": "XMLHttpRequest"
 		]
 
 		let participant = "thatseemsright.tumblr.com"
-		let timestamp = NSDate().timeIntervalSince1970
+		let timestamp = Date().timeIntervalSince1970
 
 		Alamofire.request(.GET, "https://www.tumblr.com/svc/conversations?participant=\(participant)&_=\(timestamp)", headers: headers)
 			.response() { _, _, data, error in

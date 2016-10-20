@@ -12,17 +12,17 @@ import XCDYouTubeKit
 
 class YoutubeTableViewCell: VideoTableViewCell {
 	override func loadVideo() {
-		guard let post = post, videoURL = post.videoURL() else {
+		guard let post = post, let videoURL = post.videoURL() else {
 			return
 		}
 
-		let identifier = videoURL.absoluteString.componentsSeparatedByString("?v=")[1]
-		XCDYouTubeClient.defaultClient().getVideoWithIdentifier(identifier) { video, error in
+		let identifier = videoURL.absoluteString.components(separatedBy: "?v=")[1]
+		XCDYouTubeClient.default().getVideoWithIdentifier(identifier) { video, error in
 			if let urlString = video?.streamURLs[XCDYouTubeVideoQuality.HD720.rawValue] {
 				self.urlString = urlString.absoluteString
-			} else if let urlString = video?.streamURLs[XCDYouTubeVideoQuality.Medium360.rawValue] {
+			} else if let urlString = video?.streamURLs[XCDYouTubeVideoQuality.medium360.rawValue] {
 				self.urlString = urlString.absoluteString
-			} else if let urlString = video?.streamURLs[XCDYouTubeVideoQuality.Small240.rawValue] {
+			} else if let urlString = video?.streamURLs[XCDYouTubeVideoQuality.small240.rawValue] {
 				self.urlString = urlString.absoluteString
 			}
 		}

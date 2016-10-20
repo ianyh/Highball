@@ -11,13 +11,13 @@ import UIKit
 class ReblogTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
 	var presenting = true
 
-	func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+	func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
 		return 0.2
 	}
 
-	func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-		guard let fromViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey),
-			toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)
+	func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+		guard let fromViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from),
+			let toViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)
 		else {
 			return
 		}
@@ -26,15 +26,15 @@ class ReblogTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning 
 			toViewController.view.alpha = 0
 			toViewController.view.frame = fromViewController.view.frame
 
-			transitionContext.containerView()!.addSubview(toViewController.view)
+			transitionContext.containerView.addSubview(toViewController.view)
 
 			toViewController.viewWillAppear(true)
 			fromViewController.viewWillDisappear(true)
 
-			UIView.animateWithDuration(
-				transitionDuration(transitionContext),
+			UIView.animate(
+				withDuration: transitionDuration(using: transitionContext),
 				animations: {
-					fromViewController.view.tintAdjustmentMode = .Dimmed
+					fromViewController.view.tintAdjustmentMode = .dimmed
 					toViewController.view.alpha = 1
 				},
 				completion: { finished in
@@ -49,10 +49,10 @@ class ReblogTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning 
 			toViewController.viewWillAppear(true)
 			fromViewController.viewWillDisappear(true)
 
-			UIView.animateWithDuration(
-				transitionDuration(transitionContext),
+			UIView.animate(
+				withDuration: transitionDuration(using: transitionContext),
 				animations: {
-					toViewController.view.tintAdjustmentMode = .Normal
+					toViewController.view.tintAdjustmentMode = .normal
 					fromViewController.view.alpha = 0
 				},
 				completion: { finished in

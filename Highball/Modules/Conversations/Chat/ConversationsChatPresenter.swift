@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class ConversationsChatPresenter {
-	public weak var view: ConversationsChatView?
-	public var dataManager: ConversationsChatDataManager?
+open class ConversationsChatPresenter {
+	open weak var view: ConversationsChatView?
+	open var dataManager: ConversationsChatDataManager?
 }

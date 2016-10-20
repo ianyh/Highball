@@ -44,15 +44,15 @@ class PostLinkTableViewCell: WCFastCell {
 		bubbleView.backgroundColor = UIColor(red: 86.0/255.0, green: 188.0/255.0, blue: 138.0/255.0, alpha: 1)
 		bubbleView.clipsToBounds = true
 
-		titleLabel.font = UIFont.boldSystemFontOfSize(19)
-		titleLabel.textColor = UIColor.whiteColor()
+		titleLabel.font = UIFont.boldSystemFont(ofSize: 19)
+		titleLabel.textColor = UIColor.white
 		titleLabel.numberOfLines = 0
-		titleLabel.textAlignment = NSTextAlignment.Center
+		titleLabel.textAlignment = NSTextAlignment.center
 
-		urlLabel.font = UIFont.systemFontOfSize(12)
+		urlLabel.font = UIFont.systemFont(ofSize: 12)
 		urlLabel.textColor = UIColor(white: 1, alpha: 0.7)
 		urlLabel.numberOfLines = 1
-		urlLabel.textAlignment = NSTextAlignment.Center
+		urlLabel.textAlignment = NSTextAlignment.center
 
 		contentView.addSubview(bubbleView)
 		contentView.addSubview(titleLabel)
@@ -76,19 +76,19 @@ class PostLinkTableViewCell: WCFastCell {
 		}
 	}
 
-	class func heightForPost(post: Post!, width: CGFloat!) -> CGFloat {
+	class func heightForPost(_ post: Post!, width: CGFloat!) -> CGFloat {
 		let extraHeight: CGFloat = 14 + 4 + 16 + 14
 		let modifiedWidth = width - 16
-		let constrainedSize = CGSize(width: modifiedWidth, height: CGFloat.max)
-		let titleAttributes = [ NSFontAttributeName : UIFont.boldSystemFontOfSize(19) ]
+		let constrainedSize = CGSize(width: modifiedWidth, height: CGFloat.greatestFiniteMagnitude)
+		let titleAttributes = [ NSFontAttributeName : UIFont.boldSystemFont(ofSize: 19) ]
 
 		if let title = post.title as NSString? {
-			let titleRect = title.boundingRectWithSize(constrainedSize, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: titleAttributes, context: nil)
+			let titleRect = title.boundingRect(with: constrainedSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: titleAttributes, context: nil)
 
 			return extraHeight + ceil(titleRect.size.height)
 		} else {
 			let title = "" as NSString
-			let titleRect = title.boundingRectWithSize(constrainedSize, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: titleAttributes, context: nil)
+			let titleRect = title.boundingRect(with: constrainedSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: titleAttributes, context: nil)
 
 			return extraHeight + ceil(titleRect.size.height)
 		}

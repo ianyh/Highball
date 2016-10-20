@@ -12,10 +12,10 @@ public extension NSAttributedString {
 	public func attributedStringByTrimmingNewlines() -> NSAttributedString {
 		var attributedString = self
 		while attributedString.string.characters.first == "\n" {
-			attributedString = attributedString.attributedSubstringFromRange(NSMakeRange(1, attributedString.string.characters.count - 1))
+			attributedString = attributedString.attributedSubstring(from: NSMakeRange(1, attributedString.string.characters.count - 1))
 		}
 		while attributedString.string.characters.last == "\n" {
-			attributedString = attributedString.attributedSubstringFromRange(NSMakeRange(0, attributedString.string.characters.count - 1))
+			attributedString = attributedString.attributedSubstring(from: NSMakeRange(0, attributedString.string.characters.count - 1))
 		}
 		return attributedString
 	}

@@ -9,10 +9,10 @@
 import UIKit
 import FontAwesomeKit
 
-public class BlogViewController: PostsViewController {
+open class BlogViewController: PostsViewController {
 	internal var blogPresenter: BlogPresenter?
 
-	public override var presenter: PostsPresenter? {
+	open override var presenter: PostsPresenter? {
 		get {
 			return blogPresenter as? PostsPresenter
 		}
@@ -28,10 +28,10 @@ public class BlogViewController: PostsViewController {
 	public init(blogName: String, postHeightCache: PostHeightCache) {
 		super.init(postHeightCache: postHeightCache)
 
-		let followIcon = FAKIonIcons.iosPersonaddOutlineIconWithSize(30)
+		let followIcon = FAKIonIcons.iosPersonaddOutlineIcon(withSize: 30)
 		navigationItem.rightBarButtonItem = UIBarButtonItem(
-			image: followIcon.imageWithSize(CGSize(width: 30, height: 30)),
-			style: UIBarButtonItemStyle.Plain,
+			image: followIcon?.image(with: CGSize(width: 30, height: 30)),
+			style: UIBarButtonItemStyle.plain,
 			target: self,
 			action: #selector(follow(_:))
 		)
@@ -46,19 +46,19 @@ public class BlogViewController: PostsViewController {
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	public func follow(sender: UIBarButtonItem) {
-		let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+	open func follow(_ sender: UIBarButtonItem) {
+		let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
-		alertController.addAction(UIAlertAction(title: "Follow", style: .Default) { [weak self] action in
+		alertController.addAction(UIAlertAction(title: "Follow", style: .default) { [weak self] action in
 			self?.blogPresenter?.follow()
 		})
 
-		alertController.addAction(UIAlertAction(title: "Unfollow", style: .Destructive) { [weak self] action in
+		alertController.addAction(UIAlertAction(title: "Unfollow", style: .destructive) { [weak self] action in
 			self?.blogPresenter?.unfollow()
 		})
 
-		alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+		alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
 
-		presentViewController(alertController, animated: true, completion: nil)
+		present(alertController, animated: true, completion: nil)
 	}
 }

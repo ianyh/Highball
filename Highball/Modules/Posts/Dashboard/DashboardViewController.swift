@@ -12,10 +12,10 @@ import SwiftyJSON
 import TMTumblrSDK
 import UIKit
 
-public class DashboardViewController: PostsViewController {
+open class DashboardViewController: PostsViewController {
 	internal var dashboardPresenter: DashboardPresenter?
 
-	public override var presenter: PostsPresenter? {
+	open override var presenter: PostsPresenter? {
 		get {
 			return dashboardPresenter as? PostsPresenter
 		}
@@ -34,10 +34,10 @@ public class DashboardViewController: PostsViewController {
 		navigationItem.title = "Dashboard"
 		updateRightBarButtonItem()
 
-		NSNotificationCenter.defaultCenter().addObserver(
+		NotificationCenter.default.addObserver(
 			self,
 			selector: #selector(applicationWillResignActive(_:)),
-			name: UIApplicationWillResignActiveNotification,
+			name: NSNotification.Name.UIApplicationWillResignActive,
 			object: nil
 		)
 	}
@@ -47,47 +47,47 @@ public class DashboardViewController: PostsViewController {
 	}
 
 	deinit {
-		NSNotificationCenter.defaultCenter().removeObserver(
+		NotificationCenter.default.removeObserver(
 			self,
-			name: UIApplicationWillResignActiveNotification,
+			name: NSNotification.Name.UIApplicationWillResignActive,
 			object: nil
 		)
 	}
 
-	public override func viewDidDisappear(animated: Bool) {
+	open override func viewDidDisappear(_ animated: Bool) {
 		super.viewDidDisappear(animated)
 
 		bookmark()
 	}
 
-	public func applicationWillResignActive(notification: NSNotification) {
+	open func applicationWillResignActive(_ notification: Notification) {
 		bookmark()
 	}
 
-	public func bookmark() {
+	open func bookmark() {
 		guard let firstIndexPath = tableView.indexPathsForVisibleRows?.first else {
 			return
 		}
 
-		let postIndex = firstIndexPath.section > 0 ? firstIndexPath.section - 1 : firstIndexPath.section
+		let postIndex = (firstIndexPath as NSIndexPath).section > 0 ? (firstIndexPath as NSIndexPath).section - 1 : (firstIndexPath as NSIndexPath).section
 
 		dashboardPresenter?.bookmarkPostAtIndex(postIndex)
 	}
 
-	public func bookmarks(sender: UIButton, event: UIEvent) {
-		let alertController = UIAlertController(title: "", message: "Go to top of your feed?", preferredStyle: .Alert)
-		alertController.addAction(UIAlertAction(title: "Yes", style: .Default) { [weak self] action in
+	open func bookmarks(_ sender: UIButton, event: UIEvent) {
+		let alertController = UIAlertController(title: "", message: "Go to top of your feed?", preferredStyle: .alert)
+		alertController.addAction(UIAlertAction(title: "Yes", style: .default) { [weak self] action in
 			self?.navigationItem.rightBarButtonItem = nil
 			self?.presenter?.resetPosts()
 			self?.tableViewAdapter?.resetCache()
 			self?.tableView.reloadData()
 			self?.updateRightBarButtonItem()
 		})
-		alertController.addAction(UIAlertAction(title: "No", style: .Cancel, handler: nil))
-		presentViewController(alertController, animated: true, completion: nil)
+		alertController.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
+		present(alertController, animated: true, completion: nil)
 	}
 
-	public func gotoBookmark(bookmarkID: Int) {
+	open func gotoBookmark(_ bookmarkID: Int) {
 		dashboardPresenter?.goToBookmarkedPostWithID(bookmarkID)
 		tableViewAdapter?.resetCache()
 		tableView.reloadData()
@@ -95,21 +95,21 @@ public class DashboardViewController: PostsViewController {
 		updateRightBarButtonItem()
 	}
 
-	public func presentHistory(sender: AnyObject) {
+	open func presentHistory(_ sender: AnyObject) {
 		let historyViewController = HistoryViewController(delegate: self)
 		let navigationController = UINavigationController(rootViewController: historyViewController)
 
-		presentViewController(navigationController, animated: true, completion: nil)
+		present(navigationController, animated: true, completion: nil)
 	}
 
 	internal func updateRightBarButtonItem() {
-		guard let presenter = dashboardPresenter where presenter.isViewingBookmark() else {
-			let historyIcon = FAKIonIcons.iosClockOutlineIconWithSize(30.0)
-			let historyIconImage = historyIcon.imageWithSize(CGSize(width: 30, height: 30))
+		guard let presenter = dashboardPresenter, presenter.isViewingBookmark() else {
+			let historyIcon = FAKIonIcons.iosClockOutlineIcon(withSize: 30.0)
+			let historyIconImage = historyIcon?.image(with: CGSize(width: 30, height: 30))
 
 			navigationItem.rightBarButtonItem = UIBarButtonItem(
 				image: historyIconImage,
-				style: .Plain,
+				style: .plain,
 				target: self,
 				action: #selector(presentHistory(_:))
 			)
@@ -117,12 +117,12 @@ public class DashboardViewController: PostsViewController {
 			return
 		}
 
-		let upArrow = FAKIonIcons.iosArrowUpIconWithSize(30)
-		let upArrowImage = upArrow.imageWithSize(CGSize(width: 30, height: 30))
+		let upArrow = FAKIonIcons.iosArrowUpIcon(withSize: 30)
+		let upArrowImage = upArrow?.image(with: CGSize(width: 30, height: 30))
 
 		navigationItem.rightBarButtonItem = UIBarButtonItem(
 			image: upArrowImage,
-			style: .Plain,
+			style: .plain,
 			target: self,
 			action: #selector(bookmarks(_:event:))
 		)
@@ -130,9 +130,9 @@ public class DashboardViewController: PostsViewController {
 }
 
 extension DashboardViewController: HistoryViewControllerDelegate {
-	public func historyViewController(historyViewController: HistoryViewController, didFinishWithId selectedId: Int?) {
+	public func historyViewController(_ historyViewController: HistoryViewController, didFinishWithId selectedId: Int?) {
 		defer {
-			dismissViewControllerAnimated(true, completion: nil)
+			dismiss(animated: true, completion: nil)
 		}
 
 		guard let selectedId = selectedId else {

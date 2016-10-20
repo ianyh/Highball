@@ -10,7 +10,7 @@ import UIKit
 
 class ReblogCommentCell: UITableViewCell {
 	override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-		super.init(style: .Subtitle, reuseIdentifier: reuseIdentifier)
+		super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
 
 		textLabel?.numberOfLines = 0
 		detailTextLabel?.numberOfLines = 0

@@ -11,15 +11,15 @@ import Cartography
 import VENTouchLock
 
 class LockSplashViewController: VENTouchLockSplashViewController, UITableViewDataSource, UITableViewDelegate {
-	private var tableView: UITableView!
-	private var accounts: Array<Account>!
+	fileprivate var tableView: UITableView!
+	fileprivate var accounts: Array<Account>!
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
 		accounts = AccountsService.accounts()
 
-		view.backgroundColor = UIColor.whiteColor()
+		view.backgroundColor = UIColor.white
 
 		tableView = UITableView()
 		tableView.dataSource = self
@@ -27,7 +27,7 @@ class LockSplashViewController: VENTouchLockSplashViewController, UITableViewDat
 		tableView.allowsSelection = true
 		tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0)
 
-		tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: UITableViewCell.cellIdentifier)
+		tableView.register(UITableViewCell.self, forCellReuseIdentifier: UITableViewCell.cellIdentifier)
 
 		view.addSubview(tableView)
 
@@ -36,33 +36,33 @@ class LockSplashViewController: VENTouchLockSplashViewController, UITableViewDat
 		}
 	}
 
-	func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return accounts.count
 	}
 
-	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		let account = accounts[indexPath.row]
-		let cell = tableView.dequeueReusableCellWithIdentifier(UITableViewCell.cellIdentifier)!
+	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let account = accounts[(indexPath as NSIndexPath).row]
+		let cell = tableView.dequeueReusableCell(withIdentifier: UITableViewCell.cellIdentifier)!
 
 		cell.textLabel?.text = account.name
 
 		if let currentAccount = AccountsService.account {
 			if account == currentAccount {
-				cell.accessoryType = .Checkmark
+				cell.accessoryType = .checkmark
 			} else {
-				cell.accessoryType = .None
+				cell.accessoryType = .none
 			}
 		}
 
 		return cell
 	}
 
-	func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		let account = accounts[indexPath.row]
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		let account = accounts[(indexPath as NSIndexPath).row]
 
 		if let currentAccount = AccountsService.account {
 			if account == currentAccount {
-				showPasscodeAnimated(true)
+				showPasscode(animated: true)
 			}
 		}
 
@@ -71,7 +71,7 @@ class LockSplashViewController: VENTouchLockSplashViewController, UITableViewDat
 				mainViewController.reset()
 			}
 			self.tableView.reloadData()
-			self.showPasscodeAnimated(true)
+			self.showPasscode(animated: true)
 		}
 	}
 }

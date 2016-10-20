@@ -8,10 +8,10 @@
 
 import Foundation
 
-public class ConversationsListModule {
-	public let viewController = ConversationsListViewController()
-	private let presenter = ConversationsListPresenter()
-	private let dataManager = ConversationsListDataManager()
+open class ConversationsListModule {
+	open let viewController = ConversationsListViewController()
+	fileprivate let presenter = ConversationsListPresenter()
+	fileprivate let dataManager = ConversationsListDataManager()
 
 	public init() {
 		viewController.presenter = presenter

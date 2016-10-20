@@ -12,19 +12,19 @@ import UIKit
 import VENTouchLock
 
 class SettingsViewController: UITableViewController {
-	private enum SettingsSection: Int {
-		case Accounts
-		case Passcode
-		case Cache
+	fileprivate enum SettingsSection: Int {
+		case accounts
+		case passcode
+		case cache
 	}
-	private enum PasscodeRow: Int {
-		case Set
-		case ClearPasscode
-		case UseTouch
+	fileprivate enum PasscodeRow: Int {
+		case set
+		case clearPasscode
+		case useTouch
 	}
 
 	init() {
-		super.init(style: .Grouped)
+		super.init(style: .grouped)
 		navigationItem.title = "Settings"
 	}
 
@@ -35,92 +35,92 @@ class SettingsViewController: UITableViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: UITableViewCell.cellIdentifier)
+		tableView.register(UITableViewCell.self, forCellReuseIdentifier: UITableViewCell.cellIdentifier)
 	}
 
-	override func viewDidAppear(animated: Bool) {
+	override func viewDidAppear(_ animated: Bool) {
 		guard let selectedInexPath = tableView.indexPathForSelectedRow else {
 			return
 		}
 
-		tableView.deselectRowAtIndexPath(selectedInexPath, animated: animated)
+		tableView.deselectRow(at: selectedInexPath, animated: animated)
 	}
 
-	func done(sender: UIBarButtonItem) {
-		dismissViewControllerAnimated(true, completion: nil)
+	func done(_ sender: UIBarButtonItem) {
+		dismiss(animated: true, completion: nil)
 	}
 
-	override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+	override func numberOfSections(in tableView: UITableView) -> Int {
 		return 3
 	}
 
-	override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		switch SettingsSection(rawValue: section)! {
-		case .Accounts:
+		case .accounts:
 			return 1
-		case .Passcode:
+		case .passcode:
 			return VENTouchLock.canUseTouchID() ? 3 : 2
-		case .Cache:
+		case .cache:
 			return 1
 		}
 	}
 
-	override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCellWithIdentifier(UITableViewCell.cellIdentifier, forIndexPath: indexPath)
+	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: UITableViewCell.cellIdentifier, for: indexPath)
 
-		switch SettingsSection(rawValue: indexPath.section)! {
-		case .Accounts:
+		switch SettingsSection(rawValue: (indexPath as NSIndexPath).section)! {
+		case .accounts:
 			cell.textLabel?.text = "Accounts"
-			cell.accessoryType = .DisclosureIndicator
-		case .Passcode:
-			switch PasscodeRow(rawValue: indexPath.row)! {
-			case .Set:
+			cell.accessoryType = .disclosureIndicator
+		case .passcode:
+			switch PasscodeRow(rawValue: (indexPath as NSIndexPath).row)! {
+			case .set:
 				if VENTouchLock.sharedInstance().isPasscodeSet() {
 					cell.textLabel?.text = "Update Passcode"
 				} else {
 					cell.textLabel?.text = "Set Passcode"
 				}
-				cell.accessoryType = .DisclosureIndicator
-			case .ClearPasscode:
+				cell.accessoryType = .disclosureIndicator
+			case .clearPasscode:
 				cell.textLabel?.text = "Clear Passcode"
-			case .UseTouch:
+			case .useTouch:
 				cell.textLabel?.text = "Use Touch ID"
 				if VENTouchLock.shouldUseTouchID() {
-					cell.accessoryType = .Checkmark
+					cell.accessoryType = .checkmark
 				} else {
-					cell.accessoryType = .None
+					cell.accessoryType = .none
 				}
 			}
-		case .Cache:
+		case .cache:
 			cell.textLabel?.text = "Clear Cache"
-			cell.accessoryType = .None
+			cell.accessoryType = .none
 		}
 
 		return cell
 	}
 
-	override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		tableView.deselectRowAtIndexPath(indexPath, animated: false)
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		tableView.deselectRow(at: indexPath, animated: false)
 
-		switch SettingsSection(rawValue: indexPath.section)! {
-		case .Accounts:
+		switch SettingsSection(rawValue: (indexPath as NSIndexPath).section)! {
+		case .accounts:
 			navigationController?.pushViewController(AccountsViewController(), animated: true)
-		case .Passcode:
-			switch PasscodeRow(rawValue: indexPath.row)! {
-			case .Set:
+		case .passcode:
+			switch PasscodeRow(rawValue: (indexPath as NSIndexPath).row)! {
+			case .set:
 				let viewController = VENTouchLockCreatePasscodeViewController()
 				if let navigationController = self.navigationController {
 					viewController.willFinishWithResult = { finished in
-						navigationController.popViewControllerAnimated(true)
+						navigationController.popViewController(animated: true)
 					}
 					navigationController.pushViewController(viewController, animated: true)
 				}
-			case .ClearPasscode:
+			case .clearPasscode:
 				if VENTouchLock.sharedInstance().isPasscodeSet() {
 					VENTouchLock.sharedInstance().deletePasscode()
 				}
 				tableView.reloadData()
-			case .UseTouch:
+			case .useTouch:
 				if VENTouchLock.shouldUseTouchID() {
 					VENTouchLock.setShouldUseTouchID(false)
 				} else {
@@ -128,14 +128,14 @@ class SettingsViewController: UITableViewController {
 				}
 				tableView.reloadData()
 			}
-		case .Cache:
-			let alertController = UIAlertController(title: "Are you sure?", message: "Are you sure that you want to clear your cache?", preferredStyle: .Alert)
-			alertController.addAction(UIAlertAction(title: "Yes", style: .Destructive) { action in
-				PINRemoteImageManager.sharedImageManager().cache.diskCache.removeAllObjects(nil)
-				PINCache.sharedCache().diskCache.removeAllObjects(nil)
+		case .cache:
+			let alertController = UIAlertController(title: "Are you sure?", message: "Are you sure that you want to clear your cache?", preferredStyle: .alert)
+			alertController.addAction(UIAlertAction(title: "Yes", style: .destructive) { action in
+				PINRemoteImageManager.shared().cache.diskCache.removeAllObjects(nil)
+				PINCache.shared().diskCache.removeAllObjects(nil)
 			})
-			alertController.addAction(UIAlertAction(title: "No", style: .Cancel, handler: nil))
-			presentViewController(alertController, animated: true, completion: nil)
+			alertController.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
+			present(alertController, animated: true, completion: nil)
 		}
 	}
 }

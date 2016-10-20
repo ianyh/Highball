@@ -41,6 +41,8 @@
 	<string>53</string>
 	<key>Fabric</key>
 	<dict>
+		<key>APIKey</key>
+		<string>a25cbaaa1ad8dfc28f1561539a9dda1b107b0502</string>
 		<key>Kits</key>
 		<array>
 			<dict>
@@ -51,6 +53,10 @@
 			</dict>
 		</array>
 	</dict>
+	<key>HBCrashlyticsAPIKey</key>
+	<string>a25cbaaa1ad8dfc28f1561539a9dda1b107b0502</string>
+	<key>HBCrashlyticsAppKey</key>
+	<string>9b10baa19f8b916686a6d08d2464dc03d20fbb91d53ca4b3aa39feb1eafea67c</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

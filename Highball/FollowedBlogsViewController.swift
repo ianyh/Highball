@@ -13,7 +13,7 @@ class FollowedBlogsViewController: UITableViewController {
 	var dataManager: FollowedBlogsDataManager!
 
 	init() {
-		super.init(style: .Plain)
+		super.init(style: .plain)
 		self.dataManager = FollowedBlogsDataManager(delegate: self)
 
 		navigationItem.title = "Followed"
@@ -29,10 +29,10 @@ class FollowedBlogsViewController: UITableViewController {
 		tableViewAdapter = FollowedBlogsTableViewAdapter(tableView: tableView, delegate: self)
 
 		refreshControl = UIRefreshControl()
-		refreshControl?.addTarget(self, action: #selector(FollowedBlogsViewController.refresh(_:)), forControlEvents: .ValueChanged)
+		refreshControl?.addTarget(self, action: #selector(FollowedBlogsViewController.refresh(_:)), for: .valueChanged)
 	}
 
-	override func viewDidAppear(animated: Bool) {
+	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 
 		guard !dataManager.loading else {
@@ -42,17 +42,17 @@ class FollowedBlogsViewController: UITableViewController {
 		dataManager.load()
 	}
 
-	func refresh(sender: UIRefreshControl) {
+	func refresh(_ sender: UIRefreshControl) {
 		dataManager.load()
 	}
 
-	func presentError(error: NSError) {
-		let alertController = UIAlertController(title: "Error", message: "Hit an error trying to load blogs. \(error.localizedDescription)", preferredStyle: .Alert)
-		let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+	func presentError(_ error: NSError) {
+		let alertController = UIAlertController(title: "Error", message: "Hit an error trying to load blogs. \(error.localizedDescription)", preferredStyle: .alert)
+		let action = UIAlertAction(title: "OK", style: .default, handler: nil)
 
 		alertController.addAction(action)
 
-		presentViewController(alertController, animated: true, completion: nil)
+		present(alertController, animated: true, completion: nil)
 
 		print(error)
 	}
@@ -60,22 +60,22 @@ class FollowedBlogsViewController: UITableViewController {
 
 // MARK: PostsDataManagerDelegate
 extension FollowedBlogsViewController: FollowedBlogsDataManagerDelegate {
-	func dataManagerDidReload(dataManager: FollowedBlogsDataManager, indexSet: NSIndexSet?) {
+	func dataManagerDidReload(_ dataManager: FollowedBlogsDataManager, indexSet: IndexSet?) {
 		tableView.reloadData()
 	}
 
-	func dataManager(dataManager: FollowedBlogsDataManager, didEncounterError error: NSError) {
+	func dataManager(_ dataManager: FollowedBlogsDataManager, didEncounterError error: NSError) {
 		presentError(error)
 	}
 }
 
 // MARK: PostsTableViewAdapterDelegate
 extension FollowedBlogsViewController: FollowedBlogsTableViewAdapterDelegate {
-	func blogsForAdapter(adapter: FollowedBlogsTableViewAdapter) -> [Blog] {
-		return dataManager.blogs ?? []
+	func blogsForAdapter(_ adapter: FollowedBlogsTableViewAdapter) -> [Blog] {
+		return dataManager.blogs
 	}
 
-	func adapter(adapter: FollowedBlogsTableViewAdapter, didSelectBlog blog: Blog) {
+	func adapter(_ adapter: FollowedBlogsTableViewAdapter, didSelectBlog blog: Blog) {
 		let blogModule = BlogModule(blogName: blog.name, postHeightCache: PostHeightCache())
 		blogModule.installInNavigationController(navigationController!)
 	}

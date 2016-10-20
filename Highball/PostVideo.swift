@@ -11,8 +11,8 @@ import Mapper
 
 public struct PostVideo: Mappable {
 	public let type: String
-	public let url: NSURL
-	public let thumbnailURL: NSURL
+	public let url: URL
+	public let thumbnailURL: URL
 	public let width: Double
 	public let height: Double
 

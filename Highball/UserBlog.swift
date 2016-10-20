@@ -16,11 +16,11 @@ public protocol UserBlog {
 	var isPrimary: Bool { get }
 }
 
-public class UserBlogObject: Object {
-	public dynamic var name: String!
-	public dynamic var url: String!
-	public dynamic var title: String!
-	public dynamic var isPrimary: Bool = false
+open class UserBlogObject: Object {
+	open dynamic var name: String!
+	open dynamic var url: String!
+	open dynamic var title: String!
+	open dynamic var isPrimary: Bool = false
 }
 
 extension UserBlogObject: UserBlog {}

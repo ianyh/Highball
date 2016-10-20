@@ -13,12 +13,12 @@ public let AccountDidChangeNotification = "AccountDidChangeNotification"
 // swiftlint:enable variable_name
 
 class AccountsViewController: UITableViewController {
-	private enum Section: Int {
-		case Accounts
-		case AddAccount
+	fileprivate enum Section: Int {
+		case accounts
+		case addAccount
 	}
 
-	private var accounts: Array<Account>
+	fileprivate var accounts: Array<Account>
 
 	required init() {
 		self.accounts = []
@@ -33,68 +33,68 @@ class AccountsViewController: UITableViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: UITableViewCell.cellIdentifier)
+		tableView.register(UITableViewCell.self, forCellReuseIdentifier: UITableViewCell.cellIdentifier)
 		accounts = AccountsService.accounts()
 	}
 
-	override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+	override func numberOfSections(in tableView: UITableView) -> Int {
 		return 2
 	}
 
-	override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		switch Section(rawValue: section)! {
-		case .Accounts:
+		case .accounts:
 			return accounts.count
-		case .AddAccount:
+		case .addAccount:
 			return 1
 		}
 	}
 
-	override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		switch Section(rawValue: indexPath.section)! {
-		case .Accounts:
-			let account = accounts[indexPath.row]
-			let cell = tableView.dequeueReusableCellWithIdentifier(UITableViewCell.cellIdentifier, forIndexPath: indexPath)
+	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		switch Section(rawValue: (indexPath as NSIndexPath).section)! {
+		case .accounts:
+			let account = accounts[(indexPath as NSIndexPath).row]
+			let cell = tableView.dequeueReusableCell(withIdentifier: UITableViewCell.cellIdentifier, for: indexPath)
 
 			cell.textLabel?.text = account.name
 
 			if let currentAccount = AccountsService.account {
 				if account == currentAccount {
-					cell.accessoryType = .Checkmark
+					cell.accessoryType = .checkmark
 				} else {
-					cell.accessoryType = .None
+					cell.accessoryType = .none
 				}
 			}
 
 			return cell
-		case .AddAccount:
-			let cell = tableView.dequeueReusableCellWithIdentifier(UITableViewCell.cellIdentifier, forIndexPath: indexPath)
+		case .addAccount:
+			let cell = tableView.dequeueReusableCell(withIdentifier: UITableViewCell.cellIdentifier, for: indexPath)
 
 			cell.textLabel?.text = "Add account"
-			cell.accessoryType = .None
+			cell.accessoryType = .none
 
 			return cell
 		}
 	}
 
-	override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		switch Section(rawValue: indexPath.section)! {
-		case .Accounts:
-			let account = accounts[indexPath.row]
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		switch Section(rawValue: (indexPath as NSIndexPath).section)! {
+		case .accounts:
+			let account = accounts[(indexPath as NSIndexPath).row]
 			AccountsService.loginToAccount(account) { account in
-				let alertController = UIAlertController(title: "Switch Account?", message: "Are you sure you want to switch to \(account.name)", preferredStyle: .ActionSheet)
-				let action = UIAlertAction(title: "Yes", style: .Destructive) { _ in
-					let notification = NSNotification(name: AccountDidChangeNotification, object: nil)
-					NSNotificationCenter.defaultCenter().postNotification(notification)
+				let alertController = UIAlertController(title: "Switch Account?", message: "Are you sure you want to switch to \(account.name)", preferredStyle: .actionSheet)
+				let action = UIAlertAction(title: "Yes", style: .destructive) { _ in
+					let notification = Notification(name: Notification.Name(rawValue: AccountDidChangeNotification), object: nil)
+					NotificationCenter.default.post(notification)
 				}
-				let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+				let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
 
 				alertController.addAction(action)
 				alertController.addAction(cancelAction)
 
-				self.presentViewController(alertController, animated: true, completion: nil)
+				self.present(alertController, animated: true, completion: nil)
 			}
-		case .AddAccount:
+		case .addAccount:
 			AccountsService.authenticateNewAccount(fromViewController: self) { account in
 				self.accounts = AccountsService.accounts()
 				self.tableView.reloadData()
@@ -102,33 +102,33 @@ class AccountsViewController: UITableViewController {
 		}
 	}
 
-	override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-		return Section(rawValue: indexPath.section) == .Accounts
+	override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+		return Section(rawValue: (indexPath as NSIndexPath).section) == .accounts
 	}
 
-	override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-		guard Section(rawValue: indexPath.section) == .Accounts else {
+	override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+		guard Section(rawValue: (indexPath as NSIndexPath).section) == .accounts else {
 			return
 		}
 
-		let account = accounts[indexPath.row]
-		let alertController = UIAlertController(title: "Delete Account?", message: "Are you sure youw ant to delete \(account.name)", preferredStyle: .ActionSheet)
-		let deleteAction = UIAlertAction(title: "Yes", style: .Destructive) { _ in
+		let account = accounts[(indexPath as NSIndexPath).row]
+		let alertController = UIAlertController(title: "Delete Account?", message: "Are you sure youw ant to delete \(account.name)", preferredStyle: .actionSheet)
+		let deleteAction = UIAlertAction(title: "Yes", style: .destructive) { _ in
 			AccountsService.deleteAccount(account, fromViewController: self) { changedAccount in
 				if changedAccount {
-					let notification = NSNotification(name: AccountDidChangeNotification, object: nil)
-					NSNotificationCenter.defaultCenter().postNotification(notification)
+					let notification = Notification(name: Notification.Name(rawValue: AccountDidChangeNotification), object: nil)
+					NotificationCenter.default.post(notification)
 				} else {
 					self.accounts = AccountsService.accounts()
 					self.tableView.reloadData()
 				}
 			}
 		}
-		let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
 
 		alertController.addAction(deleteAction)
 		alertController.addAction(cancelAction)
 
-		presentViewController(alertController, animated: true, completion: nil)
+		present(alertController, animated: true, completion: nil)
 	}
 }

@@ -9,9 +9,9 @@
 import Foundation
 
 public protocol ConversationsChatDataManagerDelegate: class {
-	
+
 }
 
-public class ConversationsChatDataManager {
-	public weak var delegate: ConversationsChatDataManagerDelegate?
+open class ConversationsChatDataManager {
+	open weak var delegate: ConversationsChatDataManagerDelegate?
 }

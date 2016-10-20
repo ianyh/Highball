@@ -13,7 +13,6 @@
 		4008591B1B7EBA05009DF207 /* NSDate+Relative.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4008591A1B7EBA05009DF207 /* NSDate+Relative.swift */; };
 		402033591A6C785400BA136C /* AnimatedImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402033581A6C785400BA136C /* AnimatedImageCache.swift */; };
 		402A20961A3D2C510007CCFF /* TitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402A20951A3D2C510007CCFF /* TitleTableViewCell.swift */; };
-		402D979919F1E442003DCD55 /* TextReblogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402D979819F1E442003DCD55 /* TextReblogViewController.swift */; };
 		403040E01C37211A001EFC9E /* PhotosetLayoutRows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403040DF1C37211A001EFC9E /* PhotosetLayoutRows.swift */; };
 		403040E51C373D66001EFC9E /* PostViewHeightCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403040E41C373D66001EFC9E /* PostViewHeightCalculator.swift */; };
 		403040E91C388775001EFC9E /* PostSectionAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403040E81C388775001EFC9E /* PostSectionAdapter.swift */; };
@@ -60,7 +59,6 @@
 		40CE13D91CB3377100847A94 /* NSAttributedString+Trim.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CE13D81CB3377100847A94 /* NSAttributedString+Trim.swift */; };
 		40CFDAB41C344931008FBF9A /* HeightCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CFDAB31C344931008FBF9A /* HeightCalculator.swift */; };
 		40CFDAB61C34990F008FBF9A /* ReuseIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CFDAB51C34990F008FBF9A /* ReuseIdentifiers.swift */; };
-		40CFDAB81C349F84008FBF9A /* TextReblogTableViewAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CFDAB71C349F84008FBF9A /* TextReblogTableViewAdapter.swift */; };
 		40CFDABF1C34BB17008FBF9A /* PostHeightCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CFDABE1C34BB17008FBF9A /* PostHeightCache.swift */; };
 		40D374B01CB9F07B008CB51A /* PostContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D374AF1CB9F07B008CB51A /* PostContent.swift */; };
 		40DB21251C556195007AD3DD /* FollowedBlogsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40DB21241C556195007AD3DD /* FollowedBlogsViewController.swift */; };
@@ -106,7 +104,6 @@
 		400FE01219B6A33200F72C3C /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Debug-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		402033581A6C785400BA136C /* AnimatedImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedImageCache.swift; sourceTree = "<group>"; };
 		402A20951A3D2C510007CCFF /* TitleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleTableViewCell.swift; sourceTree = "<group>"; };
-		402D979819F1E442003DCD55 /* TextReblogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextReblogViewController.swift; sourceTree = "<group>"; };
 		403040DF1C37211A001EFC9E /* PhotosetLayoutRows.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosetLayoutRows.swift; sourceTree = "<group>"; };
 		403040E41C373D66001EFC9E /* PostViewHeightCalculator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostViewHeightCalculator.swift; sourceTree = "<group>"; };
 		403040E81C388775001EFC9E /* PostSectionAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostSectionAdapter.swift; sourceTree = "<group>"; };
@@ -158,7 +155,6 @@
 		40CE13D81CB3377100847A94 /* NSAttributedString+Trim.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Trim.swift"; sourceTree = "<group>"; };
 		40CFDAB31C344931008FBF9A /* HeightCalculator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeightCalculator.swift; sourceTree = "<group>"; };
 		40CFDAB51C34990F008FBF9A /* ReuseIdentifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReuseIdentifiers.swift; sourceTree = "<group>"; };
-		40CFDAB71C349F84008FBF9A /* TextReblogTableViewAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextReblogTableViewAdapter.swift; sourceTree = "<group>"; };
 		40CFDABE1C34BB17008FBF9A /* PostHeightCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostHeightCache.swift; sourceTree = "<group>"; };
 		40D374AF1CB9F07B008CB51A /* PostContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostContent.swift; sourceTree = "<group>"; };
 		40DB21241C556195007AD3DD /* FollowedBlogsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowedBlogsViewController.swift; sourceTree = "<group>"; };
@@ -330,8 +326,6 @@
 			isa = PBXGroup;
 			children = (
 				40FF6D4419B9F656008119A3 /* QuickReblogViewController.swift */,
-				402D979819F1E442003DCD55 /* TextReblogViewController.swift */,
-				40CFDAB71C349F84008FBF9A /* TextReblogTableViewAdapter.swift */,
 			);
 			name = Reblog;
 			sourceTree = "<group>";
@@ -549,9 +543,13 @@
 				TargetAttributes = {
 					4050697A19AA76BD0066ECE3 = {
 						CreatedOnToolsVersion = 6.0;
+						DevelopmentTeam = 82P2XLB4UH;
+						LastSwiftMigration = 0800;
+						ProvisioningStyle = Automatic;
 					};
 					4050698F19AA76BD0066ECE3 = {
 						CreatedOnToolsVersion = 6.0;
+						LastSwiftMigration = 0800;
 						TestTargetID = 4050697A19AA76BD0066ECE3;
 					};
 				};
@@ -678,7 +676,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		EEB2CFC028303143C112A93D /* [CP] Copy Pods Resources */ = {
@@ -747,7 +745,6 @@
 				4094F5F01D7E264600D2FEE6 /* ConversationsListViewController.swift in Sources */,
 				403040EB1C388F91001EFC9E /* PostHeaderView.swift in Sources */,
 				40CAF2FE1D78ED2300B8A027 /* PostsViewController.swift in Sources */,
-				402D979919F1E442003DCD55 /* TextReblogViewController.swift in Sources */,
 				40F75A871C3219CD00EC86DE /* ReblogCommentCell.swift in Sources */,
 				40CAF3081D78F37700B8A027 /* DashboardModule.swift in Sources */,
 				402A20961A3D2C510007CCFF /* TitleTableViewCell.swift in Sources */,
@@ -759,7 +756,6 @@
 				4094F5F91D7F8D1F00D2FEE6 /* ConversationsChatModule.swift in Sources */,
 				40778B9E19B160DD00F8EE13 /* PostPhoto.swift in Sources */,
 				40E195871D79E3470087C4EF /* TagModule.swift in Sources */,
-				40CFDAB81C349F84008FBF9A /* TextReblogTableViewAdapter.swift in Sources */,
 				40DF7DB21A7672E900CE3D4C /* VideoTableViewCell.swift in Sources */,
 				40F75A821C31D68800EC86DE /* MainViewController.swift in Sources */,
 				4094F5FB1D7F8D2B00D2FEE6 /* ConversationsChatViewController.swift in Sources */,
@@ -883,6 +879,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 82P2XLB4UH;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Highball-guawcsogumubtccebjzcnecuotxo/Build/Products/Debug-iphoneos",
@@ -890,11 +888,12 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = Highball/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Highball/Highball-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -905,6 +904,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 82P2XLB4UH;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Highball-guawcsogumubtccebjzcnecuotxo/Build/Products/Debug-iphoneos",
@@ -912,12 +913,14 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = Highball/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "1fb2ceca-8954-46bb-833c-7efc37cce001";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Highball/Highball-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -937,6 +940,7 @@
 				INFOPLIST_FILE = HighballTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Highball.app/Highball";
 			};
 			name = Debug;
@@ -952,6 +956,7 @@
 				INFOPLIST_FILE = HighballTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Highball.app/Highball";
 			};
 			name = Release;

@@ -11,15 +11,15 @@ import TMTumblrSDK
 import UIKit
 
 protocol FollowedBlogsDataManagerDelegate {
-	func dataManagerDidReload(dataManager: FollowedBlogsDataManager, indexSet: NSIndexSet?)
-	func dataManager(dataManager: FollowedBlogsDataManager, didEncounterError error: NSError)
+	func dataManagerDidReload(_ dataManager: FollowedBlogsDataManager, indexSet: IndexSet?)
+	func dataManager(_ dataManager: FollowedBlogsDataManager, didEncounterError error: NSError)
 }
 
 class FollowedBlogsDataManager {
-	private let delegate: FollowedBlogsDataManagerDelegate
-	private(set) var blogs: [Blog] = []
-	private var blogCount: Int?
-	private(set) var loading = false
+	fileprivate let delegate: FollowedBlogsDataManagerDelegate
+	fileprivate(set) var blogs: [Blog] = []
+	fileprivate var blogCount: Int?
+	fileprivate(set) var loading = false
 
 	init(delegate: FollowedBlogsDataManagerDelegate) {
 		self.delegate = delegate
@@ -36,20 +36,20 @@ class FollowedBlogsDataManager {
 		loadMore()
 	}
 
-	private func loadMore() {
-		if let blogCount = blogCount where blogs.count >= blogCount {
+	fileprivate func loadMore() {
+		if let blogCount = blogCount, blogs.count >= blogCount {
 			delegate.dataManagerDidReload(self, indexSet: nil)
 			return
 		}
 
 		TMAPIClient.sharedInstance().following(["offset" : "\(blogs.count)"]) { response, error in
 			if let error = error {
-				dispatch_async(dispatch_get_main_queue()) {
+				DispatchQueue.main.async {
 					self.loading = false
-					self.delegate.dataManager(self, didEncounterError: error)
+					self.delegate.dataManager(self, didEncounterError: error as NSError)
 				}
 			} else {
-				dispatch_async(dispatch_get_main_queue()) {
+				DispatchQueue.main.async {
 					let moreBlogs = JSON(response)["blogs"].array!.map { Blog.from($0.dictionaryObject!)! }
 					self.blogCount = JSON(response)["total_blogs"].int
 					self.blogs.appendContentsOf(moreBlogs)

@@ -50,9 +50,9 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
 		scrollView.showsHorizontalScrollIndicator = false
 		scrollView.showsVerticalScrollIndicator = false
 
-		imageView.contentMode = .ScaleAspectFit
+		imageView.contentMode = .scaleAspectFit
 
-		failedImageView.image = FAKIonIcons.iosCameraOutlineIconWithSize(50).imageWithSize(CGSize(width: 50, height: 50))
+		failedImageView.image = FAKIonIcons.iosCameraOutlineIcon(withSize: 50).image(with: CGSize(width: 50, height: 50))
 
 		contentView.addSubview(scrollView)
 		scrollView.addSubview(imageView)
@@ -85,29 +85,29 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
 
 		imageView.image = nil
 		imageView.animatedImage = nil
-		failedImageView.hidden = true
+		failedImageView.isHidden = true
 		scrollView.zoomScale = 1
 		centerScrollViewContents()
 	}
 
 	func loadPhoto() {
 		guard let photo = photo,
-			contentWidth = contentWidth
+			let contentWidth = contentWidth
 		else {
 			return
 		}
 
 		let imageURL = photo.urlWithWidth(contentWidth)
-		imageView.pin_setImageFromURL(imageURL) { result in
-			self.failedImageView.hidden = result.error == nil
+		imageView.pin_setImage(from: imageURL) { result in
+			self.failedImageView.isHidden = result!.error == nil
 		}
 	}
 
-	func scrollViewDidZoom(scrollView: UIScrollView) {
+	func scrollViewDidZoom(_ scrollView: UIScrollView) {
 		centerScrollViewContents()
 	}
 
-	func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+	func viewForZooming(in scrollView: UIScrollView) -> UIView? {
 		return imageView
 	}
 
@@ -130,7 +130,7 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
 		imageView.frame = contentsFrame
 	}
 
-	func onTap(recognizer: UITapGestureRecognizer) {
+	func onTap(_ recognizer: UITapGestureRecognizer) {
 		onTapHandler?()
 	}
 }

@@ -8,10 +8,10 @@
 
 import Foundation
 
-public class ConversationsChatModule {
-	public let viewController: ConversationsChatViewController
-	private let presenter: ConversationsChatPresenter
-	private let dataManager: ConversationsChatDataManager
+open class ConversationsChatModule {
+	open let viewController: ConversationsChatViewController
+	fileprivate let presenter: ConversationsChatPresenter
+	fileprivate let dataManager: ConversationsChatDataManager
 
 	public init() {
 		viewController = ConversationsChatViewController()

@@ -10,7 +10,7 @@ import SwiftyJSON
 import TMTumblrSDK
 import UIKit
 
-public class LikesViewController: PostsViewController {
+open class LikesViewController: PostsViewController {
 	public override init(postHeightCache: PostHeightCache) {
 		super.init(postHeightCache: postHeightCache)
 

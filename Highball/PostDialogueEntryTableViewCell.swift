@@ -43,12 +43,12 @@ class PostDialogueEntryTableViewCell: WCFastCell {
 		}
 	}
 
-	class func heightForPostDialogueEntry(post: PostDialogueEntry!, width: CGFloat!) -> CGFloat {
+	class func heightForPostDialogueEntry(_ post: PostDialogueEntry!, width: CGFloat!) -> CGFloat {
 		let extraHeight: CGFloat = 4 + 4
 		let modifiedWidth = width - 10 - 10
-		let constrainedSize = CGSize(width: modifiedWidth, height: CGFloat.max)
+		let constrainedSize = CGSize(width: modifiedWidth, height: CGFloat.greatestFiniteMagnitude)
 		let content = post.formattedString
-		let contentRect = content.boundingRectWithSize(constrainedSize, options: NSStringDrawingOptions.UsesLineFragmentOrigin, context: nil)
+		let contentRect = content.boundingRect(with: constrainedSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil)
 
 		return extraHeight + ceil(contentRect.size.height)
 	}

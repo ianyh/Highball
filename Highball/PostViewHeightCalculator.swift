@@ -12,7 +12,7 @@ struct PostViewHeightCalculator {
 	let width: CGFloat
 	let postHeightCache: PostHeightCache
 
-	func heightForPost(post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
+	func heightForPost(_ post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
 		if row == sectionRowCount - 1 {
 			return post.tags.count > 0 ? 30 : 0
 		}
@@ -39,7 +39,7 @@ struct PostViewHeightCalculator {
 		}
 	}
 
-	private func photoHeightWithPost(post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
+	fileprivate func photoHeightWithPost(_ post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
 		if row >= sectionRowCount - 1 - post.trailData.count {
 			let index = sectionRowCount - 2 - row
 			let bodyHeight = postHeightCache.bodyHeight(post, atIndex: index)
@@ -68,55 +68,55 @@ struct PostViewHeightCalculator {
 				let scale = image.height / image.width
 				return imageWidth * scale
 			}
-			.reduce(CGFloat.max) { min($0, $1) }
+			.reduce(CGFloat.greatestFiniteMagnitude) { min($0, $1) }
 		)
 
 		return minHeight
 	}
 
-	private func textHeightWithPost(post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
+	fileprivate func textHeightWithPost(_ post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
 		switch PostViewSections.TextRow.textRowFromRow(row) {
-		case .Title:
+		case .title:
 			if let title = post.title {
 				let height = TitleTableViewCell.heightForTitle(title, width: width)
 				return height
 			}
 			return 0
-		case .Body(let index):
+		case .body(let index):
 			return postHeightCache.bodyHeight(post, atIndex: index) ?? 0
 		}
 	}
 
-	private func answerHeightWithPost(post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
+	fileprivate func answerHeightWithPost(_ post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
 		switch PostViewSections.AnswerRow.answerRowFromRow(row) {
-		case .Question:
+		case .question:
 			let height = PostQuestionTableViewCell.heightForPost(post, width: width)
 			return height
-		case .Answer(let index):
+		case .answer(let index):
 			return postHeightCache.bodyHeight(post, atIndex: index) ?? 0
 		}
 
 	}
 
-	private func quoteHeightWithPost(post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
+	fileprivate func quoteHeightWithPost(_ post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
 		switch PostViewSections.QuoteRow(rawValue: row)! {
-		case .Quote:
+		case .quote:
 			return postHeightCache.bodyHeightForPost(post) ?? 0
-		case .Source:
+		case .source:
 			return postHeightCache.secondaryBodyHeightForPost(post) ?? 0
 		}
 	}
 
-	private func linkHeightWithPost(post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
+	fileprivate func linkHeightWithPost(_ post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
 		switch PostViewSections.LinkRow.linkRowFromRow(row) {
-		case .Link:
+		case .link:
 			return PostLinkTableViewCell.heightForPost(post, width: width)
-		case .Description(let index):
+		case .description(let index):
 			return postHeightCache.bodyHeight(post, atIndex: index) ?? 0
 		}
 	}
 
-	private func chatHeightWithPost(post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
+	fileprivate func chatHeightWithPost(_ post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
 		if row == 0 {
 			guard let title = post.title else {
 				return 0
@@ -130,20 +130,20 @@ struct PostViewHeightCalculator {
 		return PostDialogueEntryTableViewCell.heightForPostDialogueEntry(dialogueEntry, width: width)
 	}
 
-	private func videoHeightWithPost(post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
+	fileprivate func videoHeightWithPost(_ post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
 		switch PostViewSections.VideoRow.videoRowFromRow(row) {
-		case .Player:
+		case .player:
 			return post.videoHeightWidthWidth(width) ?? 320
-		case .Caption(let index):
+		case .caption(let index):
 			return postHeightCache.bodyHeight(post, atIndex: index) ?? 0
 		}
 	}
 
-	private func audioHeightWithPost(post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
+	fileprivate func audioHeightWithPost(_ post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
 		switch PostViewSections.AudioRow.audioRowFromRow(row) {
-		case .Player:
+		case .player:
 			return postHeightCache.secondaryBodyHeightForPost(post) ?? 0
-		case .Caption(let index):
+		case .caption(let index):
 			return postHeightCache.bodyHeight(post, atIndex: index) ?? 0
 		}
 	}

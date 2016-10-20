@@ -9,19 +9,19 @@
 import UIKit
 
 public protocol HistoryViewControllerDelegate {
-	func historyViewController(historyViewController: HistoryViewController, didFinishWithId selectedId: Int?)
+	func historyViewController(_ historyViewController: HistoryViewController, didFinishWithId selectedId: Int?)
 }
 
-public class HistoryViewController: UITableViewController {
-	private let delegate: HistoryViewControllerDelegate
-	private var bookmarks: [[String: AnyObject]]?
+open class HistoryViewController: UITableViewController {
+	fileprivate let delegate: HistoryViewControllerDelegate
+	fileprivate var bookmarks: [[String: AnyObject]]?
 
 	public init(delegate: HistoryViewControllerDelegate) {
 		self.delegate = delegate
-		super.init(style: .Plain)
+		super.init(style: .plain)
 		navigationItem.title = "History"
 		navigationItem.leftBarButtonItem = UIBarButtonItem(
-			barButtonSystemItem: .Cancel,
+			barButtonSystemItem: .cancel,
 			target: self,
 			action: #selector(cancel(_:))
 		)
@@ -31,40 +31,40 @@ public class HistoryViewController: UITableViewController {
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	public override func viewDidLoad() {
+	open override func viewDidLoad() {
 		super.viewDidLoad()
 
-		tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: UITableViewCell.cellIdentifier)
+		tableView.register(UITableViewCell.self, forCellReuseIdentifier: UITableViewCell.cellIdentifier)
 	}
 
-	public override func viewWillAppear(animated: Bool) {
+	open override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 
-		bookmarks = NSUserDefaults.standardUserDefaults().arrayForKey("HIBookmarks:\(AccountsService.account.primaryBlog.url)") as? [[String: AnyObject]]
+		bookmarks = UserDefaults.standard.array(forKey: "HIBookmarks:\(AccountsService.account.primaryBlog.url)") as? [[String: AnyObject]]
 		bookmarks = bookmarks?
-			.sort { bookmarkA, bookmarkB in
-				guard let dateA = bookmarkA["date"] as? NSDate,
-					dateB = bookmarkB["date"] as? NSDate
+			.sorted { bookmarkA, bookmarkB in
+				guard let dateA = bookmarkA["date"] as? Date,
+					let dateB = bookmarkB["date"] as? Date
 				else {
 					return false
 				}
 
-				return dateA.compare(dateB) == .OrderedDescending
+				return dateA.compare(dateB) == .orderedDescending
 			}
 
 		tableView.reloadData()
 	}
 
-	public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	open override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return bookmarks?.count ?? 0
 	}
 
-	public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCellWithIdentifier(UITableViewCell.cellIdentifier, forIndexPath: indexPath)
-		let bookmark = bookmarks![indexPath.row]
+	open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: UITableViewCell.cellIdentifier, for: indexPath)
+		let bookmark = bookmarks![(indexPath as NSIndexPath).row]
 
-		cell.accessoryType = .DisclosureIndicator
-		if let date = bookmark["date"] as? NSDate {
+		cell.accessoryType = .disclosureIndicator
+		if let date = bookmark["date"] as? Date {
 			cell.textLabel?.text = "\(date)"
 		} else {
 			cell.textLabel?.text = nil
@@ -73,8 +73,8 @@ public class HistoryViewController: UITableViewController {
 		return cell
 	}
 
-	public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		let bookmark = bookmarks![indexPath.row]
+	open override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		let bookmark = bookmarks![(indexPath as NSIndexPath).row]
 
 		guard let bookmarkID = bookmark["id"] as? Int else {
 			return
@@ -83,7 +83,7 @@ public class HistoryViewController: UITableViewController {
 		delegate.historyViewController(self, didFinishWithId: bookmarkID)
 	}
 
-	public func cancel(sender: AnyObject) {
+	open func cancel(_ sender: AnyObject) {
 		delegate.historyViewController(self, didFinishWithId: nil)
 	}
 }

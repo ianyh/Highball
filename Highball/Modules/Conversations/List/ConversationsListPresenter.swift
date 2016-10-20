@@ -8,25 +8,25 @@
 
 import Foundation
 
-public class ConversationsListPresenter {
-	public weak var view: ConversationsListView?
-	public var dataManager: ConversationsListDataManager?
+open class ConversationsListPresenter {
+	open weak var view: ConversationsListView?
+	open var dataManager: ConversationsListDataManager?
 
-	public func viewDidAppear() {
+	open func viewDidAppear() {
 		dataManager?.reloadData()
 	}
 
-	public func numberOfConversations() -> Int {
+	open func numberOfConversations() -> Int {
 		return dataManager?.conversations.count ?? 0
 	}
 
-	public func conversationAtIndex(index: Int) -> Conversation {
+	open func conversationAtIndex(_ index: Int) -> Conversation {
 		return dataManager!.conversations[index]
 	}
 }
 
 extension ConversationsListPresenter: ConversationsListDataManagerDelegate {
-	public func listDataManagerDidReload(dataManager: ConversationsListDataManager) {
+	public func listDataManagerDidReload(_ dataManager: ConversationsListDataManager) {
 		view?.reloadView()
 	}
 }

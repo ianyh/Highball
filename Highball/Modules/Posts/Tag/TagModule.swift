@@ -10,8 +10,8 @@ import Foundation
 
 public struct TagModule {
 	public let viewController: TagViewController
-	private let presenter: TagPresenter
-	private let dataManager: PostsDataManager
+	fileprivate let presenter: TagPresenter
+	fileprivate let dataManager: PostsDataManager
 
 	public init(tag: String, postHeightCache: PostHeightCache) {
 		viewController = TagViewController(tag: tag, postHeightCache: postHeightCache)

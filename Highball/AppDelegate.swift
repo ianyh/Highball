@@ -18,20 +18,20 @@ import VENTouchLock
 import OAuthSwift
 
 @UIApplicationMain
-public class AppDelegate: UIResponder, UIApplicationDelegate {
-	public var window: UIWindow?
-	public var tabBarController: UITabBarController?
-	public var reachability: Reachability!
+open class AppDelegate: UIResponder, UIApplicationDelegate {
+	open var window: UIWindow?
+	open var tabBarController: UITabBarController?
+	open var reachability: Reachability!
 
-	public func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
-		reachability = Reachability.reachabilityForLocalWiFi()
+	open func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+		reachability = Reachability.forLocalWiFi()
 		reachability.startNotifier()
 
-		TMAPIClient.sharedInstance().OAuthConsumerKey = "YhlYiD2dAUE6UH01ugPKQafm2XESBWsaOYPz7xV0q53SDn3ChU"
-		TMAPIClient.sharedInstance().OAuthConsumerSecret = "ONVNS5UCfZMMhrekfjBknUXgjQ5I2J1a0aVDCfso2mfRcC4nEF"
+		TMAPIClient.sharedInstance().oAuthConsumerKey = "YhlYiD2dAUE6UH01ugPKQafm2XESBWsaOYPz7xV0q53SDn3ChU"
+		TMAPIClient.sharedInstance().oAuthConsumerSecret = "ONVNS5UCfZMMhrekfjBknUXgjQ5I2J1a0aVDCfso2mfRcC4nEF"
 
-		let imageCache = PINRemoteImageManager.sharedImageManager().cache.diskCache
-		let cache = PINCache.sharedCache().diskCache
+		let imageCache = PINRemoteImageManager.shared().cache.diskCache
+		let cache = PINCache.shared().diskCache
 
 		// Only keep cache for 12 hours
 		imageCache.ageLimit = 43200
@@ -42,7 +42,7 @@ public class AppDelegate: UIResponder, UIApplicationDelegate {
 
 		tabBarController = window?.rootViewController as? UITabBarController
 
-		if let bundleInfoDictionary = NSBundle.mainBundle().infoDictionary {
+		if let bundleInfoDictionary = Bundle.main.infoDictionary {
 			if bundleInfoDictionary["HBCrashlyticsAPIKey"] != nil {
 				Fabric.with([Crashlytics.self])
 			}
@@ -57,18 +57,18 @@ public class AppDelegate: UIResponder, UIApplicationDelegate {
 			splashViewControllerClass: LockSplashViewController.classForCoder()
 		)
 
-		UIApplication.sharedApplication().statusBarStyle = .LightContent
+		UIApplication.shared.statusBarStyle = .lightContent
 
-		let backgroundColor = UIColor.flatSkyBlueColorDark().lightenByPercentage(0.5)
+		let backgroundColor = UIColor.flatSkyBlueColorDark().lighten(byPercentage: 0.5)
 
 		UINavigationBar.appearance().barTintColor = backgroundColor
-		UINavigationBar.appearance().tintColor = UIColor.whiteColor()
-		UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+		UINavigationBar.appearance().tintColor = UIColor.white
+		UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
 
 		UITabBar.appearance().tintColor = backgroundColor
 
-		window?.rootViewController?.setStatusBarStyle(.LightContent)
-		window?.tintColor = UIColor.flatSkyBlueColorDark().lightenByPercentage(0.5)
+		window?.rootViewController?.setStatusBarStyle(.lightContent)
+		window?.tintColor = UIColor.flatSkyBlueColorDark().lighten(byPercentage: 0.5)
 		window?.makeKeyAndVisible()
 
 		AccountsService.start(fromViewController: tabBarController!) { _ in
@@ -78,14 +78,14 @@ public class AppDelegate: UIResponder, UIApplicationDelegate {
 		return true
 	}
 
-	public func application(application: UIApplication, handleOpenURL url: NSURL) -> Bool {
+	open func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
 		if url.host == "oauth-callback" {
 			OAuthSwift.handleOpenURL(url)
 		}
 		return true
 	}
 
-	public func applicationDidReceiveMemoryWarning(application: UIApplication) {
+	open func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
 		AnimatedImageCache.clearCache()
 	}
 }

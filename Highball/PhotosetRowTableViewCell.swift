@@ -20,7 +20,7 @@ class PhotosetRowTableViewCell: WCFastCell {
 	var contentWidth: CGFloat! = 0
 	var images: Array<PostPhoto>? {
 		didSet {
-			dispatch_async(dispatch_get_main_queue()) {
+			DispatchQueue.main.async {
 				self.updateImages()
 			}
 		}
@@ -31,32 +31,32 @@ class PhotosetRowTableViewCell: WCFastCell {
 		clearImages()
 	}
 
-	private func updateImages() {
-		guard let images = images, contentWidth = contentWidth else {
+	fileprivate func updateImages() {
+		guard let images = images, let contentWidth = contentWidth else {
 			return
 		}
 
 		clearImages()
 
-		let totalWidth = images.map { $0.widthToHeightRatio! }.reduce(0, combine: +)
+		let totalWidth = images.map { $0.widthToHeightRatio! }.reduce(0, +)
 		let lastImageIndex = images.count - 1
 		var imageViews = Array<FLAnimatedImageView>()
 		var failedImageViews = Array<UIImageView>()
 		var lastImageView: UIImageView?
-		for (index, image) in images.enumerate() {
+		for (index, image) in images.enumerated() {
 			let widthPortion = image.widthToHeightRatio! / totalWidth
 			let imageView = FLAnimatedImageView()
 			let failedImageView = UIImageView()
 			let imageURL = image.urlWithWidth(contentWidth)
 
-			imageView.contentMode = .ScaleAspectFill
+			imageView.contentMode = .scaleAspectFill
 			imageView.image = nil
-			imageView.userInteractionEnabled = true
+			imageView.isUserInteractionEnabled = true
 
-			failedImageView.backgroundColor = UIColor.whiteColor()
-			failedImageView.contentMode = .Center
-			failedImageView.hidden = true
-			failedImageView.image = FAKIonIcons.iosCameraOutlineIconWithSize(50).imageWithSize(CGSize(width: 50, height: 50))
+			failedImageView.backgroundColor = UIColor.white
+			failedImageView.contentMode = .center
+			failedImageView.isHidden = true
+			failedImageView.image = FAKIonIcons.iosCameraOutlineIcon(withSize: 50).image(with: CGSize(width: 50, height: 50))
 
 			contentView.addSubview(imageView)
 			contentView.addSubview(failedImageView)
@@ -97,18 +97,18 @@ class PhotosetRowTableViewCell: WCFastCell {
 				}
 			}
 
-			imageView.pin_setImageFromURL(imageURL) { result in
-				if result.resultType != .MemoryCache {
+			imageView.pin_setImage(from: imageURL) { result in
+				if result!.resultType != .memoryCache {
 					imageView.alpha = 0
-					UIView.animateWithDuration(
-						0.5,
+					UIView.animate(
+						withDuration: 0.5,
 						delay: 0.1,
-						options: .AllowUserInteraction,
+						options: .allowUserInteraction,
 						animations: { imageView.alpha = 1.0 },
 						completion: nil
 					)
 				}
-				failedImageView.hidden = result.error == nil
+				failedImageView.isHidden = result!.error == nil
 			}
 
 			lastImageView = imageView
@@ -121,7 +121,7 @@ class PhotosetRowTableViewCell: WCFastCell {
 		self.failedImageViews = failedImageViews
 	}
 
-	private func clearImages() {
+	fileprivate func clearImages() {
 		imageViews?.forEach {
 			$0.pin_cancelImageDownload()
 			$0.image = nil
@@ -137,8 +137,8 @@ class PhotosetRowTableViewCell: WCFastCell {
 		failedImageViews = nil
 	}
 
-	func imageAtPoint(point: CGPoint) -> UIImage? {
-		guard let view = self.hitTest(point, withEvent: nil), imageView = view as? UIImageView else {
+	func imageAtPoint(_ point: CGPoint) -> UIImage? {
+		guard let view = self.hitTest(point, with: nil), let imageView = view as? UIImageView else {
 			return nil
 		}
 

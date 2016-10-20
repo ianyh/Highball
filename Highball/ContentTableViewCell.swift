@@ -16,14 +16,14 @@ import WCFastCell
 import YYText
 
 class ContentTableViewCell: WCFastCell {
-	private let avatarLoadQueue = dispatch_queue_create("avatarLoadQueue", nil)
+	fileprivate let avatarLoadQueue = DispatchQueue(label: "avatarLoadQueue", attributes: [])
 
-	private(set) var avatarImageView: UIImageView!
-	private(set) var usernameLabel: UILabel!
-	private(set) var textView: YYTextView!
+	fileprivate(set) var avatarImageView: UIImageView!
+	fileprivate(set) var usernameLabel: UILabel!
+	fileprivate(set) var textView: YYTextView!
 
 	var width: CGFloat = 375
-	private var postContent: PostContent?
+	fileprivate var postContent: PostContent?
 	var trailData: PostTrailData? {
 		didSet {
 			avatarImageView.image = UIImage(named: "Placeholder")
@@ -34,11 +34,11 @@ class ContentTableViewCell: WCFastCell {
 				return
 			}
 
-			PINCache.sharedCache().objectForKey("avatar:\(trailData.username)") { cache, key, object in
-				if let data = object as? NSData {
-					dispatch_async(self.avatarLoadQueue) {
+			PINCache.shared().object(forKey: "avatar:\(trailData.username)") { cache, key, object in
+				if let data = object as? Data {
+					self.avatarLoadQueue.async {
 						let image = UIImage(data: data)
-						dispatch_async(dispatch_get_main_queue()) {
+						DispatchQueue.main.async {
 							self.avatarImageView.image = image
 						}
 					}
@@ -47,13 +47,13 @@ class ContentTableViewCell: WCFastCell {
 						if let error = error {
 							print(error)
 						} else {
-							guard let data = response as? NSData else {
+							guard let data = response as? Data else {
 								return
 							}
-							PINCache.sharedCache().setObject(data, forKey: "avatar:\(trailData.username)", block: nil)
-							dispatch_async(self.avatarLoadQueue) {
+							PINCache.shared().setObject(data as NSCoding, forKey: "avatar:\(trailData.username)")
+							self.avatarLoadQueue.async {
 								let image = UIImage(data: data)
-								dispatch_async(dispatch_get_main_queue()) {
+								DispatchQueue.main.async {
 									self.avatarImageView.image = image
 								}
 							}
@@ -69,14 +69,14 @@ class ContentTableViewCell: WCFastCell {
 	var content: String? {
 		didSet {
 			if let content = content {
-				let data = content.dataUsingEncoding(NSUTF8StringEncoding)!
+				let data = content.data(using: String.Encoding.utf8)!
 				var postContent = PostContent(htmlData: data)
 				postContent.contentURLS().forEach { contentURL in
 					let imageView = FLAnimatedImageView()
-					imageView.backgroundColor = UIColor.purpleColor()
-					imageView.pin_setImageFromURL(contentURL) { result in
-						let size = result.image?.size ?? result.animatedImage.size
-						let width = self.widthForURL?(url: contentURL.absoluteString) ?? min(size.width, self.width - 20)
+					imageView.backgroundColor = UIColor.purple
+					imageView.pin_setImage(from: contentURL) { result in
+						let size = result!.image?.size ?? result!.animatedImage.size
+						let width = self.widthForURL?(contentURL.absoluteString) ?? min(size.width, self.width - 20)
 						let scaledSize = CGSize(width: width, height: floor(size.height * width / size.width))
 
 						postContent.setImageView(imageView, withSize: scaledSize, forAttachmentURL: contentURL)
@@ -84,25 +84,25 @@ class ContentTableViewCell: WCFastCell {
 						self.textView.attributedText = postContent.attributedStringForDisplayWithLinkHandler() { url in
 							self.linkHandler?(url)
 						}
-						self.widthDidChange?(url: contentURL.absoluteString, width: scaledSize.width, height: scaledSize.height, imageView: imageView)
+						self.widthDidChange?(contentURL.absoluteString, scaledSize.width, scaledSize.height, imageView)
 					}
 				}
 				textView.attributedText = postContent.attributedStringForDisplayWithLinkHandler() { url in
 					self.linkHandler?(url)
 				}
-				usernameLabel.superview?.hidden = (postContent.attributedString.string.characters.count == 0)
+				usernameLabel.superview?.isHidden = (postContent.attributedString.string.characters.count == 0)
 			} else {
 				textView.attributedText = NSAttributedString(string: "")
-				usernameLabel.superview?.hidden = true
+				usernameLabel.superview?.isHidden = true
 			}
 		}
 	}
 
-	var linkHandler: ((NSURL) -> ())?
+	var linkHandler: ((URL) -> ())?
 	var usernameTapHandler: ((String) -> ())?
-	var widthDidChange: ((url: String, width: CGFloat, height: CGFloat, imageView: FLAnimatedImageView) -> ())?
-	var widthForURL: ((url: String) -> CGFloat?)?
-	var imageViewForURL: ((url: String) -> FLAnimatedImageView?)?
+	var widthDidChange: ((_ url: String, _ width: CGFloat, _ height: CGFloat, _ imageView: FLAnimatedImageView) -> ())?
+	var widthForURL: ((_ url: String) -> CGFloat?)?
+	var imageViewForURL: ((_ url: String) -> FLAnimatedImageView?)?
 
 	override init(style: UITableViewCellStyle, reuseIdentifier: String!) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -118,25 +118,25 @@ class ContentTableViewCell: WCFastCell {
 		contentView.clipsToBounds = true
 
 		let usernameContainerView = UIView()
-		let usernameButton = UIButton(type: .System)
+		let usernameButton = UIButton(type: .system)
 
 		avatarImageView = UIImageView()
 		usernameLabel = UILabel()
 		textView = YYTextView()
 
-		usernameContainerView.backgroundColor = UIColor.whiteColor()
+		usernameContainerView.backgroundColor = UIColor.white
 
-		usernameButton.addTarget(self, action: #selector(ContentTableViewCell.handleUsernameTap(_:)), forControlEvents: .TouchUpInside)
+		usernameButton.addTarget(self, action: #selector(ContentTableViewCell.handleUsernameTap(_:)), for: .touchUpInside)
 
 		avatarImageView.clipsToBounds = true
-		avatarImageView.contentMode = .ScaleAspectFit
+		avatarImageView.contentMode = .scaleAspectFit
 		avatarImageView.layer.cornerRadius = 4
 
-		usernameLabel.font = UIFont.boldSystemFontOfSize(16)
+		usernameLabel.font = UIFont.boldSystemFont(ofSize: 16)
 
-		textView.editable = false
-		textView.scrollEnabled = false
-		textView.textContainerInset = UIEdgeInsetsZero
+		textView.isEditable = false
+		textView.isScrollEnabled = false
+		textView.textContainerInset = UIEdgeInsets.zero
 		textView.clipsToBounds = true
 
 		usernameContainerView.addSubview(avatarImageView)
@@ -186,7 +186,7 @@ class ContentTableViewCell: WCFastCell {
 		widthForURL = nil
 	}
 
-    func handleUsernameTap(sender: AnyObject) {
+    func handleUsernameTap(_ sender: AnyObject) {
         guard let username = trailData?.username else {
             return
         }

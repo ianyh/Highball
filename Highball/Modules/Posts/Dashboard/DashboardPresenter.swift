@@ -9,40 +9,40 @@
 import Foundation
 import TMTumblrSDK
 
-public class DashboardPresenter: PostsPresenter {
-	public weak var view: PostsView?
-	public var dataManager: PostsDataManager?
-	public var loadingCompletion: (() -> ())?
+open class DashboardPresenter: PostsPresenter {
+	open weak var view: PostsView?
+	open var dataManager: PostsDataManager?
+	open var loadingCompletion: (() -> ())?
 
-	public func viewDidDisappear() {
+	open func viewDidDisappear() {
 
 	}
 
-	public func isViewingBookmark() -> Bool {
+	open func isViewingBookmark() -> Bool {
 		return dataManager?.topID != nil
 	}
 
-	public func bookmarkPostAtIndex(index: Int) {
-		guard let dataManager = dataManager, accountName = AccountsService.account?.name else {
+	open func bookmarkPostAtIndex(_ index: Int) {
+		guard let dataManager = dataManager, let accountName = AccountsService.account?.name else {
 			return
 		}
 
-		let userDefaults = NSUserDefaults.standardUserDefaults()
+		let userDefaults = UserDefaults.standard
 		let bookmarksKey = "HIBookmarks:\(accountName)"
 		let post = dataManager.posts[index]
-		var bookmarks = userDefaults.arrayForKey(bookmarksKey) as? [[String: AnyObject]] ?? []
+		var bookmarks = userDefaults.array(forKey: bookmarksKey) as? [[String: AnyObject]] ?? []
 
-		bookmarks.insert(["date": NSDate(), "id": post.id], atIndex: 0)
+		bookmarks.insert(["date": Date() as AnyObject, "id": post.id as AnyObject], at: 0)
 
 		if bookmarks.count > 20 {
 			bookmarks = [[String: AnyObject]](bookmarks.prefix(20))
 		}
 
-		userDefaults.setObject(bookmarks, forKey: bookmarksKey)
+		userDefaults.set(bookmarks, forKey: bookmarksKey)
 	}
 
-	public func goToBookmarkedPostWithID(id: Int) {
-		guard let view = view, dataManager = dataManager else {
+	open func goToBookmarkedPostWithID(_ id: Int) {
+		guard let view = view, let dataManager = dataManager else {
 			return
 		}
 
@@ -51,14 +51,12 @@ public class DashboardPresenter: PostsPresenter {
 		dataManager.posts = []
 		dataManager.loadMore(view.currentWidth())
 	}
-}
 
-public extension DashboardPresenter {
-	public func dataManager(dataManager: PostsDataManager, requestPostsWithCount postCount: Int, parameters: [String : AnyObject], callback: TMAPICallback) {
+	public func dataManager(_ dataManager: PostsDataManager, requestPostsWithCount postCount: Int, parameters: [String : AnyObject], callback: @escaping TMAPICallback) {
 		TMAPIClient.sharedInstance().dashboard(parameters, callback: callback)
 	}
 
-	public func dataManagerPostsJSONKey(dataManager: PostsDataManager) -> String? {
+	public func dataManagerPostsJSONKey(_ dataManager: PostsDataManager) -> String? {
 		return "posts"
 	}
 }

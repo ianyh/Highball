@@ -13,34 +13,32 @@ public protocol ConversationsListView: class {
 	func reloadView()
 }
 
-public class ConversationsListViewController: UITableViewController {
-	public var presenter: ConversationsListPresenter?
+open class ConversationsListViewController: UITableViewController {
+	open var presenter: ConversationsListPresenter?
 
-	public override func viewDidLoad() {
+	open override func viewDidLoad() {
 		super.viewDidLoad()
 
-		tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: UITableViewCell.cellIdentifier)
+		tableView.register(UITableViewCell.self, forCellReuseIdentifier: UITableViewCell.cellIdentifier)
 	}
 
-	public override func viewDidAppear(animated: Bool) {
+	open override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 
 		presenter?.viewDidAppear()
 	}
-}
 
-public extension ConversationsListViewController {
-	public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	open override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return presenter?.numberOfConversations() ?? 0
 	}
 
-	public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCellWithIdentifier(UITableViewCell.cellIdentifier)!
-		let conversation = presenter!.conversationAtIndex(indexPath.row)
+	open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: UITableViewCell.cellIdentifier)!
+		let conversation = presenter!.conversationAtIndex((indexPath as NSIndexPath).row)
 		let participantNames = conversation.participants.map { $0.name }
 
 		cell.textLabel?.numberOfLines = 0
-		cell.textLabel?.text = participantNames.joinWithSeparator(" + ")
+		cell.textLabel?.text = participantNames.joined(separator: " + ")
 
 		return cell
 	}

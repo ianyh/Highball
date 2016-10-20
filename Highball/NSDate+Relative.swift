@@ -10,15 +10,15 @@ import FormatterKit
 
 private let formatterKey = "HighballTimeIntervalFormatterKey"
 
-public extension NSDate {
+public extension Date {
 	public func stringWithRelativeFormat() -> String {
-		var intervalFormatter = NSThread.currentThread().threadDictionary[formatterKey] as? TTTTimeIntervalFormatter
+		var intervalFormatter = Thread.current.threadDictionary[formatterKey] as? TTTTimeIntervalFormatter
 
 		if intervalFormatter == nil {
 			intervalFormatter = TTTTimeIntervalFormatter()
-			NSThread.currentThread().threadDictionary[formatterKey] = intervalFormatter
+			Thread.current.threadDictionary[formatterKey] = intervalFormatter
 		}
 
-		return intervalFormatter!.stringForTimeInterval(timeIntervalSinceNow)
+		return intervalFormatter!.string(forTimeInterval: timeIntervalSinceNow)
 	}
 }

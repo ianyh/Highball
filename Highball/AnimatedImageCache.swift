@@ -10,16 +10,16 @@ import FLAnimatedImage
 import Foundation
 
 public struct AnimatedImageCache {
-	private static var animatedImageCache = NSCache()
+	fileprivate static var animatedImageCache = NSCache<NSString, FLAnimatedImage>()
 
-	public static func setAnimatedImage(animatedImage: FLAnimatedImage?, forKey key: String) {
+	public static func setAnimatedImage(_ animatedImage: FLAnimatedImage?, forKey key: String) {
 		if let image = animatedImage {
-			animatedImageCache.setObject(image, forKey: key)
+			animatedImageCache.setObject(image, forKey: key as NSString)
 		}
 	}
 
-	public static func animatedImageForKey(key: String) -> FLAnimatedImage? {
-		return animatedImageCache.objectForKey(key) as? FLAnimatedImage
+	public static func animatedImageForKey(_ key: String) -> FLAnimatedImage? {
+		return animatedImageCache.object(forKey: key as NSString)
 	}
 
 	public static func clearCache() {

@@ -18,44 +18,46 @@ private struct Attachment {
 
 public struct PostContent {
 	public let attributedString: NSAttributedString
-	private var attachments: [String: Attachment] = [:]
+	fileprivate var attachments: [String: Attachment] = [:]
 
-	public init(htmlData: NSData) {
-		let stringBuilderOptions = [DTDefaultHeadIndent: 0, DTDefaultFirstLineHeadIndent: 0, DTDocumentPreserveTrailingSpaces: false, DTUseiOS6Attributes: true]
-		let htmlStringBuilder = DTHTMLAttributedStringBuilder(HTML: htmlData, options: stringBuilderOptions, documentAttributes: nil)
-		attributedString = htmlStringBuilder.generatedAttributedString().attributedStringByTrimmingNewlines()
+	public init(htmlData: Data) {
+		let stringBuilderOptions = [DTDefaultHeadIndent: 0, DTDefaultFirstLineHeadIndent: 0, DTDocumentPreserveTrailingSpaces: false, DTUseiOS6Attributes: true] as [String : Any]
+		let htmlStringBuilder = DTHTMLAttributedStringBuilder(html: htmlData, options: stringBuilderOptions, documentAttributes: nil)
+		attributedString = (htmlStringBuilder?.generatedAttributedString().attributedStringByTrimmingNewlines())!
 	}
 
-	public func attributedStringForDisplayWithLinkHandler(linkHandler: ((NSURL) -> ())?) -> NSAttributedString {
+	public func attributedStringForDisplayWithLinkHandler(_ linkHandler: ((URL) -> ())?) -> NSAttributedString {
 		let mutableAttributedString = attributedString.mutableCopy() as! NSMutableAttributedString
 		let entireStringRange = NSMakeRange(0, attributedString.length)
-		let options = NSAttributedStringEnumerationOptions.Reverse
-		attributedString.enumerateAttributesInRange(entireStringRange, options: options) { attributes, range, stop in
+		let options = NSAttributedString.EnumerationOptions.reverse
+		attributedString.enumerateAttributes(in: entireStringRange, options: options) { attributes, range, stop in
 			if let imageAttachment = attributes[NSAttachmentAttributeName] as? DTImageTextAttachment {
 				if let attachment = self.attachments[imageAttachment.contentURL.absoluteString] {
 					attachment.imageView.frame = CGRect(origin: CGPoint.zero, size: attachment.size)
-					let attachmentViewString = NSMutableAttributedString.yy_attachmentStringWithContent(
-						attachment.imageView,
-						contentMode: .Left,
+					let attachmentViewString = NSMutableAttributedString.yy_attachmentString(
+						withContent: attachment.imageView,
+						contentMode: .left,
 						attachmentSize: attachment.size,
-						alignToFont: UIFont.systemFontOfSize(16),
-						alignment: .Center
+						alignTo: UIFont.systemFont(ofSize: 16),
+						alignment: .center
 					)
-					mutableAttributedString.replaceCharactersInRange(range, withAttributedString: attachmentViewString)
+					mutableAttributedString.replaceCharacters(in: range, with: attachmentViewString)
 				} else {
-					mutableAttributedString.replaceCharactersInRange(range, withString: "")
+					mutableAttributedString.replaceCharacters(in: range, with: "")
 				}
 			} else if let link = attributes[NSLinkAttributeName] {
-				let linkURL = (link as? NSURL) ?? NSURL(string: link as! String)!
+				let linkURL = (link as? URL) ?? URL(string: link as! String)!
 
-				mutableAttributedString.yy_setUnderlineStyle(.StyleSingle, range: range)
-				mutableAttributedString.yy_setTextHighlightRange(
+				mutableAttributedString.yy_setUnderlineStyle(.styleSingle, range: range)
+				mutableAttributedString.yy_setTextHighlight(
 					range,
-					color: UIColor.blueColor(),
+					color: UIColor.blue,
 					backgroundColor: nil,
+					userInfo: nil,
 					tapAction: { containerView, text, range, rect in
 						linkHandler?(linkURL)
-					}
+					},
+					longPressAction: nil
 				)
 			}
 		}
@@ -63,11 +65,11 @@ public struct PostContent {
 		return mutableAttributedString
 	}
 
-	public func contentURLS() -> [NSURL] {
+	public func contentURLS() -> [URL] {
 		let entireStringRange = NSMakeRange(0, attributedString.length)
-		let options = NSAttributedStringEnumerationOptions()
-		var urls: [NSURL] = []
-		attributedString.enumerateAttributesInRange(entireStringRange, options: options) { attributes, range, stop in
+		let options = NSAttributedString.EnumerationOptions()
+		var urls: [URL] = []
+		attributedString.enumerateAttributes(in: entireStringRange, options: options) { attributes, range, stop in
 			if let imageAttachment = attributes[NSAttachmentAttributeName] as? DTImageTextAttachment {
 				urls.append(imageAttachment.contentURL)
 			}
@@ -75,7 +77,7 @@ public struct PostContent {
 		return urls
 	}
 
-	mutating public func setImageView(imageView: FLAnimatedImageView, withSize size: CGSize, forAttachmentURL url: NSURL) {
+	mutating public func setImageView(_ imageView: FLAnimatedImageView, withSize size: CGSize, forAttachmentURL url: URL) {
 		attachments[url.absoluteString] = Attachment(imageView: imageView, size: size)
 	}
 }
