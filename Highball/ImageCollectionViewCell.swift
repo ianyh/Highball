@@ -17,7 +17,7 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
 	var imageView: FLAnimatedImageView!
 	var failedImageView: UIImageView!
 
-	var onTapHandler: (() -> ())?
+	var onTapHandler: (() -> Void)?
 
 	var contentWidth: CGFloat? {
 		didSet {

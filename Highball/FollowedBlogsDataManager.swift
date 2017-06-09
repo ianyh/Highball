@@ -42,7 +42,7 @@ class FollowedBlogsDataManager {
 			return
 		}
 
-		TMAPIClient.sharedInstance().following(["offset" : "\(blogs.count)"]) { response, error in
+		TMAPIClient.sharedInstance().following(["offset": "\(blogs.count)"]) { response, error in
 			if let error = error {
 				DispatchQueue.main.async {
 					self.loading = false

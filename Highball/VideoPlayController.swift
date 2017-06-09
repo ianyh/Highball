@@ -11,9 +11,9 @@ import MediaPlayer
 import Cartography
 
 class VideoPlayController: UIViewController {
-	fileprivate let completion: ((Bool) -> ())
+	fileprivate let completion: ((Bool) -> Void)
 
-	init(completion: @escaping (Bool) -> ()) {
+	init(completion: @escaping (Bool) -> Void) {
 		self.completion = completion
 		super.init(nibName: nil, bundle: nil)
 	}

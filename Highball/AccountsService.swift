@@ -63,7 +63,7 @@ public struct AccountsService {
 		return account
 	}
 
-	public static func start(fromViewController viewController: UIViewController, completion: @escaping (Account) -> ()) {
+	public static func start(fromViewController viewController: UIViewController, completion: @escaping (Account) -> Void) {
 		if let lastAccount = lastAccount() {
 			loginToAccount(lastAccount, completion: completion)
 			return
@@ -83,7 +83,7 @@ public struct AccountsService {
 		loginToAccount(firstAccount, completion: completion)
 	}
 
-	public static func loginToAccount(_ account: Account, completion: @escaping (Account) -> ()) {
+	public static func loginToAccount(_ account: Account, completion: @escaping (Account) -> Void) {
 		self.account = account
 
 		TMAPIClient.sharedInstance().oAuthToken = account.token
@@ -94,7 +94,7 @@ public struct AccountsService {
 		}
 	}
 
-	public static func authenticateNewAccount(fromViewController viewController: UIViewController, completion: @escaping (_ account: Account?) -> ()) {
+	public static func authenticateNewAccount(fromViewController viewController: UIViewController, completion: @escaping (_ account: Account?) -> Void) {
 		let oauth = OAuth1Swift(
 			consumerKey: TMAPIClient.sharedInstance().oAuthConsumerKey,
 			consumerSecret: TMAPIClient.sharedInstance().oAuthConsumerSecret,
@@ -113,7 +113,7 @@ public struct AccountsService {
 
 		oauth.authorizeWithCallbackURL(
 			URL(string: "highball://oauth-callback")!,
-			success: { (credential, response, parameters) in
+			success: { (credential, response, _) in
 				TMAPIClient.sharedInstance().OAuthToken = credential.oauth_token
 				TMAPIClient.sharedInstance().OAuthTokenSecret = credential.oauth_token_secret
 
@@ -177,7 +177,7 @@ public struct AccountsService {
 		)
 	}
 
-	public static func deleteAccount(_ account: Account, fromViewController viewController: UIViewController, completion: @escaping (_ changedAccount: Bool) -> ()) {
+	public static func deleteAccount(_ account: Account, fromViewController viewController: UIViewController, completion: @escaping (_ changedAccount: Bool) -> Void) {
 		guard let realm = try? Realm(), let accountObject = account as? AccountObject else {
 			return
 		}

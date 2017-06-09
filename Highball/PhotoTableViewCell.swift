@@ -45,7 +45,7 @@ class PhotoTableViewCell: UITableViewCell {
                         self.contentView.addSubview(imageView)
 
                         if let leftImageView = lastImageView {
-                            layout(imageView) { imageView in
+                            layout(imageView) { _ in
 
                             }
                         }

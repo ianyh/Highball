@@ -26,11 +26,11 @@ public struct PostContent {
 		attributedString = (htmlStringBuilder?.generatedAttributedString().attributedStringByTrimmingNewlines())!
 	}
 
-	public func attributedStringForDisplayWithLinkHandler(_ linkHandler: ((URL) -> ())?) -> NSAttributedString {
+	public func attributedStringForDisplayWithLinkHandler(_ linkHandler: ((URL) -> Void)?) -> NSAttributedString {
 		let mutableAttributedString = attributedString.mutableCopy() as! NSMutableAttributedString
 		let entireStringRange = NSMakeRange(0, attributedString.length)
 		let options = NSAttributedString.EnumerationOptions.reverse
-		attributedString.enumerateAttributes(in: entireStringRange, options: options) { attributes, range, stop in
+		attributedString.enumerateAttributes(in: entireStringRange, options: options) { attributes, range, _ in
 			if let imageAttachment = attributes[NSAttachmentAttributeName] as? DTImageTextAttachment {
 				if let attachment = self.attachments[imageAttachment.contentURL.absoluteString] {
 					attachment.imageView.frame = CGRect(origin: CGPoint.zero, size: attachment.size)
@@ -54,7 +54,7 @@ public struct PostContent {
 					color: UIColor.blue,
 					backgroundColor: nil,
 					userInfo: nil,
-					tapAction: { containerView, text, range, rect in
+					tapAction: { _, _, _, _ in
 						linkHandler?(linkURL)
 					},
 					longPressAction: nil
@@ -69,7 +69,7 @@ public struct PostContent {
 		let entireStringRange = NSMakeRange(0, attributedString.length)
 		let options = NSAttributedString.EnumerationOptions()
 		var urls: [URL] = []
-		attributedString.enumerateAttributes(in: entireStringRange, options: options) { attributes, range, stop in
+		attributedString.enumerateAttributes(in: entireStringRange, options: options) { attributes, _, _ in
 			if let imageAttachment = attributes[NSAttachmentAttributeName] as? DTImageTextAttachment {
 				urls.append(imageAttachment.contentURL)
 			}

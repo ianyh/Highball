@@ -130,7 +130,7 @@ class SettingsViewController: UITableViewController {
 			}
 		case .cache:
 			let alertController = UIAlertController(title: "Are you sure?", message: "Are you sure that you want to clear your cache?", preferredStyle: .alert)
-			alertController.addAction(UIAlertAction(title: "Yes", style: .destructive) { action in
+			alertController.addAction(UIAlertAction(title: "Yes", style: .destructive) { _ in
 				PINRemoteImageManager.shared().cache.diskCache.removeAllObjects(nil)
 				PINCache.shared().diskCache.removeAllObjects(nil)
 			})

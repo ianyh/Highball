@@ -12,7 +12,7 @@ import PINCache
 import TMTumblrSDK
 
 class PostHeaderView: UITableViewHeaderFooterView {
-	var tapHandler: ((Post, UIView) -> ())?
+	var tapHandler: ((Post, UIView) -> Void)?
 
 	fileprivate let avatarLoadQueue = DispatchQueue(label: "avatarLoadQueue", attributes: [])
 	fileprivate var avatarImageView: UIImageView!
@@ -31,7 +31,7 @@ class PostHeaderView: UITableViewHeaderFooterView {
 
 			avatarImageView.image = UIImage(named: "Placeholder")
 
-			PINCache.shared().object(forKey: "avatar:\(blogName)") { cache, key, object in
+			PINCache.shared().object(forKey: "avatar:\(blogName)") { _, _, object in
 				if let data = object as? Data {
 					self.avatarLoadQueue.async {
 						let image = UIImage(data: data)
@@ -145,7 +145,7 @@ class PostHeaderView: UITableViewHeaderFooterView {
 			usernameLabel.height == 20
 		}
 
-		constrain(timeLabel, usernameLabel, contentView) { timeLabel, usernameLabel, contentView in
+		constrain(timeLabel, usernameLabel, contentView) { timeLabel, _, contentView in
 			timeLabel.centerY == contentView.centerY
 			timeLabel.right == contentView.right - 8.0
 			timeLabel.height == 30

@@ -80,7 +80,7 @@ class PostLinkTableViewCell: WCFastCell {
 		let extraHeight: CGFloat = 14 + 4 + 16 + 14
 		let modifiedWidth = width - 16
 		let constrainedSize = CGSize(width: modifiedWidth, height: CGFloat.greatestFiniteMagnitude)
-		let titleAttributes = [ NSFontAttributeName : UIFont.boldSystemFont(ofSize: 19) ]
+		let titleAttributes = [ NSFontAttributeName: UIFont.boldSystemFont(ofSize: 19) ]
 
 		if let title = post.title as NSString? {
 			let titleRect = title.boundingRect(with: constrainedSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: titleAttributes, context: nil)

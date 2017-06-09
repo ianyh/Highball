@@ -19,7 +19,7 @@ open class TagsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICol
 
 		class func widthForTag(_ tag: String) -> CGFloat {
 			let constrainedSize = CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
-			let attributedTag = NSAttributedString(string: tag, attributes: [ NSFontAttributeName : UIFont.systemFont(ofSize: 14) ])
+			let attributedTag = NSAttributedString(string: tag, attributes: [ NSFontAttributeName: UIFont.systemFont(ofSize: 14) ])
 			let tagRect = attributedTag.boundingRect(with: constrainedSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil)
 
 			return ceil(tagRect.size.width)

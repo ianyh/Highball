@@ -12,7 +12,7 @@ import TMTumblrSDK
 public protocol PostsPresenter: class, PostsDataManagerDelegate {
 	var view: PostsView? { get }
 	var dataManager: PostsDataManager? { get }
-	var loadingCompletion: (() -> ())? { get set }
+	var loadingCompletion: (() -> Void)? { get set }
 }
 
 public extension PostsPresenter {
@@ -68,7 +68,7 @@ public extension PostsPresenter {
 }
 
 public extension PostsPresenter {
-	public func dataManagerDidReload(_ dataManager: PostsDataManager, indexSet: IndexSet?, completion: @escaping () -> ()) {
+	public func dataManagerDidReload(_ dataManager: PostsDataManager, indexSet: IndexSet?, completion: @escaping () -> Void) {
 		loadingCompletion = { [weak self] in
 			completion()
 			self?.view?.reloadWithNewIndices(indexSet)

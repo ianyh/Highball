@@ -12,7 +12,7 @@ import TMTumblrSDK
 open class TagPresenter: PostsPresenter {
 	open weak var view: PostsView?
 	open var dataManager: PostsDataManager?
-	open var loadingCompletion: (() -> ())?
+	open var loadingCompletion: (() -> Void)?
 
 	fileprivate let tag: String
 

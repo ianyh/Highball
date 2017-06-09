@@ -12,7 +12,7 @@ import TMTumblrSDK
 open class BlogPresenter: PostsPresenter {
 	open weak var view: PostsView?
 	open var dataManager: PostsDataManager?
-	open var loadingCompletion: (() -> ())?
+	open var loadingCompletion: (() -> Void)?
 
 	fileprivate let blogName: String
 
@@ -21,7 +21,7 @@ open class BlogPresenter: PostsPresenter {
 	}
 
 	open func follow() {
-		TMAPIClient.sharedInstance().follow(blogName) { result, error in
+		TMAPIClient.sharedInstance().follow(blogName) { _, error in
 			if error == nil {
 				self.view?.presentMessage("Followed", message: "Successfully followed \(self.blogName)!")
 			} else {
@@ -31,7 +31,7 @@ open class BlogPresenter: PostsPresenter {
 	}
 
 	open func unfollow() {
-		TMAPIClient.sharedInstance().unfollow(blogName) { result, error in
+		TMAPIClient.sharedInstance().unfollow(blogName) { _, error in
 			if error == nil {
 				self.view?.presentMessage("Unfollowed", message: "Successfully unfollowed \(self.blogName)!")
 			} else {

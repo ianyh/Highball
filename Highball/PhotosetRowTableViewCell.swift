@@ -15,7 +15,7 @@ import WCFastCell
 class PhotosetRowTableViewCell: WCFastCell {
 	var imageViews: Array<FLAnimatedImageView>?
 	var failedImageViews: Array<UIImageView>?
-	var shareHandler: ((UIImage) -> ())?
+	var shareHandler: ((UIImage) -> Void)?
 
 	var contentWidth: CGFloat! = 0
 	var images: Array<PostPhoto>? {

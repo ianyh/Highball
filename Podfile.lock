@@ -34,6 +34,7 @@ PODS:
   - FontAwesomeKit/Zocial (2.1.9):
     - FontAwesomeKit/Core
   - FormatterKit/TimeIntervalFormatter (1.8.0)
+  - IGListKit (1.0.0)
   - JXHTTP (3.0.2)
   - ModelMapper (5.0.0)
   - OAuthSwift (1.0.0)
@@ -92,6 +93,7 @@ DEPENDENCIES:
   - Fabric
   - FontAwesomeKit (from `https://github.com/PrideChung/FontAwesomeKit.git`)
   - FormatterKit/TimeIntervalFormatter (~> 1.8)
+  - IGListKit
   - ModelMapper (~> 5.0)
   - OAuthSwift (~> 1.0)
   - PINCache (~> 2.1)
@@ -127,6 +129,7 @@ SPEC CHECKSUMS:
   FLAnimatedImage: e16a1e1cef08e4c509b47e4acbe3923f65c16135
   FontAwesomeKit: 0cd610453ce270f34ad17378c68de98aad0e05ef
   FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4
+  IGListKit: 3242c475fa77e2abf2d4de319703088008fbe9b9
   JXHTTP: c37120f210cd2dfcb3470d70239f5253335e2f1a
   ModelMapper: 89ced1f51ec6360e93f6889d08c818d4cad526a3
   OAuthSwift: dd4f502ffd4f6e122b861b5e4529bf6454a30fe6
@@ -147,6 +150,6 @@ SPEC CHECKSUMS:
   XExtensionItem: ce626520bbca225930b9c8e2283b226df431af3f
   YYText: 41761822986179828a27ccf82aa97c7b5483c2e2
 
-PODFILE CHECKSUM: 7e460948f57373779cd680a400daafe0d4a6409e
+PODFILE CHECKSUM: 7a263005fcfe96af1adbea4b4464db4e79b0534c
 
 COCOAPODS: 1.1.0.rc.1

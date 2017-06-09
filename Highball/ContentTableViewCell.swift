@@ -34,7 +34,7 @@ class ContentTableViewCell: WCFastCell {
 				return
 			}
 
-			PINCache.shared().object(forKey: "avatar:\(trailData.username)") { cache, key, object in
+			PINCache.shared().object(forKey: "avatar:\(trailData.username)") { _, _, object in
 				if let data = object as? Data {
 					self.avatarLoadQueue.async {
 						let image = UIImage(data: data)
@@ -81,13 +81,13 @@ class ContentTableViewCell: WCFastCell {
 
 						postContent.setImageView(imageView, withSize: scaledSize, forAttachmentURL: contentURL)
 
-						self.textView.attributedText = postContent.attributedStringForDisplayWithLinkHandler() { url in
+						self.textView.attributedText = postContent.attributedStringForDisplayWithLinkHandler { url in
 							self.linkHandler?(url)
 						}
 						self.widthDidChange?(contentURL.absoluteString, scaledSize.width, scaledSize.height, imageView)
 					}
 				}
-				textView.attributedText = postContent.attributedStringForDisplayWithLinkHandler() { url in
+				textView.attributedText = postContent.attributedStringForDisplayWithLinkHandler { url in
 					self.linkHandler?(url)
 				}
 				usernameLabel.superview?.isHidden = (postContent.attributedString.string.characters.count == 0)
@@ -98,9 +98,9 @@ class ContentTableViewCell: WCFastCell {
 		}
 	}
 
-	var linkHandler: ((URL) -> ())?
-	var usernameTapHandler: ((String) -> ())?
-	var widthDidChange: ((_ url: String, _ width: CGFloat, _ height: CGFloat, _ imageView: FLAnimatedImageView) -> ())?
+	var linkHandler: ((URL) -> Void)?
+	var usernameTapHandler: ((String) -> Void)?
+	var widthDidChange: ((_ url: String, _ width: CGFloat, _ height: CGFloat, _ imageView: FLAnimatedImageView) -> Void)?
 	var widthForURL: ((_ url: String) -> CGFloat?)?
 	var imageViewForURL: ((_ url: String) -> FLAnimatedImageView?)?
 

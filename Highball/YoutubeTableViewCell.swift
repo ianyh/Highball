@@ -17,7 +17,7 @@ class YoutubeTableViewCell: VideoTableViewCell {
 		}
 
 		let identifier = videoURL.absoluteString.components(separatedBy: "?v=")[1]
-		XCDYouTubeClient.default().getVideoWithIdentifier(identifier) { video, error in
+		XCDYouTubeClient.default().getVideoWithIdentifier(identifier) { video, _ in
 			if let urlString = video?.streamURLs[XCDYouTubeVideoQuality.HD720.rawValue] {
 				self.urlString = urlString.absoluteString
 			} else if let urlString = video?.streamURLs[XCDYouTubeVideoQuality.medium360.rawValue] {

@@ -95,7 +95,7 @@ class AccountsViewController: UITableViewController {
 				self.present(alertController, animated: true, completion: nil)
 			}
 		case .addAccount:
-			AccountsService.authenticateNewAccount(fromViewController: self) { account in
+			AccountsService.authenticateNewAccount(fromViewController: self) { _ in
 				self.accounts = AccountsService.accounts()
 				self.tableView.reloadData()
 			}

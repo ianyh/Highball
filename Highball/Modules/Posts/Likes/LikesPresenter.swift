@@ -12,7 +12,7 @@ import TMTumblrSDK
 open class LikesPresenter: PostsPresenter {
 	open weak var view: PostsView?
 	open var dataManager: PostsDataManager?
-	open var loadingCompletion: (() -> ())?
+	open var loadingCompletion: (() -> Void)?
 
 	public func dataManager(_ dataManager: PostsDataManager, requestPostsWithCount postCount: Int, parameters: [String : AnyObject], callback: @escaping TMAPICallback) {
 		var mutableParameters = parameters

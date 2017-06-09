@@ -79,7 +79,7 @@ class PostQuestionTableViewCell: WCFastCell {
 
 	class func heightForPost(_ post: Post!, width: CGFloat!) -> CGFloat {
 		let question = post.question! as NSString
-		let questionAttributes = [ NSFontAttributeName : UIFont.systemFont(ofSize: 14) ]
+		let questionAttributes = [ NSFontAttributeName: UIFont.systemFont(ofSize: 14) ]
 		let modifiedWidth = width - 16 - 28
 		let extraHeight: CGFloat = 12 + 20 + 14 + 8
 		let constrainedSize = CGSize(width: modifiedWidth, height: CGFloat.greatestFiniteMagnitude)

@@ -76,7 +76,7 @@ open class DashboardViewController: PostsViewController {
 
 	open func bookmarks(_ sender: UIButton, event: UIEvent) {
 		let alertController = UIAlertController(title: "", message: "Go to top of your feed?", preferredStyle: .alert)
-		alertController.addAction(UIAlertAction(title: "Yes", style: .default) { [weak self] action in
+		alertController.addAction(UIAlertAction(title: "Yes", style: .default) { [weak self] _ in
 			self?.navigationItem.rightBarButtonItem = nil
 			self?.presenter?.resetPosts()
 			self?.tableViewAdapter?.resetCache()

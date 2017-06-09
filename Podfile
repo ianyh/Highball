@@ -5,6 +5,8 @@ platform :ios, '9.0'
 use_frameworks!
 
 target 'Highball' do
+  pod 'IGListKit'
+
   pod 'Fabric'
   pod 'Crashlytics'
 

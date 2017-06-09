@@ -30,7 +30,6 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
   }
 }
 
-
 public enum ReblogType {
 	case reblog
 	case queue

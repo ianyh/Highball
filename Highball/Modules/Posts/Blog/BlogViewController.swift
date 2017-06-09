@@ -49,11 +49,11 @@ open class BlogViewController: PostsViewController {
 	open func follow(_ sender: UIBarButtonItem) {
 		let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
-		alertController.addAction(UIAlertAction(title: "Follow", style: .default) { [weak self] action in
+		alertController.addAction(UIAlertAction(title: "Follow", style: .default) { [weak self] _ in
 			self?.blogPresenter?.follow()
 		})
 
-		alertController.addAction(UIAlertAction(title: "Unfollow", style: .destructive) { [weak self] action in
+		alertController.addAction(UIAlertAction(title: "Unfollow", style: .destructive) { [weak self] _ in
 			self?.blogPresenter?.unfollow()
 		})
 
