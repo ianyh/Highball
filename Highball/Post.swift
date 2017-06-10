@@ -30,35 +30,35 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
   }
 }
 
-public enum ReblogType {
+enum ReblogType {
 	case reblog
 	case queue
 }
 
-public struct Post: Mappable {
-	public let id: Int
-	public let type: String
-	public let blogName: String
-	public let rebloggedBlogName: String?
-	public let reblogKey: String
-	public let timestamp: Int
-	public let url: URL
-	public let shortURL: URL
-	public let tags: [String]
-	public let photos: [PostPhoto]
-	public let layout: PhotosetLayout
-	public let dialogueEntries: [PostDialogueEntry]
-	public let body: String?
-	public let secondaryBody: String?
-	public let asker: String?
-	public let question: String?
-	public let title: String?
-	public let permalinkURL: URL?
-	public let video: PostVideo?
-	public var liked = false
-	public let trailData: [PostTrailData]
+struct Post: Mappable {
+	let id: Int
+	let type: String
+	let blogName: String
+	let rebloggedBlogName: String?
+	let reblogKey: String
+	let timestamp: Int
+	let url: URL
+	let shortURL: URL
+	let tags: [String]
+	let photos: [PostPhoto]
+	let layout: PhotosetLayout
+	let dialogueEntries: [PostDialogueEntry]
+	let body: String?
+	let secondaryBody: String?
+	let asker: String?
+	let question: String?
+	let title: String?
+	let permalinkURL: URL?
+	let video: PostVideo?
+	var liked = false
+	let trailData: [PostTrailData]
 
-	public init(map: Mapper) throws {
+	init(map: Mapper) throws {
 		id = try map.from("id")
 		type = try map.from("type")
 		blogName = try map.from("blog_name")
@@ -95,11 +95,11 @@ public struct Post: Mappable {
 		trailData = map.optionalFrom("trail")?.reversed() ?? []
 	}
 
-	public func htmlBodyWithWidth(_ width: CGFloat) -> String? {
+	func htmlBodyWithWidth(_ width: CGFloat) -> String? {
 		return body?.htmlStringWithTumblrStyle(width)
 	}
 
-	public func htmlSecondaryBodyWithWidth(_ width: CGFloat) -> String? {
+	func htmlSecondaryBodyWithWidth(_ width: CGFloat) -> String? {
 		guard let secondaryBody = secondaryBody else {
 			return nil
 		}
@@ -116,7 +116,7 @@ public struct Post: Mappable {
 		return stringToStyle?.htmlStringWithTumblrStyle(width)
 	}
 
-	public func videoURL() -> URL? {
+	func videoURL() -> URL? {
 		guard self.type == "video" else {
 			return nil
 		}
@@ -154,7 +154,7 @@ public struct Post: Mappable {
 		}
 	}
 
-	public func videoHeightWidthWidth(_ width: CGFloat) -> CGFloat? {
+	func videoHeightWidthWidth(_ width: CGFloat) -> CGFloat? {
 		guard self.type != "video" else {
 			return nil
 		}
@@ -167,8 +167,8 @@ public struct Post: Mappable {
 	}
 }
 
-public extension Post {
-	public static func bodyStringFromMap(_ map: Mapper) -> String? {
+extension Post {
+	static func bodyStringFromMap(_ map: Mapper) -> String? {
 		guard let type: String = map.optionalFrom("type") else {
 			return nil
 		}
@@ -201,7 +201,7 @@ public extension Post {
 		return nil
 	}
 
-	public static func secondaryBodyStringFromMap(_ map: Mapper) -> String? {
+	static func secondaryBodyStringFromMap(_ map: Mapper) -> String? {
 		guard let type: String = map.optionalFrom("type") else {
 			return nil
 		}

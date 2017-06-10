@@ -10,14 +10,14 @@ import SwiftyJSON
 import TMTumblrSDK
 import UIKit
 
-open class LikesViewController: PostsViewController {
-	public override init(postHeightCache: PostHeightCache) {
+class LikesViewController: PostsViewController {
+	override init(postHeightCache: PostHeightCache) {
 		super.init(postHeightCache: postHeightCache)
 
 		navigationItem.title = "Likes"
 	}
 
-	public required init?(coder aDecoder: NSCoder) {
+	required init?(coder aDecoder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
 }

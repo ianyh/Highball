@@ -9,11 +9,11 @@
 import Foundation
 import Mapper
 
-public struct Blog: Mappable {
-	public let title: String
-	public let name: String
+struct Blog: Mappable {
+	let title: String
+	let name: String
 
-	public init(map: Mapper) throws {
+	init(map: Mapper) throws {
 		try title = map.from("title")
 		try name = map.from("name")
 	}

@@ -20,13 +20,13 @@ internal struct Size: Mappable {
 	}
 }
 
-public struct PostPhoto: Mappable {
-	public let width: CGFloat
-	public let height: CGFloat
+struct PostPhoto: Mappable {
+	let width: CGFloat
+	let height: CGFloat
 	fileprivate let sizes: [Size]
-	public let widthToHeightRatio: Double?
+	let widthToHeightRatio: Double?
 
-	public init(map: Mapper) throws {
+	init(map: Mapper) throws {
 		let width: Double = map.optionalFrom("original_size.width") ?? 0
 		let height: Double = map.optionalFrom("original_size.height") ?? 0
 
@@ -45,7 +45,7 @@ public struct PostPhoto: Mappable {
 		sizes = ([originalSize] + alternateSizes).sorted { $0.width > $1.width }
 	}
 
-	public func urlWithWidth(_ width: CGFloat) -> URL {
+	func urlWithWidth(_ width: CGFloat) -> URL {
 		let appDelegate = UIApplication.shared.delegate
 		if let delegate = appDelegate as? AppDelegate, let reachability = delegate.reachability {
 			if reachability.isReachableViaWiFi() {

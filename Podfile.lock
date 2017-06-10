@@ -1,62 +1,80 @@
 PODS:
-  - Alamofire (4.0.1)
-  - ChameleonFramework (2.0.6):
-    - ChameleonFramework/Default (= 2.0.6)
-  - ChameleonFramework/Default (2.0.6)
-  - Crashlytics (3.7.0):
+  - Alamofire (4.4.0)
+  - ChameleonFramework (2.1.0):
+    - ChameleonFramework/Default (= 2.1.0)
+  - ChameleonFramework/Default (2.1.0)
+  - Crashlytics (3.8.4):
     - Fabric (~> 1.6.3)
-  - DTCoreText (1.6.17):
+  - DTCoreText (1.6.20):
+    - DTCoreText/Core (= 1.6.20)
     - DTFoundation/Core (~> 1.7.5)
     - DTFoundation/DTAnimatedGIF (~> 1.7.5)
     - DTFoundation/DTHTMLParser (~> 1.7.5)
     - DTFoundation/UIKit (~> 1.7.5)
-  - DTFoundation/Core (1.7.10)
-  - DTFoundation/DTAnimatedGIF (1.7.10)
-  - DTFoundation/DTHTMLParser (1.7.10):
+  - DTCoreText/Core (1.6.20):
+    - DTFoundation/Core (~> 1.7.5)
+    - DTFoundation/DTAnimatedGIF (~> 1.7.5)
+    - DTFoundation/DTHTMLParser (~> 1.7.5)
+    - DTFoundation/UIKit (~> 1.7.5)
+  - DTFoundation/Core (1.7.12)
+  - DTFoundation/DTAnimatedGIF (1.7.12)
+  - DTFoundation/DTHTMLParser (1.7.12):
     - DTFoundation/Core
-  - DTFoundation/UIKit (1.7.10):
+  - DTFoundation/UIKit (1.7.12):
     - DTFoundation/Core
-  - Fabric (1.6.7)
-  - FLAnimatedImage (1.0.10)
-  - FontAwesomeKit (2.1.9):
-    - FontAwesomeKit/Core (= 2.1.9)
-    - FontAwesomeKit/FontAwesome (= 2.1.9)
-    - FontAwesomeKit/FoundationIcons (= 2.1.9)
-    - FontAwesomeKit/IonIcons (= 2.1.9)
-    - FontAwesomeKit/Zocial (= 2.1.9)
-  - FontAwesomeKit/Core (2.1.9)
-  - FontAwesomeKit/FontAwesome (2.1.9):
+  - Fabric (1.6.11)
+  - FLAnimatedImage (1.0.12)
+  - FontAwesomeKit (2.2.1):
+    - FontAwesomeKit/Core (= 2.2.1)
+    - FontAwesomeKit/FontAwesome (= 2.2.1)
+    - FontAwesomeKit/FoundationIcons (= 2.2.1)
+    - FontAwesomeKit/IonIcons (= 2.2.1)
+    - FontAwesomeKit/Material (= 2.2.1)
+    - FontAwesomeKit/Octicons (= 2.2.1)
+    - FontAwesomeKit/Zocial (= 2.2.1)
+  - FontAwesomeKit/Core (2.2.1)
+  - FontAwesomeKit/FontAwesome (2.2.1):
     - FontAwesomeKit/Core
-  - FontAwesomeKit/FoundationIcons (2.1.9):
+  - FontAwesomeKit/FoundationIcons (2.2.1):
     - FontAwesomeKit/Core
-  - FontAwesomeKit/IonIcons (2.1.9):
+  - FontAwesomeKit/IonIcons (2.2.1):
     - FontAwesomeKit/Core
-  - FontAwesomeKit/Zocial (2.1.9):
+  - FontAwesomeKit/Material (2.2.1):
     - FontAwesomeKit/Core
-  - FormatterKit/TimeIntervalFormatter (1.8.0)
-  - IGListKit (1.0.0)
+  - FontAwesomeKit/Octicons (2.2.1):
+    - FontAwesomeKit/Core
+  - FontAwesomeKit/Zocial (2.2.1):
+    - FontAwesomeKit/Core
+  - FormatterKit/Resources (1.8.2)
+  - FormatterKit/TimeIntervalFormatter (1.8.2):
+    - FormatterKit/Resources
+  - IGListKit (3.0.0):
+    - IGListKit/Default (= 3.0.0)
+  - IGListKit/Default (3.0.0):
+    - IGListKit/Diffing
+  - IGListKit/Diffing (3.0.0)
   - JXHTTP (3.0.2)
-  - ModelMapper (5.0.0)
-  - OAuthSwift (1.0.0)
-  - PINCache (2.1.2)
-  - PINRemoteImage (1.2.2):
-    - PINRemoteImage/FLAnimatedImage (= 1.2.2)
-  - PINRemoteImage/Core (1.2.2):
+  - ModelMapper (6.0.0)
+  - OAuthSwift (1.1.2)
+  - PINCache (2.3)
+  - PINRemoteImage (1.2.3):
+    - PINRemoteImage/FLAnimatedImage (= 1.2.3)
+  - PINRemoteImage/Core (1.2.3):
     - PINCache (>= 2.1)
-  - PINRemoteImage/FLAnimatedImage (1.2.2):
+  - PINRemoteImage/FLAnimatedImage (1.2.3):
     - FLAnimatedImage (>= 1.0)
     - PINRemoteImage/Core
-  - Player (0.2.0)
-  - pop (1.0.7)
+  - Player (0.6.0)
+  - pop (1.0.9)
   - Reachability (3.2)
-  - Realm (2.0.2):
-    - Realm/Headers (= 2.0.2)
-  - Realm/Headers (2.0.2)
-  - RealmSwift (2.0.2):
-    - Realm (= 2.0.2)
-  - SlackTextViewController (1.8)
+  - Realm (2.8.0):
+    - Realm/Headers (= 2.8.0)
+  - Realm/Headers (2.8.0)
+  - RealmSwift (2.8.0):
+    - Realm (= 2.8.0)
+  - SlackTextViewController (1.9.5)
   - Spectacles (1.0.1)
-  - SSKeychain (1.3.1)
+  - SSKeychain (1.4.1)
   - TMTumblrSDK (4.0.4):
     - TMTumblrSDK/Activity (= 4.0.4)
     - TMTumblrSDK/APIClient (= 4.0.4)
@@ -73,17 +91,17 @@ PODS:
     - TMTumblrSDK/Core
   - TMTumblrSDK/Core (4.0.4):
     - Spectacles (~> 1.0)
-  - VENTouchLock (1.11.0):
+  - VENTouchLock (1.12.0):
     - SSKeychain (~> 1.0)
   - WCFastCell (1.1)
-  - XCDYouTubeKit (2.5.1)
+  - XCDYouTubeKit (2.5.5)
   - XExtensionItem (0.9.3):
     - XExtensionItem/Core (= 0.9.3)
     - XExtensionItem/Tumblr (= 0.9.3)
   - XExtensionItem/Core (0.9.3)
   - XExtensionItem/Tumblr (0.9.3):
     - XExtensionItem/Core
-  - YYText (1.0.4)
+  - YYText (1.0.7)
 
 DEPENDENCIES:
   - Alamofire
@@ -94,7 +112,7 @@ DEPENDENCIES:
   - FontAwesomeKit (from `https://github.com/PrideChung/FontAwesomeKit.git`)
   - FormatterKit/TimeIntervalFormatter (~> 1.8)
   - IGListKit
-  - ModelMapper (~> 5.0)
+  - ModelMapper (~> 6.0)
   - OAuthSwift (~> 1.0)
   - PINCache (~> 2.1)
   - PINRemoteImage (~> 1.2)
@@ -116,40 +134,40 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   FontAwesomeKit:
-    :commit: 0c9d92aeef1fd148c11daed2ded9d0dcdb4b2c4f
+    :commit: ed5eb02f4bcf76e218bb1c966c551a7b5240b6b4
     :git: https://github.com/PrideChung/FontAwesomeKit.git
 
 SPEC CHECKSUMS:
-  Alamofire: 7682d43245de14874acd142ec137b144aa1dd335
-  ChameleonFramework: a6b466873ff9a4ce3a5196c20bccf1a97ad9f446
-  Crashlytics: c3a2333dea9e2733d2777f730910321fc9e25c0d
-  DTCoreText: 3ea8bba23dd2141ba18adb227a7dd33a822df1c4
-  DTFoundation: 3b6b1b817d2a7fb02e7eaf2596c922a68145bd43
-  Fabric: caf7580c725e64db144f610ac65cd60956911dc7
-  FLAnimatedImage: e16a1e1cef08e4c509b47e4acbe3923f65c16135
-  FontAwesomeKit: 0cd610453ce270f34ad17378c68de98aad0e05ef
-  FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4
-  IGListKit: 3242c475fa77e2abf2d4de319703088008fbe9b9
+  Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
+  ChameleonFramework: d21a3cc247abfe5e37609a283a8238b03575cf64
+  Crashlytics: 79e236942ca1e7fc641df1feb9a275360a78ab6a
+  DTCoreText: 51904f2374af443e0d270d6fdc76035ab6f9ef8a
+  DTFoundation: 26a164ef510877387906fb92bff524a792db4bf8
+  Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
+  FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
+  FontAwesomeKit: 3614979b3dbb0ec3f7fac1bd760b91f66c31db67
+  FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
+  IGListKit: 9eab6856a15fa25ad72018ff9d9eb2178c240fff
   JXHTTP: c37120f210cd2dfcb3470d70239f5253335e2f1a
-  ModelMapper: 89ced1f51ec6360e93f6889d08c818d4cad526a3
-  OAuthSwift: dd4f502ffd4f6e122b861b5e4529bf6454a30fe6
-  PINCache: 9e70271f1bdd60c0465b7208adcc4b6acc1fc376
-  PINRemoteImage: 9f6f484bbceee15e2df5aee0beeac2e261e4ac81
-  Player: 603da78358f4bd5b0a074762bcc8436a9a43a076
-  pop: 628ffc631644601567ee8bfaaaea493ebd7d0923
+  ModelMapper: 3596a82f26c43491f6a8d3a00bcdba6ba0e62a93
+  OAuthSwift: 5aa5659984d3ca3206ba636a9e7a9c6626b2e8bd
+  PINCache: ce36ed282031b92fc7733ffe831f474ff80fddc2
+  PINRemoteImage: b6f6b10a704fa8c68ead4d7e55b68dbde79b3686
+  Player: b1b301e2cce11771dad0c19ded6a0107316aa317
+  pop: f667631a5108a2e60d9e8797c9b32ddaf2080bce
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
-  Realm: 0f5a194af0b7e6158b83db41b4ee1a00be7ddf1a
-  RealmSwift: 0eb5070d851cba7c66e841ca756d83609dc78bc8
-  SlackTextViewController: 0300adee2931fdbe72488990336f0937dbed048e
+  Realm: 929243ad2b618b3232e70658bedc61110e7563f1
+  RealmSwift: 5b7079b891f2833d1849294161ba3e092bbda3f6
+  SlackTextViewController: fbcdadbb8090673f604484ff5b6eb8d77baed42a
   Spectacles: 8dc60711140320653724560e2d6bbb8a8f0940e4
-  SSKeychain: 04c4ec40f4c3deda524e269bc76e5f30e638a174
+  SSKeychain: 55cc80f66f5c73da827e3077f02e43528897db41
   TMTumblrSDK: 7b253e968a31f515aee0ee5f7e5faa8b7b0d0470
-  VENTouchLock: f3145d6fbff243d6692dfb1107b88db06dc216c9
+  VENTouchLock: 20d378b9c6173e2c054448aeb3fb2f40822a9f3f
   WCFastCell: 3e20a0c711d27307584bdbd359a44a714e991151
-  XCDYouTubeKit: ee78997dc92d1055f11459d95c492dae1dba909d
+  XCDYouTubeKit: 86f4e7a9c2baa7b7adf6abfc28ac3ab34927be2d
   XExtensionItem: ce626520bbca225930b9c8e2283b226df431af3f
-  YYText: 41761822986179828a27ccf82aa97c7b5483c2e2
+  YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
 
-PODFILE CHECKSUM: 7a263005fcfe96af1adbea4b4464db4e79b0534c
+PODFILE CHECKSUM: 39db4646ac66d5e78bebc5302fcd13064a8fa3d1
 
-COCOAPODS: 1.1.0.rc.1
+COCOAPODS: 1.2.0

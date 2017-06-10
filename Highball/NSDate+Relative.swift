@@ -10,8 +10,8 @@ import FormatterKit
 
 private let formatterKey = "HighballTimeIntervalFormatterKey"
 
-public extension Date {
-	public func stringWithRelativeFormat() -> String {
+extension Date {
+	func stringWithRelativeFormat() -> String {
 		var intervalFormatter = Thread.current.threadDictionary[formatterKey] as? TTTTimeIntervalFormatter
 
 		if intervalFormatter == nil {

@@ -9,20 +9,20 @@
 import Foundation
 import TMTumblrSDK
 
-open class DashboardPresenter: PostsPresenter {
-	open weak var view: PostsView?
-	open var dataManager: PostsDataManager?
-	open var loadingCompletion: (() -> Void)?
+class DashboardPresenter: PostsPresenter {
+	weak var view: PostsView?
+	var dataManager: PostsDataManager?
+	var loadingCompletion: (() -> Void)?
 
-	open func viewDidDisappear() {
+	func viewDidDisappear() {
 
 	}
 
-	open func isViewingBookmark() -> Bool {
+	func isViewingBookmark() -> Bool {
 		return dataManager?.topID != nil
 	}
 
-	open func bookmarkPostAtIndex(_ index: Int) {
+	func bookmarkPostAtIndex(_ index: Int) {
 		guard let dataManager = dataManager, let accountName = AccountsService.account?.name else {
 			return
 		}
@@ -41,7 +41,7 @@ open class DashboardPresenter: PostsPresenter {
 		userDefaults.set(bookmarks, forKey: bookmarksKey)
 	}
 
-	open func goToBookmarkedPostWithID(_ id: Int) {
+	func goToBookmarkedPostWithID(_ id: Int) {
 		guard let view = view, let dataManager = dataManager else {
 			return
 		}
@@ -52,11 +52,11 @@ open class DashboardPresenter: PostsPresenter {
 		dataManager.loadMore(view.currentWidth())
 	}
 
-	public func dataManager(_ dataManager: PostsDataManager, requestPostsWithCount postCount: Int, parameters: [String : AnyObject], callback: @escaping TMAPICallback) {
+	func dataManager(_ dataManager: PostsDataManager, requestPostsWithCount postCount: Int, parameters: [String : AnyObject], callback: @escaping TMAPICallback) {
 		TMAPIClient.sharedInstance().dashboard(parameters, callback: callback)
 	}
 
-	public func dataManagerPostsJSONKey(_ dataManager: PostsDataManager) -> String? {
+	func dataManagerPostsJSONKey(_ dataManager: PostsDataManager) -> String? {
 		return "posts"
 	}
 }

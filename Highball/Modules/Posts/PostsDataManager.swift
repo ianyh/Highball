@@ -13,7 +13,7 @@ import UIKit
 protocol PostsDataManagerDelegate: class {
 	func dataManager(_ dataManager: PostsDataManager, requestPostsWithCount postCount: Int, parameters: [String: AnyObject], callback: @escaping TMAPICallback)
 	func dataManagerPostsJSONKey(_ dataManager: PostsDataManager) -> String?
-	func dataManagerDidReload(_ dataManager: PostsDataManager, indexSet: IndexSet?, completion: () -> Void)
+	func dataManagerDidReload(_ dataManager: PostsDataManager, indexSet: IndexSet?, completion: @escaping () -> Void)
 	func dataManagerDidComputeHeight(_ dataManager: PostsDataManager)
 	func dataManager(_ dataManager: PostsDataManager, didEncounterError error: NSError)
 }

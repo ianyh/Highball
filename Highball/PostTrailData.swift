@@ -9,11 +9,11 @@
 import Foundation
 import Mapper
 
-public struct PostTrailData: Mappable {
-	public let username: String
-	public let content: String
+struct PostTrailData: Mappable {
+	let username: String
+	let content: String
 
-	public init(map: Mapper) throws {
+	init(map: Mapper) throws {
 		username = try map.from("blog.name")
 		content = try map.from("content")
 	}

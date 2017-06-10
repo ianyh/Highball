@@ -15,7 +15,7 @@ target 'Highball' do
   pod 'DTCoreText', '~> 1.6'
   pod 'FontAwesomeKit', git: 'https://github.com/PrideChung/FontAwesomeKit.git'
   pod 'FormatterKit/TimeIntervalFormatter', '~> 1.8'
-  pod 'ModelMapper', '~> 5.0'
+  pod 'ModelMapper', '~> 6.0'
   pod 'OAuthSwift', '~> 1.0'
   pod 'PINCache', '~> 2.1'
   pod 'PINRemoteImage', '~> 1.2'

@@ -9,15 +9,15 @@
 import Foundation
 import UIKit
 
-public protocol Module {
+protocol Module {
 	associatedtype ViewController: UIViewController
 
 	var viewController: ViewController { get }
 	func installInNavigationController(_ navigationController: UINavigationController)
 }
 
-public extension Module {
-	public func installInNavigationController(_ navigationController: UINavigationController) {
+extension Module {
+	func installInNavigationController(_ navigationController: UINavigationController) {
 		navigationController.pushViewController(viewController, animated: true)
 	}
 }

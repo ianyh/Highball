@@ -9,18 +9,18 @@
 import Foundation
 import TMTumblrSDK
 
-open class BlogPresenter: PostsPresenter {
-	open weak var view: PostsView?
-	open var dataManager: PostsDataManager?
-	open var loadingCompletion: (() -> Void)?
+class BlogPresenter: PostsPresenter {
+	weak var view: PostsView?
+	var dataManager: PostsDataManager?
+	var loadingCompletion: (() -> Void)?
 
 	fileprivate let blogName: String
 
-	public init(blogName: String) {
+	init(blogName: String) {
 		self.blogName = blogName
 	}
 
-	open func follow() {
+	func follow() {
 		TMAPIClient.sharedInstance().follow(blogName) { _, error in
 			if error == nil {
 				self.view?.presentMessage("Followed", message: "Successfully followed \(self.blogName)!")
@@ -30,7 +30,7 @@ open class BlogPresenter: PostsPresenter {
 		}
 	}
 
-	open func unfollow() {
+	func unfollow() {
 		TMAPIClient.sharedInstance().unfollow(blogName) { _, error in
 			if error == nil {
 				self.view?.presentMessage("Unfollowed", message: "Successfully unfollowed \(self.blogName)!")
@@ -41,12 +41,12 @@ open class BlogPresenter: PostsPresenter {
 	}
 }
 
-public extension BlogPresenter {
-	public func dataManager(_ dataManager: PostsDataManager, requestPostsWithCount postCount: Int, parameters: [String : AnyObject], callback: @escaping TMAPICallback) {
+extension BlogPresenter {
+	func dataManager(_ dataManager: PostsDataManager, requestPostsWithCount postCount: Int, parameters: [String : AnyObject], callback: @escaping TMAPICallback) {
 		TMAPIClient.sharedInstance().posts(blogName, type: "", parameters: parameters, callback: callback)
 	}
 
-	public func dataManagerPostsJSONKey(_ dataManager: PostsDataManager) -> String? {
+	func dataManagerPostsJSONKey(_ dataManager: PostsDataManager) -> String? {
 		return "posts"
 	}
 }

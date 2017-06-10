@@ -12,10 +12,10 @@ import SwiftyJSON
 import TMTumblrSDK
 import UIKit
 
-open class DashboardViewController: PostsViewController {
+class DashboardViewController: PostsViewController {
 	internal var dashboardPresenter: DashboardPresenter?
 
-	open override var presenter: PostsPresenter? {
+	override var presenter: PostsPresenter? {
 		get {
 			return dashboardPresenter as? PostsPresenter
 		}
@@ -28,7 +28,7 @@ open class DashboardViewController: PostsViewController {
 		}
 	}
 
-	public override init(postHeightCache: PostHeightCache) {
+	override init(postHeightCache: PostHeightCache) {
 		super.init(postHeightCache: postHeightCache)
 
 		navigationItem.title = "Dashboard"
@@ -42,7 +42,7 @@ open class DashboardViewController: PostsViewController {
 		)
 	}
 
-	public required init?(coder aDecoder: NSCoder) {
+	required init?(coder aDecoder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
 
@@ -54,17 +54,17 @@ open class DashboardViewController: PostsViewController {
 		)
 	}
 
-	open override func viewDidDisappear(_ animated: Bool) {
+	override func viewDidDisappear(_ animated: Bool) {
 		super.viewDidDisappear(animated)
 
 		bookmark()
 	}
 
-	open func applicationWillResignActive(_ notification: Notification) {
+	func applicationWillResignActive(_ notification: Notification) {
 		bookmark()
 	}
 
-	open func bookmark() {
+	func bookmark() {
 		guard let firstIndexPath = tableView.indexPathsForVisibleRows?.first else {
 			return
 		}
@@ -74,7 +74,7 @@ open class DashboardViewController: PostsViewController {
 		dashboardPresenter?.bookmarkPostAtIndex(postIndex)
 	}
 
-	open func bookmarks(_ sender: UIButton, event: UIEvent) {
+	func bookmarks(_ sender: UIButton, event: UIEvent) {
 		let alertController = UIAlertController(title: "", message: "Go to top of your feed?", preferredStyle: .alert)
 		alertController.addAction(UIAlertAction(title: "Yes", style: .default) { [weak self] _ in
 			self?.navigationItem.rightBarButtonItem = nil
@@ -87,7 +87,7 @@ open class DashboardViewController: PostsViewController {
 		present(alertController, animated: true, completion: nil)
 	}
 
-	open func gotoBookmark(_ bookmarkID: Int) {
+	func gotoBookmark(_ bookmarkID: Int) {
 		dashboardPresenter?.goToBookmarkedPostWithID(bookmarkID)
 		tableViewAdapter?.resetCache()
 		tableView.reloadData()
@@ -95,7 +95,7 @@ open class DashboardViewController: PostsViewController {
 		updateRightBarButtonItem()
 	}
 
-	open func presentHistory(_ sender: AnyObject) {
+	func presentHistory(_ sender: AnyObject) {
 		let historyViewController = HistoryViewController(delegate: self)
 		let navigationController = UINavigationController(rootViewController: historyViewController)
 
@@ -130,7 +130,7 @@ open class DashboardViewController: PostsViewController {
 }
 
 extension DashboardViewController: HistoryViewControllerDelegate {
-	public func historyViewController(_ historyViewController: HistoryViewController, didFinishWithId selectedId: Int?) {
+	func historyViewController(_ historyViewController: HistoryViewController, didFinishWithId selectedId: Int?) {
 		defer {
 			dismiss(animated: true, completion: nil)
 		}

@@ -8,10 +8,10 @@
 
 import Foundation
 
-public struct PhotosetLayout {
-	public let rows: [Int]
+struct PhotosetLayout {
+	let rows: [Int]
 
-	public init(photos: [PostPhoto], layoutString: String?) {
+	init(photos: [PostPhoto], layoutString: String?) {
 		if let layoutString = layoutString {
 			var photosetLayoutRows: [Int] = []
 			for character in layoutString.characters {

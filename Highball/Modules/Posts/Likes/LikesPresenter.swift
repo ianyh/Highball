@@ -9,18 +9,18 @@
 import Foundation
 import TMTumblrSDK
 
-open class LikesPresenter: PostsPresenter {
-	open weak var view: PostsView?
-	open var dataManager: PostsDataManager?
-	open var loadingCompletion: (() -> Void)?
+class LikesPresenter: PostsPresenter {
+	weak var view: PostsView?
+	var dataManager: PostsDataManager?
+	var loadingCompletion: (() -> Void)?
 
-	public func dataManager(_ dataManager: PostsDataManager, requestPostsWithCount postCount: Int, parameters: [String : AnyObject], callback: @escaping TMAPICallback) {
+	func dataManager(_ dataManager: PostsDataManager, requestPostsWithCount postCount: Int, parameters: [String : AnyObject], callback: @escaping TMAPICallback) {
 		var mutableParameters = parameters
 		mutableParameters["offset"] = postCount as AnyObject?
 		TMAPIClient.sharedInstance().likes(mutableParameters, callback: callback)
 	}
 
-	public func dataManagerPostsJSONKey(_ dataManager: PostsDataManager) -> String? {
+	func dataManagerPostsJSONKey(_ dataManager: PostsDataManager) -> String? {
 		return "liked_posts"
 	}
 }

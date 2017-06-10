@@ -9,10 +9,10 @@
 import UIKit
 import FontAwesomeKit
 
-open class BlogViewController: PostsViewController {
+class BlogViewController: PostsViewController {
 	internal var blogPresenter: BlogPresenter?
 
-	open override var presenter: PostsPresenter? {
+	override var presenter: PostsPresenter? {
 		get {
 			return blogPresenter as? PostsPresenter
 		}
@@ -25,7 +25,7 @@ open class BlogViewController: PostsViewController {
 		}
 	}
 
-	public init(blogName: String, postHeightCache: PostHeightCache) {
+	init(blogName: String, postHeightCache: PostHeightCache) {
 		super.init(postHeightCache: postHeightCache)
 
 		let followIcon = FAKIonIcons.iosPersonaddOutlineIcon(withSize: 30)
@@ -38,15 +38,15 @@ open class BlogViewController: PostsViewController {
 		navigationItem.title = blogName
 	}
 
-	public override init(postHeightCache: PostHeightCache) {
+	override init(postHeightCache: PostHeightCache) {
 		fatalError("init() has not been implemented")
 	}
 
-	public required init?(coder aDecoder: NSCoder) {
+	required init?(coder aDecoder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	open func follow(_ sender: UIBarButtonItem) {
+	func follow(_ sender: UIBarButtonItem) {
 		let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
 		alertController.addAction(UIAlertAction(title: "Follow", style: .default) { [weak self] _ in

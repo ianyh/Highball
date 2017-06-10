@@ -11,10 +11,10 @@ import Mapper
 import SwiftyJSON
 import UIKit
 
-public struct PostDialogueEntry: Mappable {
-	public let formattedString: NSAttributedString
+struct PostDialogueEntry: Mappable {
+	let formattedString: NSAttributedString
 
-	public init(map: Mapper) throws {
+	init(map: Mapper) throws {
 		let label: String = try map.from("label")
 		let phrase: String = try map.from("phrase")
 

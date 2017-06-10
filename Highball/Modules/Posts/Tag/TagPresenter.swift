@@ -9,18 +9,18 @@
 import Foundation
 import TMTumblrSDK
 
-open class TagPresenter: PostsPresenter {
-	open weak var view: PostsView?
-	open var dataManager: PostsDataManager?
-	open var loadingCompletion: (() -> Void)?
+class TagPresenter: PostsPresenter {
+	weak var view: PostsView?
+	var dataManager: PostsDataManager?
+	var loadingCompletion: (() -> Void)?
 
 	fileprivate let tag: String
 
-	public init(tag: String) {
+	init(tag: String) {
 		self.tag = tag.substring(from: tag.characters.index(tag.startIndex, offsetBy: 1))
 	}
 
-	public func dataManager(_ dataManager: PostsDataManager, requestPostsWithCount postCount: Int, parameters: [String : AnyObject], callback: @escaping TMAPICallback) {
+	func dataManager(_ dataManager: PostsDataManager, requestPostsWithCount postCount: Int, parameters: [String : AnyObject], callback: @escaping TMAPICallback) {
 		var mutableParameters = parameters
 		if let lastPost = dataManager.posts?.last {
 			mutableParameters["before"] = "\(lastPost.timestamp)" as AnyObject?
@@ -28,7 +28,7 @@ open class TagPresenter: PostsPresenter {
 		TMAPIClient.sharedInstance().tagged(tag, parameters: mutableParameters, callback: callback)
 	}
 
-	public func dataManagerPostsJSONKey(_ dataManager: PostsDataManager) -> String? {
+	func dataManagerPostsJSONKey(_ dataManager: PostsDataManager) -> String? {
 		return nil
 	}
 }

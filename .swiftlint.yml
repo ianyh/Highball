@@ -6,6 +6,7 @@ disabled_rules:
         - force_try
         - variable_name
         - legacy_constructor
+        - weak_delegate
 included:
         - Highball
 line_length: 200

@@ -40,7 +40,6 @@
 		409D00EB1B28BF5F0097C2EC /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 409D00E61B27522E0097C2EC /* SwiftyJSON.framework */; };
 		40A11E6819B518DD00B91843 /* ImagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A11E6719B518DD00B91843 /* ImagesViewController.swift */; };
 		40A11E6B19B51FF700B91843 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A11E6A19B51FF700B91843 /* ImageCollectionViewCell.swift */; };
-		40B7E5331DB96F3C00B74586 /* PostSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B7E5321DB96F3C00B74586 /* PostSectionController.swift */; };
 		40C78D1519BD29330002EB78 /* ReblogTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C78D1419BD29330002EB78 /* ReblogTransitionAnimator.swift */; };
 		40CAF2F71D78CDB600B8A027 /* PostVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CAF2F61D78CDB600B8A027 /* PostVideo.swift */; };
 		40CAF2FC1D78ECFC00B8A027 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CAF2FB1D78ECFC00B8A027 /* DashboardViewController.swift */; };
@@ -77,7 +76,6 @@
 		40F8CE9A1A41143000609ABF /* AccountsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F8CE991A41143000609ABF /* AccountsService.swift */; };
 		40F9F4041CB1DA8200989D5B /* PostTrailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F9F4031CB1DA8200989D5B /* PostTrailData.swift */; };
 		40FF6D4319B940C6008119A3 /* UserBlog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FF6D4219B940C6008119A3 /* UserBlog.swift */; };
-		40FF6D4519B9F656008119A3 /* QuickReblogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FF6D4419B9F656008119A3 /* QuickReblogViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -129,7 +127,6 @@
 		409D00E61B27522E0097C2EC /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
 		40A11E6719B518DD00B91843 /* ImagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagesViewController.swift; sourceTree = "<group>"; };
 		40A11E6A19B51FF700B91843 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
-		40B7E5321DB96F3C00B74586 /* PostSectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostSectionController.swift; sourceTree = "<group>"; };
 		40C78D1419BD29330002EB78 /* ReblogTransitionAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReblogTransitionAnimator.swift; sourceTree = "<group>"; };
 		40CAF2F61D78CDB600B8A027 /* PostVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostVideo.swift; sourceTree = "<group>"; };
 		40CAF2FB1D78ECFC00B8A027 /* DashboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
@@ -166,7 +163,6 @@
 		40F8CE991A41143000609ABF /* AccountsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsService.swift; sourceTree = "<group>"; };
 		40F9F4031CB1DA8200989D5B /* PostTrailData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostTrailData.swift; sourceTree = "<group>"; };
 		40FF6D4219B940C6008119A3 /* UserBlog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserBlog.swift; sourceTree = "<group>"; };
-		40FF6D4419B9F656008119A3 /* QuickReblogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickReblogViewController.swift; sourceTree = "<group>"; };
 		440C4C4D5E0A7451B7FA466E /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EC024F7DABBCBE3005FA9BF /* Pods-Highball.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Highball.release.xcconfig"; path = "Pods/Target Support Files/Pods-Highball/Pods-Highball.release.xcconfig"; sourceTree = "<group>"; };
 		B2FB0DEC6CD5A44B45F1B67E /* Pods-Highball.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Highball.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Highball/Pods-Highball.debug.xcconfig"; sourceTree = "<group>"; };
@@ -308,14 +304,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		4058C46B1C42E9D800B19D26 /* Reblog */ = {
-			isa = PBXGroup;
-			children = (
-				40FF6D4419B9F656008119A3 /* QuickReblogViewController.swift */,
-			);
-			name = Reblog;
-			sourceTree = "<group>";
-		};
 		40778B9A19B15F7D00F8EE13 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -341,9 +329,7 @@
 		40A11E6619B518B500B91843 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				40B7E5311DB96F2B00B74586 /* New Dashboard */,
 				40DB21231C556156007AD3DD /* Blogs */,
-				4058C46B1C42E9D800B19D26 /* Reblog */,
 				403040E11C37250D001EFC9E /* Post */,
 				40080E8D1A0F042B00D883AE /* SettingsViewController.swift */,
 				40080E8F1A0F11DD00D883AE /* LockSplashViewController.swift */,
@@ -353,14 +339,6 @@
 				40F75A841C31FA4100EC86DE /* HistoryViewController.swift */,
 			);
 			name = Controllers;
-			sourceTree = "<group>";
-		};
-		40B7E5311DB96F2B00B74586 /* New Dashboard */ = {
-			isa = PBXGroup;
-			children = (
-				40B7E5321DB96F3C00B74586 /* PostSectionController.swift */,
-			);
-			name = "New Dashboard";
 			sourceTree = "<group>";
 		};
 		40CAF2F81D78EC2B00B8A027 /* Modules */ = {
@@ -676,14 +654,12 @@
 				403040E51C373D66001EFC9E /* PostViewHeightCalculator.swift in Sources */,
 				40A11E6B19B51FF700B91843 /* ImageCollectionViewCell.swift in Sources */,
 				40080E901A0F11DD00D883AE /* LockSplashViewController.swift in Sources */,
-				40FF6D4519B9F656008119A3 /* QuickReblogViewController.swift in Sources */,
 				40E1957C1D79E1A20087C4EF /* LikesViewController.swift in Sources */,
 				40CAF3041D78EEAC00B8A027 /* DashboardPresenter.swift in Sources */,
 				40E1957E1D79E1AF0087C4EF /* LikesPresenter.swift in Sources */,
 				406F38EF1D7514520046CE1D /* Account.swift in Sources */,
 				403F53DB19AECFEF00FF8F3B /* PhotosetRowTableViewCell.swift in Sources */,
 				40E195771D79DDF70087C4EF /* BlogModule.swift in Sources */,
-				40B7E5331DB96F3C00B74586 /* PostSectionController.swift in Sources */,
 				40E195891D79E7020087C4EF /* PostsTableViewAdapter.swift in Sources */,
 				408C7D2119B384C800EFC410 /* PostDialogueEntry.swift in Sources */,
 				4008591B1B7EBA05009DF207 /* NSDate+Relative.swift in Sources */,

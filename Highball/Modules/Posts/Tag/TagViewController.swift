@@ -8,14 +8,14 @@
 
 import UIKit
 
-public final class TagViewController: PostsViewController {
-	public init(tag: String, postHeightCache: PostHeightCache) {
+final class TagViewController: PostsViewController {
+	init(tag: String, postHeightCache: PostHeightCache) {
 		super.init(postHeightCache: postHeightCache)
 
 		navigationItem.title = tag
 	}
 
-	public required init?(coder aDecoder: NSCoder) {
+	required init?(coder aDecoder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
 }

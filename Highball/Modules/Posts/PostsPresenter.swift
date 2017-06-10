@@ -9,14 +9,14 @@
 import Foundation
 import TMTumblrSDK
 
-public protocol PostsPresenter: class, PostsDataManagerDelegate {
+protocol PostsPresenter: class, PostsDataManagerDelegate {
 	var view: PostsView? { get }
 	var dataManager: PostsDataManager? { get }
 	var loadingCompletion: (() -> Void)? { get set }
 }
 
-public extension PostsPresenter {
-	public func viewDidAppear() {
+extension PostsPresenter {
+	func viewDidAppear() {
 		guard let dataManager = dataManager, !dataManager.hasPosts else {
 			return
 		}
@@ -24,7 +24,7 @@ public extension PostsPresenter {
 		refreshPosts()
 	}
 
-	public func viewDidRefresh() {
+	func viewDidRefresh() {
 		refreshPosts()
 	}
 
@@ -36,7 +36,7 @@ public extension PostsPresenter {
 		dataManager.loadTop(view.currentWidth())
 	}
 
-	public func reloadTable() {
+	func reloadTable() {
 		guard let dataManager = dataManager else {
 			return
 		}
@@ -56,7 +56,7 @@ public extension PostsPresenter {
 		dataManager.loadingBottom = false
 	}
 
-	public func resetPosts() {
+	func resetPosts() {
 		guard let view = view, let dataManager = dataManager else {
 			return
 		}
@@ -67,8 +67,8 @@ public extension PostsPresenter {
 	}
 }
 
-public extension PostsPresenter {
-	public func dataManagerDidReload(_ dataManager: PostsDataManager, indexSet: IndexSet?, completion: @escaping () -> Void) {
+extension PostsPresenter {
+	func dataManagerDidReload(_ dataManager: PostsDataManager, indexSet: IndexSet?, completion: @escaping () -> Void) {
 		loadingCompletion = { [weak self] in
 			completion()
 			self?.view?.reloadWithNewIndices(indexSet)
@@ -76,29 +76,29 @@ public extension PostsPresenter {
 		reloadTable()
 	}
 
-	public func dataManagerDidComputeHeight(_ dataManager: PostsDataManager) {
+	func dataManagerDidComputeHeight(_ dataManager: PostsDataManager) {
 		reloadTable()
 	}
 
-	public func dataManager(_ dataManager: PostsDataManager, didEncounterError error: NSError) {
+	func dataManager(_ dataManager: PostsDataManager, didEncounterError error: NSError) {
 		view?.presentMessage("Error", message: "Hit an error trying to load posts. \(error.localizedDescription)")
 	}
 }
 
-public extension PostsPresenter {
-	public func numberOfPosts() -> Int {
+extension PostsPresenter {
+	func numberOfPosts() -> Int {
 		return dataManager?.posts?.count ?? 0
 	}
 
-	public func postAtIndex(_ index: Int) -> Post {
+	func postAtIndex(_ index: Int) -> Post {
 		return dataManager!.posts[index]
 	}
 
-	public func toggleLikeForPostAtIndex(_ index: Int) {
+	func toggleLikeForPostAtIndex(_ index: Int) {
 		dataManager?.toggleLikeForPostAtIndex(index)
 	}
 
-	public func didEncounterLoadMoreBoundary() {
+	func didEncounterLoadMoreBoundary() {
 		guard let dataManager = dataManager, let view = view else {
 			return
 		}

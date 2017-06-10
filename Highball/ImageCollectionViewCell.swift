@@ -98,9 +98,9 @@ class ImageCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
 		}
 
 		let imageURL = photo.urlWithWidth(contentWidth)
-		imageView.pin_setImage(from: imageURL) { result in
-			self.failedImageView.isHidden = result!.error == nil
-		}
+		imageView.pin_setImage(from: imageURL, completion: { result in
+			self.failedImageView.isHidden = result.error == nil
+		})
 	}
 
 	func scrollViewDidZoom(_ scrollView: UIScrollView) {

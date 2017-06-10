@@ -8,12 +8,12 @@
 
 import Foundation
 
-public struct DashboardModule {
-	public let viewController: DashboardViewController
+struct DashboardModule {
+	let viewController: DashboardViewController
 	fileprivate let presenter = DashboardPresenter()
 	fileprivate let dataManager: PostsDataManager
 
-	public init(postHeightCache: PostHeightCache) {
+	init(postHeightCache: PostHeightCache) {
 		viewController = DashboardViewController(postHeightCache: postHeightCache)
 		dataManager = PostsDataManager(postHeightCache: postHeightCache, delegate: presenter)
 

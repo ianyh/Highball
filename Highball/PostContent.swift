@@ -16,17 +16,17 @@ private struct Attachment {
 	let size: CGSize
 }
 
-public struct PostContent {
-	public let attributedString: NSAttributedString
+struct PostContent {
+	let attributedString: NSAttributedString
 	fileprivate var attachments: [String: Attachment] = [:]
 
-	public init(htmlData: Data) {
+	init(htmlData: Data) {
 		let stringBuilderOptions = [DTDefaultHeadIndent: 0, DTDefaultFirstLineHeadIndent: 0, DTDocumentPreserveTrailingSpaces: false, DTUseiOS6Attributes: true] as [String : Any]
 		let htmlStringBuilder = DTHTMLAttributedStringBuilder(html: htmlData, options: stringBuilderOptions, documentAttributes: nil)
 		attributedString = (htmlStringBuilder?.generatedAttributedString().attributedStringByTrimmingNewlines())!
 	}
 
-	public func attributedStringForDisplayWithLinkHandler(_ linkHandler: ((URL) -> Void)?) -> NSAttributedString {
+	func attributedStringForDisplayWithLinkHandler(_ linkHandler: ((URL) -> Void)?) -> NSAttributedString {
 		let mutableAttributedString = attributedString.mutableCopy() as! NSMutableAttributedString
 		let entireStringRange = NSMakeRange(0, attributedString.length)
 		let options = NSAttributedString.EnumerationOptions.reverse
@@ -65,7 +65,7 @@ public struct PostContent {
 		return mutableAttributedString
 	}
 
-	public func contentURLS() -> [URL] {
+	func contentURLS() -> [URL] {
 		let entireStringRange = NSMakeRange(0, attributedString.length)
 		let options = NSAttributedString.EnumerationOptions()
 		var urls: [URL] = []
@@ -77,7 +77,7 @@ public struct PostContent {
 		return urls
 	}
 
-	mutating public func setImageView(_ imageView: FLAnimatedImageView, withSize size: CGSize, forAttachmentURL url: URL) {
+	mutating func setImageView(_ imageView: FLAnimatedImageView, withSize size: CGSize, forAttachmentURL url: URL) {
 		attachments[url.absoluteString] = Attachment(imageView: imageView, size: size)
 	}
 }

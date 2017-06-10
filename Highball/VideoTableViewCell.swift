@@ -37,7 +37,7 @@ class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
 			}
 
 			thumbnailImageView.pin_setImage(from: thumbnailURL as URL) { result in
-				if result?.resultType != .memoryCache {
+				if result.resultType != .memoryCache {
 					self.thumbnailImageView.alpha = 0
 					UIView.animate(
 						withDuration: 0.5,
@@ -56,7 +56,7 @@ class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
 				return
 			}
 
-			player.setUrl(url)
+			player.url = url
 		}
 	}
 
@@ -81,7 +81,7 @@ class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
 
 	fileprivate func setUpCell() {
 		player = Player()
-		player.delegate = self
+		player.playerDelegate = self
 		player.muted = true
 		player.playbackLoops = true
 
@@ -143,6 +143,10 @@ extension VideoTableViewCell: PlayerDelegate {
 	}
 
 	func playerBufferingStateDidChange(_ player: Player) {
+
+	}
+
+	func playerBufferTimeDidChange(_ bufferTime: Double) {
 
 	}
 

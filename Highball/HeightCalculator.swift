@@ -11,21 +11,21 @@ import Foundation
 import SwiftyJSON
 import YYText
 
-public class HeightCalculator {
+class HeightCalculator {
 	private let imageLoadingQueue = OperationQueue()
 	private let imageLoadingUnderlyingQueue = DispatchQueue(label: "imageLoadingQueue")
 
-	public let post: Post
-	public let width: CGFloat
+	let post: Post
+	let width: CGFloat
 
-	public init(post: Post, width: CGFloat) {
+	init(post: Post, width: CGFloat) {
 		self.post = post
 		self.width = width
 
 		imageLoadingQueue.underlyingQueue = imageLoadingUnderlyingQueue
 	}
 
-	public func calculateHeight(_ secondary: Bool = false, completion: @escaping (_ height: CGFloat?) -> Void) {
+	func calculateHeight(_ secondary: Bool = false, completion: @escaping (_ height: CGFloat?) -> Void) {
 		let htmlStringMethod = secondary ? Post.htmlSecondaryBodyWithWidth : Post.htmlBodyWithWidth
 
 		guard let content = htmlStringMethod(post)(width), let data = content.data(using: String.Encoding.utf8) else {
@@ -38,7 +38,7 @@ public class HeightCalculator {
 		calculateHeightWithAttributedStringData(data, completion: completion)
 	}
 
-	public func calculateBodyHeightAtIndex(_ index: Int, completion: @escaping (_ height: CGFloat?) -> Void) {
+	func calculateBodyHeightAtIndex(_ index: Int, completion: @escaping (_ height: CGFloat?) -> Void) {
 		let trailData = post.trailData[index]
 		let htmlStringMethod = trailData.content.htmlStringWithTumblrStyle(width)
 
@@ -52,7 +52,7 @@ public class HeightCalculator {
 		calculateHeightWithAttributedStringData(data, completion: completion)
 	}
 
-	public func calculateHeightWithAttributedStringData(_ data: Data, completion: @escaping (_ height: CGFloat?) -> Void) {
+	func calculateHeightWithAttributedStringData(_ data: Data, completion: @escaping (_ height: CGFloat?) -> Void) {
 		let postContent = PostContent(htmlData: data)
 		let string = postContent.attributedStringForDisplayWithLinkHandler(nil)
 		let textLayout = YYTextLayout(containerSize: CGSize(width: width - 20, height: CGFloat.greatestFiniteMagnitude), text: string)

@@ -9,18 +9,18 @@
 import Foundation
 import RealmSwift
 
-public protocol UserBlog {
+protocol UserBlog {
 	var name: String! { get }
 	var url: String! { get }
 	var title: String! { get }
 	var isPrimary: Bool { get }
 }
 
-open class UserBlogObject: Object {
-	open dynamic var name: String!
-	open dynamic var url: String!
-	open dynamic var title: String!
-	open dynamic var isPrimary: Bool = false
+class UserBlogObject: Object {
+	dynamic var name: String!
+	dynamic var url: String!
+	dynamic var title: String!
+	dynamic var isPrimary: Bool = false
 }
 
 extension UserBlogObject: UserBlog {}

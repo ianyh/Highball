@@ -98,7 +98,7 @@ class PhotosetRowTableViewCell: WCFastCell {
 			}
 
 			imageView.pin_setImage(from: imageURL) { result in
-				if result!.resultType != .memoryCache {
+				if result.resultType != .memoryCache {
 					imageView.alpha = 0
 					UIView.animate(
 						withDuration: 0.5,
@@ -108,7 +108,7 @@ class PhotosetRowTableViewCell: WCFastCell {
 						completion: nil
 					)
 				}
-				failedImageView.isHidden = result!.error == nil
+				failedImageView.isHidden = result.error == nil
 			}
 
 			lastImageView = imageView

@@ -9,7 +9,7 @@
 import UIKit
 
 // swiftlint:disable variable_name
-public let AccountDidChangeNotification = "AccountDidChangeNotification"
+let AccountDidChangeNotification = "AccountDidChangeNotification"
 // swiftlint:enable variable_name
 
 class AccountsViewController: UITableViewController {

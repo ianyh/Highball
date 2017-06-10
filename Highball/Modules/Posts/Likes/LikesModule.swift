@@ -8,12 +8,12 @@
 
 import Foundation
 
-public struct LikesModule {
-	public let viewController: LikesViewController
+struct LikesModule {
+	let viewController: LikesViewController
 	fileprivate let presenter: LikesPresenter
 	fileprivate let dataManager: PostsDataManager
 
-	public init(postHeightCache: PostHeightCache) {
+	init(postHeightCache: PostHeightCache) {
 		viewController = LikesViewController(postHeightCache: postHeightCache)
 		presenter = LikesPresenter()
 		dataManager = PostsDataManager(postHeightCache: postHeightCache, delegate: presenter)

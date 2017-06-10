@@ -32,12 +32,12 @@ internal class TestVC: OAuthWebViewController, UIWebViewDelegate {
 	}
 }
 
-public struct AccountsService {
+struct AccountsService {
 	fileprivate static let lastAccountNameKey = "HILastAccountKey"
 
-	public fileprivate(set) static var account: Account!
+	fileprivate(set) static var account: Account!
 
-	public static func accounts() -> [Account] {
+	static func accounts() -> [Account] {
 		guard let realm = try? Realm() else {
 			return []
 		}
@@ -45,7 +45,7 @@ public struct AccountsService {
 		return realm.objects(AccountObject.self).map { $0 }
 	}
 
-	public static func lastAccount() -> Account? {
+	static func lastAccount() -> Account? {
 		let userDefaults = UserDefaults.standard
 
 		guard let accountName = userDefaults.string(forKey: lastAccountNameKey) else {
@@ -63,7 +63,7 @@ public struct AccountsService {
 		return account
 	}
 
-	public static func start(fromViewController viewController: UIViewController, completion: @escaping (Account) -> Void) {
+	static func start(fromViewController viewController: UIViewController, completion: @escaping (Account) -> Void) {
 		if let lastAccount = lastAccount() {
 			loginToAccount(lastAccount, completion: completion)
 			return
@@ -83,7 +83,7 @@ public struct AccountsService {
 		loginToAccount(firstAccount, completion: completion)
 	}
 
-	public static func loginToAccount(_ account: Account, completion: @escaping (Account) -> Void) {
+	static func loginToAccount(_ account: Account, completion: @escaping (Account) -> Void) {
 		self.account = account
 
 		TMAPIClient.sharedInstance().oAuthToken = account.token
@@ -94,7 +94,7 @@ public struct AccountsService {
 		}
 	}
 
-	public static func authenticateNewAccount(fromViewController viewController: UIViewController, completion: @escaping (_ account: Account?) -> Void) {
+	static func authenticateNewAccount(fromViewController viewController: UIViewController, completion: @escaping (_ account: Account?) -> Void) {
 		let oauth = OAuth1Swift(
 			consumerKey: TMAPIClient.sharedInstance().oAuthConsumerKey,
 			consumerSecret: TMAPIClient.sharedInstance().oAuthConsumerSecret,
@@ -109,19 +109,19 @@ public struct AccountsService {
 		TMAPIClient.sharedInstance().oAuthToken = nil
 		TMAPIClient.sharedInstance().oAuthTokenSecret = nil
 
-		oauth.authorizeURLHandler = TestVC()// SafariURLHandler(viewController: viewController)
+		oauth.authorizeURLHandler = SafariURLHandler(viewController: viewController, oauthSwift: oauth)
 
-		oauth.authorizeWithCallbackURL(
-			URL(string: "highball://oauth-callback")!,
+		oauth.authorize(
+			withCallbackURL: URL(string: "highball://oauth-callback")!,
 			success: { (credential, response, _) in
-				TMAPIClient.sharedInstance().OAuthToken = credential.oauth_token
-				TMAPIClient.sharedInstance().OAuthTokenSecret = credential.oauth_token_secret
+				TMAPIClient.sharedInstance().oAuthToken = credential.oauthToken
+				TMAPIClient.sharedInstance().oAuthTokenSecret = credential.oauthTokenSecret
 
 				TMAPIClient.sharedInstance().userInfo { response, error in
 					var account: Account?
 
 					defer {
-						completion(account: account)
+						completion(account)
 					}
 
 					if let error = error {
@@ -146,9 +146,9 @@ public struct AccountsService {
 
 					let accountObject = AccountObject()
 					accountObject.name = json["user"]["name"].stringValue
-					accountObject.token = TMAPIClient.sharedInstance().OAuthToken
-					accountObject.tokenSecret = TMAPIClient.sharedInstance().OAuthTokenSecret
-					accountObject.blogObjects.appendContentsOf(blogs)
+					accountObject.token = TMAPIClient.sharedInstance().oAuthToken
+					accountObject.tokenSecret = TMAPIClient.sharedInstance().oAuthTokenSecret
+					accountObject.blogObjects.append(objectsIn: blogs)
 
 					guard let realm = try? Realm() else {
 						return
@@ -167,8 +167,8 @@ public struct AccountsService {
 
 					self.account = currentAccount
 
-					TMAPIClient.sharedInstance().OAuthToken = currentAccount?.token
-					TMAPIClient.sharedInstance().OAuthTokenSecret = currentAccount?.tokenSecret
+					TMAPIClient.sharedInstance().oAuthToken = currentAccount?.token
+					TMAPIClient.sharedInstance().oAuthTokenSecret = currentAccount?.tokenSecret
 				}
 			},
 			failure: { (error) in
@@ -177,7 +177,7 @@ public struct AccountsService {
 		)
 	}
 
-	public static func deleteAccount(_ account: Account, fromViewController viewController: UIViewController, completion: @escaping (_ changedAccount: Bool) -> Void) {
+	static func deleteAccount(_ account: Account, fromViewController viewController: UIViewController, completion: @escaping (_ changedAccount: Bool) -> Void) {
 		guard let realm = try? Realm(), let accountObject = account as? AccountObject else {
 			return
 		}

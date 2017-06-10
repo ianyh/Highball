@@ -9,14 +9,14 @@
 import Foundation
 import Mapper
 
-public struct PostVideo: Mappable {
-	public let type: String
-	public let url: URL
-	public let thumbnailURL: URL
-	public let width: Double
-	public let height: Double
+struct PostVideo: Mappable {
+	let type: String
+	let url: URL
+	let thumbnailURL: URL
+	let width: Double
+	let height: Double
 
-	public init(map: Mapper) throws {
+	init(map: Mapper) throws {
 		type = try map.from("video_type")
 		url = try map.from("video_url")
 		thumbnailURL = try map.from("thumbnail_url")

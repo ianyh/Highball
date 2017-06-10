@@ -39,7 +39,7 @@ class MainViewController: UITabBarController {
 
 		let dashboardViewController = UINavigationController(rootViewController: DashboardModule(postHeightCache: postHeightCache).viewController)
 		let likesViewController = UINavigationController(rootViewController: LikesModule(postHeightCache: postHeightCache).viewController)
-		let followedBlogsViewController = UINavigationController(rootViewController: ConversationsListModule().viewController)
+		let followedBlogsViewController = UINavigationController(rootViewController: FollowedBlogsViewController())
 		let settingsViewController = UINavigationController(rootViewController: SettingsViewController())
 
 		dashboardViewController.tabBarItem.title = "Dashboard"

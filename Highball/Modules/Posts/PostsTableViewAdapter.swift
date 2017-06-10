@@ -10,7 +10,7 @@ import FLAnimatedImage
 import SafariServices
 import UIKit
 
-public protocol PostsTableViewAdapterDelegate: class {
+protocol PostsTableViewAdapterDelegate: class {
 	func numberOfPostsForAdapter(_ adapter: PostsTableViewAdapter) -> Int
 	func postAdapter(_ adapter: PostsTableViewAdapter, sectionAdapterAtIndex index: Int) -> PostSectionAdapter
 	func adapterDidEncounterLoadMoreBoundary(_ adapter: PostsTableViewAdapter)
@@ -22,7 +22,7 @@ public protocol PostsTableViewAdapterDelegate: class {
 	func adapter(_ adapter: PostsTableViewAdapter, didEmitViewController viewController: UIViewController, forPresentation presented: Bool)
 }
 
-open class PostsTableViewAdapter: NSObject {
+class PostsTableViewAdapter: NSObject {
 	fileprivate let tableView: UITableView
 	fileprivate let postHeightCache: PostHeightCache
 	fileprivate weak var delegate: PostsTableViewAdapterDelegate!
@@ -31,7 +31,7 @@ open class PostsTableViewAdapter: NSObject {
 	fileprivate var urlWidthCache: [String: CGFloat] = [:]
 	fileprivate var urlImageViewCache: [String: FLAnimatedImageView] = [:]
 
-	public init(tableView: UITableView, postHeightCache: PostHeightCache, delegate: PostsTableViewAdapterDelegate) {
+	init(tableView: UITableView, postHeightCache: PostHeightCache, delegate: PostsTableViewAdapterDelegate) {
 		self.tableView = tableView
 		self.postHeightCache = postHeightCache
 		self.delegate = delegate
@@ -66,24 +66,24 @@ open class PostsTableViewAdapter: NSObject {
 		tableView.register(PostHeaderView.self, forHeaderFooterViewReuseIdentifier: PostHeaderView.viewIdentifier)
 	}
 
-	open func resetCache() {
+	func resetCache() {
 		heightCache.removeAll()
 		urlImageViewCache.removeAll()
 	}
 }
 
 extension PostsTableViewAdapter: UITableViewDataSource {
-	public func numberOfSections(in tableView: UITableView) -> Int {
+	func numberOfSections(in tableView: UITableView) -> Int {
 		return delegate.numberOfPostsForAdapter(self)
 	}
 
-	public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		let sectionAdapter = delegate.postAdapter(self, sectionAdapterAtIndex: section)
 
 		return sectionAdapter.numbersOfRows()
 	}
 
-	public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let sectionAdapter = delegate.postAdapter(self, sectionAdapterAtIndex: (indexPath as NSIndexPath).section)
 		let cell = sectionAdapter.tableView(tableView, cellForRow: (indexPath as NSIndexPath).row)
 		let linkTapHandler = { [weak self] (url: URL) in
@@ -145,7 +145,7 @@ extension PostsTableViewAdapter: UITableViewDataSource {
 }
 
 extension PostsTableViewAdapter: UITableViewDelegate {
-	public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 		if let height = heightCache[indexPath] {
 			return height
 		}
@@ -158,7 +158,7 @@ extension PostsTableViewAdapter: UITableViewDelegate {
 		return height
 	}
 
-	public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 		let sectionAdapter = delegate.postAdapter(self, sectionAdapterAtIndex: section)
 		let view = sectionAdapter.tableViewHeaderView(tableView) as! PostHeaderView
 
@@ -186,7 +186,7 @@ extension PostsTableViewAdapter: UITableViewDelegate {
 		return view
 	}
 
-	public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		guard let cell = tableView.cellForRow(at: indexPath) else {
 			return
 		}
@@ -211,7 +211,7 @@ extension PostsTableViewAdapter: UITableViewDelegate {
 		}
 	}
 
-	public func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+	func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 		if let cell = cell as? PhotosetRowTableViewCell {
 			cell.cancelDownloads()
 		} else if let cell = cell as? ContentTableViewCell {
@@ -222,7 +222,7 @@ extension PostsTableViewAdapter: UITableViewDelegate {
 		}
 	}
 
-	public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+	func scrollViewDidScroll(_ scrollView: UIScrollView) {
 		let distanceFromBottom = scrollView.contentSize.height - scrollView.frame.size.height - scrollView.contentOffset.y
 
 		guard distanceFromBottom < 2000 else {
@@ -234,7 +234,7 @@ extension PostsTableViewAdapter: UITableViewDelegate {
 }
 
 extension PostsTableViewAdapter: TagsTableViewCellDelegate {
-	public func tagsTableViewCell(_ cell: TagsTableViewCell, didSelectTag tag: String) {
+	func tagsTableViewCell(_ cell: TagsTableViewCell, didSelectTag tag: String) {
 		delegate.adapter(self, didSelectTag: tag)
 	}
 }

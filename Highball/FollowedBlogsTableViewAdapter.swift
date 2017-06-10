@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol FollowedBlogsTableViewAdapterDelegate {
+protocol FollowedBlogsTableViewAdapterDelegate: class {
 	func blogsForAdapter(_ adapter: FollowedBlogsTableViewAdapter) -> [Blog]
 	func adapter(_ adapter: FollowedBlogsTableViewAdapter, didSelectBlog blog: Blog)
 }
