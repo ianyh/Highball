@@ -12,7 +12,7 @@ import VENTouchLock
 
 class LockSplashViewController: VENTouchLockSplashViewController, UITableViewDataSource, UITableViewDelegate {
 	fileprivate var tableView: UITableView!
-	fileprivate var accounts: Array<Account>!
+	fileprivate var accounts: [Account] = []
 
 	override func viewDidLoad() {
 		super.viewDidLoad()

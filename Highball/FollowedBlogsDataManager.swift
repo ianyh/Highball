@@ -10,9 +10,9 @@ import SwiftyJSON
 import TMTumblrSDK
 import UIKit
 
-protocol FollowedBlogsDataManagerDelegate {
+protocol FollowedBlogsDataManagerDelegate: class {
 	func dataManagerDidReload(_ dataManager: FollowedBlogsDataManager, indexSet: IndexSet?)
-	func dataManager(_ dataManager: FollowedBlogsDataManager, didEncounterError error: NSError)
+	func dataManager(_ dataManager: FollowedBlogsDataManager, didEncounterError error: Error)
 }
 
 class FollowedBlogsDataManager {
@@ -43,18 +43,19 @@ class FollowedBlogsDataManager {
 		}
 
 		TMAPIClient.sharedInstance().following(["offset": "\(blogs.count)"]) { response, error in
-			if let error = error {
+			guard let response = response, error == nil else {
 				DispatchQueue.main.async {
 					self.loading = false
-					self.delegate.dataManager(self, didEncounterError: error as NSError)
+					self.delegate.dataManager(self, didEncounterError: error!)
 				}
-			} else {
-				DispatchQueue.main.async {
-					let moreBlogs = JSON(response)["blogs"].array!.map { Blog.from($0.dictionaryObject! as NSDictionary)! }
-					self.blogCount = JSON(response)["total_blogs"].int
-					self.blogs.append(contentsOf: moreBlogs)
-					self.loadMore()
-				}
+				return
+			}
+
+			DispatchQueue.main.async {
+				let moreBlogs = JSON(response)["blogs"].array!.map { Blog.from($0.dictionaryObject! as NSDictionary)! }
+				self.blogCount = JSON(response)["total_blogs"].int
+				self.blogs.append(contentsOf: moreBlogs)
+				self.loadMore()
 			}
 		}
 	}

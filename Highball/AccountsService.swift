@@ -124,8 +124,8 @@ struct AccountsService {
 						completion(account)
 					}
 
-					if let error = error {
-						print(error)
+					guard let response = response, error == nil else {
+						print(error!)
 						return
 					}
 

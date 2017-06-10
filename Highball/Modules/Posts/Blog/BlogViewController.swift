@@ -14,7 +14,7 @@ class BlogViewController: PostsViewController {
 
 	override var presenter: PostsPresenter? {
 		get {
-			return blogPresenter as? PostsPresenter
+			return blogPresenter
 		}
 		set {
 			guard let presenter = newValue as? BlogPresenter else {

@@ -11,10 +11,10 @@ import Cartography
 
 class PhotoTableViewCell: UITableViewCell {
 
-    var imageViews: Array<UIImageView>!
+    var imageViews: [UIImageView] = []
     var contentLabel: UILabel!
 
-    var post: Dictionary<String, AnyObject>? {
+    var post: [String: AnyObject]? {
         didSet {
             if let post = self.post {
                 let json = JSONValue(post)
@@ -68,6 +68,6 @@ class PhotoTableViewCell: UITableViewCell {
     }
 
     func setUpCell() {
-        self.imageViews = Array<UIImageView>()
+        self.imageViews = []
     }
 }

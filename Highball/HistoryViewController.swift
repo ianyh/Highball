@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol HistoryViewControllerDelegate {
+protocol HistoryViewControllerDelegate: class {
 	func historyViewController(_ historyViewController: HistoryViewController, didFinishWithId selectedId: Int?)
 }
 

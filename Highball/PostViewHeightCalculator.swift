@@ -47,7 +47,7 @@ struct PostViewHeightCalculator {
 		}
 
 		let postPhotos = post.photos
-		var images: Array<PostPhoto>!
+		var images: [PostPhoto]!
 
 		if postPhotos.count == 1 {
 			images = postPhotos

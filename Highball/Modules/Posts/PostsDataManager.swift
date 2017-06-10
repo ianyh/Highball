@@ -15,7 +15,7 @@ protocol PostsDataManagerDelegate: class {
 	func dataManagerPostsJSONKey(_ dataManager: PostsDataManager) -> String?
 	func dataManagerDidReload(_ dataManager: PostsDataManager, indexSet: IndexSet?, completion: @escaping () -> Void)
 	func dataManagerDidComputeHeight(_ dataManager: PostsDataManager)
-	func dataManager(_ dataManager: PostsDataManager, didEncounterError error: NSError)
+	func dataManager(_ dataManager: PostsDataManager, didEncounterError error: Error)
 }
 
 final class PostsDataManager {
@@ -29,7 +29,7 @@ final class PostsDataManager {
 	private var secondaryHeightCalculators: [Int: HeightCalculator] = [:]
 	private var bodyHeightCalculators: [String: HeightCalculator] = [:]
 
-	var posts: Array<Post>!
+	var posts: [Post]!
 	var topID: Int?
 	var cursor: Int?
 
@@ -85,33 +85,34 @@ final class PostsDataManager {
 		}
 
 		delegate?.dataManager(self, requestPostsWithCount: 0, parameters: parameters) { response, error in
-			if let error = error {
+			guard let response = response, error == nil else {
 				DispatchQueue.main.async {
-					self.delegate?.dataManager(self, didEncounterError: error as NSError)
+					self.delegate?.dataManager(self, didEncounterError: error!)
 					self.loadingTop = false
 				}
-			} else {
-				self.postParseQueue.async {
-					let posts = { () -> [Post] in
-						if let postsKey = self.delegate?.dataManagerPostsJSONKey(self) {
-							return JSON(response)[postsKey].array?.map { Post.from($0.dictionaryObject! as NSDictionary) }.flatMap { $0 } ?? []
-						} else {
-							return JSON(response).array?.map { Post.from($0.dictionaryObject! as NSDictionary) }.flatMap { $0 } ?? []
-						}
-					}()
+				return
+			}
 
+			self.postParseQueue.async {
+				let posts = { () -> [Post] in
+					if let postsKey = self.delegate?.dataManagerPostsJSONKey(self) {
+						return JSON(response)[postsKey].array?.map { Post.from($0.dictionaryObject! as NSDictionary) }.flatMap { $0 } ?? []
+					} else {
+						return JSON(response).array?.map { Post.from($0.dictionaryObject! as NSDictionary) }.flatMap { $0 } ?? []
+					}
+				}()
+
+				DispatchQueue.main.async {
+					self.processPosts(posts, width: width)
 					DispatchQueue.main.async {
-						self.processPosts(posts, width: width)
-						DispatchQueue.main.async {
-							var indexSet: IndexSet?
-							if self.topID != nil {
-								// swiftlint:disable legacy_constructor
-								indexSet = IndexSet(integersIn: NSMakeRange(0, posts.count).toRange()!)
-								// swiftlint:enable legacy_constructor
-							}
-							self.delegate?.dataManagerDidReload(self, indexSet: indexSet) {
-								reloadCompletion(posts)
-							}
+						var indexSet: IndexSet?
+						if self.topID != nil {
+							// swiftlint:disable legacy_constructor
+							indexSet = IndexSet(integersIn: NSMakeRange(0, posts.count).toRange()!)
+							// swiftlint:enable legacy_constructor
+						}
+						self.delegate?.dataManagerDidReload(self, indexSet: indexSet) {
+							reloadCompletion(posts)
 						}
 					}
 				}
@@ -132,33 +133,34 @@ final class PostsDataManager {
 
 		loadingBottom = true
 		delegate?.dataManager(self, requestPostsWithCount: posts.count, parameters: parameters as [String : AnyObject]) { response, error in
-			if let error = error {
+			guard let response = response, error == nil else {
 				DispatchQueue.main.async {
-					self.delegate?.dataManager(self, didEncounterError: error as NSError)
+					self.delegate?.dataManager(self, didEncounterError: error!)
 					self.loadingBottom = false
 				}
-			} else {
-				self.postParseQueue.async {
-					let posts = { () -> [Post] in
-						if let postsKey = self.delegate?.dataManagerPostsJSONKey(self) {
-							return JSON(response)[postsKey].array?.map { Post.from($0.dictionaryObject! as NSDictionary) }.flatMap { $0 } ?? []
-						} else {
-							return JSON(response).array?.map { Post.from($0.dictionaryObject! as NSDictionary) }.flatMap { $0 } ?? []
-						}
-					}()
+				return
+			}
 
+			self.postParseQueue.async {
+				let posts = { () -> [Post] in
+					if let postsKey = self.delegate?.dataManagerPostsJSONKey(self) {
+						return JSON(response)[postsKey].array?.map { Post.from($0.dictionaryObject! as NSDictionary) }.flatMap { $0 } ?? []
+					} else {
+						return JSON(response).array?.map { Post.from($0.dictionaryObject! as NSDictionary) }.flatMap { $0 } ?? []
+					}
+				}()
+
+				DispatchQueue.main.async {
+					self.processPosts(posts, width: width)
 					DispatchQueue.main.async {
-						self.processPosts(posts, width: width)
-						DispatchQueue.main.async {
-							let indexSet = NSMutableIndexSet()
-							for row in self.posts.count..<(self.posts.count + posts.count) {
-								indexSet.add(row)
-							}
+						let indexSet = NSMutableIndexSet()
+						for row in self.posts.count..<(self.posts.count + posts.count) {
+							indexSet.add(row)
+						}
 
-							self.delegate?.dataManagerDidReload(self, indexSet: indexSet as IndexSet) {
-								self.posts.append(contentsOf: posts)
-								self.cursor = posts.last?.id
-							}
+						self.delegate?.dataManagerDidReload(self, indexSet: indexSet as IndexSet) {
+							self.posts.append(contentsOf: posts)
+							self.cursor = posts.last?.id
 						}
 					}
 				}
@@ -214,7 +216,7 @@ final class PostsDataManager {
 					self.delegate?.dataManagerDidComputeHeight(self)
 				}
 			}
-			for (index, _) in post.trailData.enumerated() {
+			for index in post.trailData.indices {
 				heightComputationQueue.addOperation { height in
 					let heightCalculator = HeightCalculator(post: post, width: width)
 					let key = "\(post.id):\(index)"

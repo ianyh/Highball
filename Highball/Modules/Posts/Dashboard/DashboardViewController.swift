@@ -17,7 +17,7 @@ class DashboardViewController: PostsViewController {
 
 	override var presenter: PostsPresenter? {
 		get {
-			return dashboardPresenter as? PostsPresenter
+			return dashboardPresenter
 		}
 		set {
 			guard let presenter = newValue as? DashboardPresenter else {

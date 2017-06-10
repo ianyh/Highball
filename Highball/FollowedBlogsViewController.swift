@@ -46,7 +46,7 @@ class FollowedBlogsViewController: UITableViewController {
 		dataManager.load()
 	}
 
-	func presentError(_ error: NSError) {
+	func presentError(_ error: Error) {
 		let alertController = UIAlertController(title: "Error", message: "Hit an error trying to load blogs. \(error.localizedDescription)", preferredStyle: .alert)
 		let action = UIAlertAction(title: "OK", style: .default, handler: nil)
 
@@ -64,7 +64,7 @@ extension FollowedBlogsViewController: FollowedBlogsDataManagerDelegate {
 		tableView.reloadData()
 	}
 
-	func dataManager(_ dataManager: FollowedBlogsDataManager, didEncounterError error: NSError) {
+	func dataManager(_ dataManager: FollowedBlogsDataManager, didEncounterError error: Error) {
 		presentError(error)
 	}
 }

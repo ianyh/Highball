@@ -80,7 +80,7 @@ extension PostsPresenter {
 		reloadTable()
 	}
 
-	func dataManager(_ dataManager: PostsDataManager, didEncounterError error: NSError) {
+	func dataManager(_ dataManager: PostsDataManager, didEncounterError error: Error) {
 		view?.presentMessage("Error", message: "Hit an error trying to load posts. \(error.localizedDescription)")
 	}
 }

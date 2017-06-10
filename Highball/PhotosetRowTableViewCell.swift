@@ -13,12 +13,12 @@ import UIKit
 import WCFastCell
 
 class PhotosetRowTableViewCell: WCFastCell {
-	var imageViews: Array<FLAnimatedImageView>?
-	var failedImageViews: Array<UIImageView>?
+	var imageViews: [FLAnimatedImageView]?
+	var failedImageViews: [UIImageView]?
 	var shareHandler: ((UIImage) -> Void)?
 
 	var contentWidth: CGFloat! = 0
-	var images: Array<PostPhoto>? {
+	var images: [PostPhoto]? {
 		didSet {
 			DispatchQueue.main.async {
 				self.updateImages()
@@ -40,8 +40,8 @@ class PhotosetRowTableViewCell: WCFastCell {
 
 		let totalWidth = images.map { $0.widthToHeightRatio! }.reduce(0, +)
 		let lastImageIndex = images.count - 1
-		var imageViews = Array<FLAnimatedImageView>()
-		var failedImageViews = Array<UIImageView>()
+		var imageViews = [FLAnimatedImageView]()
+		var failedImageViews = [UIImageView]()
 		var lastImageView: UIImageView?
 		for (index, image) in images.enumerated() {
 			let widthPortion = image.widthToHeightRatio! / totalWidth

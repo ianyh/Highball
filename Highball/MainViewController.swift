@@ -60,38 +60,6 @@ class MainViewController: UITabBarController {
 			followedBlogsViewController,
 			settingsViewController
 		]
-
-		statusBarBackgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .extraLight))
-
-//        view.addSubview(statusBarBackgroundView)
-
-		NotificationCenter.default.addObserver(
-			forName: NSNotification.Name.UIApplicationWillChangeStatusBarFrame,
-			object:
-			self,
-			queue: nil
-		) { [unowned self] _ in
-			self.resetStatusBarFrame()
-		}
-
-		resetStatusBarFrame()
-
-		selectedIndex = 0
-//
-//		let webView = UIWebView()
-//		view.addSubview(webView)
-//		webView.frame = view.bounds
-//
-//		let urlRequest = NSMutableURLRequest(URL: NSURL(string: "https://www.tumblr.com/svc/conversations?participant=thatseemsright.tumblr.com&_=1473105812470")!)
-//		urlRequest.addValue("i7Wi4kwmh6ebC8jKpdV4xMUGcFA", forHTTPHeaderField: "X-tumblr-form-key")
-//		urlRequest.addValue("XMLHttpRequest", forHTTPHeaderField: "X-Requested-With")
-//		webView.loadRequest(urlRequest)
-//
-//		webView.delegate = self
-	}
-
-	fileprivate func resetStatusBarFrame() {
-		statusBarBackgroundView.frame = UIApplication.shared.statusBarFrame
 	}
 
 	override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {

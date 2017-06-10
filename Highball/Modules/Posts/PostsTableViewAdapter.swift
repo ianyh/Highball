@@ -191,7 +191,7 @@ extension PostsTableViewAdapter: UITableViewDelegate {
 			return
 		}
 
-		if let _ = cell as? PhotosetRowTableViewCell {
+		if cell is PhotosetRowTableViewCell {
 			delegate.adapter(self, didSelectImageForPostAtIndex: (indexPath as NSIndexPath).section)
 		} else if let videoCell = cell as? VideoPlaybackCell {
 			if videoCell.isPlaying() {
@@ -206,7 +206,7 @@ extension PostsTableViewAdapter: UITableViewDelegate {
 				viewController.modalTransitionStyle = .crossDissolve
 				delegate.adapter(self, didEmitViewController: viewController, forPresentation: true)
 			}
-		} else if let _ = cell as? PostLinkTableViewCell {
+		} else if cell is PostLinkTableViewCell {
 			delegate.adapter(self, didSelectURLForPostAtIndex: (indexPath as NSIndexPath).section)
 		}
 	}

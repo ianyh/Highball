@@ -9,7 +9,7 @@
 import Cartography
 import UIKit
 
-protocol TagsTableViewCellDelegate {
+protocol TagsTableViewCellDelegate: class {
 	func tagsTableViewCell(_ cell: TagsTableViewCell, didSelectTag tag: String)
 }
 

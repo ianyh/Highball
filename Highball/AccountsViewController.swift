@@ -18,7 +18,7 @@ class AccountsViewController: UITableViewController {
 		case addAccount
 	}
 
-	fileprivate var accounts: Array<Account>
+	fileprivate var accounts: [Account]
 
 	required init() {
 		self.accounts = []
