@@ -83,10 +83,12 @@ struct PostViewSections {
 struct PostSectionAdapter {
 	fileprivate let post: Post
 	private let shareHandler: (PostPhoto, Data) -> Void
+	private let videoShareHandler: (Post, URL) -> Void
 
-	init(post: Post, shareHandler: @escaping (PostPhoto, Data) -> Void) {
+	init(post: Post, shareHandler: @escaping (PostPhoto, Data) -> Void, videoShareHandler: @escaping (Post, URL) -> Void) {
 		self.post = post
 		self.shareHandler = shareHandler
+		self.videoShareHandler = videoShareHandler
 	}
 
 	func numbersOfRows() -> Int {
@@ -260,10 +262,12 @@ struct PostSectionAdapter {
 			case "youtube":
 				let cell = tableView.dequeueReusableCell(withIdentifier: YoutubeTableViewCell.cellIdentifier) as! YoutubeTableViewCell!
 				cell?.post = post
+				cell?.shareHandler = videoShareHandler
 				return cell!
 			default:
 				let cell = tableView.dequeueReusableCell(withIdentifier: VideoTableViewCell.cellIdentifier) as! VideoTableViewCell!
 				cell?.post = post
+				cell?.shareHandler = videoShareHandler
 				return cell!
 			}
 		case .caption(let index):

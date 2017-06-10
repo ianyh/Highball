@@ -20,7 +20,7 @@ class TagPresenter: PostsPresenter {
 		self.tag = tag.substring(from: tag.characters.index(tag.startIndex, offsetBy: 1))
 	}
 
-	func dataManager(_ dataManager: PostsDataManager, requestPostsWithCount postCount: Int, parameters: [String : AnyObject], callback: @escaping TMAPICallback) {
+	func dataManager(_ dataManager: PostsDataManager, requestPostsWithCount postCount: Int, parameters: [String : Any], callback: @escaping TMAPICallback) {
 		var mutableParameters = parameters
 		if let lastPost = dataManager.posts?.last {
 			mutableParameters["before"] = "\(lastPost.timestamp)" as AnyObject?

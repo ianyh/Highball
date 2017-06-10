@@ -75,7 +75,10 @@ class ContentTableViewCell: WCFastCell {
 					let imageView = FLAnimatedImageView()
 					imageView.backgroundColor = UIColor.purple
 					imageView.pin_setImage(from: contentURL) { result in
-						let size = result.image?.size ?? .zero // ?? result.animatedImage?.size ?? .zero
+						guard let size = result.image?.size ?? (result.alternativeRepresentation as? FLAnimatedImage)?.size else {
+							return
+						}
+
 						let width = self.widthForURL?(contentURL.absoluteString) ?? min(size.width, self.width - 20)
 						let scaledSize = CGSize(width: width, height: floor(size.height * width / size.width))
 

@@ -22,6 +22,7 @@ protocol VideoPlaybackCell {
 class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
 	fileprivate var player: Player!
 	fileprivate var thumbnailImageView: FLAnimatedImageView!
+
 	var post: Post? {
 		didSet {
 			guard let post = post else {
@@ -50,15 +51,12 @@ class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
 			}
 		}
 	}
-	var urlString: String? {
+	var url: URL? {
 		didSet {
-			guard let urlString = urlString, let url = URL(string: urlString) else {
-				return
-			}
-
 			player.url = url
 		}
 	}
+	var shareHandler: ((Post, URL) -> Void)?
 
 	override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -100,14 +98,29 @@ class VideoTableViewCell: UITableViewCell, VideoPlaybackCell {
 		constrain(thumbnailImageView, contentView) { imageView, contentView in
 			imageView.edges == contentView.edges
 		}
+
+		let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(share(gestureRecognizer:)))
+		contentView.addGestureRecognizer(longPressGestureRecognizer)
 	}
 
-	func loadVideo() {
-		guard let post = post, let url = post.videoURL()?.absoluteString else {
+	func share(gestureRecognizer: UILongPressGestureRecognizer) {
+		guard gestureRecognizer.state == .began else {
 			return
 		}
 
-		urlString = url
+		guard let post = post, let url = url else {
+			return
+		}
+
+		shareHandler?(post, url)
+	}
+
+	func loadVideo() {
+		guard let post = post else {
+			return
+		}
+
+		url = post.videoURL()
 	}
 
 	func isPlaying() -> Bool {

@@ -18,9 +18,16 @@ struct PostVideo: Mappable {
 
 	init(map: Mapper) throws {
 		type = try map.from("video_type")
-		url = try map.from("video_url")
 		thumbnailURL = try map.from("thumbnail_url")
 		width = try map.from("thumbnail_width")
 		height = try map.from("thumbnail_height")
+
+		switch type {
+		case "youtube":
+			let videoID: String = try map.from("video.youtube.video_id")
+			url = URL(string: "https://www.youtube.com/watch?v=\(videoID)")!
+		default:
+			url = try map.from("video_url")
+		}
 	}
 }

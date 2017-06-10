@@ -42,7 +42,7 @@ class BlogPresenter: PostsPresenter {
 }
 
 extension BlogPresenter {
-	func dataManager(_ dataManager: PostsDataManager, requestPostsWithCount postCount: Int, parameters: [String : AnyObject], callback: @escaping TMAPICallback) {
+	func dataManager(_ dataManager: PostsDataManager, requestPostsWithCount postCount: Int, parameters: [String : Any], callback: @escaping TMAPICallback) {
 		TMAPIClient.sharedInstance().posts(blogName, type: "", parameters: parameters, callback: callback)
 	}
 

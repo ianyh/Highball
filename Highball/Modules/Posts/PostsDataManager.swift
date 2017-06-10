@@ -11,7 +11,7 @@ import TMTumblrSDK
 import UIKit
 
 protocol PostsDataManagerDelegate: class {
-	func dataManager(_ dataManager: PostsDataManager, requestPostsWithCount postCount: Int, parameters: [String: AnyObject], callback: @escaping TMAPICallback)
+	func dataManager(_ dataManager: PostsDataManager, requestPostsWithCount postCount: Int, parameters: [String: Any], callback: @escaping TMAPICallback)
 	func dataManagerPostsJSONKey(_ dataManager: PostsDataManager) -> String?
 	func dataManagerDidReload(_ dataManager: PostsDataManager, indexSet: IndexSet?, completion: @escaping () -> Void)
 	func dataManagerDidComputeHeight(_ dataManager: PostsDataManager)
@@ -62,10 +62,10 @@ final class PostsDataManager {
 		loadingTop = true
 
 		var reloadCompletion: ([Post]) -> Void
-		var parameters: [String: AnyObject]
+		var parameters: [String: Any]
 
 		if let topID = topID {
-			parameters = ["since_id": "\(topID)" as AnyObject, "reblog_info": "true" as AnyObject]
+			parameters = ["since_id": "\(topID)", "reblog_info": "true"]
 			reloadCompletion = { posts in
 				if self.posts.count > 0 {
 					self.posts = posts + self.posts
@@ -77,7 +77,7 @@ final class PostsDataManager {
 				}
 			}
 		} else {
-			parameters = ["reblog_info": "true" as AnyObject]
+			parameters = ["reblog_info": "true"]
 			reloadCompletion = { (posts: [Post]) in
 				self.posts = posts
 				self.cursor = posts.last?.id
@@ -132,7 +132,7 @@ final class PostsDataManager {
 		let parameters = ["before_id": "\(cursor)", "reblog_info": "true"]
 
 		loadingBottom = true
-		delegate?.dataManager(self, requestPostsWithCount: posts.count, parameters: parameters as [String : AnyObject]) { response, error in
+		delegate?.dataManager(self, requestPostsWithCount: posts.count, parameters: parameters as [String : Any]) { response, error in
 			guard let response = response, error == nil else {
 				DispatchQueue.main.async {
 					self.delegate?.dataManager(self, didEncounterError: error!)

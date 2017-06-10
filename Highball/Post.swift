@@ -88,7 +88,11 @@ struct Post: Mappable {
 
 		permalinkURL = map.optionalFrom("permalink_url")
 
-		video = try? PostVideo(map: map)
+		if type == "video" {
+			video = try PostVideo(map: map)
+		} else {
+			video = nil
+		}
 
 		liked = try map.from("liked")
 

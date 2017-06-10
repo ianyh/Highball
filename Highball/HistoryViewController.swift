@@ -14,7 +14,7 @@ protocol HistoryViewControllerDelegate: class {
 
 class HistoryViewController: UITableViewController {
 	fileprivate let delegate: HistoryViewControllerDelegate
-	fileprivate var bookmarks: [[String: AnyObject]]?
+	fileprivate var bookmarks: [[String: Any]]?
 
 	init(delegate: HistoryViewControllerDelegate) {
 		self.delegate = delegate
@@ -40,7 +40,7 @@ class HistoryViewController: UITableViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 
-		bookmarks = UserDefaults.standard.array(forKey: "HIBookmarks:\(AccountsService.account.primaryBlog.url)") as? [[String: AnyObject]]
+		bookmarks = UserDefaults.standard.array(forKey: "HIBookmarks:\(AccountsService.account.primaryBlog.url)") as? [[String: Any]]
 		bookmarks = bookmarks?
 			.sorted { bookmarkA, bookmarkB in
 				guard let dateA = bookmarkA["date"] as? Date,

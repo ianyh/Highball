@@ -150,13 +150,24 @@ extension PostsViewController: PostsTableViewAdapterDelegate {
 
 	func postAdapter(_ adapter: PostsTableViewAdapter, sectionAdapterAtIndex index: Int) -> PostSectionAdapter {
 		let post = presenter!.postAtIndex(index)
-		return PostSectionAdapter(post: post, shareHandler: { photo, imageData in
-			let activityViewController = UIActivityViewController(
-				activityItems: [photo.urlWithWidth(.greatestFiniteMagnitude), imageData],
-				applicationActivities: nil
-			)
-			self.present(activityViewController, animated: true, completion: nil)
-		})
+
+		return PostSectionAdapter(
+			post: post,
+			shareHandler: { photo, _ in
+				let activityViewController = UIActivityViewController(
+					activityItems: [DataActivityItemSource(url: photo.urlWithWidth(.greatestFiniteMagnitude))],
+					applicationActivities: nil
+				)
+				self.present(activityViewController, animated: true, completion: nil)
+			},
+			videoShareHandler: { _, videoURL in
+				let activityViewController = UIActivityViewController(
+					activityItems: [DataActivityItemSource(url: videoURL)],
+					applicationActivities: nil
+				)
+				self.present(activityViewController, animated: true, completion: nil)
+			}
+		)
 	}
 
 	func adapter(_ adapter: PostsTableViewAdapter, didSelectImageForPostAtIndex index: Int) {

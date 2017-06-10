@@ -18,8 +18,8 @@ struct PostDialogueEntry: Mappable {
 		let label: String = try map.from("label")
 		let phrase: String = try map.from("phrase")
 
-		var labelAttributes: [String: AnyObject] = [:]
-		var phraseAttributes: [String: AnyObject] = [:]
+		var labelAttributes: [String: Any] = [:]
+		var phraseAttributes: [String: Any] = [:]
 		let attributedString = NSMutableAttributedString(string: "\(label) \(phrase)")
 
 		labelAttributes[NSFontAttributeName] = UIFont(name: "Courier-Bold", size: 14)

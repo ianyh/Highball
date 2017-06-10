@@ -30,12 +30,12 @@ class DashboardPresenter: PostsPresenter {
 		let userDefaults = UserDefaults.standard
 		let bookmarksKey = "HIBookmarks:\(accountName)"
 		let post = dataManager.posts[index]
-		var bookmarks = userDefaults.array(forKey: bookmarksKey) as? [[String: AnyObject]] ?? []
+		var bookmarks = userDefaults.array(forKey: bookmarksKey) as? [[String: Any]] ?? []
 
 		bookmarks.insert(["date": Date() as AnyObject, "id": post.id as AnyObject], at: 0)
 
 		if bookmarks.count > 20 {
-			bookmarks = [[String: AnyObject]](bookmarks.prefix(20))
+			bookmarks = [[String: Any]](bookmarks.prefix(20))
 		}
 
 		userDefaults.set(bookmarks, forKey: bookmarksKey)
@@ -52,7 +52,7 @@ class DashboardPresenter: PostsPresenter {
 		dataManager.loadMore(view.currentWidth())
 	}
 
-	func dataManager(_ dataManager: PostsDataManager, requestPostsWithCount postCount: Int, parameters: [String : AnyObject], callback: @escaping TMAPICallback) {
+	func dataManager(_ dataManager: PostsDataManager, requestPostsWithCount postCount: Int, parameters: [String : Any], callback: @escaping TMAPICallback) {
 		TMAPIClient.sharedInstance().dashboard(parameters, callback: callback)
 	}
 
