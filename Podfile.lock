@@ -82,7 +82,6 @@ PODS:
   - Realm/Headers (2.8.0)
   - RealmSwift (2.8.0):
     - Realm (= 2.8.0)
-  - SlackTextViewController (1.9.5)
   - Spectacles (1.0.1)
   - SSKeychain (1.4.1)
   - TMTumblrSDK (4.0.4):
@@ -129,7 +128,6 @@ DEPENDENCIES:
   - Player (~> 0.1)
   - Reachability (~> 3.2)
   - RealmSwift (~> 2.0)
-  - SlackTextViewController (~> 1.4)
   - TMTumblrSDK (~> 4.0)
   - VENTouchLock (~> 1.0)
   - WCFastCell (~> 1.1)
@@ -167,7 +165,6 @@ SPEC CHECKSUMS:
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   Realm: 929243ad2b618b3232e70658bedc61110e7563f1
   RealmSwift: 5b7079b891f2833d1849294161ba3e092bbda3f6
-  SlackTextViewController: fbcdadbb8090673f604484ff5b6eb8d77baed42a
   Spectacles: 8dc60711140320653724560e2d6bbb8a8f0940e4
   SSKeychain: 55cc80f66f5c73da827e3077f02e43528897db41
   TMTumblrSDK: 7b253e968a31f515aee0ee5f7e5faa8b7b0d0470
@@ -177,6 +174,6 @@ SPEC CHECKSUMS:
   XExtensionItem: ce626520bbca225930b9c8e2283b226df431af3f
   YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
 
-PODFILE CHECKSUM: 6e2450eaf667612030e649af9654832849037c2a
+PODFILE CHECKSUM: 2b7fd05e5f47ea675cfaa92fc5c4e86a801a696a
 
 COCOAPODS: 1.2.0

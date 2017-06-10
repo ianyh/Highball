@@ -22,7 +22,6 @@ target 'Highball' do
   pod 'Player', '~> 0.1'
   pod 'Reachability', '~> 3.2'
   pod 'RealmSwift', '~> 2.0'
-  pod 'SlackTextViewController', '~> 1.4'
   pod 'TMTumblrSDK', '~> 4.0'
   pod 'VENTouchLock', '~> 1.0'
   pod 'WCFastCell', '~> 1.1'
