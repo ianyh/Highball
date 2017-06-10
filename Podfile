@@ -1,6 +1,6 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
-platform :ios, '9.0'
+platform :ios, '10.0'
 
 use_frameworks!
 
@@ -17,10 +17,9 @@ target 'Highball' do
   pod 'FormatterKit/TimeIntervalFormatter', '~> 1.8'
   pod 'ModelMapper', '~> 6.0'
   pod 'OAuthSwift', '~> 1.0'
-  pod 'PINCache', '~> 2.1'
-  pod 'PINRemoteImage', '~> 1.2'
+  pod 'PINCache', '= 3.0.1-beta.4'
+  pod 'PINRemoteImage', '= 3.0.0-beta.10'
   pod 'Player', '~> 0.1'
-  pod 'pop', '~> 1.0'
   pod 'Reachability', '~> 3.2'
   pod 'RealmSwift', '~> 2.0'
   pod 'SlackTextViewController', '~> 1.4'

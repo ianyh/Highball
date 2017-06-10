@@ -34,7 +34,7 @@ class ContentTableViewCell: WCFastCell {
 				return
 			}
 
-			PINCache.shared().object(forKey: "avatar:\(trailData.username)") { _, _, object in
+			PINCache.shared.object(forKeyAsync: "avatar:\(trailData.username)") { _, _, object in
 				if let data = object as? Data {
 					self.avatarLoadQueue.async {
 						let image = UIImage(data: data)
@@ -50,7 +50,7 @@ class ContentTableViewCell: WCFastCell {
 							guard let data = response as? Data else {
 								return
 							}
-							PINCache.shared().setObject(data as NSCoding, forKey: "avatar:\(trailData.username)")
+							PINCache.shared.setObject(data, forKey: "avatar:\(trailData.username)")
 							self.avatarLoadQueue.async {
 								let image = UIImage(data: data)
 								DispatchQueue.main.async {
@@ -75,7 +75,7 @@ class ContentTableViewCell: WCFastCell {
 					let imageView = FLAnimatedImageView()
 					imageView.backgroundColor = UIColor.purple
 					imageView.pin_setImage(from: contentURL) { result in
-						let size = result.image?.size ?? result.animatedImage?.size ?? .zero
+						let size = result.image?.size ?? .zero // ?? result.animatedImage?.size ?? .zero
 						let width = self.widthForURL?(contentURL.absoluteString) ?? min(size.width, self.width - 20)
 						let scaledSize = CGSize(width: width, height: floor(size.height * width / size.width))
 

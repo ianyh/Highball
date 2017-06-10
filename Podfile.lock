@@ -56,16 +56,26 @@ PODS:
   - JXHTTP (3.0.2)
   - ModelMapper (6.0.0)
   - OAuthSwift (1.1.2)
-  - PINCache (2.3)
-  - PINRemoteImage (1.2.3):
-    - PINRemoteImage/FLAnimatedImage (= 1.2.3)
-  - PINRemoteImage/Core (1.2.3):
-    - PINCache (>= 2.1)
-  - PINRemoteImage/FLAnimatedImage (1.2.3):
+  - PINCache (3.0.1-beta.4):
+    - PINCache/Arc-exception-safe (= 3.0.1-beta.4)
+    - PINCache/Core (= 3.0.1-beta.4)
+  - PINCache/Arc-exception-safe (3.0.1-beta.4):
+    - PINCache/Core
+  - PINCache/Core (3.0.1-beta.4):
+    - PINOperation (= 1.0.3)
+  - PINOperation (1.0.3)
+  - PINRemoteImage (3.0.0-beta.10):
+    - PINRemoteImage/FLAnimatedImage (= 3.0.0-beta.10)
+    - PINRemoteImage/PINCache (= 3.0.0-beta.10)
+  - PINRemoteImage/Core (3.0.0-beta.10):
+    - PINOperation
+  - PINRemoteImage/FLAnimatedImage (3.0.0-beta.10):
     - FLAnimatedImage (>= 1.0)
     - PINRemoteImage/Core
+  - PINRemoteImage/PINCache (3.0.0-beta.10):
+    - PINCache (= 3.0.1-beta.4)
+    - PINRemoteImage/Core
   - Player (0.6.0)
-  - pop (1.0.9)
   - Reachability (3.2)
   - Realm (2.8.0):
     - Realm/Headers (= 2.8.0)
@@ -114,10 +124,9 @@ DEPENDENCIES:
   - IGListKit
   - ModelMapper (~> 6.0)
   - OAuthSwift (~> 1.0)
-  - PINCache (~> 2.1)
-  - PINRemoteImage (~> 1.2)
+  - PINCache (= 3.0.1-beta.4)
+  - PINRemoteImage (= 3.0.0-beta.10)
   - Player (~> 0.1)
-  - pop (~> 1.0)
   - Reachability (~> 3.2)
   - RealmSwift (~> 2.0)
   - SlackTextViewController (~> 1.4)
@@ -151,10 +160,10 @@ SPEC CHECKSUMS:
   JXHTTP: c37120f210cd2dfcb3470d70239f5253335e2f1a
   ModelMapper: 3596a82f26c43491f6a8d3a00bcdba6ba0e62a93
   OAuthSwift: 5aa5659984d3ca3206ba636a9e7a9c6626b2e8bd
-  PINCache: ce36ed282031b92fc7733ffe831f474ff80fddc2
-  PINRemoteImage: b6f6b10a704fa8c68ead4d7e55b68dbde79b3686
+  PINCache: a89c8f609232afac77128557bd12c861844423d7
+  PINOperation: ac23db44796d4a564ecf9b5ea7163510f579b71d
+  PINRemoteImage: 3782605733d65798ab3919e1019ce48e43171126
   Player: b1b301e2cce11771dad0c19ded6a0107316aa317
-  pop: f667631a5108a2e60d9e8797c9b32ddaf2080bce
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   Realm: 929243ad2b618b3232e70658bedc61110e7563f1
   RealmSwift: 5b7079b891f2833d1849294161ba3e092bbda3f6
@@ -168,6 +177,6 @@ SPEC CHECKSUMS:
   XExtensionItem: ce626520bbca225930b9c8e2283b226df431af3f
   YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
 
-PODFILE CHECKSUM: 39db4646ac66d5e78bebc5302fcd13064a8fa3d1
+PODFILE CHECKSUM: 6e2450eaf667612030e649af9654832849037c2a
 
 COCOAPODS: 1.2.0

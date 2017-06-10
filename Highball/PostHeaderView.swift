@@ -31,7 +31,7 @@ class PostHeaderView: UITableViewHeaderFooterView {
 
 			avatarImageView.image = UIImage(named: "Placeholder")
 
-			PINCache.shared().object(forKey: "avatar:\(blogName)") { _, _, object in
+			PINCache.shared.object(forKeyAsync: "avatar:\(blogName)") { _, _, object in
 				if let data = object as? Data {
 					self.avatarLoadQueue.async {
 						let image = UIImage(data: data)
@@ -47,7 +47,7 @@ class PostHeaderView: UITableViewHeaderFooterView {
 							guard let data = response as? Data else {
 								return
 							}
-							PINCache.shared().setObject(data as NSCoding, forKey: "avatar:\(blogName)")
+							PINCache.shared.setObject(data, forKey: "avatar:\(blogName)")
 							self.avatarLoadQueue.async {
 								let image = UIImage(data: data)
 								DispatchQueue.main.async {
