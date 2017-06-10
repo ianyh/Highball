@@ -26,6 +26,5 @@ target 'Highball' do
   pod 'VENTouchLock', '~> 1.0'
   pod 'WCFastCell', '~> 1.1'
   pod 'XCDYouTubeKit', '~> 2.4'
-  pod 'XExtensionItem', '~> 0.9'
   pod 'YYText', '~> 1.0'
 end

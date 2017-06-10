@@ -104,12 +104,6 @@ PODS:
     - SSKeychain (~> 1.0)
   - WCFastCell (1.1)
   - XCDYouTubeKit (2.5.5)
-  - XExtensionItem (0.9.3):
-    - XExtensionItem/Core (= 0.9.3)
-    - XExtensionItem/Tumblr (= 0.9.3)
-  - XExtensionItem/Core (0.9.3)
-  - XExtensionItem/Tumblr (0.9.3):
-    - XExtensionItem/Core
   - YYText (1.0.7)
 
 DEPENDENCIES:
@@ -132,7 +126,6 @@ DEPENDENCIES:
   - VENTouchLock (~> 1.0)
   - WCFastCell (~> 1.1)
   - XCDYouTubeKit (~> 2.4)
-  - XExtensionItem (~> 0.9)
   - YYText (~> 1.0)
 
 EXTERNAL SOURCES:
@@ -171,9 +164,8 @@ SPEC CHECKSUMS:
   VENTouchLock: 20d378b9c6173e2c054448aeb3fb2f40822a9f3f
   WCFastCell: 3e20a0c711d27307584bdbd359a44a714e991151
   XCDYouTubeKit: 86f4e7a9c2baa7b7adf6abfc28ac3ab34927be2d
-  XExtensionItem: ce626520bbca225930b9c8e2283b226df431af3f
   YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
 
-PODFILE CHECKSUM: 2b7fd05e5f47ea675cfaa92fc5c4e86a801a696a
+PODFILE CHECKSUM: 53161a65f171a37a25b2949aad026711700ece74
 
 COCOAPODS: 1.2.0

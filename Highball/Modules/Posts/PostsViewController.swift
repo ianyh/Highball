@@ -10,7 +10,6 @@ import Cartography
 import FontAwesomeKit
 import SafariServices
 import UIKit
-import XExtensionItem
 
 protocol PostsView: class {
 	var tableView: UITableView! { get }
