@@ -15,7 +15,7 @@ import WCFastCell
 class PhotosetRowTableViewCell: WCFastCell {
 	var imageViews: [FLAnimatedImageView]?
 	var failedImageViews: [UIImageView]?
-	var shareHandler: ((UIImage) -> Void)?
+	var shareHandler: ((PostPhoto, FLAnimatedImageView) -> Void)?
 
 	var contentWidth: CGFloat! = 0
 	var images: [PostPhoto]? {
@@ -52,6 +52,7 @@ class PhotosetRowTableViewCell: WCFastCell {
 			imageView.contentMode = .scaleAspectFill
 			imageView.image = nil
 			imageView.isUserInteractionEnabled = true
+			imageView.tag = index
 
 			failedImageView.backgroundColor = UIColor.white
 			failedImageView.contentMode = .center
@@ -111,6 +112,9 @@ class PhotosetRowTableViewCell: WCFastCell {
 				failedImageView.isHidden = result.error == nil
 			}
 
+			let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(shareImage(gestureRecognizer:)))
+			imageView.addGestureRecognizer(longPressGestureRecognizer)
+
 			lastImageView = imageView
 
 			imageViews.append(imageView)
@@ -121,7 +125,19 @@ class PhotosetRowTableViewCell: WCFastCell {
 		self.failedImageViews = failedImageViews
 	}
 
-	fileprivate func clearImages() {
+	func shareImage(gestureRecognizer: UILongPressGestureRecognizer) {
+		guard gestureRecognizer.state == .began else {
+			return
+		}
+
+		guard let imageView = gestureRecognizer.view as? FLAnimatedImageView, let photo = images?[imageView.tag] else {
+			return
+		}
+
+		shareHandler?(photo, imageView)
+	}
+
+	private func clearImages() {
 		imageViews?.forEach {
 			$0.pin_cancelImageDownload()
 			$0.image = nil
@@ -135,14 +151,6 @@ class PhotosetRowTableViewCell: WCFastCell {
 
 		imageViews = nil
 		failedImageViews = nil
-	}
-
-	func imageAtPoint(_ point: CGPoint) -> UIImage? {
-		guard let view = self.hitTest(point, with: nil), let imageView = view as? UIImageView else {
-			return nil
-		}
-
-		return imageView.image
 	}
 
 	func cancelDownloads() {

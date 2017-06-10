@@ -82,9 +82,11 @@ struct PostViewSections {
 
 struct PostSectionAdapter {
 	fileprivate let post: Post
+	private let shareHandler: (PostPhoto, Data) -> Void
 
-	init(post: Post) {
+	init(post: Post, shareHandler: @escaping (PostPhoto, Data) -> Void) {
 		self.post = post
+		self.shareHandler = shareHandler
 	}
 
 	func numbersOfRows() -> Int {
@@ -155,6 +157,13 @@ struct PostSectionAdapter {
 		let postPhotos = post.photos
 
 		cell?.contentWidth = tableView.frame.size.width
+		cell?.shareHandler = { photo, imageView in
+			if let image = imageView.image, let data = UIImageJPEGRepresentation(image, 1) {
+				self.shareHandler(photo, data)
+			} else if let image = imageView.animatedImage {
+				self.shareHandler(photo, image.data)
+			}
+		}
 
 		if postPhotos.count == 1 {
 			cell?.images = postPhotos
