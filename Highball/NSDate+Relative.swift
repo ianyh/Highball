@@ -16,6 +16,8 @@ extension Date {
 
 		if intervalFormatter == nil {
 			intervalFormatter = TTTTimeIntervalFormatter()
+			intervalFormatter?.numberOfSignificantUnits = 2
+			intervalFormatter?.usesAbbreviatedCalendarUnits = true
 			Thread.current.threadDictionary[formatterKey] = intervalFormatter
 		}
 

@@ -68,8 +68,9 @@ class PostHeaderView: UITableViewHeaderFooterView {
 				topUsernameLabel.text = nil
 				bottomUsernameLabel.text = nil
 			}
-
-			timeLabel.text = Date(timeIntervalSince1970: TimeInterval(post.timestamp)).stringWithRelativeFormat()
+			
+			let timestamp = post.likedTimestamp ?? post.timestamp
+			timeLabel.text = Date(timeIntervalSince1970: TimeInterval(timestamp)).stringWithRelativeFormat()
 		}
 	}
 
