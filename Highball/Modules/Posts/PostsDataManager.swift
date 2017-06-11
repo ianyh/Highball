@@ -32,6 +32,8 @@ final class PostsDataManager {
 	var posts: [Post]!
 	var topID: Int?
 	var cursor: Int?
+	var type: String?
+	var date: Date?
 
 	var loadingTop = false
 	var loadingBottom = false
@@ -84,6 +86,8 @@ final class PostsDataManager {
 			}
 		}
 
+		parameters["before"] = date?.timeIntervalSince1970
+
 		delegate?.dataManager(self, requestPostsWithCount: 0, parameters: parameters) { response, error in
 			guard let response = response, error == nil else {
 				DispatchQueue.main.async {
@@ -129,10 +133,15 @@ final class PostsDataManager {
 			return
 		}
 
-		let parameters = ["before_id": "\(cursor)", "reblog_info": "true"]
+		var parameters: [String: Any] = ["before_id": "\(cursor)", "reblog_info": "true"]
+
+		if date != nil {
+			parameters["before_id"] = nil
+			parameters["before"] = posts.last!.likedTimestamp!
+		}
 
 		loadingBottom = true
-		delegate?.dataManager(self, requestPostsWithCount: posts.count, parameters: parameters as [String : Any]) { response, error in
+		delegate?.dataManager(self, requestPostsWithCount: posts.count, parameters: parameters) { response, error in
 			guard let response = response, error == nil else {
 				DispatchQueue.main.async {
 					self.delegate?.dataManager(self, didEncounterError: error!)

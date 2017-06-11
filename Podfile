@@ -13,6 +13,7 @@ target 'Highball' do
   pod 'Alamofire'
   pod 'ChameleonFramework', '~> 2.0'
   pod 'DTCoreText', '~> 1.6'
+  pod 'Eureka', '~> 3.0'
   pod 'FontAwesomeKit', git: 'https://github.com/PrideChung/FontAwesomeKit.git'
   pod 'FormatterKit/TimeIntervalFormatter', '~> 1.8'
   pod 'ModelMapper', '~> 6.0'

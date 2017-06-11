@@ -35,6 +35,7 @@
 		408C7D2319B387A500EFC410 /* PostDialogueEntryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408C7D2219B387A500EFC410 /* PostDialogueEntryTableViewCell.swift */; };
 		408D5B6E1B7D6AA300C787FA /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 408D5B6D1B7D6AA300C787FA /* Launch Screen.xib */; };
 		408FE2BB1EECB2AC000E3110 /* DataActivityItemSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408FE2BA1EECB2AC000E3110 /* DataActivityItemSource.swift */; };
+		408FE2BF1EECF05B000E3110 /* LikesFiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408FE2BE1EECF05B000E3110 /* LikesFiltersViewController.swift */; };
 		409030C81C306C42008E786F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 409030C71C306C42008E786F /* Main.storyboard */; };
 		4094F5F61D7E27DD00D2FEE6 /* Conversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4094F5F51D7E27DD00D2FEE6 /* Conversation.swift */; };
 		409D00E91B28BF5F0097C2EC /* Cartography.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 409D00E51B27522E0097C2EC /* Cartography.framework */; };
@@ -123,6 +124,7 @@
 		408C7D2219B387A500EFC410 /* PostDialogueEntryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostDialogueEntryTableViewCell.swift; sourceTree = "<group>"; };
 		408D5B6D1B7D6AA300C787FA /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		408FE2BA1EECB2AC000E3110 /* DataActivityItemSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataActivityItemSource.swift; sourceTree = "<group>"; };
+		408FE2BE1EECF05B000E3110 /* LikesFiltersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikesFiltersViewController.swift; sourceTree = "<group>"; };
 		409030C71C306C42008E786F /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		4094F5F51D7E27DD00D2FEE6 /* Conversation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Conversation.swift; sourceTree = "<group>"; };
 		409D00E51B27522E0097C2EC /* Cartography.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cartography.framework; path = Carthage/Build/iOS/Cartography.framework; sourceTree = "<group>"; };
@@ -340,6 +342,7 @@
 				40DF7DB31A79919900CE3D4C /* VideoPlayController.swift */,
 				40F75A811C31D68800EC86DE /* MainViewController.swift */,
 				40F75A841C31FA4100EC86DE /* HistoryViewController.swift */,
+				408FE2BE1EECF05B000E3110 /* LikesFiltersViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -667,6 +670,7 @@
 				40E195891D79E7020087C4EF /* PostsTableViewAdapter.swift in Sources */,
 				408C7D2119B384C800EFC410 /* PostDialogueEntry.swift in Sources */,
 				4008591B1B7EBA05009DF207 /* NSDate+Relative.swift in Sources */,
+				408FE2BF1EECF05B000E3110 /* LikesFiltersViewController.swift in Sources */,
 				4050698119AA76BD0066ECE3 /* AppDelegate.swift in Sources */,
 				403040E91C388775001EFC9E /* PostSectionAdapter.swift in Sources */,
 				40CFDABF1C34BB17008FBF9A /* PostHeightCache.swift in Sources */,

@@ -56,6 +56,7 @@ struct Post: Mappable {
 	let permalinkURL: URL?
 	let video: PostVideo?
 	var liked = false
+	let likedTimestamp: Int?
 	let trailData: [PostTrailData]
 
 	init(map: Mapper) throws {
@@ -95,6 +96,7 @@ struct Post: Mappable {
 		}
 
 		liked = try map.from("liked")
+		likedTimestamp = map.optionalFrom("liked_timestamp")
 
 		trailData = map.optionalFrom("trail")?.reversed() ?? []
 	}

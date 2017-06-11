@@ -32,7 +32,7 @@ class DashboardPresenter: PostsPresenter {
 		let post = dataManager.posts[index]
 		var bookmarks = userDefaults.array(forKey: bookmarksKey) as? [[String: Any]] ?? []
 
-		bookmarks.insert(["date": Date() as AnyObject, "id": post.id as AnyObject], at: 0)
+		bookmarks.insert(["date": Date(), "id": post.id], at: 0)
 
 		if bookmarks.count > 20 {
 			bookmarks = [[String: Any]](bookmarks.prefix(20))

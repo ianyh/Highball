@@ -22,6 +22,7 @@ PODS:
     - DTFoundation/Core
   - DTFoundation/UIKit (1.7.12):
     - DTFoundation/Core
+  - Eureka (3.0.0)
   - Fabric (1.6.11)
   - FLAnimatedImage (1.0.12)
   - FontAwesomeKit (2.2.1):
@@ -112,6 +113,7 @@ DEPENDENCIES:
   - ChameleonFramework (~> 2.0)
   - Crashlytics
   - DTCoreText (~> 1.6)
+  - Eureka (~> 3.0)
   - Fabric
   - FontAwesomeKit (from `https://github.com/PrideChung/FontAwesomeKit.git`)
   - FormatterKit/TimeIntervalFormatter (~> 1.8)
@@ -145,6 +147,7 @@ SPEC CHECKSUMS:
   Crashlytics: 79e236942ca1e7fc641df1feb9a275360a78ab6a
   DTCoreText: 51904f2374af443e0d270d6fdc76035ab6f9ef8a
   DTFoundation: 26a164ef510877387906fb92bff524a792db4bf8
+  Eureka: f36fd440c3ebb7bfea0a4fbe6f16a05f1cb35906
   Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   FontAwesomeKit: 3614979b3dbb0ec3f7fac1bd760b91f66c31db67
@@ -169,6 +172,6 @@ SPEC CHECKSUMS:
   XCDYouTubeKit: 86f4e7a9c2baa7b7adf6abfc28ac3ab34927be2d
   YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
 
-PODFILE CHECKSUM: ef49996854b0fca2cd42a0d181822d149272e2a6
+PODFILE CHECKSUM: 4c20d028a31465243205b75ae7aebcc650941f5c
 
 COCOAPODS: 1.2.0

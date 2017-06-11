@@ -16,7 +16,7 @@ class LikesPresenter: PostsPresenter {
 
 	func dataManager(_ dataManager: PostsDataManager, requestPostsWithCount postCount: Int, parameters: [String : Any], callback: @escaping TMAPICallback) {
 		var mutableParameters = parameters
-		mutableParameters["offset"] = postCount as AnyObject?
+//		mutableParameters["offset"] = postCount as AnyObject?
 		TMAPIClient.sharedInstance().likes(mutableParameters, callback: callback)
 	}
 
