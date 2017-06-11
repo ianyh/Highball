@@ -13,8 +13,12 @@ struct PostViewHeightCalculator {
 	let postHeightCache: PostHeightCache
 
 	func heightForPost(_ post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
-		if row == sectionRowCount - 1 {
+		if row == sectionRowCount - 2 {
 			return post.tags.count > 0 ? 30 : 0
+		}
+
+		if row == sectionRowCount - 1 {
+			return 50
 		}
 
 		switch post.type {
@@ -40,8 +44,8 @@ struct PostViewHeightCalculator {
 	}
 
 	fileprivate func photoHeightWithPost(_ post: Post, atRow row: Int, sectionRowCount: Int) -> CGFloat {
-		if row >= sectionRowCount - 1 - post.trailData.count {
-			let index = sectionRowCount - 2 - row
+		if row >= sectionRowCount - 2 - post.trailData.count {
+			let index = sectionRowCount - 3 - row
 			let bodyHeight = postHeightCache.bodyHeight(post, atIndex: index)
 			return bodyHeight ?? 0
 		}

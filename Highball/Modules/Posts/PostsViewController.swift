@@ -166,6 +166,11 @@ extension PostsViewController: PostsTableViewAdapterDelegate {
 					applicationActivities: nil
 				)
 				self.present(activityViewController, animated: true, completion: nil)
+			},
+			likeHandler: { _, completion in
+				self.presenter?.toggleLikeForPostAtIndex(index) { liked in
+					completion(liked)
+				}
 			}
 		)
 	}

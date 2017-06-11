@@ -37,11 +37,7 @@ extension PostsPresenter {
 	}
 
 	func reloadTable() {
-		guard let dataManager = dataManager else {
-			return
-		}
-
-		guard !dataManager.computingHeights else {
+		guard let dataManager = dataManager, !dataManager.computingHeights else {
 			return
 		}
 
@@ -94,8 +90,8 @@ extension PostsPresenter {
 		return dataManager!.posts[index]
 	}
 
-	func toggleLikeForPostAtIndex(_ index: Int) {
-		dataManager?.toggleLikeForPostAtIndex(index)
+	func toggleLikeForPostAtIndex(_ index: Int, completion: @escaping (Bool) -> Void) {
+		dataManager?.toggleLikeForPostAtIndex(index, completion: completion)
 	}
 
 	func didEncounterLoadMoreBoundary() {

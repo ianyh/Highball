@@ -84,11 +84,13 @@ struct PostSectionAdapter {
 	fileprivate let post: Post
 	private let shareHandler: (PostPhoto, Data) -> Void
 	private let videoShareHandler: (Post, URL) -> Void
+	private let likeHandler: (Post, @escaping (Bool) -> Void) -> Void
 
-	init(post: Post, shareHandler: @escaping (PostPhoto, Data) -> Void, videoShareHandler: @escaping (Post, URL) -> Void) {
+	init(post: Post, shareHandler: @escaping (PostPhoto, Data) -> Void, videoShareHandler: @escaping (Post, URL) -> Void, likeHandler: @escaping (Post, @escaping (Bool) -> Void) -> Void) {
 		self.post = post
 		self.shareHandler = shareHandler
 		self.videoShareHandler = videoShareHandler
+		self.likeHandler = likeHandler
 	}
 
 	func numbersOfRows() -> Int {
@@ -115,13 +117,24 @@ struct PostSectionAdapter {
 			rowCount = 0
 		}
 
-		return rowCount + 1
+		return rowCount + 2
 	}
 
 	func tableView(_ tableView: UITableView, cellForRow row: Int) -> UITableViewCell {
-		if row == numbersOfRows() - 1 {
+		if row == numbersOfRows() - 2 {
 			let cell = tableView.dequeueReusableCell(withIdentifier: TagsTableViewCell.cellIdentifier) as! TagsTableViewCell
 			cell.tags = post.tags
+			return cell
+		}
+
+		if row == numbersOfRows() - 1 {
+			let cell = tableView.dequeueReusableCell(withIdentifier: PostActionsTableViewCell.cellIdentifier) as! PostActionsTableViewCell
+			cell.handler = { cell in
+				self.likeHandler(self.post, { result in
+					cell.liked = result
+				})
+			}
+			cell.liked = post.liked
 			return cell
 		}
 
@@ -148,9 +161,9 @@ struct PostSectionAdapter {
 	}
 
 	fileprivate func photoCellWithTableView(_ tableView: UITableView, atRow row: Int) -> UITableViewCell {
-		if row >= numbersOfRows() - 1 - post.trailData.count {
+		if row >= numbersOfRows() - 2 - post.trailData.count {
 			let cell = tableView.dequeueReusableCell(withIdentifier: ContentTableViewCell.cellIdentifier) as! ContentTableViewCell!
-			let trailData = post.trailData[numbersOfRows() - 2 - row]
+			let trailData = post.trailData[numbersOfRows() - 3 - row]
 			cell?.width = tableView.bounds.width
 			cell?.trailData = trailData
 			return cell!

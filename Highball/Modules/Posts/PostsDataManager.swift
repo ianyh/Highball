@@ -177,7 +177,7 @@ final class PostsDataManager {
 		}
 	}
 
-	func toggleLikeForPostAtIndex(_ index: Int) {
+	func toggleLikeForPostAtIndex(_ index: Int, completion: @escaping (Bool) -> Void) {
 		var post = posts[index]
 
 		if post.liked {
@@ -188,6 +188,7 @@ final class PostsDataManager {
 					post.liked = false
 					self.posts[index] = post
 				}
+				completion(post.liked)
 			}
 		} else {
 			TMAPIClient.sharedInstance().like("\(post.id)", reblogKey: post.reblogKey) { (_, error) in
@@ -197,6 +198,7 @@ final class PostsDataManager {
 					post.liked = true
 					self.posts[index] = post
 				}
+				completion(post.liked)
 			}
 		}
 	}

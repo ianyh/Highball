@@ -63,6 +63,7 @@ class PostsTableViewAdapter: NSObject {
 		tableView.register(TagsTableViewCell.self, forCellReuseIdentifier: TagsTableViewCell.cellIdentifier)
 		tableView.register(VideoTableViewCell.self, forCellReuseIdentifier: VideoTableViewCell.cellIdentifier)
 		tableView.register(YoutubeTableViewCell.self, forCellReuseIdentifier: YoutubeTableViewCell.cellIdentifier)
+		tableView.register(PostActionsTableViewCell.self, forCellReuseIdentifier: PostActionsTableViewCell.cellIdentifier)
 		tableView.register(PostHeaderView.self, forHeaderFooterViewReuseIdentifier: PostHeaderView.viewIdentifier)
 	}
 
@@ -84,8 +85,8 @@ extension PostsTableViewAdapter: UITableViewDataSource {
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let sectionAdapter = delegate.postAdapter(self, sectionAdapterAtIndex: (indexPath as NSIndexPath).section)
-		let cell = sectionAdapter.tableView(tableView, cellForRow: (indexPath as NSIndexPath).row)
+		let sectionAdapter = delegate.postAdapter(self, sectionAdapterAtIndex: indexPath.section)
+		let cell = sectionAdapter.tableView(tableView, cellForRow: indexPath.row)
 		let linkTapHandler = { [weak self] (url: URL) in
 			guard let host = url.host, let strongSelf = self else {
 				return
