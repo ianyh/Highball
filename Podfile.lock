@@ -113,7 +113,7 @@ DEPENDENCIES:
   - ChameleonFramework (~> 2.0)
   - Crashlytics
   - DTCoreText (~> 1.6)
-  - Eureka (~> 3.0)
+  - Eureka (from `https://github.com/xmartlabs/Eureka`, branch `swift3.2`)
   - Fabric
   - FontAwesomeKit (from `https://github.com/PrideChung/FontAwesomeKit.git`)
   - FormatterKit/TimeIntervalFormatter (~> 1.8)
@@ -124,7 +124,7 @@ DEPENDENCIES:
   - PINRemoteImage (= 3.0.0-beta.10)
   - Player (~> 0.1)
   - Reachability (~> 3.2)
-  - RealmSwift (~> 2.0)
+  - RealmSwift (from `https://github.com/realm/realm-cocoa`, commit `7d313bf43d88cb06ae7471bbc4f48fe9333494d6`)
   - TMTumblrSDK (~> 4.0)
   - UTIKit (~> 2.0)
   - VENTouchLock (~> 1.0)
@@ -133,13 +133,27 @@ DEPENDENCIES:
   - YYText (~> 1.0)
 
 EXTERNAL SOURCES:
+  Eureka:
+    :branch: swift3.2
+    :git: https://github.com/xmartlabs/Eureka
   FontAwesomeKit:
     :git: https://github.com/PrideChung/FontAwesomeKit.git
+  RealmSwift:
+    :commit: 7d313bf43d88cb06ae7471bbc4f48fe9333494d6
+    :git: https://github.com/realm/realm-cocoa
+    :submodules: true
 
 CHECKOUT OPTIONS:
+  Eureka:
+    :commit: 89b0326fe79aeec1f9fef90a4f57c95bd1931089
+    :git: https://github.com/xmartlabs/Eureka
   FontAwesomeKit:
     :commit: ed5eb02f4bcf76e218bb1c966c551a7b5240b6b4
     :git: https://github.com/PrideChung/FontAwesomeKit.git
+  RealmSwift:
+    :commit: 7d313bf43d88cb06ae7471bbc4f48fe9333494d6
+    :git: https://github.com/realm/realm-cocoa
+    :submodules: true
 
 SPEC CHECKSUMS:
   Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
@@ -147,7 +161,7 @@ SPEC CHECKSUMS:
   Crashlytics: 79e236942ca1e7fc641df1feb9a275360a78ab6a
   DTCoreText: 51904f2374af443e0d270d6fdc76035ab6f9ef8a
   DTFoundation: 26a164ef510877387906fb92bff524a792db4bf8
-  Eureka: f36fd440c3ebb7bfea0a4fbe6f16a05f1cb35906
+  Eureka: 5b9418d7bfdc21ca977d69d124a6409f3e9af2c7
   Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   FontAwesomeKit: 3614979b3dbb0ec3f7fac1bd760b91f66c31db67
@@ -162,7 +176,7 @@ SPEC CHECKSUMS:
   Player: b1b301e2cce11771dad0c19ded6a0107316aa317
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   Realm: 929243ad2b618b3232e70658bedc61110e7563f1
-  RealmSwift: 5b7079b891f2833d1849294161ba3e092bbda3f6
+  RealmSwift: e6de146dc51a7fab690348c3e1a1c4202edcc889
   Spectacles: 8dc60711140320653724560e2d6bbb8a8f0940e4
   SSKeychain: 55cc80f66f5c73da827e3077f02e43528897db41
   TMTumblrSDK: 7b253e968a31f515aee0ee5f7e5faa8b7b0d0470
@@ -172,6 +186,6 @@ SPEC CHECKSUMS:
   XCDYouTubeKit: 86f4e7a9c2baa7b7adf6abfc28ac3ab34927be2d
   YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
 
-PODFILE CHECKSUM: 4c20d028a31465243205b75ae7aebcc650941f5c
+PODFILE CHECKSUM: 8dd8f4d7e3be7cb82ba75904ff10b8e04bf8a226
 
 COCOAPODS: 1.2.0

@@ -13,7 +13,7 @@ target 'Highball' do
   pod 'Alamofire'
   pod 'ChameleonFramework', '~> 2.0'
   pod 'DTCoreText', '~> 1.6'
-  pod 'Eureka', '~> 3.0'
+  pod 'Eureka', git: 'https://github.com/xmartlabs/Eureka', branch: 'swift3.2'
   pod 'FontAwesomeKit', git: 'https://github.com/PrideChung/FontAwesomeKit.git'
   pod 'FormatterKit/TimeIntervalFormatter', '~> 1.8'
   pod 'ModelMapper', '~> 6.0'
@@ -22,7 +22,7 @@ target 'Highball' do
   pod 'PINRemoteImage', '= 3.0.0-beta.10'
   pod 'Player', '~> 0.1'
   pod 'Reachability', '~> 3.2'
-  pod 'RealmSwift', '~> 2.0'
+  pod 'RealmSwift', git: 'https://github.com/realm/realm-cocoa', commit: '7d313bf43d88cb06ae7471bbc4f48fe9333494d6', submodules: true
   pod 'TMTumblrSDK', '~> 4.0'
   pod 'UTIKit', '~> 2.0'
   pod 'VENTouchLock', '~> 1.0'

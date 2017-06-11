@@ -311,9 +311,9 @@ struct PostSectionAdapter {
 	func setBodyComponentHeight(_ height: CGFloat, forIndexPath indexPath: IndexPath, withKey key: String, inHeightCache postHeightCache: PostHeightCache) -> Bool {
 		let row = (indexPath as NSIndexPath).row
 		let heightIndex = { () -> Int in
-			switch post.type {
+			switch self.post.type {
 			case "photo":
-				return numbersOfRows() - 2 - row
+				return self.numbersOfRows() - 2 - row
 			case "text":
 				return row - 1
 			case "answer":
