@@ -42,7 +42,7 @@ final class LikesFiltersViewController: FormViewController {
 				$0.selectorTitle = "Post Type"
 			}
 
-			<<< DateTimeRow {
+			<<< DateRow {
 				$0.tag = "date"
 				$0.title = "date"
 			}
