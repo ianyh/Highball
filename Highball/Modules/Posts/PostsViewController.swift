@@ -109,6 +109,7 @@ class PostsViewController: UITableViewController {
 	}
 
 	func refresh(_ sender: UIRefreshControl) {
+		tableViewAdapter?.resetCache()
 		presenter?.viewDidRefresh()
 	}
 }
@@ -117,21 +118,6 @@ class PostsViewController: UITableViewController {
 extension PostsViewController: UIGestureRecognizerDelegate {
 	func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
 		return true
-	}
-}
-
-// MARK: UIViewControllerTransitioningDelegate
-extension PostsViewController: UIViewControllerTransitioningDelegate {
-	func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-		return ReblogTransitionAnimator()
-	}
-
-	func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-		let animator = ReblogTransitionAnimator()
-
-		animator.presenting = false
-
-		return animator
 	}
 }
 
